@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="iss.medipal.ui.activities.MainActivity">
+
+    <include layout="@layout/toolbar_generic"/>
+
+    <iss.medipal.ui.customViews.NonSwipeableViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:layout_above="@+id/tab_layout"/>
+
+
+    <iss.medipal.ui.customViews.CommonTabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tab_height"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentBottom="true"
+        tl:tl_indicator_color="@color/white"
+        tl:tl_textSelectColor="@color/colorPrimary"
+        tl:tl_textUnselectColor="@color/white"
+        tl:tl_indicator_style="BLOCK"
+        tl:tl_indicator_corner_radius="0dp"
+        tl:tl_indicator_margin_top="0dp"
+        tl:tl_indicator_height="@dimen/tab_height"/>
+</RelativeLayout>

@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Medipal</string>
+
+    <string name="home">Home</string>
+    <string name="my_meds">My Meds</string>
+    <string name="progress">Progress</string>
+    <string name="more">More</string>
+    <string name="reminders">Reminders</string>
+
+    <!--arrays-->
+    <string-array name="tab_items">
+        <item>@string/home</item>
+        <item>@string/my_meds</item>
+        <item>@string/progress</item>
+        <item>@string/reminders</item>
+        <item>@string/more</item>
+    </string-array>
+
+</resources>
