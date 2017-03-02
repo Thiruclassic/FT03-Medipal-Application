@@ -1,6 +1,9 @@
 package iss.medipal.ui.activities;
 
+import android.app.Fragment;
 import android.content.res.TypedArray;
+
+import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -11,10 +14,11 @@ import iss.medipal.R;
 import iss.medipal.ui.adapters.MainPagerAdapter;
 import iss.medipal.ui.customViews.CommonTabLayout;
 import iss.medipal.ui.entities.TabEntity;
+import iss.medipal.ui.fragments.BlankFragment;
 import iss.medipal.ui.interfaces.CustomTabEntity;
 import iss.medipal.ui.interfaces.OnTabSelectListener;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements BlankFragment.OnFragmentInteractionListener{
 
     private String[] mTabItems;
 
@@ -88,5 +92,10 @@ public class MainActivity extends BaseActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
