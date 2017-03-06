@@ -115,7 +115,7 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
 
     public CommonTabLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setWillNotDraw(false);//重写onDraw方法,需要调用这个方法来清除flag
+        setWillNotDraw(false);//flag
         setClipChildren(false);
         setClipToPadding(false);
 
@@ -198,13 +198,13 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
         notifyDataSetChanged();
     }
 
-    /** 关联数据支持同时切换fragments */
+    /** fragments */
     public void setTabData(ArrayList<CustomTabEntity> tabEntitys, FragmentActivity fa, int containerViewId, ArrayList<Fragment> fragments) {
         mFragmentChangeManager = new FragmentChangeManager(fa.getSupportFragmentManager(), containerViewId, fragments);
         setTabData(tabEntitys);
     }
 
-    /** 更新数据 */
+
     public void notifyDataSetChanged() {
         mTabsContainer.removeAllViews();
         this.mTabCount = mTabEntitys.size();
@@ -227,7 +227,7 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
         updateTabStyles();
     }
 
-    /** 创建并添加tab */
+
     private void addTab(final int position, View tabView) {
         TextView tv_tab_title = (TextView) tabView.findViewById(R.id.tv_tab_title);
         tv_tab_title.setText(mTabEntitys.get(position).getTabTitle());
@@ -251,7 +251,7 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
             }
         });
 
-        /** 每一个Tab的布局参数 */
+
         LinearLayout.LayoutParams lp_tab = mTabSpaceEqual ?
                 new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1.0f) :
                 new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
