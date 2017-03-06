@@ -5,8 +5,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
-
-import iss.medipal.ui.fragments.BlankFragment;
 import iss.medipal.ui.fragments.SimpleCardFragment;
 
 
@@ -27,7 +25,9 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
             System.out.println("############################### "+title );
             if(title.contains("Meds"))
             {
-                mFragments.add(BlankFragment.newInstance("string1","string2"));
+                //Blank fragment depricated
+//                mFragments.add(BlankFragment.newInstance("string1","string2"));
+
             }
             else {
                 mFragments.add(SimpleCardFragment.getInstance("Screen : " + title));
