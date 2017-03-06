@@ -14,11 +14,12 @@ import iss.medipal.R;
 import iss.medipal.ui.adapters.MainPagerAdapter;
 import iss.medipal.ui.customViews.CommonTabLayout;
 import iss.medipal.ui.entities.TabEntity;
-import iss.medipal.ui.fragments.BlankFragment;
+//import iss.medipal.ui.fragments.BlankFragment;
 import iss.medipal.ui.interfaces.CustomTabEntity;
 import iss.medipal.ui.interfaces.OnTabSelectListener;
 
-public class MainActivity extends BaseActivity implements BlankFragment.OnFragmentInteractionListener{
+//public class MainActivity extends BaseActivity implements BlankFragment.OnFragmentInteractionListener{
+    public class MainActivity extends BaseActivity{
 
     private String[] mTabItems;
 
@@ -94,8 +95,4 @@ public class MainActivity extends BaseActivity implements BlankFragment.OnFragme
         });
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
 }
