@@ -17,7 +17,7 @@ import iss.medipal.ui.entities.TabEntity;
 //import iss.medipal.ui.fragments.BlankFragment;
 import iss.medipal.ui.interfaces.CustomTabEntity;
 import iss.medipal.ui.interfaces.OnTabSelectListener;
-
+//Commenting out blank fragment
 //public class MainActivity extends BaseActivity implements BlankFragment.OnFragmentInteractionListener{
     public class MainActivity extends BaseActivity{
 
