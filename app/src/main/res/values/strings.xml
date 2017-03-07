@@ -18,5 +18,14 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <!--Appointment functionality -->
+    <string name="location">Location</string>
+    <string name="date_select">Select Date</string>
+    <string name="date_time_select">Time</string>
+    <string name="strt_time_select">Start Time</string>
+    <string name="save">Save</string>
+    <string name="generic_error">Sorry something went wrong! We\'re looking into it!</string>
+    <string name="st_time_et_time_validation_msg">Start time should be greater than End time</string>
+    <string name="date_validation_msg">Please select a valid date for booking</string>
+    <string name="time_validation_msg">Please select a valid time for booking</string>
 </resources>

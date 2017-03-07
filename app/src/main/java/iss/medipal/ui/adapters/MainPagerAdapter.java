@@ -5,6 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
+
+import iss.medipal.ui.fragments.AppointmentFragment;
 import iss.medipal.ui.fragments.SimpleCardFragment;
 
 
@@ -47,6 +49,13 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return mFragments.get(position);
+        switch (position) {
+            case 2:
+                AppointmentFragment appointmentFragment = new AppointmentFragment();
+                return appointmentFragment;
+            default:
+                return mFragments.get(position);
+        }
+
     }
 }
