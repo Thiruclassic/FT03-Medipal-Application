@@ -24,6 +24,8 @@ import iss.medipal.R;
  */
 
 public class AppointmentFragment extends Fragment {
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
     private EditText etDate, etStrtTime;
     private Button btnSave;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
@@ -37,6 +39,14 @@ public class AppointmentFragment extends Fragment {
         super.onCreate(savedInstanceState);
 //        getActivity().startActivity(new Intent(getActivity(), AppointmentActivity.class));
 
+    }
+    public static AppointmentFragment newInstance(String param1, String param2) {
+        AppointmentFragment fragment = new AppointmentFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
