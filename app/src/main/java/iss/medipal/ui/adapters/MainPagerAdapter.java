@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import iss.medipal.MediPalApplication;
 import iss.medipal.R;
 import iss.medipal.ui.fragments.AddMedicineFragment;
+import iss.medipal.ui.fragments.AppointmentFragment;
 import iss.medipal.ui.fragments.SimpleCardFragment;
 import iss.medipal.ui.fragments.ViewMedicineFragment;
 
@@ -39,6 +40,9 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
             switch (title) {
                 case "My Meds":
                     mFragments.add(ViewMedicineFragment.newInstance("string1", "string2"));
+                    break;
+                case "Appointments":
+                    mFragments.add(AppointmentFragment.newInstance("string1", "string2"));
                     break;
                     default:
                     mFragments.add(SimpleCardFragment.getInstance("Screen : " + title));
