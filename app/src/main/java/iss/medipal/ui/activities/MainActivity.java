@@ -15,12 +15,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import iss.medipal.R;
-import iss.medipal.constants.Constants;
 import iss.medipal.ui.adapters.MainPagerAdapter;
 import iss.medipal.ui.customViews.CommonTabLayout;
 import iss.medipal.ui.entities.TabEntity;
-import iss.medipal.ui.fragments.AddMedicineFragment;
-import iss.medipal.ui.fragments.ViewMedicineFragment;
 import iss.medipal.ui.interfaces.CustomTabEntity;
 import iss.medipal.ui.interfaces.OnTabSelectListener;
 

@@ -1,18 +1,11 @@
 package iss.medipal.ui.adapters;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.util.Log;
 
 import java.util.ArrayList;
-
-import iss.medipal.MediPalApplication;
-import iss.medipal.R;
-import iss.medipal.ui.fragments.AddMedicineFragment;
 import iss.medipal.ui.fragments.SimpleCardFragment;
-import iss.medipal.ui.fragments.ViewMedicineFragment;
 
 
 /**
