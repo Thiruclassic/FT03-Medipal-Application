@@ -42,6 +42,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ok_text">OK</string>
+
     <!--Appointment functionality -->
     <string name="location">Location</string>
     <string name="date_select">Select Date</string>
