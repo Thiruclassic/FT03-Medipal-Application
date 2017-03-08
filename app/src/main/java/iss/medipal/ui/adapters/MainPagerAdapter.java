@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 import iss.medipal.ui.fragments.SimpleCardFragment;
+import iss.medipal.ui.fragments.ViewMedicineFragment;
 
 
 /**

@@ -22,7 +22,7 @@ import iss.medipal.util.DatabaseUtility;
  * Created by Naveen on 3/2/17.
  */
 
-public class MedicineDaoImpl implements MedicineDao,DatabaseConstants{
+public class MedicineDaoImpl implements MedicineDao{
 
     DatabaseHandler dbHandler;
 
@@ -57,7 +57,7 @@ public class MedicineDaoImpl implements MedicineDao,DatabaseConstants{
         values.put("ExpireFactor",medicine.getExpireFactor());
 
 
-        int id=(int)database.insert(TABLE_MEDICINE,null,values);
+        int id=(int)database.insert(DatabaseConstants.TABLE_MEDICINE,null,values);
 
         return id;
     }
@@ -81,7 +81,7 @@ public class MedicineDaoImpl implements MedicineDao,DatabaseConstants{
         values.put("DateIssued",medicine.getDateIssued().toString());
         values.put("ExpireFactor",medicine.getExpireFactor());
         Log.d("data check",String.valueOf(medicine.getId()));
-        int id=(int)database.update(TABLE_MEDICINE,values,"id=?",new String[]{String.valueOf(medicine.getId())});
+        int id=(int)database.update(DatabaseConstants.TABLE_MEDICINE,values,"id=?",new String[]{String.valueOf(medicine.getId())});
         return id;
     }
 
@@ -93,7 +93,7 @@ public class MedicineDaoImpl implements MedicineDao,DatabaseConstants{
     @Override
     public Medicine getMedicinebyId(int medicineId) {
 
-        String query="Select * from "+TABLE_MEDICINE+ " where id=?";
+        String query="Select * from "+ DatabaseConstants.TABLE_MEDICINE+ " where id=?";
         SQLiteDatabase database=dbHandler.getWritableDatabase();
         String[] args=new String[1];
         args[0]=String.valueOf(medicineId);
@@ -138,7 +138,7 @@ public class MedicineDaoImpl implements MedicineDao,DatabaseConstants{
     @Override
     public List<String> getAllMedicines() {
 
-        String query="Select * from "+TABLE_MEDICINE;
+        String query="Select * from "+ DatabaseConstants.TABLE_MEDICINE;
 
         SQLiteDatabase database=dbHandler.getReadableDatabase();
 

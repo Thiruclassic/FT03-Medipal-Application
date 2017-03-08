@@ -1,7 +1,10 @@
 package iss.medipal.ui.activities;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import iss.medipal.constants.Constants;
 import iss.medipal.ui.interfaces.CustomBackPressedListener;
 
 /**
@@ -28,5 +31,27 @@ public class BaseActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    /**
+     * Launch activity class
+     *
+     * @param clazz
+     */
+    protected void launchActivity(Class<?> clazz) {
+        startActivity(new Intent(this, clazz));
+        finish();
+    }
+
+    /**
+     * Launch activity class
+     *
+     * @param clazz
+     */
+    protected void launchActivityWithExtras(Class<?> clazz, Bundle extras) {
+        Intent intent = new Intent(this, clazz);
+        intent.putExtra(Constants.ACTIVITY_EXTRAS, extras);
+        startActivity(intent);
+        finish();
     }
 }

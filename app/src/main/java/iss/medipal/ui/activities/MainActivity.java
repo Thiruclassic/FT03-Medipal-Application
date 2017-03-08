@@ -22,6 +22,7 @@ import iss.medipal.ui.interfaces.CustomTabEntity;
 import iss.medipal.ui.interfaces.OnTabSelectListener;
 
 public class MainActivity extends BaseActivity {
+
     private String[] mTabItems;
 
     private ViewPager mPager;

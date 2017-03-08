@@ -9,7 +9,7 @@ import android.view.WindowManager;
  * Created by junaidramis on 8/3/17.
  */
 
-public class BaseFullScreenActivity extends AppCompatActivity {
+public class BaseFullScreenActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

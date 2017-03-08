@@ -10,7 +10,6 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import iss.medipal.constants.Constants;
 import iss.medipal.constants.DatabaseConstants;
 import iss.medipal.dao.ReminderDao;
 import iss.medipal.helper.DatabaseHandler;

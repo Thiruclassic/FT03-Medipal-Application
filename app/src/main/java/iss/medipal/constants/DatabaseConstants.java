@@ -4,7 +4,7 @@ package iss.medipal.constants;
  * Created by Naveen on 2/24/17.
  */
 
-public interface DatabaseConstants {
+public class DatabaseConstants {
 
     public static final int DATABASE_VERSION = 9;
 

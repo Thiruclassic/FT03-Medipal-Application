@@ -13,22 +13,14 @@ import iss.medipal.model.PersonalBio;
  * Created by Thirumal on 2/21/2017.
  */
 
-public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseConstants {
-
-
-
-
-
-
-
+public class DatabaseHandler extends SQLiteOpenHelper {
 
     public DatabaseHandler(Context context)
     {
-        super(context,DATABASE_NAME,null,DATABASE_VERSION);
+        super(context, DatabaseConstants.DATABASE_NAME,
+                null, DatabaseConstants.DATABASE_VERSION);
 
     }
-
-
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
@@ -53,15 +45,15 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseConstan
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ TABLE_PERSONAL_BIO);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ TABLE_HEALTH_BIO);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ TABLE_CATEGORY);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ TABLE_MEDICINE);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ TABLE_MEASUREMENT);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ TABLE_CONSUMPTION);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ TABLE_REMINDER);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ TABLE_APPOINTMENT);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ TABLE_ICE);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ DatabaseConstants.TABLE_PERSONAL_BIO);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ DatabaseConstants.TABLE_HEALTH_BIO);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ DatabaseConstants.TABLE_CATEGORY);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ DatabaseConstants.TABLE_MEDICINE);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ DatabaseConstants.TABLE_MEASUREMENT);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ DatabaseConstants.TABLE_CONSUMPTION);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ DatabaseConstants.TABLE_REMINDER);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ DatabaseConstants.TABLE_APPOINTMENT);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ DatabaseConstants.TABLE_ICE);
 
         onCreate(sqLiteDatabase);
 
@@ -75,7 +67,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseConstan
     public String getPersonalBioTableCreateQuery()
     {
         StringBuilder builder=new StringBuilder("CREATE TABLE ");
-        builder.append(TABLE_PERSONAL_BIO);
+        builder.append(DatabaseConstants.TABLE_PERSONAL_BIO);
         builder.append("(");
         builder.append("ID"+" INTEGER PRIMARY KEY AUTOINCREMENT,");
         builder.append("Name"+" VARCHAR(100) NOT NULL,");
@@ -95,7 +87,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseConstan
     public String getHealthBioTableCreateQuery()
     {
         StringBuilder builder=new StringBuilder("CREATE TABLE ");
-        builder.append(TABLE_HEALTH_BIO);
+        builder.append(DatabaseConstants.TABLE_HEALTH_BIO);
         builder.append("(");
         builder.append("ID"+" INTEGER PRIMARY KEY AUTOINCREMENT,");
         builder.append("Condition"+" VARCHAR(255) NOT NULL,");
@@ -111,7 +103,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseConstan
     public String getCategoryTableCreateQuery()
     {
         StringBuilder builder=new StringBuilder("CREATE TABLE ");
-        builder.append(TABLE_CATEGORY);
+        builder.append(DatabaseConstants.TABLE_CATEGORY);
         builder.append("(");
         builder.append("ID"+" INTEGER PRIMARY KEY AUTOINCREMENT,");
         builder.append("Category"+" VARCHAR(50) NOT NULL,");
@@ -128,7 +120,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseConstan
     public String getMedicineTableCreateQuery()
     {
         StringBuilder builder=new StringBuilder("CREATE TABLE ");
-        builder.append(TABLE_MEDICINE);
+        builder.append(DatabaseConstants.TABLE_MEDICINE);
         builder.append("(");
         builder.append("ID"+" INTEGER PRIMARY KEY AUTOINCREMENT,");
         builder.append("Medicine"+" VARCHAR(50) NOT NULL,");
@@ -151,7 +143,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseConstan
     public String getMeasurementTableCreateQuery()
     {
         StringBuilder builder=new StringBuilder("CREATE TABLE ");
-        builder.append(TABLE_MEASUREMENT);
+        builder.append(DatabaseConstants.TABLE_MEASUREMENT);
         builder.append("(");
         builder.append("ID"+" INTEGER PRIMARY KEY AUTOINCREMENT,");
         builder.append("Systolic"+" INTEGER NOT NULL,");
@@ -169,7 +161,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseConstan
     public String getConsumptionTableCreateQuery()
     {
         StringBuilder builder=new StringBuilder("CREATE TABLE ");
-        builder.append(TABLE_CONSUMPTION);
+        builder.append(DatabaseConstants.TABLE_CONSUMPTION);
         builder.append("(");
         builder.append("ID"+" INTEGER PRIMARY KEY AUTOINCREMENT,");
         builder.append("MedicineId"+" INTEGER NOT NULL,");
@@ -185,7 +177,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseConstan
     public String getReminderTableCreateQuery()
     {
         StringBuilder builder=new StringBuilder("CREATE TABLE ");
-        builder.append(TABLE_REMINDER);
+        builder.append(DatabaseConstants.TABLE_REMINDER);
         builder.append("(");
         builder.append("ID"+" INTEGER PRIMARY KEY AUTOINCREMENT,");
         builder.append("Frequency"+" INTEGER NOT NULL,");
@@ -201,7 +193,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseConstan
     public String getAppointmentTableCreateQuery()
     {
         StringBuilder builder=new StringBuilder("CREATE TABLE ");
-        builder.append(TABLE_APPOINTMENT);
+        builder.append(DatabaseConstants.TABLE_APPOINTMENT);
         builder.append("(");
         builder.append("ID"+" INTEGER PRIMARY KEY AUTOINCREMENT,");
         builder.append("Location"+" Varchar(100) NOT NULL,");
@@ -216,7 +208,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseConstan
     public String getICETableCreateQuery()
     {
         StringBuilder builder=new StringBuilder("CREATE TABLE ");
-        builder.append(TABLE_ICE);
+        builder.append(DatabaseConstants.TABLE_ICE);
         builder.append("(");
         builder.append("ID"+" INTEGER PRIMARY KEY AUTOINCREMENT,");
         builder.append("Name"+" Varchar(100) NOT NULL,");
@@ -248,7 +240,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseConstan
         values.put("Height",bio.getHeight());
         values.put("BloodType",bio.getBloodType());
 
-        long id=database.insert(TABLE_PERSONAL_BIO,null,values);
+        long id=database.insert(DatabaseConstants.TABLE_PERSONAL_BIO,null,values);
         return id;
 
     }
@@ -273,7 +265,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseConstan
             values.put("Description",categoryAttr[2]);
             values.put("Remind",categoryAttr[3]);
 
-            sqLiteDatabase.insert(TABLE_CATEGORY,null,values);
+            sqLiteDatabase.insert(DatabaseConstants.TABLE_CATEGORY,null,values);
 
         }
 

@@ -12,12 +12,11 @@ import iss.medipal.model.HealthBio;
 import iss.medipal.model.PersonalBio;
 import iss.medipal.util.DatabaseUtility;
 
-
 /**
  * Created by Naveen on 2/24/17.
  */
 
-public class BioDaoImpl implements BioDao, DatabaseConstants {
+public class BioDaoImpl implements BioDao {
 
     DatabaseHandler dbHandler;
 
@@ -38,7 +37,7 @@ public class BioDaoImpl implements BioDao, DatabaseConstants {
         values.put("Height",bio.getHeight());
         values.put("BloodType",bio.getBloodType());
 
-        int id=(int)database.insert(TABLE_PERSONAL_BIO,null,values);
+        int id=(int)database.insert(DatabaseConstants.TABLE_PERSONAL_BIO,null,values);
         return id;
     }
 
@@ -69,7 +68,7 @@ public class BioDaoImpl implements BioDao, DatabaseConstants {
         values.put("StartDate",healthBio.getStartDate().toString());
         values.put("ConditionType",healthBio.getConditionType());
 
-        int id=(int)database.insert(TABLE_HEALTH_BIO,null,values);
+        int id=(int)database.insert(DatabaseConstants.TABLE_HEALTH_BIO,null,values);
         return id;
     }
 
