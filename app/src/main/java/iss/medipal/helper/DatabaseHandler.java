@@ -15,13 +15,6 @@ import iss.medipal.model.PersonalBio;
 
 public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseConstants {
 
-
-
-
-
-
-
-
     public DatabaseHandler(Context context)
     {
         super(context,DATABASE_NAME,null,DATABASE_VERSION);
