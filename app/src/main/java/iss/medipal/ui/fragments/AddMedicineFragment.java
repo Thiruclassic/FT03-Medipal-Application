@@ -367,7 +367,7 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-        Log.d("cbox update testing",String.valueOf(medicine.isRemind()));
+        Log.d("cbox update testing",String.valueOf(medicine.getDateIssued()));
         medicineName.setText(medicine.getMedicine());
         dosageSpinner.setSelection(medicine.getDosage());
         categorySpinner.setSelection(medicine.getCatId()-1);
@@ -385,8 +385,7 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
     {
         reminderDao=ReminderDaoImpl.newInstance();
 
-        reminder= reminderDao.getReminderById(medicine.getReminderId()
-        );
+        reminder= reminderDao.getReminderById(medicine.getReminderId());
         SimpleDateFormat timeFormat=new SimpleDateFormat("hh:MM");
         Log.d("reminder1",String.valueOf(medicine.getReminderId()));
         //addDosageTimeButton.setText(timeFormat.format(reminder.getStartTime()));

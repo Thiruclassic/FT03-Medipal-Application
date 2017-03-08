@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:tag="asdfsdfksdjf">
+
+<TimePicker
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/reminderTime">
+</TimePicker>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter Frequency"/>
+        <Spinner
+            android:id="@+id/frequencyText"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown"
+            android:layout_margin="10dp"
+            android:entries="@array/dosage_quantity_items"
+            android:background="@drawable/gradient_spinner"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Interval"/>
+    <Spinner
+        android:id="@+id/intervalText"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        android:layout_margin="10dp"
+        android:entries="@array/dosage_quantity_items"
+        android:background="@drawable/gradient_spinner"
+        />
+    </LinearLayout>
+    <Button
+        android:background="@drawable/cylinder_border"
+        android:text="Save Reminder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/saveReminder"
+        android:layout_margin="10dp"/>
+
+
+
+</LinearLayout>

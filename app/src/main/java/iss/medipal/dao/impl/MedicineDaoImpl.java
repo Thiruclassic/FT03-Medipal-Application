@@ -115,6 +115,7 @@ public class MedicineDaoImpl implements MedicineDao,DatabaseConstants{
                 medicine.setCatId(cursor.getInt(cursor.getColumnIndex("CatID")));
                 String dateIssued = cursor.getString(cursor.getColumnIndex("DateIssued"));
                 SimpleDateFormat dateFormat =new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+                cursor.getLong(cursor.getColumnIndex("DateIssued"));
                 medicine.setDateIssued(dateFormat.parse(dateIssued));
 
                 medicine.setReminderId(cursor.getInt(cursor.getColumnIndex("ReminderID")));
