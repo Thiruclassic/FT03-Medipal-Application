@@ -24,6 +24,10 @@
     <color name="text_grey_color">#474747</color>
     <color name="divider_color">#D7D6DA</color>
     <color name="gradient_start_color">#B5B5B5</color>
+    <color name="lightWhite">#88FFFFFF</color>
+    <color name="half_transparent_brown">#335D5A58</color>
+    <color name="mineShaft">#333333</color>
+
 
 </resources>
 

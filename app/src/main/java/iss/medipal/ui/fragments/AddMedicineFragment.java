@@ -43,11 +43,7 @@ import iss.medipal.ui.interfaces.CustomBackPressedListener;
  * Use the {@link AddMedicineFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-
-
 public class AddMedicineFragment extends Fragment implements CustomBackPressedListener{
-
-
 
     EditText medicineName;
     EditText description;

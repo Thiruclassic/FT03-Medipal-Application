@@ -5,7 +5,6 @@ import java.util.Date;
 /**
  * Created by Thirumal on 2/20/2017.
  */
-
 public class PersonalBio {
 
     int id;
@@ -16,8 +15,6 @@ public class PersonalBio {
     String postalCode;
     int height;
     String BloodType;
-
-
 
     public int getId() {
         return id;
@@ -82,9 +79,5 @@ public class PersonalBio {
     public void setBloodType(String bloodType) {
         BloodType = bloodType;
     }
-
-
-
-
 
 }

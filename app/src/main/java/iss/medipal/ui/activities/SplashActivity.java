@@ -2,9 +2,9 @@ package iss.medipal.ui.activities;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 
 import iss.medipal.R;
+import iss.medipal.util.SharedPreferenceManager;
 
 /**
  * Created by junaidramis on 8/3/17.
@@ -23,7 +23,11 @@ public class SplashActivity extends BaseFullScreenActivity {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                launchActivity(MainActivity.class);
+                if(SharedPreferenceManager.isAppInitialLaunch(SplashActivity.this)) {
+                    launchActivity(UserProfileActivity.class);
+                } else {
+                    launchActivity(MainActivity.class);
+                }
             }
         },SPLASH_TIME);
     }
