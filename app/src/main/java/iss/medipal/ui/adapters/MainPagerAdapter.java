@@ -1,13 +1,18 @@
 package iss.medipal.ui.adapters;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.Log;
 
 import java.util.ArrayList;
 
-import iss.medipal.ui.fragments.BlankFragment;
+import iss.medipal.MediPalApplication;
+import iss.medipal.R;
+import iss.medipal.ui.fragments.AddMedicineFragment;
 import iss.medipal.ui.fragments.SimpleCardFragment;
+import iss.medipal.ui.fragments.ViewMedicineFragment;
 
 
 /**
@@ -19,22 +24,28 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     private String[] mTitles;
     private ArrayList<Fragment> mFragments;
 
+
     public MainPagerAdapter(FragmentManager fm, String[] titles) {
         super(fm);
         this.mTitles = titles;
         this.mFragments = new ArrayList<>();
-        for (String title : mTitles) {
-            System.out.println("############################### "+title );
-            if(title.contains("Meds"))
-            {
-                mFragments.add(BlankFragment.newInstance("string1","string2"));
-            }
-            else {
-                mFragments.add(SimpleCardFragment.getInstance("Screen : " + title));
-            }
-        }
+        addFragments();
     }
 
+
+    public void addFragments()
+    {
+        for (String title : mTitles) {
+            switch (title) {
+                case "My Meds":
+                    mFragments.add(ViewMedicineFragment.newInstance("string1", "string2"));
+                    break;
+                    default:
+                    mFragments.add(SimpleCardFragment.getInstance("Screen : " + title));
+                }
+            }
+
+    }
     @Override
     public int getCount() {
         return mTitles.length;

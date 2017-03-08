@@ -9,6 +9,7 @@ public class Category {
     String category;
     String code;
     String description;
+    boolean remind;
 
 
 
@@ -44,4 +45,11 @@ public class Category {
         this.description = description;
     }
 
+    public boolean isRemind() {
+        return remind;
+    }
+
+    public void setRemind(boolean remind) {
+        this.remind = remind;
+    }
 }

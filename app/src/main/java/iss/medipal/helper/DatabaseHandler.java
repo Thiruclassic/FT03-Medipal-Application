@@ -116,7 +116,8 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseConstan
         builder.append("ID"+" INTEGER PRIMARY KEY AUTOINCREMENT,");
         builder.append("Category"+" VARCHAR(50) NOT NULL,");
         builder.append("Code"+" VARCHAR(5) NOT NULL,");
-        builder.append("Description"+" VARCHAR(255) NOT NULL");
+        builder.append("Description"+" VARCHAR(255) NOT NULL,");
+        builder.append("Remind"+" INTEGER NOT NULL");
         builder.append(")");
 
         return builder.toString();
@@ -138,7 +139,8 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseConstan
         builder.append("Quantity"+" INTEGER NOT NULL,");
         builder.append("Dosage"+" INTEGER NOT NULL,");
         builder.append("DateIssued"+" DATETIME NOT NULL,");
-        builder.append("ExpireFactor"+" INTEGER NOT NULL");
+        builder.append("ExpireFactor"+" INTEGER NOT NULL,");
+        builder.append("Threshold"+" INTEGER ");
         builder.append(")");
 
         return builder.toString();
@@ -269,6 +271,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseConstan
             values.put("Code",categoryAttr[0]);
             values.put("Category",categoryAttr[1]);
             values.put("Description",categoryAttr[2]);
+            values.put("Remind",categoryAttr[3]);
 
             sqLiteDatabase.insert(TABLE_CATEGORY,null,values);
 
@@ -278,11 +281,11 @@ public class DatabaseHandler extends SQLiteOpenHelper implements DatabaseConstan
     public String[] getDefaultCategoryData()
     {
         String[] categoryDataList=new String[5];
-        categoryDataList[0]="SUP|Supplement|User may opt to set reminder for consumption of supplement";
-        categoryDataList[1]="CHR|Chronic|This is to categorise medication for long term/life-time consumption for diseases i.e. diabetes, hypertension, heart regulation, etc.";
-        categoryDataList[2]="INC|Incidental|For Common Cold,flu or Symptions happen to be unplanned or subordinate conjunction with something and prescriptioin from general practitioners.";
-        categoryDataList[3]="COM|Complete Course|This may applies to medication like antibiotics for sinus infection,pneumonia bronchitis, acne, step throat,cellulitis, etc.";
-        categoryDataList[4]="SEL|Self Apply|To note down any self-prescribed or consume medication, i.e. applying band aids, balms, etc.";
+        categoryDataList[0]="SUP|Supplement|User may opt to set reminder for consumption of supplement|true";
+        categoryDataList[1]="CHR|Chronic|This is to categorise medication for long term/life-time consumption for diseases i.e. diabetes, hypertension, heart regulation, etc.|true";
+        categoryDataList[2]="INC|Incidental|For Common Cold,flu or Symptions happen to be unplanned or subordinate conjunction with something and prescriptioin from general practitioners.|true";
+        categoryDataList[3]="COM|Complete Course|This may applies to medication like antibiotics for sinus infection,pneumonia bronchitis, acne, step throat,cellulitis, etc.|true";
+        categoryDataList[4]="SEL|Self Apply|To note down any self-prescribed or consume medication, i.e. applying band aids, balms, etc.|true";
 
         return  categoryDataList;
     }

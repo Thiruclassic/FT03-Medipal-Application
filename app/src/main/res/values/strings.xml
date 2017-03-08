@@ -16,7 +16,32 @@
         <item>@string/more</item>
     </string-array>
 
+    <string-array name="category_items">
+        <item>Select Category</item>
+        <item>Supplement</item>
+        <item>Chronic</item>
+        <item>Incidental</item>
+        <item>Complete Course</item>
+        <item>Self Apply</item>
+    </string-array>
+
+    <string-array name="dosage_quantity_items">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ok_text">Ok</string>
 
 </resources>

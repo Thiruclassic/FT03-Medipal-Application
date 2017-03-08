@@ -17,7 +17,7 @@ public class Medicine {
     int dosage;
     Date dateIssued;
     int expireFactor;
-
+    int threshold;
 
     public int getId() {
         return id;
@@ -97,6 +97,14 @@ public class Medicine {
 
     public void setExpireFactor(int expireFactor) {
         this.expireFactor = expireFactor;
+    }
+
+    public int getThreshold() {
+        return threshold;
+    }
+
+    public void setThreshold(int threshold) {
+        this.threshold = threshold;
     }
 
 

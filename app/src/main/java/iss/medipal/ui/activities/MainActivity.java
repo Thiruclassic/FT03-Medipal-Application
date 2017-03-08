@@ -1,25 +1,30 @@
 package iss.medipal.ui.activities;
 
-import android.app.Fragment;
-import android.content.res.TypedArray;
-
+import android.app.AlertDialog;
 import android.net.Uri;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import iss.medipal.R;
+import iss.medipal.constants.Constants;
 import iss.medipal.ui.adapters.MainPagerAdapter;
 import iss.medipal.ui.customViews.CommonTabLayout;
 import iss.medipal.ui.entities.TabEntity;
-import iss.medipal.ui.fragments.BlankFragment;
+import iss.medipal.ui.fragments.AddMedicineFragment;
+import iss.medipal.ui.fragments.ViewMedicineFragment;
 import iss.medipal.ui.interfaces.CustomTabEntity;
 import iss.medipal.ui.interfaces.OnTabSelectListener;
 
-public class MainActivity extends BaseActivity implements BlankFragment.OnFragmentInteractionListener{
-
+public class MainActivity extends BaseActivity {
     private String[] mTabItems;
 
     private ViewPager mPager;
@@ -94,8 +99,7 @@ public class MainActivity extends BaseActivity implements BlankFragment.OnFragme
         });
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
 
-    }
+
+
 }

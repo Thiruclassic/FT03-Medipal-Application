@@ -6,7 +6,7 @@ package iss.medipal.constants;
 
 public interface DatabaseConstants {
 
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 9;
 
     public static final String DATABASE_NAME="MediPal";
 

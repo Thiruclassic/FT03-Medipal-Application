@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_generic_low">5dp</dimen>
+    <dimen name="margin_generic_med">12dp</dimen>
+    <dimen name="margin_generic_tiny">5dp</dimen>
+    <dimen name="margin_generic_high">25dp</dimen>
+    <dimen name="margin_generic_very_high">30dp</dimen>
+    <dimen name="padding_generic_low">5dp</dimen>
+    <dimen name="big_button_height">110dp</dimen>
+    <dimen name="big_button_textsize">10sp</dimen>
+
+    <dimen name="app_title_size">30sp</dimen>
+    <dimen name="text_size_heading_med">18sp</dimen>
+    <dimen name="text_size_heading_high">22sp</dimen>
+    <dimen name="text_size_tiny">8sp</dimen>
+    <dimen name="text_size_small">12sp</dimen>
+    <dimen name="text_size_normal">14sp</dimen>
+    <dimen name="text_size_large">16sp</dimen>
+    <dimen name="text_size_btn">18sp</dimen>
+
+</resources>
