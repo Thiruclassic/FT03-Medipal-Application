@@ -55,9 +55,9 @@ public class AppointmentFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View fragmentView = inflater.inflate(R.layout.fragment_appointment, container, false);
-        etDate = (EditText) fragmentView.findViewById(R.id.et_select_date);
-        etStrtTime = (EditText) fragmentView.findViewById(R.id.et_select_strt_time);
-        btnSave = (Button) fragmentView.findViewById(R.id.btn_save);
+        etDate = (EditText) fragmentView.findViewById(R.id.et_appdate);
+        etStrtTime = (EditText) fragmentView.findViewById(R.id.et_appTime);
+        btnSave = (Button) fragmentView.findViewById(R.id.saveApp);
 
         etDate.setText(dateFormatter.format(selectedDate.getTime()));
 
