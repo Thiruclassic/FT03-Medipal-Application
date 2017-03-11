@@ -7,10 +7,12 @@ import android.os.Handler;
 
 import java.util.ArrayList;
 
+import iss.medipal.MediPalApplication;
 import iss.medipal.R;
 import iss.medipal.dao.impl.PersonBioDaoImpl;
 import iss.medipal.dao.impl.MedicineDaoImpl;
 import iss.medipal.model.Medicine;
+import iss.medipal.model.PersonStore;
 import iss.medipal.model.PersonalBio;
 import iss.medipal.util.SharedPreferenceManager;
 
@@ -67,6 +69,8 @@ public class SplashActivity extends BaseFullScreenActivity {
         @Override
         protected void onPostExecute(PersonalBio result) {
             mPersonalBio = result;
+            PersonStore personStore = ((MediPalApplication)getApplicationContext()).getPersonStore();
+            personStore.setmPersonalBio(mPersonalBio);
             mBioDao.close();
             mMedicationDao.close();
             launchActivity(MainActivity.class);

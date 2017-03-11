@@ -53,13 +53,13 @@ public class PersonBioDaoImpl extends BaseDao implements PersonBioDao {
         Cursor cursor = database.rawQuery(sql, null);
         if (cursor.moveToNext()) {
             personBio.setId(cursor.getInt(0));
-            personBio.setName(cursor.getString(1));
-            personBio.setDob(cursor.getString(2));
-            personBio.setIdNo(cursor.getString(3));
-            personBio.setAddress(cursor.getString(4));
-            personBio.setPostalCode(cursor.getString(5));
-            personBio.setHeight(cursor.getInt(6));
-            personBio.setBloodType(cursor.getString(7));
+            personBio.setName(cursor.getString(cursor.getColumnIndex(DBConstants.PERSON_NAME)));
+            personBio.setDob(cursor.getString(cursor.getColumnIndex(DBConstants.PERSON_DOB)));
+            personBio.setIdNo(cursor.getString(cursor.getColumnIndex(DBConstants.PERSON_IDNO)));
+            personBio.setAddress(cursor.getString(cursor.getColumnIndex(DBConstants.PERSON_ADDRESS)));
+            personBio.setPostalCode(cursor.getString(cursor.getColumnIndex(DBConstants.PERSON_POSTALCODE)));
+            personBio.setHeight(cursor.getInt(cursor.getColumnIndex(DBConstants.PERSON_HEIGHT)));
+            personBio.setBloodType(cursor.getString(cursor.getColumnIndex(DBConstants.PERSON_BLOODTYPE)));
         }
         return personBio;
     }

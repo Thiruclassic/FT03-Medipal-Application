@@ -25,6 +25,13 @@
         <item>Self Apply</item>
     </string-array>
 
+    <string-array name="more_items">
+        <item>Profile</item>
+        <item>Health Bio</item>
+        <item>Measurements</item>
+        <item>ICE Contacts</item>
+    </string-array>
+
     <string-array name="blood_type_items">
         <item>A +</item>
         <item>B +</item>
@@ -72,6 +79,7 @@
     <string name="id_number">ID Number</string>
     <string name="dob_text">Date of birth</string>
     <string name="enter_details_text">Enter your profile details</string>
+    <string name="profile_text">Profile</string>
     <string name="address_text">Address</string>
     <string name="building_name_text">Building</string>
     <string name="location_text">Location</string>

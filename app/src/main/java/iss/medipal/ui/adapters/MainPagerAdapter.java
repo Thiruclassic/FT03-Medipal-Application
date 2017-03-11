@@ -5,6 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
+import iss.medipal.ui.fragments.AppointmentFragment;
+import iss.medipal.ui.fragments.MoreFragment;
 import iss.medipal.ui.fragments.SimpleCardFragment;
 import iss.medipal.ui.fragments.ViewMedicineFragment;
 
@@ -23,23 +25,8 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
         super(fm);
         this.mTitles = titles;
         this.mFragments = new ArrayList<>();
-        addFragments();
     }
 
-
-    public void addFragments()
-    {
-        for (String title : mTitles) {
-            switch (title) {
-                case "My Meds":
-                    mFragments.add(ViewMedicineFragment.newInstance("string1", "string2"));
-                    break;
-                    default:
-                    mFragments.add(SimpleCardFragment.getInstance("Screen : " + title));
-                }
-            }
-
-    }
     @Override
     public int getCount() {
         return mTitles.length;
@@ -52,6 +39,18 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return mFragments.get(position);
+        switch (position) {
+            case 0:
+                return SimpleCardFragment.getInstance("Screen : " + mTitles[position]);
+            case 1:
+                return ViewMedicineFragment.newInstance();
+            case 2:
+                return AppointmentFragment.newInstance();
+            case 3:
+                return SimpleCardFragment.getInstance("Screen : " + mTitles[position]);
+            case 4:
+                return MoreFragment.newInstance();
+        }
+        return null;
     }
 }

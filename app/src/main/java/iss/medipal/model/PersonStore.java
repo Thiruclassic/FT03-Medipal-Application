@@ -23,6 +23,10 @@ public class PersonStore {
         this.mContext = context;
     }
 
+    public void setmPersonalBio(PersonalBio mPersonalBio) {
+        this.mPersonalBio = mPersonalBio;
+    }
+
     public PersonalBio getmPersonalBio() {
         return mPersonalBio;
     }

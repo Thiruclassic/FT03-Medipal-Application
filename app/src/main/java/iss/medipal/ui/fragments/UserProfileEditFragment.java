@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -44,9 +46,12 @@ import iss.medipal.util.SharedPreferenceManager;
  */
 public class UserProfileEditFragment extends BaseFragment{
 
+    private static final String ARGS_EDIT = "ARGS_EDIT";
+
     private List<String> mSpinnerItems;
     private SimpleDateFormat mTimeFormatter;
     private DatePickerDialog mDatePickerDialog;
+    private boolean isEdit;
 
     private AppCompatSpinner mBloodSpinner;
     private AppCompatEditText mNameEditText;
@@ -60,10 +65,14 @@ public class UserProfileEditFragment extends BaseFragment{
     private AppCompatEditText mUnitEditText;
     private AppCompatEditText mPostalCodeEditText;
     private Button mSubmitButton;
+    private TextView mHeadingTextview;
 
 
-    public static UserProfileEditFragment newInstance() {
+    public static UserProfileEditFragment newInstance(Boolean isEdit) {
         UserProfileEditFragment fragment = new UserProfileEditFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(ARGS_EDIT, isEdit);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -71,6 +80,9 @@ public class UserProfileEditFragment extends BaseFragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mTimeFormatter = new SimpleDateFormat(Constants.DATE_FORMAT, Locale.getDefault());
+        if(getArguments() != null) {
+            isEdit = getArguments().getBoolean(ARGS_EDIT, true);
+        }
     }
 
     @Override
@@ -89,7 +101,12 @@ public class UserProfileEditFragment extends BaseFragment{
         super.onViewCreated(view, savedInstanceState);
         initialiseView(view);
         setSpinner();
-        setListeners();
+        if(isEdit) {
+            setListeners();
+        } else {
+            setProfileViewMode(((MediPalApplication)getActivity().getApplicationContext())
+                    .getPersonStore().getmPersonalBio());
+        }
     }
 
     private void initialiseView(View view){
@@ -105,6 +122,7 @@ public class UserProfileEditFragment extends BaseFragment{
         mUnitEditText = (AppCompatEditText) view.findViewById(R.id.unit_edit);
         mPostalCodeEditText = (AppCompatEditText) view.findViewById(R.id.postal_edit);
         mSubmitButton = (Button) view.findViewById(R.id.submit_btn);
+        mHeadingTextview = (TextView) view.findViewById(R.id.heading_tv);
     }
 
     private void setSpinner(){
@@ -151,6 +169,47 @@ public class UserProfileEditFragment extends BaseFragment{
             return false;
         }
         return true;
+    }
+
+    private void setProfileViewMode(PersonalBio personalBio){
+        mNameEditText.setText(personalBio.getName());
+        mIdEditText.setText(personalBio.getIdNo());
+        mDobEditText.setText(personalBio.getDob());
+        mHeightEditText.setText(String.valueOf(personalBio.getHeight()));
+        String[] address = personalBio.getAddress().split(",");
+        mBuildingEditText.setText(address[0]);
+        mLocationEditText.setText(address[1]);
+        mStreetEditText.setText(address[2]);
+        String[] internalAddress = address[3].split("-");
+        mLevelEditText.setText(internalAddress[0]);
+        mUnitEditText.setText(internalAddress[1]);
+        mPostalCodeEditText.setText(personalBio.getPostalCode());
+        mBloodSpinner.setSelection(getSpinnerSelectedIndex(mBloodSpinner, personalBio.getBloodType()));
+        mSubmitButton.setVisibility(View.GONE);
+        mHeadingTextview.setText(getString(R.string.profile_text));
+        mNameEditText.setEnabled(false);
+        mIdEditText.setEnabled(false);
+        mDobEditText.setEnabled(false);
+        mHeightEditText.setEnabled(false);
+        mBuildingEditText.setEnabled(false);
+        mLocationEditText.setEnabled(false);
+        mStreetEditText.setEnabled(false);
+        mLevelEditText.setEnabled(false);
+        mUnitEditText.setEnabled(false);
+        mPostalCodeEditText.setEnabled(false);
+        mBloodSpinner.setEnabled(false);
+    }
+
+    private int getSpinnerSelectedIndex(Spinner spinner, String string)
+    {
+        int index = 0;
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(string)){
+                index = i;
+                break;
+            }
+        }
+        return index;
     }
 
     private View.OnClickListener mSubmitListener = new View.OnClickListener() {

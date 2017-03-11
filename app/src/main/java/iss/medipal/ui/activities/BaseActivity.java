@@ -3,8 +3,8 @@ package iss.medipal.ui.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.WindowManager;
 
+import iss.medipal.R;
 import iss.medipal.constants.Constants;
 import iss.medipal.ui.interfaces.CustomBackPressedListener;
 
@@ -48,6 +48,17 @@ public class BaseActivity extends AppCompatActivity {
         startActivity(new Intent(this, clazz));
         finish();
     }
+
+
+    /**
+     * Launch activity class
+     *
+     * @param clazz
+     */
+    public void launchActivityWithoutFinishing(Class<?> clazz) {
+        startActivity(new Intent(this, clazz));
+    }
+
 
     /**
      * Launch activity class
