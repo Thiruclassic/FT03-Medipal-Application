@@ -1,48 +1,40 @@
 package iss.medipal.dao.impl;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import iss.medipal.constants.DatabaseConstants;
+import iss.medipal.constants.DBConstants;
 import iss.medipal.dao.ReminderDao;
-import iss.medipal.helper.DatabaseHandler;
-import iss.medipal.model.Medicine;
 import iss.medipal.model.Reminder;
-import iss.medipal.util.DatabaseUtility;
 
 /**
  * Created by Naveen on 3/7/17.
  */
 
-public class ReminderDaoImpl implements ReminderDao {
-    DatabaseHandler dbHandler;
+public class ReminderDaoImpl extends BaseDao implements ReminderDao {
 
-    public static ReminderDaoImpl newInstance() {
-
-        ReminderDaoImpl impl=new ReminderDaoImpl();
-        impl.dbHandler= DatabaseUtility.getDatabaseHandler();
-
-        return impl;
+    public static ReminderDaoImpl newInstance(Context context) {
+        return new ReminderDaoImpl(context);
     }
+
+    public ReminderDaoImpl(Context context){
+        super(context);
+    }
+
     @Override
     public int addReminder(Reminder reminder) {
-
-        SQLiteDatabase database=dbHandler.getWritableDatabase();
-
         Log.d("testing","testing");
         ContentValues values=new ContentValues();
         values.put("Frequency",reminder.getFrequency());
         values.put("StartTime",String.valueOf(reminder.getStartTime()));
         values.put("Interval",reminder.getInterval());
         Log.d("testing end","testing");
-        int id=(int)database.insert(DatabaseConstants.TABLE_REMINDER,null,values);
+        int id=(int)database.insert(DBConstants.TABLE_REMINDER,null,values);
         return reminder.getId();
 
     }
@@ -64,8 +56,7 @@ public class ReminderDaoImpl implements ReminderDao {
 
     @Override
     public Reminder getReminderById(int reminderId) {
-        String query="Select * from "+DatabaseConstants.TABLE_REMINDER+ " where id=?";
-        SQLiteDatabase database=dbHandler.getWritableDatabase();
+        String query="Select * from "+ DBConstants.TABLE_REMINDER+ " where id=?";
         String[] args=new String[1];
         args[0]=String.valueOf(reminderId);
         Log.d("Timetime","dgdggfd");

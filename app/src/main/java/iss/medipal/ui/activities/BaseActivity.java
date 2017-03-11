@@ -44,7 +44,7 @@ public class BaseActivity extends AppCompatActivity {
      *
      * @param clazz
      */
-    protected void launchActivity(Class<?> clazz) {
+    public void launchActivity(Class<?> clazz) {
         startActivity(new Intent(this, clazz));
         finish();
     }
@@ -54,7 +54,7 @@ public class BaseActivity extends AppCompatActivity {
      *
      * @param clazz
      */
-    protected void launchActivityWithExtras(Class<?> clazz, Bundle extras) {
+    public void launchActivityWithExtras(Class<?> clazz, Bundle extras) {
         Intent intent = new Intent(this, clazz);
         intent.putExtra(Constants.ACTIVITY_EXTRAS, extras);
         startActivity(intent);

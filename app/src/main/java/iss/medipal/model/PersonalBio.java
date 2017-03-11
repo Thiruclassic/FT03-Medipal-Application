@@ -1,5 +1,6 @@
 package iss.medipal.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -9,12 +10,15 @@ public class PersonalBio {
 
     int id;
     String name;
-    Date dob;
+    String dob;
     String idNo;
     String address;
     String postalCode;
     int height;
-    String BloodType;
+    String bloodType;
+    ArrayList<Appointment> appointments;
+    ArrayList<HealthBio> healthBios;
+    ArrayList<Medicine> medicines;
 
     public int getId() {
         return id;
@@ -32,11 +36,11 @@ public class PersonalBio {
         this.name = name;
     }
 
-    public Date getDob() {
+    public String getDob() {
         return dob;
     }
 
-    public void setDob(Date dob) {
+    public void setDob(String dob) {
         this.dob = dob;
     }
 
@@ -73,11 +77,34 @@ public class PersonalBio {
     }
 
     public String getBloodType() {
-        return BloodType;
+        return bloodType;
     }
 
     public void setBloodType(String bloodType) {
-        BloodType = bloodType;
+        this.bloodType = bloodType;
     }
 
+    public ArrayList<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(ArrayList<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
+    public ArrayList<HealthBio> getHealthBios() {
+        return healthBios;
+    }
+
+    public void setHealthBios(ArrayList<HealthBio> healthBios) {
+        this.healthBios = healthBios;
+    }
+
+    public ArrayList<Medicine> getMedicines() {
+        return medicines;
+    }
+
+    public void setMedicines(ArrayList<Medicine> medicines) {
+        this.medicines = medicines;
+    }
 }

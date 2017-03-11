@@ -1,9 +1,17 @@
 package iss.medipal.ui.activities;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 
+import java.util.ArrayList;
+
 import iss.medipal.R;
+import iss.medipal.dao.impl.PersonBioDaoImpl;
+import iss.medipal.dao.impl.MedicineDaoImpl;
+import iss.medipal.model.Medicine;
+import iss.medipal.model.PersonalBio;
 import iss.medipal.util.SharedPreferenceManager;
 
 /**
@@ -20,15 +28,50 @@ public class SplashActivity extends BaseFullScreenActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         mHandler = new Handler();
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(SharedPreferenceManager.isAppInitialLaunch(SplashActivity.this)) {
+        if (SharedPreferenceManager.isAppInitialLaunch(SplashActivity.this)) {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
                     launchActivity(UserProfileActivity.class);
-                } else {
-                    launchActivity(MainActivity.class);
                 }
-            }
-        },SPLASH_TIME);
+            }, SPLASH_TIME);
+        } else {
+            GetPersonTask task = new GetPersonTask(this);
+            task.execute();
+        }
     }
+
+    private class GetPersonTask extends AsyncTask<Void, Void, PersonalBio> {
+
+        private PersonalBio mPersonalBio = null;
+        private PersonBioDaoImpl mBioDao;
+        private MedicineDaoImpl mMedicationDao;
+
+        public GetPersonTask(Context context) {
+            this.mBioDao = new PersonBioDaoImpl(context);
+            this.mMedicationDao = new MedicineDaoImpl(context);
+        }
+
+        @Override
+        protected PersonalBio doInBackground(Void... params) {
+            PersonalBio result = mBioDao.getPersonalBio();
+            result.setMedicines((ArrayList<Medicine>) mMedicationDao.getAllMedicines());
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(PersonalBio result) {
+            mPersonalBio = result;
+            mBioDao.close();
+            mMedicationDao.close();
+            launchActivity(MainActivity.class);
+        }
+    }
+
+
 }

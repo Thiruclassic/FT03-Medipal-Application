@@ -70,5 +70,15 @@
         <item name="android:singleLine">true</item>
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
+
+    <style name="GreenBtnStyle">
+        <item name="android:background">@drawable/green_btn_bg</item>
+        <item name="android:shadowColor">@android:color/black</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">-1</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/text_size_btn</item>
+    </style>
    
 </resources>

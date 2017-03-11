@@ -1,18 +1,13 @@
 package iss.medipal.ui.fragments;
 
-import android.app.AlertDialog;
-import android.app.LauncherActivity;
 import android.content.Context;
 import android.net.Uri;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ActionProvider;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -31,7 +25,6 @@ import iss.medipal.R;
 import iss.medipal.constants.Constants;
 import iss.medipal.dao.MedicineDao;
 import iss.medipal.dao.impl.MedicineDaoImpl;
-import iss.medipal.ui.activities.BaseActivity;
 import iss.medipal.ui.activities.MainActivity;
 
 /**
@@ -138,8 +131,8 @@ public class ViewMedicineFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        medicineDao= MedicineDaoImpl.newInstance();
-        medicineNames=medicineDao.getAllMedicines();
+        medicineDao= MedicineDaoImpl.newInstance(getContext());
+        medicineNames=medicineDao.getAllMedicinesName();
         if(medicineNames==null)
         {
             medicineNames=new ArrayList<>();
@@ -147,10 +140,6 @@ public class ViewMedicineFragment extends Fragment {
         medicineListAdapter=new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,medicineNames);
 
         medicineList.setAdapter(medicineListAdapter);
-
-
-
-
     }
 
     public void setListeners()

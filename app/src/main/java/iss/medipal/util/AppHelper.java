@@ -8,7 +8,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
@@ -142,5 +147,24 @@ public class AppHelper {
      */
     public static boolean isListEmpty(List<?> list) {
         return list == null || list.isEmpty();
+    }
+
+    /**
+     * Show Toast message
+     *
+     * @param context
+     * @param message
+     */
+    public static void showToast(Context context, String message) {
+        try {
+            Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            ViewGroup group = (ViewGroup) toast.getView();
+            TextView messageTextView = (TextView) group.getChildAt(0);
+            messageTextView.setTextSize(18);
+            toast.show();
+        } catch (Exception err) {
+            Log.d("ERROR Toast(show)", err.getMessage());
+        }
     }
 }

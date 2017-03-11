@@ -54,6 +54,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ok_text">OK</string>
+    <string name="warning">Warning!</string>
 
     <!--Appointment functionality -->
     <string name="location">Location</string>
@@ -69,6 +70,7 @@
     <!--User Screen -->
     <string name="name">Name</string>
     <string name="id_number">ID Number</string>
+    <string name="dob_text">Date of birth</string>
     <string name="enter_details_text">Enter your profile details</string>
     <string name="address_text">Address</string>
     <string name="building_name_text">Building</string>
@@ -79,5 +81,7 @@
     <string name="postal_text">Postal Code</string>
     <string name="height_text">Height (in cms)</string>
     <string name="blood_type_text">Blood Type</string>
+    <string name="enter_all_details_text">Please enter all fields</string>
+    <string name="submit_text">Submit</string>
 
 </resources>

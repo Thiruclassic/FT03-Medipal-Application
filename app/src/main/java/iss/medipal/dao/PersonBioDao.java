@@ -10,16 +10,9 @@ import iss.medipal.model.PersonalBio;
  * Created by Thirumal on 2/21/2017.
  */
 
-public interface BioDao {
+public interface PersonBioDao {
     public int createPersonalBio(PersonalBio bioData);
     public int updatePersonalBio(PersonalBio bioData);
     public int deletePersonalBio(int id);
-    public PersonalBio findpersonalBiobyId(int id);
-
-    public int createHealthBio(HealthBio bioData);
-    public int updateHealthBio(HealthBio bioData);
-    public int deleteHealthBio(int id);
-    public List<HealthBio> getAllHealthBio(int id);
-
-
+    public PersonalBio getPersonalBio();
 }

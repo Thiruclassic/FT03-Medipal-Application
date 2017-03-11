@@ -1,87 +1,68 @@
 package iss.medipal.dao.impl;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabaseLockedException;
-import android.os.Bundle;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import iss.medipal.constants.DatabaseConstants;
+import iss.medipal.constants.Constants;
+import iss.medipal.constants.DBConstants;
 import iss.medipal.dao.MedicineDao;
-import iss.medipal.helper.DatabaseHandler;
 import iss.medipal.model.Medicine;
-import iss.medipal.util.DatabaseUtility;
 
 /**
  * Created by Naveen on 3/2/17.
  */
 
-public class MedicineDaoImpl implements MedicineDao{
+public class MedicineDaoImpl extends BaseDao implements MedicineDao{
 
-    DatabaseHandler dbHandler;
+    SimpleDateFormat dateFormat;
 
-    public static MedicineDaoImpl newInstance() {
+    public static MedicineDaoImpl newInstance(Context context) {
+        return new MedicineDaoImpl(context);
+    }
 
-        MedicineDaoImpl impl=new MedicineDaoImpl();
-        impl.dbHandler=DatabaseUtility.getDatabaseHandler();
-
-        return impl;
+    public MedicineDaoImpl(Context context){
+        super(context);
     }
 
 
     @Override
     public int addMedicine(Medicine medicine) {
-
-
-        SQLiteDatabase database=dbHandler.getWritableDatabase();
-
         ContentValues values=new ContentValues();
-
-        Log.d("checkbox testing 2",String.valueOf(medicine.isRemind()));
-
-        values.put("Medicine",medicine.getMedicine());
-        values.put("Description",medicine.getDescription());
-        values.put("CatId",medicine.getCatId());
-        values.put("ReminderId",medicine.getReminderId());
-        values.put("Remind",medicine.isRemind());
-        values.put("Quantity",medicine.getQuantity());
-        values.put("Dosage",medicine.getDosage());
-        values.put("Threshold",medicine.getThreshold());
-        values.put("DateIssued",medicine.getDateIssued().toString());
-        values.put("ExpireFactor",medicine.getExpireFactor());
-
-
-        int id=(int)database.insert(DatabaseConstants.TABLE_MEDICINE,null,values);
+        values.put(DBConstants.MEDICINE_NAME,medicine.getMedicine());
+        values.put(DBConstants.MEDICINE_DESCRIPTION,medicine.getDescription());
+        values.put(DBConstants.MEDICINE_CATID,medicine.getCatId());
+        values.put(DBConstants.MEDICINE_REMINDER_ID,medicine.getReminderId());
+        values.put(DBConstants.MEDICINE_REMIND,medicine.isRemind());
+        values.put(DBConstants.MEDICINE_QUATITY,medicine.getQuantity());
+        values.put(DBConstants.MEDICINE_DOSAGE,medicine.getDosage());
+        values.put(DBConstants.MEDICINE_THRESHOLD,medicine.getThreshold());
+        values.put(DBConstants.MEDICINE_DATE_ISSUED,medicine.getDateIssued().toString());
+        values.put(DBConstants.MEDICINE_EXPIRY_FACTOR,medicine.getExpireFactor());
+        int id=(int)database.insert(DBConstants.TABLE_MEDICINE,null,values);
 
         return id;
     }
 
     @Override
     public int updateMedicine(Medicine medicine) {
-
-
-        SQLiteDatabase database=dbHandler.getWritableDatabase();
-
         ContentValues values=new ContentValues();
-
-        values.put("Medicine",medicine.getMedicine());
-        values.put("Description",medicine.getDescription());
-        values.put("CatId",medicine.getCatId());
-        values.put("ReminderId",medicine.getReminderId());
-        values.put("Remind",medicine.isRemind());
-        values.put("Quantity",medicine.getQuantity());
-        values.put("Dosage",medicine.getDosage());
-        values.put("Threshold",medicine.getThreshold());
-        values.put("DateIssued",medicine.getDateIssued().toString());
-        values.put("ExpireFactor",medicine.getExpireFactor());
-        Log.d("data check",String.valueOf(medicine.getId()));
-        int id=(int)database.update(DatabaseConstants.TABLE_MEDICINE,values,"id=?",new String[]{String.valueOf(medicine.getId())});
+        values.put(DBConstants.MEDICINE_NAME,medicine.getMedicine());
+        values.put(DBConstants.MEDICINE_DESCRIPTION,medicine.getDescription());
+        values.put(DBConstants.MEDICINE_CATID,medicine.getCatId());
+        values.put(DBConstants.MEDICINE_REMINDER_ID,medicine.getReminderId());
+        values.put(DBConstants.MEDICINE_REMIND,medicine.isRemind());
+        values.put(DBConstants.MEDICINE_QUATITY,medicine.getQuantity());
+        values.put(DBConstants.MEDICINE_DOSAGE,medicine.getDosage());
+        values.put(DBConstants.MEDICINE_THRESHOLD,medicine.getThreshold());
+        values.put(DBConstants.MEDICINE_DATE_ISSUED,medicine.getDateIssued().toString());
+        values.put(DBConstants.MEDICINE_EXPIRY_FACTOR,medicine.getExpireFactor());
+        int id=(int)database.update(DBConstants.TABLE_MEDICINE,values,"id=?",new String[]{String.valueOf(medicine.getId())});
         return id;
     }
 
@@ -93,32 +74,28 @@ public class MedicineDaoImpl implements MedicineDao{
     @Override
     public Medicine getMedicinebyId(int medicineId) {
 
-        String query="Select * from "+ DatabaseConstants.TABLE_MEDICINE+ " where id=?";
-        SQLiteDatabase database=dbHandler.getWritableDatabase();
+        String query="Select * from "+ DBConstants.TABLE_MEDICINE+ " where id=?";
         String[] args=new String[1];
         args[0]=String.valueOf(medicineId);
-
         Medicine medicine=new Medicine();
+        dateFormat =new SimpleDateFormat(Constants.DATE_TIME_FORMAT);
         try {
             Cursor cursor = database.rawQuery(query, args);
 
             if (cursor.moveToNext()) {
-
                 medicine.setId(medicineId);
-                medicine.setMedicine(cursor.getString(cursor.getColumnIndex("Medicine")));
-                medicine.setDescription(cursor.getString(cursor.getColumnIndex("Description")));
-                medicine.setDosage(cursor.getInt(cursor.getColumnIndex("Dosage")));
-                medicine.setQuantity(cursor.getInt(cursor.getColumnIndex("Quantity")));
-                medicine.setThreshold(cursor.getInt(cursor.getColumnIndex("Threshold")));
-                medicine.setRemind(cursor.getInt(cursor.getColumnIndex("Remind"))==1);
-                medicine.setExpireFactor(cursor.getInt(cursor.getColumnIndex("ExpireFactor")));
-                medicine.setCatId(cursor.getInt(cursor.getColumnIndex("CatID")));
-                String dateIssued = cursor.getString(cursor.getColumnIndex("DateIssued"));
-                SimpleDateFormat dateFormat =new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-                cursor.getLong(cursor.getColumnIndex("DateIssued"));
+                medicine.setMedicine(cursor.getString(cursor.getColumnIndex(DBConstants.MEDICINE_NAME)));
+                medicine.setDescription(cursor.getString(cursor.getColumnIndex(DBConstants.MEDICINE_DESCRIPTION)));
+                medicine.setDosage(cursor.getInt(cursor.getColumnIndex(DBConstants.MEDICINE_DOSAGE)));
+                medicine.setQuantity(cursor.getInt(cursor.getColumnIndex(DBConstants.MEDICINE_QUATITY)));
+                medicine.setThreshold(cursor.getInt(cursor.getColumnIndex(DBConstants.MEDICINE_THRESHOLD)));
+                medicine.setRemind(cursor.getInt(cursor.getColumnIndex(DBConstants.MEDICINE_REMIND))==1);
+                medicine.setExpireFactor(cursor.getInt(cursor.getColumnIndex(DBConstants.MEDICINE_EXPIRY_FACTOR)));
+                medicine.setCatId(cursor.getInt(cursor.getColumnIndex(DBConstants.MEDICINE_CATID)));
+                String dateIssued = cursor.getString(cursor.getColumnIndex(DBConstants.MEDICINE_DATE_ISSUED));
+                cursor.getLong(cursor.getColumnIndex(DBConstants.MEDICINE_DATE_ISSUED));
                 medicine.setDateIssued(dateFormat.parse(dateIssued));
-
-                medicine.setReminderId(cursor.getInt(cursor.getColumnIndex("ReminderID")));
+                medicine.setReminderId(cursor.getInt(cursor.getColumnIndex(DBConstants.MEDICINE_REMINDER_ID)));
 
 
             }
@@ -136,12 +113,8 @@ public class MedicineDaoImpl implements MedicineDao{
     }
 
     @Override
-    public List<String> getAllMedicines() {
-
-        String query="Select * from "+ DatabaseConstants.TABLE_MEDICINE;
-
-        SQLiteDatabase database=dbHandler.getReadableDatabase();
-
+    public List<String> getAllMedicinesName() {
+        String query="Select * from "+ DBConstants.TABLE_MEDICINE;
         Cursor cursor=database.rawQuery(query,null);
         List<String> medicines=new ArrayList<>();
 
@@ -152,4 +125,35 @@ public class MedicineDaoImpl implements MedicineDao{
 
         return medicines;
     }
+
+    @Override
+    public List<Medicine> getAllMedicines() {
+        String query="Select * from "+ DBConstants.TABLE_MEDICINE;
+        Cursor cursor=database.rawQuery(query,null);
+        List<Medicine> medicines=new ArrayList<>();
+        dateFormat =new SimpleDateFormat(Constants.DATE_TIME_FORMAT);
+        while (cursor.moveToNext())
+        {
+            try {
+                Medicine medicine = new Medicine();
+                medicine.setId(cursor.getInt(0));
+                medicine.setMedicine(cursor.getString(cursor.getColumnIndex(DBConstants.MEDICINE_NAME)));
+                medicine.setDescription(cursor.getString(cursor.getColumnIndex(DBConstants.MEDICINE_DESCRIPTION)));
+                medicine.setCatId(cursor.getInt(cursor.getColumnIndex(DBConstants.MEDICINE_CATID)));
+                medicine.setReminderId(cursor.getInt(cursor.getColumnIndex(DBConstants.MEDICINE_REMINDER_ID)));
+                medicine.setRemind((cursor.getInt(cursor.getColumnIndex(DBConstants.MEDICINE_REMIND))==1));
+                medicine.setQuantity(cursor.getInt(cursor.getColumnIndex(DBConstants.MEDICINE_QUATITY)));
+                medicine.setDosage(cursor.getInt(cursor.getColumnIndex(DBConstants.MEDICINE_DOSAGE)));
+                medicine.setDateIssued(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.MEDICINE_DATE_ISSUED))));
+                medicine.setExpireFactor(cursor.getInt(cursor.getColumnIndex(DBConstants.MEDICINE_EXPIRY_FACTOR)));
+                medicine.setThreshold(cursor.getInt(cursor.getColumnIndex(DBConstants.MEDICINE_THRESHOLD)));
+                medicines.add(medicine);
+            }catch (Exception e) {
+                Log.d("Error",e.getMessage());
+            }
+        }
+        return medicines;
+    }
+
+
 }

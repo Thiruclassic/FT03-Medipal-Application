@@ -150,7 +150,7 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
 
-        categoryDao= CategoryDaoImpl.newInstance();
+        categoryDao= CategoryDaoImpl.newInstance(getActivity());
         List<String> categories = categoryDao.getAllCategories();
         ArrayAdapter<String> categoryAdapter=new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item,categories);
 
@@ -184,8 +184,6 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
         {
             @Override
             public void onClick(final View v) {
-
-
                 if(validate()) {
 
                     try {
@@ -283,7 +281,7 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
     public String addMedicine(int reminderId) throws Exception
     {
         Medicine medicine=getMedicineDetails(reminderId);
-        medicineDao = MedicineDaoImpl.newInstance();
+        medicineDao = MedicineDaoImpl.newInstance(getActivity());
         if(medicineName.getText().equals("Save Medicine")) {
             medicineDao.addMedicine(medicine);
         }
@@ -299,7 +297,7 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
         Integer reminderId=null;
         if(reminder!=null)
         {
-            reminderDao= ReminderDaoImpl.newInstance();
+            reminderDao= ReminderDaoImpl.newInstance(getActivity());
           reminderId=reminderDao.addReminder(reminder);
         }
         return reminderId;
@@ -330,12 +328,9 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
         String medDescription = String.valueOf(description.getText());
         int quantity = Integer.parseInt(totalQuantity.getText().toString());
         String catId = categorySpinner.getSelectedItem().toString();
-
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         dateFormat.parse(String.valueOf(issueDate.getText()));
-
         Calendar calendar = Calendar.getInstance();
-
         if(medicine==null)
         {
             medicine=new Medicine();
@@ -355,11 +350,8 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
 
     public void updateMedicineDetails()
     {
-
-         medicineDao=MedicineDaoImpl.newInstance();
-
+        medicineDao=MedicineDaoImpl.newInstance(getActivity());
         medicine=medicineDao.getMedicinebyId(medicine.getId());
-
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -379,7 +371,7 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
 
     public void updateReminderDetails()
     {
-        reminderDao=ReminderDaoImpl.newInstance();
+        reminderDao=ReminderDaoImpl.newInstance(getActivity());
 
         reminder= reminderDao.getReminderById(medicine.getReminderId());
         SimpleDateFormat timeFormat=new SimpleDateFormat("hh:MM");
