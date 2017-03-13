@@ -6,10 +6,11 @@ import iss.medipal.model.Appointment;
 
 
 /**
- * Created by Thirumal on 2/24/17.
+ * Created by Sreekumar on 2/24/17.
  */
 
 public interface AppointmentDao {
+
     public int addAppointment(Appointment appointment);
     public int modifyAppointment(Appointment appointment);
     public int deleteAppointment(int appointmentId);

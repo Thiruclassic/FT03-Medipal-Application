@@ -66,7 +66,9 @@
     <!--Appointment functionality -->
     <string name="location">Location</string>
     <string name="date_select">Select Date</string>
-    <string name="date_time_select">Time</string>
+    <string name="app_time">Time</string>
+    <string name="description">Description</string>
+
     <string name="strt_time_select">Start Time</string>
     <string name="save">Save</string>
     <string name="generic_error">Sorry something went wrong! We\'re looking into it!</string>
