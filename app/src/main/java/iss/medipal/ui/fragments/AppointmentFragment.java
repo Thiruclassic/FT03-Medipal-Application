@@ -123,6 +123,7 @@ public class AppointmentFragment extends Fragment {
                 FragmentTransaction transaction= manager.beginTransaction();
 //                transaction.replace(R.id.add_appointment_frame,addAppointmentFragment,Constants.ADD_FRAGMENT_PAGE).commit();
                 transaction.replace(R.id.add_appointment_frame,addAppointmentFragment).commit();
+                lv.setVisibility(View.INVISIBLE);
                 innerLayout.setVisibility(View.VISIBLE);
                 addAppointment.setVisibility(View.INVISIBLE);
             }
@@ -138,6 +139,7 @@ public class AppointmentFragment extends Fragment {
                 FragmentTransaction transaction= manager.beginTransaction();
 //                transaction.replace(R.id.add_appointment_frame,addAppointmentFragment,Constants.ADD_FRAGMENT_PAGE).commit();
                 transaction.replace(R.id.add_appointment_frame,addAppointmentFragment).commit();
+                lv.setVisibility(View.INVISIBLE);
                 innerLayout.setVisibility(View.VISIBLE);
                 addAppointment.setVisibility(View.INVISIBLE);
             }
@@ -187,9 +189,9 @@ public class AppointmentFragment extends Fragment {
                 addAppointment.setVisibility(View.INVISIBLE);
             }
         };
-//        lv.setOnItemClickListener(itemClickListener);
-        innerLayout.addOnLayoutChangeListener(AppLayoutChangeListener);
-//        addAppointment.setOnClickListener(addAppEvent);
+//      lv.setOnItemClickListener(itemClickListener);
+//        innerLayout.addOnLayoutChangeListener(AppLayoutChangeListener);
+//      addAppointment.setOnClickListener(addAppEvent);
 
     }
 }
