@@ -27,15 +27,7 @@
     <color name="lightWhite">#88FFFFFF</color>
     <color name="half_transparent_brown">#335D5A58</color>
     <color name="mineShaft">#333333</color>
+    <color name="colorIcons">#757575</color>
 
 
 </resources>
-
-<!--
-    <?xml version="1.0" encoding="utf-8"?>
-<resources>
-<color name="colorPrimary">#FF5722</color>
-<color name="colorPrimaryDark">#E64A19</color>
-<color name="colorAccent">#607D8B</color>
-<color name="colorIcons">#757575</color>
-</resources>-->

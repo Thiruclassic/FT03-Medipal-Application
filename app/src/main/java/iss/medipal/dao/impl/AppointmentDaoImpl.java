@@ -83,6 +83,7 @@ public class AppointmentDaoImpl extends BaseDao implements AppointmentDao {
             try {
 
                 Appointment appointment = new Appointment();
+                appointment.setId(cursor.getColumnIndex(DBConstants.APP_ID));
                 appointment.setAppointment(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.APP_DATETIME))));
                 appointment.setDescription(cursor.getString(cursor.getColumnIndex(DBConstants.APP_DESCRIPTION)));
                 appointment.setLocation(cursor.getString(cursor.getColumnIndex(DBConstants.APP_LOCATION)));
