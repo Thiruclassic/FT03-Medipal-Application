@@ -1,5 +1,6 @@
 package iss.medipal.ui.fragments;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -44,13 +45,15 @@ import iss.medipal.util.SharedPreferenceManager;
 /**
  * Created by junaidramis on 8/3/17.
  */
-public class UserProfileEditFragment extends BaseFragment{
+public class UserProfileEditFragment extends BaseFragment implements UserProfileActivity.EditClickListener{
 
     private static final String ARGS_EDIT = "ARGS_EDIT";
 
     private List<String> mSpinnerItems;
     private SimpleDateFormat mTimeFormatter;
     private DatePickerDialog mDatePickerDialog;
+    private PersonStore mPersonStore;
+    private Activity mActivity;
     private boolean isEdit;
 
     private AppCompatSpinner mBloodSpinner;
@@ -65,7 +68,6 @@ public class UserProfileEditFragment extends BaseFragment{
     private AppCompatEditText mUnitEditText;
     private AppCompatEditText mPostalCodeEditText;
     private Button mSubmitButton;
-    private TextView mHeadingTextview;
 
 
     public static UserProfileEditFragment newInstance(Boolean isEdit) {
@@ -88,6 +90,8 @@ public class UserProfileEditFragment extends BaseFragment{
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
+        mActivity = (UserProfileActivity) context;
+        ((UserProfileActivity)mActivity).setmEditClickListener(this);
     }
 
     @Nullable
@@ -101,11 +105,46 @@ public class UserProfileEditFragment extends BaseFragment{
         super.onViewCreated(view, savedInstanceState);
         initialiseView(view);
         setSpinner();
+        ((UserProfileActivity)getActivity()).setToolbar(isEdit);
+        mPersonStore = ((MediPalApplication)getActivity()
+                .getApplicationContext()).getPersonStore();
         if(isEdit) {
             setListeners();
         } else {
-            setProfileViewMode(((MediPalApplication)getActivity().getApplicationContext())
-                    .getPersonStore().getmPersonalBio());
+            setProfileViewMode(mPersonStore.getmPersonalBio());
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        ((UserProfileActivity)mActivity).setmEditClickListener(null);
+        mActivity = null;
+    }
+
+    @Override
+    public void onEditClicked() {
+        setViewsEnabled(true);
+    }
+
+    @Override
+    public void onSaveClicked() {
+        if(isValid()) {
+            setViewsEnabled(false);
+            PersonalBio personalBio = new PersonalBio();
+            personalBio.setId(mPersonStore.getmPersonalBio().getId());
+            personalBio.setName(mNameEditText.getText().toString());
+            personalBio.setIdNo(mIdEditText.getText().toString());
+            personalBio.setDob(mDobEditText.getText().toString());
+            personalBio.setHeight(Integer.valueOf(mHeightEditText.getText().toString()));
+            personalBio.setBloodType((String) mBloodSpinner.getSelectedItem());
+            personalBio.setAddress(mBuildingEditText.getText().toString() + "," +
+                    mLocationEditText.getText().toString() + "," +
+                    mStreetEditText.getText().toString() + "," +
+                    mLevelEditText.getText().toString() + "-" +
+                    mUnitEditText.getText().toString());
+            personalBio.setPostalCode(mPostalCodeEditText.getText().toString());
+            mPersonStore.editPersonalBio(personalBio);
         }
     }
 
@@ -122,7 +161,6 @@ public class UserProfileEditFragment extends BaseFragment{
         mUnitEditText = (AppCompatEditText) view.findViewById(R.id.unit_edit);
         mPostalCodeEditText = (AppCompatEditText) view.findViewById(R.id.postal_edit);
         mSubmitButton = (Button) view.findViewById(R.id.submit_btn);
-        mHeadingTextview = (TextView) view.findViewById(R.id.heading_tv);
     }
 
     private void setSpinner(){
@@ -186,18 +224,28 @@ public class UserProfileEditFragment extends BaseFragment{
         mPostalCodeEditText.setText(personalBio.getPostalCode());
         mBloodSpinner.setSelection(getSpinnerSelectedIndex(mBloodSpinner, personalBio.getBloodType()));
         mSubmitButton.setVisibility(View.GONE);
-        mHeadingTextview.setText(getString(R.string.profile_text));
-        mNameEditText.setEnabled(false);
-        mIdEditText.setEnabled(false);
-        mDobEditText.setEnabled(false);
-        mHeightEditText.setEnabled(false);
-        mBuildingEditText.setEnabled(false);
-        mLocationEditText.setEnabled(false);
-        mStreetEditText.setEnabled(false);
-        mLevelEditText.setEnabled(false);
-        mUnitEditText.setEnabled(false);
-        mPostalCodeEditText.setEnabled(false);
-        mBloodSpinner.setEnabled(false);
+        setViewsEnabled(false);
+    }
+
+    private void setViewsEnabled(boolean isEnabled){
+        mNameEditText.setEnabled(isEnabled);
+        mIdEditText.setEnabled(isEnabled);
+        mDobEditText.setEnabled(isEnabled);
+        mHeightEditText.setEnabled(isEnabled);
+        mBuildingEditText.setEnabled(isEnabled);
+        mLocationEditText.setEnabled(isEnabled);
+        mStreetEditText.setEnabled(isEnabled);
+        mLevelEditText.setEnabled(isEnabled);
+        mUnitEditText.setEnabled(isEnabled);
+        mPostalCodeEditText.setEnabled(isEnabled);
+        mBloodSpinner.setEnabled(isEnabled);
+        if(isEnabled){
+            mDobEditText.setOnClickListener(mTimeClickListener);
+            mDobEditText.setOnFocusChangeListener(mTimeFocusListener);
+        } else {
+            mDobEditText.setOnClickListener(null);
+            mDobEditText.setOnFocusChangeListener(null);
+        }
     }
 
     private int getSpinnerSelectedIndex(Spinner spinner, String string)
@@ -228,9 +276,7 @@ public class UserProfileEditFragment extends BaseFragment{
                         mLevelEditText.getText().toString() + "-" +
                         mUnitEditText.getText().toString());
                 personalBio.setPostalCode(mPostalCodeEditText.getText().toString());
-                PersonStore personStore = ((MediPalApplication)getActivity()
-                        .getApplicationContext()).getPersonStore();
-                personStore.addPersonBio(personalBio);
+                mPersonStore.addPersonBio(personalBio);
                 SharedPreferenceManager.setAppLaunchStatus(getActivity(), false);
                 ((UserProfileActivity)getActivity()).launchActivity(MainActivity.class);
             }
@@ -254,5 +300,4 @@ public class UserProfileEditFragment extends BaseFragment{
             mDatePickerDialog.show();
         }
     };
-
 }

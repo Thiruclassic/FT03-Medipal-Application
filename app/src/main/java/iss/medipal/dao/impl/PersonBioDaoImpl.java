@@ -36,8 +36,18 @@ public class PersonBioDaoImpl extends BaseDao implements PersonBioDao {
     }
 
     @Override
-    public int updatePersonalBio(PersonalBio bioData) {
-        return 0;
+    public int updatePersonalBio(PersonalBio bio) {
+        ContentValues values=new ContentValues();
+        values.put(DBConstants.PERSON_NAME,bio.getName());
+        values.put(DBConstants.PERSON_DOB,bio.getDob().toString());
+        values.put(DBConstants.PERSON_IDNO,bio.getIdNo());
+        values.put(DBConstants.PERSON_ADDRESS,bio.getAddress());
+        values.put(DBConstants.PERSON_POSTALCODE,bio.getPostalCode());
+        values.put(DBConstants.PERSON_HEIGHT,bio.getHeight());
+        values.put(DBConstants.PERSON_BLOODTYPE,bio.getBloodType());
+        int id=(int)database.update(DBConstants.TABLE_PERSONAL_BIO,values, "id=?",
+                new String[]{String.valueOf(bio.getId())});
+        return id;
     }
 
     @Override
