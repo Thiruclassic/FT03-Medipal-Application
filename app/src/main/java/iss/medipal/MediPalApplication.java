@@ -37,5 +37,4 @@ public class MediPalApplication extends Application {
             return mPersonStore;
         }
     }
-
 }

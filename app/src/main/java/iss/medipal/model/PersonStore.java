@@ -33,12 +33,12 @@ public class PersonStore {
 
     public void addPersonBio(PersonalBio personalBio){
         mPersonalBio.setName(personalBio.getName());
-        mPersonalBio.setId(personalBio.getId());
+        mPersonalBio.setIdNo(personalBio.getIdNo());
         mPersonalBio.setDob(personalBio.getDob());
         mPersonalBio.setHeight(personalBio.getHeight());
         mPersonalBio.setBloodType(personalBio.getBloodType());
         mPersonalBio.setAddress(personalBio.getAddress());
-        mPersonalBio.setName(personalBio.getPostalCode());
+        mPersonalBio.setPostalCode(personalBio.getPostalCode());
         mAddPersonalBioTask = new AddPersonBioTask(mContext);
         mAddPersonalBioTask.execute(personalBio);
     }

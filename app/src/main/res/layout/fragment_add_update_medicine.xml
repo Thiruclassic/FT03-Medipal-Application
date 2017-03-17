@@ -228,7 +228,8 @@
                 android:background="@drawable/cylinder_border"
                 android:drawableRight="@drawable/cal2"
                 android:layout_margin="10dp"
-                android:inputType="none"/>
+                android:inputType="none"
+                />
 
             <EditText
                 android:layout_width="match_parent"
