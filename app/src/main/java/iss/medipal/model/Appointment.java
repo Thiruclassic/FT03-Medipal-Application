@@ -7,6 +7,7 @@ import java.util.Date;
  */
 
 public class Appointment {
+
     int id;
     String location;
     Date appointment;

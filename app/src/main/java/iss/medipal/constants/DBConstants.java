@@ -46,4 +46,11 @@ public class DBConstants {
     public static final String MEDICINE_DATE_ISSUED="DateIssued";
     public static final String MEDICINE_REMINDER_ID ="ReminderID";
 
+    //Appointment Table
+    public static final String APP_ID="ID";
+    public static final String APP_LOCATION="Location";
+    public static final String APP_DESCRIPTION="Description";
+    public static final String APP_DATETIME="Appointment";
+
+
 }

@@ -8,6 +8,7 @@ public class Constants {
     public static final String ACTIVITY_EXTRAS = "ACTIVITY_EXTRAS";
 
     public static final String ADD_MEDICINE_PAGE="ADD_MEDICINE_PAGE";
+    public static final String ADD_FRAGMENT_PAGE="ADD_FRAGMENT_PAGE";
     public static final String ADD_REMINDER_DIALOG="ADD_REMINDER_DIALOG";
 
     public static final String DATE_FORMAT = "dd MMM yyyy";

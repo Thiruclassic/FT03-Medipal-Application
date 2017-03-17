@@ -20,6 +20,9 @@
         </activity>
         <activity android:name=".ui.activities.UserProfileActivity">
         </activity>
+
+        <activity android:name=".ui.activities.AppointmentActivity">
+        </activity>
     </application>
 
 </manifest>

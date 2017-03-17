@@ -1,41 +1,54 @@
 package iss.medipal.ui.fragments;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
+import android.widget.ListView;
 import android.widget.Toast;
-import iss.medipal.ui.fragments.TimePickerFragment;
-import iss.medipal.ui.fragments.DatePickerFragment;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.List;
 
 import iss.medipal.R;
+import iss.medipal.constants.Constants;
+import iss.medipal.dao.AppointmentDao;
+import iss.medipal.dao.impl.AppointmentDaoImpl;
+import iss.medipal.model.Appointment;
+import iss.medipal.ui.activities.MainActivity;
+
 
 /**
- * Created by sreek on 3/6/2017.
+ * Created by sreekumar
+ * on 3/6/2017.
  */
 
 public class AppointmentFragment extends Fragment {
 
-    private EditText etDate, etStrtTime;
-    private Button btnSave;
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
-    private SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a", Locale.getDefault());
-    Calendar currentCal = Calendar.getInstance();
-    Calendar selectedDate = Calendar.getInstance();
+
+    AppointmentDao appointmentDao;
+    ListView lv;
+    FloatingActionButton addAppointment;
+    FrameLayout innerLayout;
+    List<String> itemname;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     public static AppointmentFragment newInstance() {
         AppointmentFragment fragment = new AppointmentFragment();
         return fragment;
@@ -44,134 +57,141 @@ public class AppointmentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
-
         View fragmentView = inflater.inflate(R.layout.fragment_appointment, container, false);
-        etDate = (EditText) fragmentView.findViewById(R.id.et_appdate);
-        etStrtTime = (EditText) fragmentView.findViewById(R.id.et_appTime);
-        btnSave = (Button) fragmentView.findViewById(R.id.saveApp);
-
-        etDate.setText(dateFormatter.format(selectedDate.getTime()));
-
-
-        etDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /*DialogFragment picker = new DatePickerFragment();
-                picker.show(getFragmentManager(), "datePicker");*/
-
-                DialogFragment picker = new DatePickerFragment();
-                picker.show(getFragmentManager(), "datePicker");
-            }
-        });
-
-        etStrtTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogFragment newFragment  = new TimePickerFragment();
-                newFragment.show(getFragmentManager(), "timeDialog");
-            }
-        });
-
-      /*  etDate.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                DatePickerDialog.OnDateSetListener onDateSetListener =
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                Calendar calendar = Calendar.getInstance();
-                                calendar.set(year, monthOfYear, dayOfMonth);
-                                selectedDate = calendar;
-                                etDate.setText(dateFormatter.format(calendar.getTime()));
-                            }
-                        };
-                DatePickerDialog datePickerDialog =
-                        new DatePickerDialog(getActivity().getApplicationContext(), onDateSetListener,
-                                currentCal.get(Calendar.YEAR), currentCal.get(Calendar.MONTH),
-                                currentCal.get(Calendar.DAY_OF_MONTH));
-                datePickerDialog.show();
-            }
-        });*/
-
-        /*etStrtTime.setText(timeFormatter.format(currentCal.getTime()));
-        View.OnClickListener timeClickListener = new View.OnClickListener() {
-            @Override public void onClick(final View v) {
-                final EditText editText = (EditText) v;
-                TimePickerDialog.OnTimeSetListener timeSetListener =
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                Calendar calendar = Calendar.getInstance();
-                                calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-                                        calendar.get(Calendar.DAY_OF_MONTH), hourOfDay, minute);
-                                editText.setText(timeFormatter.format(calendar.getTime()));
-                            }
-                        };
-                Calendar timeCalendar = Calendar.getInstance();
-                try {
-                    timeCalendar.setTime(timeFormatter.parse(editText.getText().toString()));
-                } catch (ParseException e) {
-                    Toast.makeText(getActivity().getApplicationContext(), R.string.generic_error, Toast.LENGTH_SHORT)
-                            .show();
-                }
-                TimePickerDialog timePickerDialog;
-                timePickerDialog = new TimePickerDialog(getActivity().getApplicationContext(), timeSetListener,
-                        timeCalendar.get(Calendar.HOUR_OF_DAY), timeCalendar.get(Calendar.MINUTE), false);
-                timePickerDialog.show();
-            }
-        };
-        etStrtTime.setOnClickListener(timeClickListener);*/
-
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                if (isValid()) {
-                    Toast.makeText(getActivity().getApplicationContext(), "Proceed Appointment!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
+        lv = (ListView) fragmentView.findViewById(R.id.lvTodos);
+        innerLayout = (FrameLayout) fragmentView.findViewById(R.id.add_appointment_frame);
+        addAppointment = (FloatingActionButton) fragmentView.findViewById(R.id.addAppointment);
+        setListeners();
         return fragmentView;
     }
 
-    private boolean isValid() {
-        boolean isValid = true;
-      /*  if (spnMember.getSelectedItemPosition() == 0) {
-            Toast.makeText(this, R.string.mem_select_validation_msg, Toast.LENGTH_SHORT).show();
-            isValid = false;
-        } else if (spnFacility.getSelectedItemPosition() == 0) {
-            Toast.makeText(this, R.string.fac_select_validation_msg, Toast.LENGTH_SHORT).show();
-            isValid = false;
-        }*/
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
-        try {
-            Calendar selectedStTime = Calendar.getInstance();
-            selectedStTime.setTime(timeFormatter.parse(etStrtTime.getText().toString()));
-            Calendar convertedStTime = Calendar.getInstance();
-            convertedStTime.set(Calendar.HOUR, selectedStTime.get(Calendar.HOUR));
-            convertedStTime.set(Calendar.MINUTE, selectedStTime.get(Calendar.MINUTE));
-            convertedStTime.set(Calendar.AM_PM, selectedStTime.get(Calendar.AM_PM));
+        super.onViewCreated(view, savedInstanceState);
+        appointmentDao = AppointmentDaoImpl.newInstance(getActivity());
+        List<Appointment> appointmentList = appointmentDao.getAllAppointments();
 
-            Calendar selectedEtTime = Calendar.getInstance();
-//            selectedEtTime.setTime(timeFormatter.parse(etEndTime.getText().toString()));
-            Calendar convertedEtTime = Calendar.getInstance();
-            convertedEtTime.set(Calendar.HOUR, selectedEtTime.get(Calendar.HOUR));
-            convertedEtTime.set(Calendar.MINUTE, selectedEtTime.get(Calendar.MINUTE));
-            convertedEtTime.set(Calendar.AM_PM, selectedEtTime.get(Calendar.AM_PM));
-
-            if (currentCal.getTime().compareTo(selectedDate.getTime()) > 0) {
-                Toast.makeText(getActivity().getApplicationContext(), R.string.date_validation_msg, Toast.LENGTH_SHORT).show();
-                isValid = false;
-            } else if (currentCal.compareTo(convertedStTime) > 0) {
-                Toast.makeText(getActivity().getApplicationContext(), R.string.time_validation_msg, Toast.LENGTH_SHORT).show();
-                isValid = false;
-            } else if (convertedStTime.compareTo(convertedEtTime) >= 0) {
-                Toast.makeText(getActivity().getApplicationContext(), R.string.st_time_et_time_validation_msg, Toast.LENGTH_SHORT).show();
-                isValid = false;
-            }
-        } catch (ParseException e) {
-            Toast.makeText(getActivity().getApplicationContext(), R.string.generic_error, Toast.LENGTH_SHORT).show();
+        if(itemname==null)
+        {
+            itemname=new ArrayList<>();
         }
-
-        return isValid;
+        if (!appointmentList.isEmpty()) {
+            for (Appointment appointment : appointmentList) {
+                itemname.add(appointment.getLocation());
+            }
+        }
+          lv.setAdapter(new ArrayAdapter<String>(getContext(),R.layout.todo_list_item, R.id.tvNote, itemname));
+    }
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+    public void setListeners() {
+      lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
+             /*   Intent intent = new Intent(getActivity(), TodoFragment.class);
+                String content = (String) lv.getItemAtPosition(pos);
+                intent.putExtra("Content", content);
+                startActivity(intent);*/
+
+                AddAppointmentFragment addAppointmentFragment = AddAppointmentFragment.newInstance();
+                FragmentManager manager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction= manager.beginTransaction();
+//                transaction.replace(R.id.add_appointment_frame,addAppointmentFragment,Constants.ADD_FRAGMENT_PAGE).commit();
+                transaction.replace(R.id.add_appointment_frame,addAppointmentFragment).commit();
+                lv.setVisibility(View.INVISIBLE);
+                innerLayout.setVisibility(View.VISIBLE);
+                addAppointment.setVisibility(View.INVISIBLE);
+            }
+        });
+
+          addAppointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              /*  Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
+                AddAppointmentFragment addAppointmentFragment = AddAppointmentFragment.newInstance();
+                FragmentManager manager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction= manager.beginTransaction();
+//                transaction.replace(R.id.add_appointment_frame,addAppointmentFragment,Constants.ADD_FRAGMENT_PAGE).commit();
+                transaction.replace(R.id.add_appointment_frame,addAppointmentFragment).commit();
+                lv.setVisibility(View.INVISIBLE);
+                innerLayout.setVisibility(View.VISIBLE);
+                addAppointment.setVisibility(View.INVISIBLE);
+            }
+        });
+        final View.OnClickListener addAppEvent=new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                innerLayout.setVisibility(View.INVISIBLE);
+                AddAppointmentFragment addAppointmentFragment = AddAppointmentFragment.newInstance();
+
+//                FragmentManager manager=getChildFragmentManager();
+                FragmentManager manager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction= manager.beginTransaction();
+//                transaction.replace(R.id.add_appointment_frame,addAppointmentFragment,Constants.ADD_FRAGMENT_PAGE).commit();
+                transaction.replace(R.id.add_appointment_frame,addAppointmentFragment).commit();
+                innerLayout.setVisibility(View.VISIBLE);
+                addAppointment.setVisibility(View.INVISIBLE);
+            }
+        };
+
+        FrameLayout.OnLayoutChangeListener AppLayoutChangeListener=new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                MainActivity activity=(MainActivity) v.getContext();
+                if(activity.getmListener()==null)
+                {
+
+                    innerLayout.setVisibility(View.VISIBLE);
+                    addAppointment.setVisibility(View.INVISIBLE);
+                    Log.d("Fragment value","hello");
+                }
+            }
+        };
+        ListView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+//                Toast.makeText(getContext(), "position" + position + "id" + id, Toast.LENGTH_SHORT).show();
+                //Pass the clicked element reference
+                AddAppointmentFragment addAppointmentFragment = AddAppointmentFragment.newInstance();
+//                FragmentManager manager = getChildFragmentManager();
+                FragmentManager manager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+//                transaction.replace(R.id.add_appointment_frame, addAppointmentFragment, Constants.ADD_FRAGMENT_PAGE).commit();
+                transaction.replace(R.id.add_appointment_frame,addAppointmentFragment);
+                innerLayout.setVisibility(View.VISIBLE);
+                addAppointment.setVisibility(View.INVISIBLE);
+            }
+        };
+//      lv.setOnItemClickListener(itemClickListener);
+//        innerLayout.addOnLayoutChangeListener(AppLayoutChangeListener);
+//      addAppointment.setOnClickListener(addAppEvent);
+
+    }
 }
