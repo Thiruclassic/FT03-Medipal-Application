@@ -3,9 +3,12 @@ package iss.medipal.ui.fragments;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +31,10 @@ import iss.medipal.dao.impl.AppointmentDaoImpl;
 import iss.medipal.dao.impl.ReminderDaoImpl;
 import iss.medipal.model.Appointment;
 import iss.medipal.model.Reminder;
+import iss.medipal.ui.activities.MainActivity;
+import iss.medipal.ui.activities.UserProfileActivity;
+
+import static iss.medipal.R.anim.slide_in_left;
 
 /**
  * Created by sreekumar on 3/14/2017.
@@ -108,14 +115,11 @@ public class AddAppointmentFragment extends Fragment {
                     Log.d("error",e.toString());
                     Log.d("Error:", "error in add Appointment Page");
                 }
+
+                onBackPressed();
+
             }
-
-
-//            }
         };
-
-
-
         View.OnClickListener appDateListner= new View.OnClickListener() {
 
             @Override
@@ -137,6 +141,13 @@ public class AddAppointmentFragment extends Fragment {
         etDate.setOnClickListener(appDateListner);
         etTime.setOnClickListener(appTimeListner);
         btnSave.setOnClickListener(saveListener);
+    }
+
+    public void onBackPressed(){
+        AppointmentFragment appointmentFragment = AppointmentFragment.newInstance();
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction= manager.beginTransaction();
+        transaction.replace(R.id.add_appointment_frame,appointmentFragment).commit();
     }
     public void showTimePicker()
     {
