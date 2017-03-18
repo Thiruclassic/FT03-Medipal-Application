@@ -3,6 +3,7 @@ package iss.medipal.model;
 import android.content.Context;
 
 import iss.medipal.asyncs.AddPersonBioTask;
+import iss.medipal.asyncs.EditPersonalBioTask;
 import iss.medipal.dao.impl.PersonBioDaoImpl;
 
 /**
@@ -16,6 +17,7 @@ public class PersonStore {
 
     //Tasks
     private AddPersonBioTask mAddPersonalBioTask;
+    private EditPersonalBioTask mEditPersonalBioTask;
 
 
     public PersonStore(PersonalBio personBio, Context context){
@@ -33,13 +35,26 @@ public class PersonStore {
 
     public void addPersonBio(PersonalBio personalBio){
         mPersonalBio.setName(personalBio.getName());
-        mPersonalBio.setId(personalBio.getId());
+        mPersonalBio.setIdNo(personalBio.getIdNo());
         mPersonalBio.setDob(personalBio.getDob());
         mPersonalBio.setHeight(personalBio.getHeight());
         mPersonalBio.setBloodType(personalBio.getBloodType());
         mPersonalBio.setAddress(personalBio.getAddress());
-        mPersonalBio.setName(personalBio.getPostalCode());
+        mPersonalBio.setPostalCode(personalBio.getPostalCode());
         mAddPersonalBioTask = new AddPersonBioTask(mContext);
         mAddPersonalBioTask.execute(personalBio);
+    }
+
+    public void editPersonalBio(PersonalBio personalBio){
+        mPersonalBio.setId(personalBio.getId());
+        mPersonalBio.setName(personalBio.getName());
+        mPersonalBio.setIdNo(personalBio.getIdNo());
+        mPersonalBio.setDob(personalBio.getDob());
+        mPersonalBio.setHeight(personalBio.getHeight());
+        mPersonalBio.setBloodType(personalBio.getBloodType());
+        mPersonalBio.setAddress(personalBio.getAddress());
+        mPersonalBio.setPostalCode(personalBio.getPostalCode());
+        mEditPersonalBioTask = new EditPersonalBioTask(mContext);
+        mEditPersonalBioTask.execute(personalBio);
     }
 }

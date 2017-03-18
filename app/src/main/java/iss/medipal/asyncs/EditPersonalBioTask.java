@@ -7,19 +7,19 @@ import iss.medipal.dao.impl.PersonBioDaoImpl;
 import iss.medipal.model.PersonalBio;
 
 /**
- * Created by junaidramis on 10/3/17.
+ * Created by junaidramis on 17/3/17.
  */
 
-public class AddPersonBioTask extends AsyncTask<PersonalBio, Void, Long> {
+public class EditPersonalBioTask extends AsyncTask<PersonalBio, Void, Long> {
     private PersonBioDaoImpl mBioDao;
 
-    public AddPersonBioTask(Context context) {
+    public EditPersonalBioTask(Context context) {
         this.mBioDao = new PersonBioDaoImpl(context);
     }
 
     @Override
     protected Long doInBackground(PersonalBio... params) {
-        long result = mBioDao.createPersonalBio(params[0]);
+        long result = mBioDao.updatePersonalBio(params[0]);
         return result;
     }
 
