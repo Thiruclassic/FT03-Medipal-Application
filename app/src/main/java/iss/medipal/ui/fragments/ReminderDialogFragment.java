@@ -24,6 +24,7 @@ import android.widget.TimePicker;
 
 import java.nio.channels.CancelledKeyException;
 import java.util.Calendar;
+import java.util.Date;
 
 import iss.medipal.R;
 import iss.medipal.constants.Constants;
@@ -69,6 +70,7 @@ public class ReminderDialogFragment extends DialogFragment {
 
         saveReminder=(Button)view.findViewById(R.id.saveReminder);
 
+        setReminderData();
         setListeners(this);
 
     }
@@ -82,19 +84,6 @@ public class ReminderDialogFragment extends DialogFragment {
 
                 FragmentManager manager=getChildFragmentManager();
                 FragmentTransaction transaction=manager.beginTransaction();
-                //AddMedicineFragment fragment=(AddMedicineFragment) getFragmentManager().findFragmentById(R.id.add_medicine_frame);
-
-               // AddMedicineFragment fragment=(AddMedicineFragment)getFragmentManager().findFragmentByTag(Constants.ADD_MEDICINE_PAGE);
-                Log.d("fragment",String.valueOf(getParentFragment()));
-
-
-
-                    Log.d("fragment",String.valueOf(getParentFragment().getClass()));
-                    StringBuilder builder=new StringBuilder();
-                    builder.append(timePicker.getCurrentHour());
-                    builder.append(":");
-                    builder.append(timePicker.getCurrentMinute());
-
 
                 Fragment fragment=getParentFragment();
                 if(fragment instanceof AddMedicineFragment)
@@ -104,26 +93,37 @@ public class ReminderDialogFragment extends DialogFragment {
                     calendar.set(Calendar.MINUTE,timePicker.getCurrentMinute());
 
                     AddMedicineFragment addMedicineFragment=(AddMedicineFragment)fragment;
-                    addMedicineFragment.addDosageTimeButton.setText(builder.toString());
+
                     Reminder reminder=new Reminder();
                     reminder.setFrequency(Integer.parseInt(frequencyText.getSelectedItem().toString()));
                     reminder.setInterval(Integer.parseInt(intervalText.getSelectedItem().toString()));
                     reminder.setStartTime(calendar.getTime());
                     addMedicineFragment.setReminder(reminder);
                     transaction.hide(currentfragment).commit();
+                    addMedicineFragment.addDosageTimeButton.setText(addMedicineFragment.setReminderText(reminder));
+
 
                 }
-
-
-
-
-
-
 
             }
         };
 
         saveReminder.setOnClickListener(timeListener);
+
+    }
+
+
+    public void setReminderData()
+    {
+        if(reminder!=null) {
+            frequencyText.setSelection(reminder.getFrequency());
+            intervalText.setSelection(reminder.getInterval());
+            timePicker.setIs24HourView(Boolean.TRUE);
+            Calendar calendar=Calendar.getInstance();
+            calendar.setTime(reminder.getStartTime());
+            timePicker.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY));
+            timePicker.setCurrentMinute(calendar.get(Calendar.MINUTE));
+        }
 
     }
 }

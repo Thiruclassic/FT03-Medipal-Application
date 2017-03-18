@@ -25,7 +25,7 @@
 
     </FrameLayout>
 
-    <Button
+   <!-- <Button
         android:id="@+id/addMedicine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,6 +37,17 @@
         android:drawableBottom="@android:drawable/btn_plus"
         android:background="@android:color/transparent"
 
+        />-->
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/addMedicine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:src="@drawable/plus"
+        android:tint="@android:color/white"
         />
 
 </RelativeLayout>

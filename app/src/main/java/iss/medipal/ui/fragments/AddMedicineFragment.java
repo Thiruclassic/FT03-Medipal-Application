@@ -1,7 +1,10 @@
 package iss.medipal.ui.fragments;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,6 +30,7 @@ import java.util.List;
 
 import iss.medipal.R;
 import iss.medipal.constants.Constants;
+import iss.medipal.constants.DBConstants;
 import iss.medipal.dao.CategoryDao;
 import iss.medipal.dao.MedicineDao;
 import iss.medipal.dao.ReminderDao;
@@ -35,6 +39,7 @@ import iss.medipal.dao.impl.MedicineDaoImpl;
 import iss.medipal.dao.impl.ReminderDaoImpl;
 import iss.medipal.model.Medicine;
 import iss.medipal.model.Reminder;
+import iss.medipal.receivers.AlarmReceiver;
 import iss.medipal.ui.activities.MainActivity;
 import iss.medipal.ui.interfaces.CustomBackPressedListener;
 
@@ -70,6 +75,7 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
 
     private Medicine medicine;
     private Reminder reminder;
+    private boolean isEditMedicine;
 
 
     private CustomBackPressedListener mListener;
@@ -92,6 +98,7 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
         {
             fragment.medicine=new Medicine();
             fragment.medicine.setId(medicineId);
+            fragment.isEditMedicine=Boolean.TRUE;
         }
         return fragment;
     }
@@ -156,11 +163,11 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
 
         categorySpinner.setAdapter(categoryAdapter);
 
-        if(medicine!=null)
+        if(isEditMedicine)
         {
             updateMedicineDetails();
             updateReminderDetails();
-            saveMedicineButton.setText("Modify Medicine");
+            saveMedicineButton.setText(Constants.EDIT_MEDICINE_BUTTON);
         }
 
 
@@ -192,11 +199,6 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
                         String medicine = addMedicine(reminderId);
 
                         Toast.makeText(getContext(), medicine + " Medicine successfully saved", Toast.LENGTH_SHORT).show();
-                        Log.d("Fragment type", String.valueOf(getParentFragment()));
-                        ViewMedicineFragment fragment=(ViewMedicineFragment) getParentFragment();
-                        //fragment.medicineNames.add(medicine);
-                        fragment.medicineListAdapter.add(medicine);
-
                         doBack();
 
                     } catch (Exception e) {
@@ -282,8 +284,11 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
     {
         Medicine medicine=getMedicineDetails(reminderId);
         medicineDao = MedicineDaoImpl.newInstance(getActivity());
-        if(medicineName.getText().equals("Save Medicine")) {
+        System.out.println("TEXT"+saveMedicineButton.getText());
+        if(!isEditMedicine) {
             medicineDao.addMedicine(medicine);
+            ViewMedicineFragment fragment=(ViewMedicineFragment) getParentFragment();
+            fragment.medicineListAdapter.add(medicine.getMedicine());
         }
         else
         {
@@ -292,13 +297,14 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
         return medicine.getMedicine();
     }
 
-    public Integer addReminder()
+    public int addReminder()
     {
-        Integer reminderId=null;
+        int reminderId=0;
         if(reminder!=null)
         {
             reminderDao= ReminderDaoImpl.newInstance(getActivity());
           reminderId=reminderDao.addReminder(reminder);
+            setMedicineReminder();
         }
         return reminderId;
     }
@@ -307,12 +313,10 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
     {
         boolean checker=true;
 
-        Log.d("enterbefore",String.valueOf(medicineName.getText()));
         String name=String.valueOf(medicineName.getText());
 
         if(name==null || name.equals(""))
         {
-            Log.d("enter","enter");
            newMessageDialog(getContext(),"Name Empty","Enter Medicine Name").show();
             checker=false;
 
@@ -326,9 +330,9 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
     {
         String medName = String.valueOf(medicineName.getText());
         String medDescription = String.valueOf(description.getText());
-        int quantity = Integer.parseInt(totalQuantity.getText().toString());
+        int quantity = Integer.parseInt(String.valueOf(totalQuantity.getText()));
         String catId = categorySpinner.getSelectedItem().toString();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.ISSUE_DATE_FORMAT);
         dateFormat.parse(String.valueOf(issueDate.getText()));
         Calendar calendar = Calendar.getInstance();
         if(medicine==null)
@@ -353,7 +357,7 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
         medicineDao=MedicineDaoImpl.newInstance(getActivity());
         medicine=medicineDao.getMedicinebyId(medicine.getId());
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.ISSUE_DATE_FORMAT);
 
         Log.d("cbox update testing",String.valueOf(medicine.getDateIssued()));
         medicineName.setText(medicine.getMedicine());
@@ -373,10 +377,61 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
     {
         reminderDao=ReminderDaoImpl.newInstance(getActivity());
 
-        reminder= reminderDao.getReminderById(medicine.getReminderId());
-        SimpleDateFormat timeFormat=new SimpleDateFormat("hh:MM");
         Log.d("reminder1",String.valueOf(medicine.getReminderId()));
-        //addDosageTimeButton.setText(timeFormat.format(reminder.getStartTime()));
 
+        if(medicine.getReminderId()>0) {
+            reminder = reminderDao.getReminderById(medicine.getReminderId());
+            addDosageTimeButton.setText(setReminderText(reminder));
+        }
+
+       // addDosageTimeButton.setText(String.valueOf(String.valueOf(medicine.getId())));
+
+    }
+
+    public String setReminderText(Reminder reminder)
+    {
+        StringBuilder builder = new StringBuilder();
+        if(reminder!=null) {
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+
+
+            builder.append("Start Time: ");
+            builder.append(timeFormat.format(reminder.getStartTime()));
+            builder.append("\n");
+            builder.append(DBConstants.REMINDER_FREQUENCY);
+            builder.append(":");
+            builder.append(reminder.getFrequency());
+            builder.append("          ");
+            builder.append(DBConstants.REMINDER_INTERVAL);
+            builder.append(":");
+            builder.append(reminder.getInterval());
+        }
+
+        return builder.toString();
+    }
+
+    public EditText getMedicineName() {
+        return medicineName;
+    }
+
+    public void setMedicineName(EditText medicineName) {
+        this.medicineName = medicineName;
+    }
+
+    public void setMedicineReminder()
+    {
+        if(medicine.getReminderId()>0) {
+            Intent intent = new Intent(getActivity(), AlarmReceiver.class);
+            intent.putExtra(DBConstants.MEDICINE_NAME,medicine.getMedicine());
+            intent.putExtra(DBConstants.MEDICINE_DOSAGE,medicine.getDosage());
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(reminder.getStartTime());
+            calendar.set(Calendar.SECOND, 0);
+            AlarmManager manager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+            manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            Log.d("Reminder Set", String.valueOf(calendar.getTime()));
+            Toast.makeText(getContext(), "Testing Reminder Service", Toast.LENGTH_SHORT).show();
+        }
     }
 }

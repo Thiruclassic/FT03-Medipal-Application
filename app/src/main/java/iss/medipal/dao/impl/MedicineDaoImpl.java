@@ -42,9 +42,10 @@ public class MedicineDaoImpl extends BaseDao implements MedicineDao{
         values.put(DBConstants.MEDICINE_QUATITY,medicine.getQuantity());
         values.put(DBConstants.MEDICINE_DOSAGE,medicine.getDosage());
         values.put(DBConstants.MEDICINE_THRESHOLD,medicine.getThreshold());
-        values.put(DBConstants.MEDICINE_DATE_ISSUED,medicine.getDateIssued().toString());
+        values.put(DBConstants.MEDICINE_DATE_ISSUED,String.valueOf(medicine.getDateIssued()));
         values.put(DBConstants.MEDICINE_EXPIRY_FACTOR,medicine.getExpireFactor());
         int id=(int)database.insert(DBConstants.TABLE_MEDICINE,null,values);
+        Log.d("insert Medicine",String.valueOf(id));
 
         return id;
     }
@@ -63,6 +64,7 @@ public class MedicineDaoImpl extends BaseDao implements MedicineDao{
         values.put(DBConstants.MEDICINE_DATE_ISSUED,medicine.getDateIssued().toString());
         values.put(DBConstants.MEDICINE_EXPIRY_FACTOR,medicine.getExpireFactor());
         int id=(int)database.update(DBConstants.TABLE_MEDICINE,values,"id=?",new String[]{String.valueOf(medicine.getId())});
+        Log.d("update Medicine",String.valueOf(id));
         return id;
     }
 
@@ -94,14 +96,15 @@ public class MedicineDaoImpl extends BaseDao implements MedicineDao{
                 medicine.setCatId(cursor.getInt(cursor.getColumnIndex(DBConstants.MEDICINE_CATID)));
                 String dateIssued = cursor.getString(cursor.getColumnIndex(DBConstants.MEDICINE_DATE_ISSUED));
                 cursor.getLong(cursor.getColumnIndex(DBConstants.MEDICINE_DATE_ISSUED));
+                Log.e("isdate",dateIssued);
                 medicine.setDateIssued(dateFormat.parse(dateIssued));
                 medicine.setReminderId(cursor.getInt(cursor.getColumnIndex(DBConstants.MEDICINE_REMINDER_ID)));
-
 
             }
         }
         catch (Exception e)
         {
+            System.out.println(e.getMessage());
             Log.d("Error",e.getMessage());
         }
         return medicine;

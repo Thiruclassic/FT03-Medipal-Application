@@ -127,7 +127,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         builder.append("Medicine"+" VARCHAR(50) NOT NULL,");
         builder.append("Description"+" VARCHAR(255) ,");
         builder.append("CatID"+" Integer NOT NULL,");
-        builder.append("ReminderID"+" INTEGER NOT NULL,");
+        builder.append("ReminderID"+" INTEGER,");
         builder.append("Remind"+" INTEGER NOT NULL,");
         builder.append("Quantity"+" INTEGER NOT NULL,");
         builder.append("Dosage"+" INTEGER NOT NULL,");

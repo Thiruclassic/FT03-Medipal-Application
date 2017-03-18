@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -38,7 +39,7 @@ public class ViewMedicineFragment extends Fragment {
     private String mParam2;
 
 
-    Button addMedicineButton;
+    FloatingActionButton addMedicineButton;
     ListView medicineList;
     FrameLayout innerLayout;
     ArrayAdapter<String> medicineListAdapter;
@@ -66,7 +67,7 @@ public class ViewMedicineFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View thisView=inflater.inflate(R.layout.fragment_view_medicine, container, false);
-        addMedicineButton=(Button)thisView.findViewById(R.id.addMedicine);
+        addMedicineButton=(FloatingActionButton)thisView.findViewById(R.id.addMedicine);
         medicineList=(ListView)thisView.findViewById(R.id.medicineList);
         innerLayout=(FrameLayout)thisView.findViewById(R.id.add_medicine_frame);
         setListeners();
@@ -149,7 +150,6 @@ public class ViewMedicineFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Toast.makeText(getContext(),  "position"+position+"id"+id, Toast.LENGTH_SHORT).show();
                 AddMedicineFragment addMedicineTab=AddMedicineFragment.newInstance(position+1);
 
                 FragmentManager manager=getChildFragmentManager();

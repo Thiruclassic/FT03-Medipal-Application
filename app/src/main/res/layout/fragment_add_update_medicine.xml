@@ -5,134 +5,7 @@
     android:background="@color/white"
     android:id="@+id/addMedicineFragment"
     tools:context="iss.medipal.ui.fragments.AddMedicineFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-
-    <!--<ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:weightSum="1">
-
-    <EditText
-        android:id="@+id/medicineNameText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Medicine Name"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/rectangle_border"
-         />
-
-        <Spinner
-            android:id="@+id/categorySpinner"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:spinnerMode="dropdown"
-            android:entries="@array/category_items"
-            android:background="@drawable/rectangle_border"
-            />
-
-
-
-        <Switch
-            android:text="Remind"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/remindSwitch"
-            android:background="@drawable/rectangle_border"/>
-        <Button
-            android:id="@+id/dosageTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Add Dosage Time" />
-
-        <EditText
-            android:id="@+id/frequencyText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Frequency Per Day" />
-
-        <EditText
-            android:id="@+id/intervalText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Reminder Interval" />
-
-
-
-        <Spinner
-            android:id="@+id/dosageSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Pills per Dosage"/>
-
-
-
-    <EditText
-        android:id="@+id/medicineDescriptionText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Description"
-        android:gravity="top"
-        android:lines="10"/>
-
-
-    <EditText
-        android:id="@+id/medicineQuantityText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Total Quantity" />
-
-
-
-
-    <EditText
-        android:id="@+id/dateIssuedText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Issue Date (dd/MM/yy)"
-        android:drawableEnd="@drawable/calendar_icon"
-        android:drawableRight="@drawable/calendar_icon"/>
-
-        <EditText
-            android:id="@+id/expireFactoreText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Months To Expire"/>
-
-        <Switch
-            android:text="Refill Reminder"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:id="@+id/refillSwitch" />
-
-        <EditText
-            android:id="@+id/pillsBeforeRefill"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Threshold"
-            android:text="Pills before Refill"
-            />
-
-        <Button
-            android:id="@+id/refillReminderTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Reminde Me At: " />
-
-
-
-        <Button
-            android:text="Save Medicine"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/saveMedicine" />
-    </LinearLayout>
-    </ScrollView> -->
+    
 
     <ScrollView
         android:layout_width="match_parent"
@@ -224,7 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:hint="Issue Date (dd/MM/yy)"
+                android:hint="Issue Date (dd/MM/yyyy)"
                 android:background="@drawable/cylinder_border"
                 android:drawableRight="@drawable/cal2"
                 android:layout_margin="10dp"
