@@ -53,6 +53,7 @@ public class DBConstants {
     public static final String APP_DATETIME="Appointment";
 
     //Reminder Table
+
     public static final String REMINDER_ID="ID";
     public static final String REMINDER_FREQUENCY="Frequency";
     public static final String REMINDER_START_TIME="StartTime";
