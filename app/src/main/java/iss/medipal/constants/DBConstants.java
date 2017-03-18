@@ -52,5 +52,12 @@ public class DBConstants {
     public static final String APP_DESCRIPTION="Description";
     public static final String APP_DATETIME="Appointment";
 
+    //Catogery Table
+    public static final String CATEGORY_ID="ID";
+    public static final String CATEGORY_NAME="Category";
+    public static final String CATEGORY_CODE="Code";
+    public static final String CATEGORY_DESCRIPTION="Description";
+    public static final String CATEGORY_REMIND="Remind";
+
 
 }

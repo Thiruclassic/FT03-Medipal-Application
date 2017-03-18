@@ -1,23 +1,27 @@
 package iss.medipal.model;
 
+import android.widget.Adapter;
+
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Thirumal on 2/20/2017.
  */
 
-public class Medicine {
-    int id;
-    String medicine;
-    String description;
-    int catId;
-    int reminderId;
-    boolean remind;
-    int quantity;
-    int dosage;
-    Date dateIssued;
-    int expireFactor;
-    int threshold;
+public class Medicine implements Serializable {
+
+    private int id;
+    private int catId;
+    private int reminderId;
+    private int quantity;
+    private int dosage;
+    private int expireFactor;
+    private int threshold;
+    private String medicine;
+    private String description;
+    private boolean remind;
+    private Date dateIssued;
 
     public int getId() {
         return id;
@@ -106,6 +110,4 @@ public class Medicine {
     public void setThreshold(int threshold) {
         this.threshold = threshold;
     }
-
-
 }

@@ -97,15 +97,14 @@ public class ReminderDialogFragment extends DialogFragment {
 
 
                 Fragment fragment=getParentFragment();
-                if(fragment instanceof AddMedicineFragment)
-                {
-                    Calendar calendar=Calendar.getInstance();
-                    calendar.set(Calendar.HOUR_OF_DAY,timePicker.getCurrentHour());
-                    calendar.set(Calendar.MINUTE,timePicker.getCurrentMinute());
+                if(fragment instanceof AddMedicineFragment) {
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
+                    calendar.set(Calendar.MINUTE, timePicker.getCurrentMinute());
 
-                    AddMedicineFragment addMedicineFragment=(AddMedicineFragment)fragment;
-                    addMedicineFragment.addDosageTimeButton.setText(builder.toString());
-                    Reminder reminder=new Reminder();
+                    AddMedicineFragment addMedicineFragment = (AddMedicineFragment) fragment;
+//                    addMedicineFragment.addDosageTimeButton.setText(builder.toString());
+                    Reminder reminder = new Reminder();
                     reminder.setFrequency(Integer.parseInt(frequencyText.getSelectedItem().toString()));
                     reminder.setInterval(Integer.parseInt(intervalText.getSelectedItem().toString()));
                     reminder.setStartTime(calendar.getTime());
@@ -113,12 +112,6 @@ public class ReminderDialogFragment extends DialogFragment {
                     transaction.hide(currentfragment).commit();
 
                 }
-
-
-
-
-
-
 
             }
         };

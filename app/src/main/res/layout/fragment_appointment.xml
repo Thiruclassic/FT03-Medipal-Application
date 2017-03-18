@@ -19,7 +19,7 @@
         android:id="@+id/add_appointment_frame"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:visibility="invisible">
+        android:visibility="gone">
 
     </FrameLayout>
 

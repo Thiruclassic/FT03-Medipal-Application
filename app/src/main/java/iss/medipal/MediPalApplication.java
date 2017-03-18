@@ -29,6 +29,10 @@ public class MediPalApplication extends Application {
         return mContext;
     }
 
+    public static void setPersonStore(PersonStore personStore){
+        mPersonStore = personStore;
+    }
+
     public static PersonStore getPersonStore() {
         if(mPersonStore != null) {
             return mPersonStore;

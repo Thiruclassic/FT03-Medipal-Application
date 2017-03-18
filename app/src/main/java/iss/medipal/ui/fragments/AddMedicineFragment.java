@@ -4,72 +4,82 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.AppCompatSpinner;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import iss.medipal.MediPalApplication;
 import iss.medipal.R;
 import iss.medipal.constants.Constants;
 import iss.medipal.dao.CategoryDao;
 import iss.medipal.dao.MedicineDao;
 import iss.medipal.dao.ReminderDao;
-import iss.medipal.dao.impl.CategoryDaoImpl;
 import iss.medipal.dao.impl.MedicineDaoImpl;
 import iss.medipal.dao.impl.ReminderDaoImpl;
+import iss.medipal.model.Category;
 import iss.medipal.model.Medicine;
 import iss.medipal.model.Reminder;
 import iss.medipal.ui.activities.MainActivity;
+import iss.medipal.ui.adapters.BaseSpinnerAdapter;
+import iss.medipal.ui.adapters.CategorySpinnerAdapter;
 import iss.medipal.ui.interfaces.CustomBackPressedListener;
+import iss.medipal.util.AppHelper;
+import iss.medipal.util.DialogUtility;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AddMedicineFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddMedicineFragment extends Fragment implements CustomBackPressedListener{
+public class AddMedicineFragment extends BaseTimeFragment implements CustomBackPressedListener{
 
-    EditText medicineName;
-    EditText description;
-    EditText totalQuantity;
-    EditText issueDate;
-    EditText monthsToExpire;
+    private static final String ARGS_MED = "ARGS_MED";
 
-    EditText pillsBeforeRefill;
+    private AppCompatEditText mMedicineNameEditText;
+    private AppCompatEditText mDescriptionEditText;
+    private AppCompatEditText mTotalQuantityEditText;
+    private AppCompatEditText mIssueDateEditText;
+    private AppCompatEditText mMonthsToExpireEditText;
+    private AppCompatEditText mPillsBeforeRefillEditText;
+    private Button mSaveMedicineButton;
+    private Button mAddDosageTimeButton;
+    private Button mAddRefillReminderTime;
+    private AppCompatSpinner mCategorySpinner;
+    private AppCompatSpinner mDosageSpinner;
+    private AppCompatSpinner mFrequencySpinner;
+    private AppCompatSpinner mIntervalSpinner;
+    private Switch mRemindSwitch;
+    private Switch mRefillReminderSwitch;
 
-    Button saveMedicineButton;
-    Button addDosageTimeButton;
-    Button addRefillReminderTime;
-
-    Spinner categorySpinner;
-    Spinner dosageSpinner;
-
-    Switch remind;
-    Switch refillReminder;
-
-
-    MedicineDao medicineDao;
-    ReminderDao reminderDao;
-    CategoryDao categoryDao;
+    private MedicineDao medicineDao;
+    private ReminderDao reminderDao;
+    private CategoryDao categoryDao;
 
     private Medicine medicine;
     private Reminder reminder;
+
+    private String mReminderStartTime;
 
 
     private CustomBackPressedListener mListener;
@@ -85,14 +95,23 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
      * @return A new instance of fragment AddMedicineFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AddMedicineFragment newInstance(int medicineId) {
+    public static AddMedicineFragment newInstance() {
         AddMedicineFragment fragment = new AddMedicineFragment();
-        Log.d("ADD Medicine Fragment",String.valueOf(medicineId));
-        if(medicineId!=0)
-        {
-            fragment.medicine=new Medicine();
-            fragment.medicine.setId(medicineId);
-        }
+        return fragment;
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @return A new instance of fragment AddMedicineFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static AddMedicineFragment newInstance(Medicine medicine) {
+        AddMedicineFragment fragment = new AddMedicineFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(ARGS_MED, medicine);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -106,26 +125,24 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View thisView=inflater.inflate(R.layout.fragment_add_update_medicine, container, false);
-        medicineName=(EditText) thisView.findViewById(R.id.medicineNameText);
-        totalQuantity=(EditText)thisView.findViewById(R.id.medicineQuantityText);
-        monthsToExpire=(EditText)thisView.findViewById(R.id.expireFactoreText);
-        issueDate=(EditText)thisView.findViewById(R.id.dateIssuedText);
-        pillsBeforeRefill=(EditText)thisView.findViewById(R.id.pillsBeforeRefill);
-        description=(EditText)thisView.findViewById(R.id.medicineDescriptionText);
-
-
-        categorySpinner=(Spinner)thisView.findViewById(R.id.categorySpinner);
-        dosageSpinner=(Spinner)thisView.findViewById(R.id.dosageSpinner);
-        saveMedicineButton=(Button)thisView.findViewById(R.id.saveMedicine);
-        addDosageTimeButton=(Button)thisView.findViewById(R.id.dosageTime);
-        addRefillReminderTime=(Button)thisView.findViewById(R.id.refillReminderTime);
-
-        remind=(Switch) thisView.findViewById(R.id.remindSwitch);
-
         return thisView;
     }
 
-
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        initialiseViews(view);
+        setSpinners();
+        if(getArguments() != null && getArguments().getSerializable(ARGS_MED) != null){
+            medicine = (Medicine) getArguments().getSerializable(ARGS_MED);
+        }
+        if(medicine!=null)
+        {
+            updateMedicineDetails();
+            updateReminderDetails();
+            mSaveMedicineButton.setText("Modify Medicine");
+        }
+        setListeners();
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -147,25 +164,42 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onTimeSelected(int hourOfDay, int minute) {
+        String doseTime = AppHelper.convert24TimeTo12String(hourOfDay, minute);
+        mReminderStartTime = AppHelper.convertTimeFormat(doseTime, Constants.TIME_FORMAT_STORAGE,
+                Constants.TIME_12_HOUR_FORMAT);
+        mAddDosageTimeButton.setText(mReminderStartTime);
+    }
 
+    private void setSpinners(){
+        List<Category> categories = MediPalApplication.getPersonStore().getCategory();
+        CategorySpinnerAdapter categoryAdapter = new CategorySpinnerAdapter(getContext(),
+                R.layout.dropdown_header ,categories);
+        mCategorySpinner.setAdapter(categoryAdapter);
+        List<String> spinnerItems = new ArrayList<>();
+        spinnerItems.addAll(Arrays.asList(getResources().getStringArray(R.array.dosage_quantity_items)));
+        BaseSpinnerAdapter adapter = new BaseSpinnerAdapter(getActivity(), R.layout.dropdown_header, spinnerItems);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mDosageSpinner.setAdapter(adapter);
+        mFrequencySpinner.setAdapter(adapter);
+        mIntervalSpinner.setAdapter(adapter);
+    }
 
-        categoryDao= CategoryDaoImpl.newInstance(getActivity());
-        List<String> categories = categoryDao.getAllCategories();
-        ArrayAdapter<String> categoryAdapter=new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item,categories);
-
-        categorySpinner.setAdapter(categoryAdapter);
-
-        if(medicine!=null)
-        {
-            updateMedicineDetails();
-            updateReminderDetails();
-            saveMedicineButton.setText("Modify Medicine");
-        }
-
-
-        setListeners();
-
+    private void initialiseViews(View view){
+        mMedicineNameEditText =(AppCompatEditText) view.findViewById(R.id.medicineNameText);
+        mTotalQuantityEditText =(AppCompatEditText)view.findViewById(R.id.medicineQuantityText);
+        mMonthsToExpireEditText =(AppCompatEditText)view.findViewById(R.id.expireFactoreText);
+        mIssueDateEditText =(AppCompatEditText)view.findViewById(R.id.dateIssuedText);
+        mPillsBeforeRefillEditText =(AppCompatEditText)view.findViewById(R.id.pillsBeforeRefill);
+        mDescriptionEditText =(AppCompatEditText)view.findViewById(R.id.medicineDescriptionText);
+        mCategorySpinner =(AppCompatSpinner)view.findViewById(R.id.categorySpinner);
+        mDosageSpinner =(AppCompatSpinner)view.findViewById(R.id.dosageSpinner);
+        mFrequencySpinner =(AppCompatSpinner)view.findViewById(R.id.frequencySpinner);
+        mIntervalSpinner =(AppCompatSpinner)view.findViewById(R.id.intervalSpinner);
+        mSaveMedicineButton =(Button)view.findViewById(R.id.saveMedicine);
+        mAddDosageTimeButton =(Button)view.findViewById(R.id.dosageTime);
+        mAddRefillReminderTime =(Button)view.findViewById(R.id.refillReminderTime);
+        mRemindSwitch =(Switch)view.findViewById(R.id.remindSwitch);
     }
 
     public void setListeners()
@@ -174,9 +208,8 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
 
             @Override
             public void onClick(final View v) {
-
-              ReminderDialogFragment dialogFragment=ReminderDialogFragment.newInstance(reminder);
-                dialogFragment.show(getChildFragmentManager(),Constants.ADD_REMINDER_DIALOG);
+                DialogFragment timerFragment = new TimePickerFragment();
+                timerFragment.show(getChildFragmentManager(), Constants.ADD_REMINDER_DIALOG);
             }
         };
 
@@ -185,18 +218,14 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
             @Override
             public void onClick(final View v) {
                 if(validate()) {
-
                     try {
-
                         int reminderId = addReminder();
                         String medicine = addMedicine(reminderId);
-
                         Toast.makeText(getContext(), medicine + " Medicine successfully saved", Toast.LENGTH_SHORT).show();
                         Log.d("Fragment type", String.valueOf(getParentFragment()));
                         ViewMedicineFragment fragment=(ViewMedicineFragment) getParentFragment();
                         //fragment.medicineNames.add(medicine);
-                        fragment.medicineListAdapter.add(medicine);
-
+//                      fragment.medicineListAdapter.add(medicine);
                         doBack();
 
                     } catch (Exception e) {
@@ -229,12 +258,12 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
             }
         };
 
-        issueDate.setOnClickListener(issueDateListner);
-        issueDate.setOnFocusChangeListener(focusChangeListener);
+        mIssueDateEditText.setOnClickListener(issueDateListner);
+        mIssueDateEditText.setOnFocusChangeListener(focusChangeListener);
 
-        addDosageTimeButton.setOnClickListener(setTimeListener);
-        addRefillReminderTime.setOnClickListener(setTimeListener);
-        saveMedicineButton.setOnClickListener(saveListener);
+        mAddDosageTimeButton.setOnClickListener(setTimeListener);
+        mAddRefillReminderTime.setOnClickListener(setTimeListener);
+        mSaveMedicineButton.setOnClickListener(saveListener);
     }
 
 
@@ -254,7 +283,7 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
         DatePickerDialog datePickerDialog=new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                issueDate.setText(dayOfMonth+"/"+month+"/"+year);
+                mIssueDateEditText.setText(dayOfMonth+"/"+month+"/"+year);
             }
         },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
         
@@ -282,7 +311,7 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
     {
         Medicine medicine=getMedicineDetails(reminderId);
         medicineDao = MedicineDaoImpl.newInstance(getActivity());
-        if(medicineName.getText().equals("Save Medicine")) {
+        if(mMedicineNameEditText.getText().equals("Save Medicine")) {
             medicineDao.addMedicine(medicine);
         }
         else
@@ -294,7 +323,7 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
 
     public Integer addReminder()
     {
-        Integer reminderId=null;
+        Integer reminderId = null;
         if(reminder!=null)
         {
             reminderDao= ReminderDaoImpl.newInstance(getActivity());
@@ -305,31 +334,44 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
 
     public boolean validate()
     {
-        boolean checker=true;
-
-        Log.d("enterbefore",String.valueOf(medicineName.getText()));
-        String name=String.valueOf(medicineName.getText());
-
-        if(name==null || name.equals(""))
-        {
-            Log.d("enter","enter");
-           newMessageDialog(getContext(),"Name Empty","Enter Medicine Name").show();
-            checker=false;
-
+        if(TextUtils.isEmpty(mMedicineNameEditText.getText())) {
+            DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
+                    "Enter Medicine name").show();
+            return false;
+        } else if(TextUtils.isEmpty(mReminderStartTime)){
+            DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
+                    "Enter Start time").show();
+            return false;
+        } else if(mFrequencySpinner.getSelectedItemPosition() <= 0){
+            DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
+                    "Enter Valid frequency").show();
+            return false;
+        } else if(mIntervalSpinner.getSelectedItemPosition() <= 0){
+            DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
+                    "Enter Valid interval").show();
+            return false;
+        } else if(mDosageSpinner.getSelectedItemPosition() <= 0){
+            DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
+                    "Enter Valid dosage").show();
+            return false;
+        } else if(TextUtils.isEmpty(mIssueDateEditText.getText())){
+            DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
+                    "Enter Valid issue date").show();
+            return false;
         }
 
-        return checker;
+        return true;
 
     }
 
     public Medicine getMedicineDetails(int reminderId) throws Exception
     {
-        String medName = String.valueOf(medicineName.getText());
-        String medDescription = String.valueOf(description.getText());
-        int quantity = Integer.parseInt(totalQuantity.getText().toString());
-        String catId = categorySpinner.getSelectedItem().toString();
+        String medName = String.valueOf(mMedicineNameEditText.getText());
+        String medDescription = String.valueOf(mDescriptionEditText.getText());
+        int quantity = Integer.parseInt(mTotalQuantityEditText.getText().toString());
+        String catId = mCategorySpinner.getSelectedItem().toString();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        dateFormat.parse(String.valueOf(issueDate.getText()));
+        dateFormat.parse(String.valueOf(mIssueDateEditText.getText()));
         Calendar calendar = Calendar.getInstance();
         if(medicine==null)
         {
@@ -338,13 +380,13 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
         medicine.setMedicine(medName);
         medicine.setDescription(medDescription);
         medicine.setQuantity(quantity);
-        medicine.setCatId((int)categorySpinner.getSelectedItemId()+1);
+        medicine.setCatId((int) mCategorySpinner.getSelectedItemId()+1);
         medicine.setReminderId(reminderId);
-        medicine.setRemind(remind.isChecked());
-        medicine.setDosage(Integer.parseInt(dosageSpinner.getSelectedItem().toString()));
-        medicine.setThreshold(Integer.parseInt(String.valueOf(pillsBeforeRefill.getText())));
+        medicine.setRemind(mRemindSwitch.isChecked());
+        medicine.setDosage(Integer.parseInt(mDosageSpinner.getSelectedItem().toString()));
+        medicine.setThreshold(Integer.parseInt(String.valueOf(mPillsBeforeRefillEditText.getText())));
         medicine.setDateIssued(new Date());
-        medicine.setExpireFactor(Integer.parseInt(String.valueOf(monthsToExpire.getText())));
+        medicine.setExpireFactor(Integer.parseInt(String.valueOf(mMonthsToExpireEditText.getText())));
         return medicine;
     }
 
@@ -352,20 +394,16 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
     {
         medicineDao=MedicineDaoImpl.newInstance(getActivity());
         medicine=medicineDao.getMedicinebyId(medicine.getId());
-
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-        Log.d("cbox update testing",String.valueOf(medicine.getDateIssued()));
-        medicineName.setText(medicine.getMedicine());
-        dosageSpinner.setSelection(medicine.getDosage());
-        categorySpinner.setSelection(medicine.getCatId()-1);
-        totalQuantity.setText(String.valueOf(medicine.getQuantity()));
-        pillsBeforeRefill.setText(String.valueOf(medicine.getThreshold()));
-        description.setText(medicine.getDescription());
-        issueDate.setText(String.valueOf(dateFormat.format(medicine.getDateIssued())));
-        remind.setChecked(medicine.isRemind());
-
-        monthsToExpire.setText(String.valueOf(medicine.getExpireFactor()));
+        mMedicineNameEditText.setText(medicine.getMedicine());
+        mDosageSpinner.setSelection(medicine.getDosage());
+        mCategorySpinner.setSelection(medicine.getCatId()-1);
+        mTotalQuantityEditText.setText(String.valueOf(medicine.getQuantity()));
+        mPillsBeforeRefillEditText.setText(String.valueOf(medicine.getThreshold()));
+        mDescriptionEditText.setText(medicine.getDescription());
+        mIssueDateEditText.setText(String.valueOf(dateFormat.format(medicine.getDateIssued())));
+        mRemindSwitch.setChecked(medicine.isRemind());
+        mMonthsToExpireEditText.setText(String.valueOf(medicine.getExpireFactor()));
 
     }
 
@@ -376,7 +414,7 @@ public class AddMedicineFragment extends Fragment implements CustomBackPressedLi
         reminder= reminderDao.getReminderById(medicine.getReminderId());
         SimpleDateFormat timeFormat=new SimpleDateFormat("hh:MM");
         Log.d("reminder1",String.valueOf(medicine.getReminderId()));
-        //addDosageTimeButton.setText(timeFormat.format(reminder.getStartTime()));
+        //mAddDosageTimeButton.setText(timeFormat.format(reminder.getStartTime()));
 
     }
 }

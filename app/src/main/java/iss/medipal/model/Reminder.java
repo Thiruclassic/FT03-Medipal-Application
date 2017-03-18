@@ -7,6 +7,7 @@ import java.util.Date;
  */
 
 public class Reminder {
+
     int id;
     int frequency;
     Date startTime;

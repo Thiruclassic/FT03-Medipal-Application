@@ -2,8 +2,11 @@ package iss.medipal.model;
 
 import android.content.Context;
 
+import java.util.ArrayList;
+
 import iss.medipal.asyncs.AddPersonBioTask;
 import iss.medipal.asyncs.EditPersonalBioTask;
+import iss.medipal.asyncs.GetCategoriesTask;
 import iss.medipal.dao.impl.PersonBioDaoImpl;
 
 /**
@@ -12,19 +15,23 @@ import iss.medipal.dao.impl.PersonBioDaoImpl;
 public class PersonStore {
 
     private PersonalBio mPersonalBio;
+    private ArrayList<Category> mCategory;
     private Context mContext;
     private PersonBioDaoImpl mBioDao;
 
     //Tasks
     private AddPersonBioTask mAddPersonalBioTask;
     private EditPersonalBioTask mEditPersonalBioTask;
+    private GetCategoriesTask mCategoriesTask;
 
 
     public PersonStore(PersonalBio personBio, Context context){
         this.mPersonalBio = personBio;
         this.mContext = context;
+        new GetCategoriesTask(context).execute();
     }
 
+    //getters/setters
     public void setmPersonalBio(PersonalBio mPersonalBio) {
         this.mPersonalBio = mPersonalBio;
     }
@@ -33,6 +40,15 @@ public class PersonStore {
         return mPersonalBio;
     }
 
+    public ArrayList<Category> getCategory() {
+        return mCategory;
+    }
+
+    public void setCategory(ArrayList<Category> mCategory) {
+        this.mCategory = mCategory;
+    }
+
+    //personal bio
     public void addPersonBio(PersonalBio personalBio){
         mPersonalBio.setName(personalBio.getName());
         mPersonalBio.setIdNo(personalBio.getIdNo());

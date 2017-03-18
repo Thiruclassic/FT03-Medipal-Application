@@ -12,19 +12,21 @@ import android.widget.TextView;
 import java.util.List;
 
 import iss.medipal.R;
+import iss.medipal.model.Category;
 import iss.medipal.util.AppHelper;
 
 /**
- * Created by junaidramis on 9/3/17.
+ * Created by junaidramis on 18/3/17.
  */
-public class BaseSpinnerAdapter extends ArrayAdapter<String> {
 
-    private List<String> mDataArray;
+public class CategorySpinnerAdapter extends ArrayAdapter<Category> {
 
-    public BaseSpinnerAdapter(Context context, int resource,
-                              List<String> objects) {
+    private List<Category> mCategory;
+
+    public CategorySpinnerAdapter(Context context, int resource,
+                                  List<Category> objects) {
         super(context, resource, objects);
-        mDataArray = objects;
+        mCategory = objects;
     }
 
     /**
@@ -55,7 +57,7 @@ public class BaseSpinnerAdapter extends ArrayAdapter<String> {
     }
 
     @Override
-    public String getItem(int position) {
+    public Category getItem(int position) {
         return super.getItem(position);
     }
 
@@ -66,36 +68,35 @@ public class BaseSpinnerAdapter extends ArrayAdapter<String> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
+        BaseSpinnerAdapter.ViewHolder viewHolder;
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).
                     inflate(R.layout.spinner_default_item, parent, false);
-            viewHolder = new ViewHolder(convertView);
+            viewHolder = new BaseSpinnerAdapter.ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+            viewHolder = (BaseSpinnerAdapter.ViewHolder) convertView.getTag();
         }
-        viewHolder.spinnerText.setText(mDataArray.get(position));
+        viewHolder.spinnerText.setText(mCategory.get(position).getCategory());
         return convertView;
     }
 
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        DropDownViewHolder viewHolder;
+        BaseSpinnerAdapter.DropDownViewHolder viewHolder;
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).
                     inflate(R.layout.spinner_item, parent, false);
-            viewHolder = new DropDownViewHolder(convertView);
+            viewHolder = new BaseSpinnerAdapter.DropDownViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
-            viewHolder = (DropDownViewHolder) convertView.getTag();
+            viewHolder = (BaseSpinnerAdapter.DropDownViewHolder) convertView.getTag();
         }
         viewHolder.spinnerText.setTypeface(null, Typeface.NORMAL);
         viewHolder.spinnerText.setTextColor(ContextCompat.getColor(parent.getContext(),
                 R.color.mineShaft));
-        viewHolder.spinnerText.setText(mDataArray.get(position));
+        viewHolder.spinnerText.setText(mCategory.get(position).getCategory());
         return convertView;
     }
 }
-

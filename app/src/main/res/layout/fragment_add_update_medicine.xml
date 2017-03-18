@@ -2,173 +2,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:id="@+id/addMedicineFragment"
-    tools:context="iss.medipal.ui.fragments.AddMedicineFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-
-    <!--<ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:weightSum="1">
-
-    <EditText
-        android:id="@+id/medicineNameText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Medicine Name"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/rectangle_border"
-         />
-
-        <Spinner
-            android:id="@+id/categorySpinner"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:spinnerMode="dropdown"
-            android:entries="@array/category_items"
-            android:background="@drawable/rectangle_border"
-            />
-
-
-
-        <Switch
-            android:text="Remind"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/remindSwitch"
-            android:background="@drawable/rectangle_border"/>
-        <Button
-            android:id="@+id/dosageTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Add Dosage Time" />
-
-        <EditText
-            android:id="@+id/frequencyText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Frequency Per Day" />
-
-        <EditText
-            android:id="@+id/intervalText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Reminder Interval" />
-
-
-
-        <Spinner
-            android:id="@+id/dosageSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Pills per Dosage"/>
-
-
-
-    <EditText
-        android:id="@+id/medicineDescriptionText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Description"
-        android:gravity="top"
-        android:lines="10"/>
-
-
-    <EditText
-        android:id="@+id/medicineQuantityText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Total Quantity" />
-
-
-
-
-    <EditText
-        android:id="@+id/dateIssuedText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Issue Date (dd/MM/yy)"
-        android:drawableEnd="@drawable/calendar_icon"
-        android:drawableRight="@drawable/calendar_icon"/>
-
-        <EditText
-            android:id="@+id/expireFactoreText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Months To Expire"/>
-
-        <Switch
-            android:text="Refill Reminder"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:id="@+id/refillSwitch" />
-
-        <EditText
-            android:id="@+id/pillsBeforeRefill"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Threshold"
-            android:text="Pills before Refill"
-            />
-
-        <Button
-            android:id="@+id/refillReminderTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Reminde Me At: " />
-
-
-
-        <Button
-            android:text="Save Medicine"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/saveMedicine" />
-    </LinearLayout>
-    </ScrollView> -->
+    tools:context="iss.medipal.ui.fragments.AddMedicineFragment"
+    >
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:layout_above="@+id/saveMedicine"
+        >
         <LinearLayout
             android:orientation="vertical"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
+            android:paddingTop="@dimen/margin_generic_med"
+            android:paddingLeft="@dimen/margin_generic_med"
+            android:paddingRight="@dimen/margin_generic_med">
 
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/SubHeadingTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/name" />
 
-            >
-
-            <EditText
+            <android.support.v7.widget.AppCompatEditText
+                style="@style/InputLayoutEditTextStyleDark"
                 android:id="@+id/medicineNameText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:hint="Medicine Name"
-                android:layout_margin="10dp"
-                android:background="@drawable/cylinder_border" />
-
-            <Spinner
-                android:id="@+id/categorySpinner"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:spinnerMode="dropdown"
-                android:layout_margin="10dp"
-                android:background="@drawable/gradient_spinner"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:layout_margin="@dimen/padding_small"
                 />
+
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/category_hint"
+                style="@style/SubHeadingTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/category_text" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/categorySpinner"
+                style="@style/InputLayoutEditTextStyleDark"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_margin="@dimen/padding_small"
+                android:spinnerMode="dropdown" />
 
             <Switch
                 android:text="Reminder"
+                style="@style/SubHeadingTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
-                android:layout_margin="10dp"
                 android:id="@+id/remindSwitch"
                 />
 
@@ -185,110 +73,168 @@
                 android:textAllCaps="false"
                 />
 
-            <Spinner
-                android:id="@+id/dosageSpinner"
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/SubHeadingTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/frequency_text" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/frequencySpinner"
+                style="@style/InputLayoutEditTextStyleDark"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:hint="Pills per Dosage"
-                android:entries="@array/dosage_quantity_items"
-                android:background="@drawable/gradient_spinner"
-                android:layout_margin="10dp"
-                />
+                android:layout_height="56dp"
+                android:layout_margin="@dimen/padding_small"
+                android:spinnerMode="dropdown" />
 
 
-            <EditText
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/SubHeadingTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/interval_text" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/intervalSpinner"
+                style="@style/InputLayoutEditTextStyleDark"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_margin="@dimen/padding_small"
+                android:spinnerMode="dropdown" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/dosage_hint"
+                style="@style/SubHeadingTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dosage_text" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/dosageSpinner"
+                style="@style/InputLayoutEditTextStyleDark"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_margin="@dimen/padding_small"
+                android:spinnerMode="dropdown" />
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/SubHeadingTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/description" />
+
+            <android.support.v7.widget.AppCompatEditText
+                style="@style/InputLayoutEditTextStyleDark"
                 android:id="@+id/medicineDescriptionText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:hint="Description"
-                android:background="@drawable/cylinder_border"
                 android:gravity="top"
                 android:lines="8"
-                android:layout_margin="10dp"/>
-
-
-            <EditText
-                android:id="@+id/medicineQuantityText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:hint="Total Quantity"
-                android:background="@drawable/cylinder_border"
-                android:layout_margin="10dp"
-                android:inputType="number"/>
-
-            <EditText
-                android:id="@+id/dateIssuedText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:hint="Issue Date (dd/MM/yy)"
-                android:background="@drawable/cylinder_border"
-                android:drawableRight="@drawable/cal2"
-                android:layout_margin="10dp"
-                android:inputType="none"
+                android:inputType="textMultiLine"
+                android:layout_margin="@dimen/padding_small"
                 />
 
-            <EditText
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/SubHeadingTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Quantity" />
+
+            <android.support.v7.widget.AppCompatEditText
+                style="@style/InputLayoutEditTextStyleDark"
+                android:id="@+id/medicineQuantityText"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:layout_margin="@dimen/padding_small"
+                />
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/SubHeadingTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Issue Date (dd/MM/yy)" />
+
+            <android.support.v7.widget.AppCompatEditText
+                style="@style/InputLayoutEditTextStyleDark"
+                android:id="@+id/dateIssuedText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:inputType="none"
+                android:layout_margin="@dimen/padding_small"
+                android:drawableRight="@drawable/cal2"
+                />
+
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/SubHeadingTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Months To Expire" />
+
+            <android.support.v7.widget.AppCompatEditText
+                style="@style/InputLayoutEditTextStyleDark"
                 android:id="@+id/expireFactoreText"
-                android:background="@drawable/cylinder_border"
-                android:hint="Months To Expire"
-                android:padding="10dp"
-                android:layout_margin="10dp"
-                style="@style/MyMedEditTextStyle"
-                android:inputType="number"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:layout_margin="@dimen/padding_small"
+                />
 
             <Switch
                 android:text="Refill Reminder"
+                style="@style/SubHeadingTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:id="@+id/refillSwitch"
-                android:layout_margin="10dp"
                 android:inputType="number"/>
 
-            <EditText
-                android:layout_width="match_parent"
-                android:background="@drawable/cylinder_border"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/SubHeadingTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pills before Refill" />
+
+            <android.support.v7.widget.AppCompatEditText
+                style="@style/InputLayoutEditTextStyleDark"
                 android:id="@+id/pillsBeforeRefill"
-                android:hint="Pills before Refill"
-                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
                 android:inputType="number"
+                android:layout_margin="@dimen/padding_small"
                 />
 
             <Button
                 android:id="@+id/refillReminderTime"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
                 android:text="Reminde Me At: "
-                android:drawableRight="@drawable/remindme"
                 android:background="@drawable/green_button_selector"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="14sp"
                 android:textAllCaps="false"
                 android:layout_margin="10dp"/>
 
-
-
-            <Button
-                android:background="@drawable/cylinder_border"
-                android:text="Save Medicine"
-                android:layout_width="390dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:id="@+id/saveMedicine"
-                android:layout_margin="10dp"/>
         </LinearLayout>
     </ScrollView>
 
-
+    <Button
+        android:background="@drawable/green_button_selector"
+        android:text="Save Medicine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/saveMedicine"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

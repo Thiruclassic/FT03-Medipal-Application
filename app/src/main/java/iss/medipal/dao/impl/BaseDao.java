@@ -21,7 +21,7 @@ public class BaseDao {
         open();
     }
 
-    public void open() throws SQLException {
+    public synchronized void open() throws SQLException {
         if(dbHelper == null)
             dbHelper = DatabaseHandler.getHelper(mContext);
         database = dbHelper.getWritableDatabase();

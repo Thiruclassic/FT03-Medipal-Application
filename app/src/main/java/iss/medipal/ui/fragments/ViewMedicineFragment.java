@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -21,11 +22,14 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import iss.medipal.MediPalApplication;
 import iss.medipal.R;
 import iss.medipal.constants.Constants;
 import iss.medipal.dao.MedicineDao;
 import iss.medipal.dao.impl.MedicineDaoImpl;
+import iss.medipal.model.Medicine;
 import iss.medipal.ui.activities.MainActivity;
+import iss.medipal.ui.adapters.MedicineListAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,18 +38,13 @@ import iss.medipal.ui.activities.MainActivity;
  */
 public class ViewMedicineFragment extends Fragment {
 
-    private String mParam1;
-    private String mParam2;
-
-
-    Button addMedicineButton;
-    ListView medicineList;
-    FrameLayout innerLayout;
-    ArrayAdapter<String> medicineListAdapter;
-    List<String> medicineNames;
-    MedicineDao medicineDao;
-
-
+    private FloatingActionButton addMedicineButton;
+    private ListView medicineList;
+    private FrameLayout innerLayout;
+    private MedicineListAdapter medicineListAdapter;
+    private ArrayList<Medicine> medicines;
+    private List<String> medicineNames;
+    private MedicineDao medicineDao;
 
     public ViewMedicineFragment() {
         // Required empty public constructor
@@ -65,13 +64,8 @@ public class ViewMedicineFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View thisView=inflater.inflate(R.layout.fragment_view_medicine, container, false);
-        addMedicineButton=(Button)thisView.findViewById(R.id.addMedicine);
-        medicineList=(ListView)thisView.findViewById(R.id.medicineList);
-        innerLayout=(FrameLayout)thisView.findViewById(R.id.add_medicine_frame);
-        setListeners();
-
-        return thisView;
+        View view=inflater.inflate(R.layout.fragment_view_medicine, container, false);
+        return view;
     }
 
 
@@ -104,53 +98,62 @@ public class ViewMedicineFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        medicineDao= MedicineDaoImpl.newInstance(getContext());
-        medicineNames=medicineDao.getAllMedicinesName();
-        if(medicineNames==null)
-        {
-            medicineNames=new ArrayList<>();
-        }
-        medicineListAdapter=new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,medicineNames);
+        initialiseUI(view);
+        setListeners();
+        setList();
+    }
 
+    private void initialiseUI(View view){
+        addMedicineButton=(FloatingActionButton)view.findViewById(R.id.addMedicine);
+        medicineList=(ListView)view.findViewById(R.id.medicineList);
+        innerLayout=(FrameLayout)view.findViewById(R.id.add_medicine_frame);
+    }
+
+    private void setList(){
+        medicines = MediPalApplication.getPersonStore().getmPersonalBio().getMedicines();
+        if(medicines==null)
+        {
+            medicines=new ArrayList<>();
+        }
+        medicineListAdapter = new MedicineListAdapter(getContext(), medicines);
         medicineList.setAdapter(medicineListAdapter);
     }
 
-    public void setListeners()
-    {
+    public void setListeners() {
         final View.OnClickListener addMedicineEvent=new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddMedicineFragment addMedicineTab=AddMedicineFragment.newInstance(0);
-
+                AddMedicineFragment addMedicineTab=AddMedicineFragment.newInstance();
                 FragmentManager manager=getChildFragmentManager();
                 FragmentTransaction transaction= manager.beginTransaction();
                 transaction.replace(R.id.add_medicine_frame,addMedicineTab,Constants.ADD_MEDICINE_PAGE).commit();
                 innerLayout.setVisibility(View.VISIBLE);
-                addMedicineButton.setVisibility(View.INVISIBLE);
+                addMedicineButton.setVisibility(View.GONE);
             }
         };
 
 
         FrameLayout.OnLayoutChangeListener layoutChangeListener=new View.OnLayoutChangeListener() {
             @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+            public void onLayoutChange(View v, int left, int top, int right, int bottom,
+                                       int oldLeft, int oldTop, int oldRight, int oldBottom) {
                 MainActivity activity=(MainActivity) v.getContext();
                 if(activity.getmListener()==null)
                 {
-                   addMedicineButton.setVisibility(View.VISIBLE);
-                    innerLayout.setVisibility(View.INVISIBLE);
+                    addMedicineButton.setVisibility(View.VISIBLE);
+                    innerLayout.setVisibility(View.GONE);
 
                     Log.d("Fragment value","hello");
                 }
             }
         };
 
-        ListView.OnItemClickListener itemClickListener=new AdapterView.OnItemClickListener() {
+        ListView.OnItemClickListener itemClickListener=new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Toast.makeText(getContext(),  "position"+position+"id"+id, Toast.LENGTH_SHORT).show();
-                AddMedicineFragment addMedicineTab=AddMedicineFragment.newInstance(position+1);
+                AddMedicineFragment addMedicineTab=AddMedicineFragment.newInstance(medicines.get(position+1));
 
                 FragmentManager manager=getChildFragmentManager();
                 FragmentTransaction transaction= manager.beginTransaction();
@@ -160,8 +163,6 @@ public class ViewMedicineFragment extends Fragment {
                 addMedicineButton.setVisibility(View.INVISIBLE);
             }
         };
-
-
          medicineList.setOnItemClickListener(itemClickListener);
          innerLayout.addOnLayoutChangeListener(layoutChangeListener);
          addMedicineButton.setOnClickListener(addMedicineEvent);

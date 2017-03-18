@@ -17,12 +17,14 @@ import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import iss.medipal.R;
+import iss.medipal.constants.Constants;
 
 /**
  * Created by junaidramis on 8/3/17.
@@ -167,4 +169,38 @@ public class AppHelper {
             Log.d("ERROR Toast(show)", err.getMessage());
         }
     }
+
+    /**
+     * Convert 24 hour format hour and minute to 12 hour format string
+     * @param hour
+     * @param minute
+     * @return
+     */
+    public static String convert24TimeTo12String(int hour, int minute) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        DateFormat dateFormat = new SimpleDateFormat(Constants.TIME_FORMAT_STORAGE);
+        return dateFormat.format(calendar.getTime());
+    }
+
+    /**
+     * Convert time string to Calendar object
+     * @param timeString
+     * @return
+     */
+    public static String convertTimeFormat(String timeString, String fromTimeFormat,
+                                           String toTimeFormat) {
+        Calendar calendar = Calendar.getInstance();
+        DateFormat fromDateFormat = new SimpleDateFormat(fromTimeFormat);
+        try {
+            calendar.setTime(fromDateFormat.parse(timeString));
+        } catch (ParseException e) {
+
+        }
+        DateFormat toDateFormat = new SimpleDateFormat(toTimeFormat);
+        String convertedTimeString = toDateFormat.format(calendar.getTime());
+        return convertedTimeString;
+    }
+
 }
