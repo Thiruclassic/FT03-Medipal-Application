@@ -1,7 +1,10 @@
 package iss.medipal.ui.fragments;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -16,12 +19,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +36,7 @@ import java.util.List;
 import iss.medipal.MediPalApplication;
 import iss.medipal.R;
 import iss.medipal.constants.Constants;
+import iss.medipal.constants.DBConstants;
 import iss.medipal.dao.CategoryDao;
 import iss.medipal.dao.MedicineDao;
 import iss.medipal.dao.ReminderDao;
@@ -40,6 +45,7 @@ import iss.medipal.dao.impl.ReminderDaoImpl;
 import iss.medipal.model.Category;
 import iss.medipal.model.Medicine;
 import iss.medipal.model.Reminder;
+import iss.medipal.receivers.AlarmReceiver;
 import iss.medipal.ui.activities.MainActivity;
 import iss.medipal.ui.adapters.BaseSpinnerAdapter;
 import iss.medipal.ui.adapters.CategorySpinnerAdapter;
@@ -76,10 +82,12 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
     private ReminderDao reminderDao;
     private CategoryDao categoryDao;
 
-    private Medicine medicine;
-    private Reminder reminder;
+    private Medicine mMedicine;
+    private Reminder mReminder;
+    private boolean isEditMedicine;
 
     private String mReminderStartTime;
+    private List<String> mSpinnerItems;
 
 
     private CustomBackPressedListener mListener;
@@ -110,7 +118,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
     public static AddMedicineFragment newInstance(Medicine medicine) {
         AddMedicineFragment fragment = new AddMedicineFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARGS_MED, medicine);
+        args.putParcelable(ARGS_MED, medicine);
         fragment.setArguments(args);
         return fragment;
     }
@@ -132,14 +140,17 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         initialiseViews(view);
         setSpinners();
-        if(getArguments() != null && getArguments().getSerializable(ARGS_MED) != null){
-            medicine = (Medicine) getArguments().getSerializable(ARGS_MED);
+        if(getArguments() != null && getArguments().getParcelable(ARGS_MED) != null){
+            mMedicine = (Medicine) getArguments().getParcelable(ARGS_MED);
         }
-        if(medicine!=null)
-        {
+        if(mMedicine !=null) {
             updateMedicineDetails();
             updateReminderDetails();
             mSaveMedicineButton.setText("Modify Medicine");
+            isEditMedicine = true;
+        } else {
+            mMedicine = new Medicine();
+            isEditMedicine = false;
         }
         setListeners();
     }
@@ -157,7 +168,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
 
     @Override
     public void doBack() {
-        FragmentManager manager=getActivity().getSupportFragmentManager();
+        FragmentManager manager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction=manager.beginTransaction();
         transaction.detach(this).commit();
         ((MainActivity)getActivity()).setmListener(null);
@@ -168,6 +179,13 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         String doseTime = AppHelper.convert24TimeTo12String(hourOfDay, minute);
         mReminderStartTime = AppHelper.convertTimeFormat(doseTime, Constants.TIME_FORMAT_STORAGE,
                 Constants.TIME_12_HOUR_FORMAT);
+        Calendar calendar=Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,hourOfDay);
+        calendar.set(Calendar.MINUTE,minute);
+        if(mReminder == null){
+            mReminder  = new Reminder();
+        }
+        mReminder.setStartTime(calendar.getTime());
         mAddDosageTimeButton.setText(mReminderStartTime);
     }
 
@@ -176,9 +194,9 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         CategorySpinnerAdapter categoryAdapter = new CategorySpinnerAdapter(getContext(),
                 R.layout.dropdown_header ,categories);
         mCategorySpinner.setAdapter(categoryAdapter);
-        List<String> spinnerItems = new ArrayList<>();
-        spinnerItems.addAll(Arrays.asList(getResources().getStringArray(R.array.dosage_quantity_items)));
-        BaseSpinnerAdapter adapter = new BaseSpinnerAdapter(getActivity(), R.layout.dropdown_header, spinnerItems);
+        mSpinnerItems = new ArrayList<>();
+        mSpinnerItems.addAll(Arrays.asList(getResources().getStringArray(R.array.dosage_quantity_items)));
+        BaseSpinnerAdapter adapter = new BaseSpinnerAdapter(getActivity(), R.layout.dropdown_header, mSpinnerItems);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mDosageSpinner.setAdapter(adapter);
         mFrequencySpinner.setAdapter(adapter);
@@ -202,8 +220,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         mRemindSwitch =(Switch)view.findViewById(R.id.remindSwitch);
     }
 
-    public void setListeners()
-    {
+    public void setListeners() {
         Button.OnClickListener setTimeListener= new Button.OnClickListener() {
 
             @Override
@@ -212,33 +229,26 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
                 timerFragment.show(getChildFragmentManager(), Constants.ADD_REMINDER_DIALOG);
             }
         };
-
         View.OnClickListener saveListener=new View.OnClickListener()
         {
             @Override
             public void onClick(final View v) {
                 if(validate()) {
                     try {
-                        int reminderId = addReminder();
-                        String medicine = addMedicine(reminderId);
-                        Toast.makeText(getContext(), medicine + " Medicine successfully saved", Toast.LENGTH_SHORT).show();
-                        Log.d("Fragment type", String.valueOf(getParentFragment()));
-                        ViewMedicineFragment fragment=(ViewMedicineFragment) getParentFragment();
-                        //fragment.medicineNames.add(medicine);
-//                      fragment.medicineListAdapter.add(medicine);
+                        setMedicineDetails();
+                        if(!isEditMedicine) {
+                            MediPalApplication.getPersonStore().addMedicine(mMedicine);
+                        } else {
+                            MediPalApplication.getPersonStore().editMedicine(mMedicine);
+                        }
                         doBack();
-
                     } catch (Exception e) {
                         Log.d("error",e.toString());
                         Log.d("Error:", "error in add Medicine Page");
                     }
                 }
-
-
             }
         };
-
-
         View.OnClickListener issueDateListner= new View.OnClickListener() {
 
             @Override
@@ -247,7 +257,6 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
 
             }
         };
-
         View.OnFocusChangeListener focusChangeListener= new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -257,7 +266,6 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
                 }
             }
         };
-
         mIssueDateEditText.setOnClickListener(issueDateListner);
         mIssueDateEditText.setOnFocusChangeListener(focusChangeListener);
 
@@ -288,48 +296,6 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
         
         datePickerDialog.show();
-    }
-
-
-    public Reminder getReminder() {
-        return reminder;
-    }
-
-    public void setReminder(Reminder reminder) {
-        this.reminder = reminder;
-    }
-
-    public Medicine getMedicine() {
-        return medicine;
-    }
-
-    public void setMedicine(Medicine medicine) {
-        this.medicine = medicine;
-    }
-
-    public String addMedicine(int reminderId) throws Exception
-    {
-        Medicine medicine=getMedicineDetails(reminderId);
-        medicineDao = MedicineDaoImpl.newInstance(getActivity());
-        if(mMedicineNameEditText.getText().equals("Save Medicine")) {
-            medicineDao.addMedicine(medicine);
-        }
-        else
-        {
-            medicineDao.updateMedicine(medicine);
-        }
-        return medicine.getMedicine();
-    }
-
-    public Integer addReminder()
-    {
-        Integer reminderId = null;
-        if(reminder!=null)
-        {
-            reminderDao= ReminderDaoImpl.newInstance(getActivity());
-          reminderId=reminderDao.addReminder(reminder);
-        }
-        return reminderId;
     }
 
     public boolean validate()
@@ -364,57 +330,59 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
 
     }
 
-    public Medicine getMedicineDetails(int reminderId) throws Exception
+    public void setMedicineDetails()
     {
         String medName = String.valueOf(mMedicineNameEditText.getText());
         String medDescription = String.valueOf(mDescriptionEditText.getText());
+        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.ISSUE_DATE_FORMAT);
         int quantity = Integer.parseInt(mTotalQuantityEditText.getText().toString());
-        String catId = mCategorySpinner.getSelectedItem().toString();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        dateFormat.parse(String.valueOf(mIssueDateEditText.getText()));
-        Calendar calendar = Calendar.getInstance();
-        if(medicine==null)
-        {
-            medicine=new Medicine();
+        mReminder.setInterval(Integer.valueOf(mSpinnerItems.get(mIntervalSpinner.getSelectedItemPosition())));
+        mReminder.setFrequency(Integer.valueOf(mSpinnerItems.get(mFrequencySpinner.getSelectedItemPosition())));
+        mMedicine.setMedicine(medName);
+        mMedicine.setDescription(medDescription);
+        mMedicine.setQuantity(quantity);
+        mMedicine.setCatId(((Category)mCategorySpinner.getSelectedItem()).getId());
+        mMedicine.setReminder(mReminder);
+        mMedicine.setRemind(mRemindSwitch.isChecked());
+        mMedicine.setDosage(Integer.parseInt(mDosageSpinner.getSelectedItem().toString()));
+        mMedicine.setThreshold(Integer.parseInt(String.valueOf(TextUtils
+                .isEmpty(mPillsBeforeRefillEditText.getText())?"0":mPillsBeforeRefillEditText.getText())));
+        mMedicine.setExpireFactor(Integer.parseInt(String.valueOf(TextUtils
+                .isEmpty(mMonthsToExpireEditText.getText())?"0":mMonthsToExpireEditText.getText())));
+        try {
+            mMedicine.setDateIssued(dateFormat.parse(mIssueDateEditText.getText().toString()));
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-        medicine.setMedicine(medName);
-        medicine.setDescription(medDescription);
-        medicine.setQuantity(quantity);
-        medicine.setCatId((int) mCategorySpinner.getSelectedItemId()+1);
-        medicine.setReminderId(reminderId);
-        medicine.setRemind(mRemindSwitch.isChecked());
-        medicine.setDosage(Integer.parseInt(mDosageSpinner.getSelectedItem().toString()));
-        medicine.setThreshold(Integer.parseInt(String.valueOf(mPillsBeforeRefillEditText.getText())));
-        medicine.setDateIssued(new Date());
-        medicine.setExpireFactor(Integer.parseInt(String.valueOf(mMonthsToExpireEditText.getText())));
-        return medicine;
     }
 
     public void updateMedicineDetails()
     {
-        medicineDao=MedicineDaoImpl.newInstance(getActivity());
-        medicine=medicineDao.getMedicinebyId(medicine.getId());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        mMedicineNameEditText.setText(medicine.getMedicine());
-        mDosageSpinner.setSelection(medicine.getDosage());
-        mCategorySpinner.setSelection(medicine.getCatId()-1);
-        mTotalQuantityEditText.setText(String.valueOf(medicine.getQuantity()));
-        mPillsBeforeRefillEditText.setText(String.valueOf(medicine.getThreshold()));
-        mDescriptionEditText.setText(medicine.getDescription());
-        mIssueDateEditText.setText(String.valueOf(dateFormat.format(medicine.getDateIssued())));
-        mRemindSwitch.setChecked(medicine.isRemind());
-        mMonthsToExpireEditText.setText(String.valueOf(medicine.getExpireFactor()));
-
+        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.ISSUE_DATE_FORMAT);
+        mMedicineNameEditText.setText(mMedicine.getMedicine());
+        mDosageSpinner.setSelection(mMedicine.getDosage());
+        mCategorySpinner.setSelection(mMedicine.getCatId() - 1);
+        mTotalQuantityEditText.setText(String.valueOf(mMedicine.getQuantity()));
+        mPillsBeforeRefillEditText.setText(String.valueOf(mMedicine.getThreshold()));
+        mDescriptionEditText.setText(mMedicine.getDescription());
+        mIssueDateEditText.setText(String.valueOf(dateFormat.format(mMedicine.getDateIssued())));
+        mRemindSwitch.setChecked(mMedicine.isRemind());
+        mMonthsToExpireEditText.setText(String.valueOf(mMedicine.getExpireFactor()));
     }
 
     public void updateReminderDetails()
     {
-        reminderDao=ReminderDaoImpl.newInstance(getActivity());
-
-        reminder= reminderDao.getReminderById(medicine.getReminderId());
-        SimpleDateFormat timeFormat=new SimpleDateFormat("hh:MM");
-        Log.d("reminder1",String.valueOf(medicine.getReminderId()));
-        //mAddDosageTimeButton.setText(timeFormat.format(reminder.getStartTime()));
-
+        mReminder = mMedicine.getReminder();
+        if(mReminder != null) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(mReminder.getStartTime());
+            String doseTime = AppHelper.convert24TimeTo12String(cal.get(Calendar.HOUR_OF_DAY),
+                    cal.get(Calendar.MINUTE));
+            mReminderStartTime = AppHelper.convertTimeFormat(doseTime, Constants.TIME_FORMAT_STORAGE,
+                    Constants.TIME_12_HOUR_FORMAT);
+            mAddDosageTimeButton.setText(mReminderStartTime);
+            mFrequencySpinner.setSelection(mReminder.getFrequency());
+            mIntervalSpinner.setSelection(mReminder.getInterval());
+        }
     }
 }

@@ -9,7 +9,9 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/medicineList">
+        android:id="@+id/medicineList"
+        android:divider="@drawable/list_divider_dark"
+        android:dividerHeight="1dp">
 
     </ListView>
 

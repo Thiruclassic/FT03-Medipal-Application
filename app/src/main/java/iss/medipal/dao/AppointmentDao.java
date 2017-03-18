@@ -17,4 +17,6 @@ public interface AppointmentDao {
 
     public Appointment getAppointmentById(int appointmentId);
     public List<Appointment> getAllAppointments();
+    public void close();
+
 }

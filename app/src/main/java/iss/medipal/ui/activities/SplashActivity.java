@@ -12,10 +12,12 @@ import iss.medipal.R;
 import iss.medipal.dao.impl.CategoryDaoImpl;
 import iss.medipal.dao.impl.PersonBioDaoImpl;
 import iss.medipal.dao.impl.MedicineDaoImpl;
+import iss.medipal.dao.impl.ReminderDaoImpl;
 import iss.medipal.model.Category;
 import iss.medipal.model.Medicine;
 import iss.medipal.model.PersonStore;
 import iss.medipal.model.PersonalBio;
+import iss.medipal.model.Reminder;
 import iss.medipal.util.SharedPreferenceManager;
 
 /**
@@ -49,20 +51,27 @@ public class SplashActivity extends BaseFullScreenActivity {
 
         private PersonBioDaoImpl mBioDao;
         private MedicineDaoImpl mMedicationDao;
-        private CategoryDaoImpl mCategoryDao;
+        private ReminderDaoImpl mRemiderDao;
         private PersonStore mPersonStore;
 
         public GetPersonTask(Context context) {
             this.mBioDao = new PersonBioDaoImpl(context);
             this.mMedicationDao = new MedicineDaoImpl(context);
-            this.mCategoryDao = new CategoryDaoImpl(context);
+            this.mRemiderDao = new ReminderDaoImpl(context);
         }
 
         @Override
         protected Void doInBackground(Void... params) {
             mPersonStore = MediPalApplication.getPersonStore();
             PersonalBio result = mBioDao.getPersonalBio();
-            result.setMedicines((ArrayList<Medicine>) mMedicationDao.getAllMedicines());
+            ArrayList<Medicine> meds = (ArrayList<Medicine>) mMedicationDao.getAllMedicines();
+            for(Medicine med: meds){
+                Reminder rem = mRemiderDao.getReminderById(med.getReminderId());
+                if(rem != null){
+                    med.setReminder(rem);
+                }
+            }
+            result.setMedicines(meds);
             mPersonStore.setmPersonalBio(result);
             try {
                 Thread.sleep(2000);

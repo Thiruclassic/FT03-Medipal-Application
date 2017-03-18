@@ -45,7 +45,7 @@ public class MedicineListAdapter extends BaseAdapter {
         MedicineListAdapter.ViewHolder viewHolder;
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).
-                    inflate(android.R.layout.simple_list_item_1, parent, false);
+                    inflate(R.layout.item_med, parent, false);
             viewHolder = new MedicineListAdapter.ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
@@ -55,6 +55,11 @@ public class MedicineListAdapter extends BaseAdapter {
         return convertView;
     }
 
+    public void setMedicines(ArrayList<Medicine> medicines){
+        this.mMedicines = medicines;
+        notifyDataSetChanged();
+    }
+
     /**
      * Static view holder class.
      */
@@ -62,7 +67,7 @@ public class MedicineListAdapter extends BaseAdapter {
         TextView mItemTextview;
 
         public ViewHolder(View view) {
-            mItemTextview = (TextView) view.findViewById(android.R.id.text1);
+            mItemTextview = (TextView) view.findViewById(R.id.med_item_tv);
         }
 
     }

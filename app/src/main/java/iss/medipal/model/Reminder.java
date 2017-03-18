@@ -1,17 +1,30 @@
 package iss.medipal.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
 /**
  * Created by Thirumal on 2/20/2017.
  */
 
-public class Reminder {
+public class Reminder implements Parcelable{
 
     int id;
     int frequency;
     Date startTime;
     int Interval;
+
+    public Reminder(){
+
+    }
+
+    protected Reminder(Parcel in) {
+        id = in.readInt();
+        frequency = in.readInt();
+        Interval = in.readInt();
+    }
 
     public int getId() {
         return id;
@@ -44,4 +57,28 @@ public class Reminder {
     public void setInterval(int interval) {
         Interval = interval;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeInt(frequency);
+        dest.writeInt(Interval);
+    }
+
+    public static final Creator<Reminder> CREATOR = new Creator<Reminder>() {
+        @Override
+        public Reminder createFromParcel(Parcel in) {
+            return new Reminder(in);
+        }
+
+        @Override
+        public Reminder[] newArray(int size) {
+            return new Reminder[size];
+        }
+    };
 }

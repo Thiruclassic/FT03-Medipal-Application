@@ -47,11 +47,11 @@ public class CategoryDaoImpl extends BaseDao implements CategoryDao {
         while (cursor.moveToNext())
         {
             Category category = new Category();
+            category.setId(cursor.getInt(0));
             category.setCategory(cursor.getString(cursor.getColumnIndex(DBConstants.CATEGORY_NAME)));
             category.setCode(cursor.getString(cursor.getColumnIndex(DBConstants.CATEGORY_CODE)));
             category.setDescription(cursor.getString(cursor.getColumnIndex(DBConstants.CATEGORY_DESCRIPTION)));
             category.setRemind(cursor.getInt(cursor.getColumnIndex(DBConstants.CATEGORY_REMIND)) > 0);
-
             categories.add(category);
         }
 

@@ -28,6 +28,7 @@ public class MedicineDaoImpl extends BaseDao implements MedicineDao{
 
     public MedicineDaoImpl(Context context){
         super(context);
+        dateFormat = new SimpleDateFormat(Constants.ISSUE_DATE_FORMAT);
     }
 
 
@@ -42,9 +43,10 @@ public class MedicineDaoImpl extends BaseDao implements MedicineDao{
         values.put(DBConstants.MEDICINE_QUATITY,medicine.getQuantity());
         values.put(DBConstants.MEDICINE_DOSAGE,medicine.getDosage());
         values.put(DBConstants.MEDICINE_THRESHOLD,medicine.getThreshold());
-        values.put(DBConstants.MEDICINE_DATE_ISSUED,medicine.getDateIssued().toString());
+        values.put(DBConstants.MEDICINE_DATE_ISSUED,dateFormat.format(medicine.getDateIssued()));
         values.put(DBConstants.MEDICINE_EXPIRY_FACTOR,medicine.getExpireFactor());
         int id=(int)database.insert(DBConstants.TABLE_MEDICINE,null,values);
+        Log.d("insert Medicine",String.valueOf(id));
 
         return id;
     }
@@ -60,7 +62,7 @@ public class MedicineDaoImpl extends BaseDao implements MedicineDao{
         values.put(DBConstants.MEDICINE_QUATITY,medicine.getQuantity());
         values.put(DBConstants.MEDICINE_DOSAGE,medicine.getDosage());
         values.put(DBConstants.MEDICINE_THRESHOLD,medicine.getThreshold());
-        values.put(DBConstants.MEDICINE_DATE_ISSUED,medicine.getDateIssued().toString());
+        values.put(DBConstants.MEDICINE_DATE_ISSUED,dateFormat.format(medicine.getDateIssued()));
         values.put(DBConstants.MEDICINE_EXPIRY_FACTOR,medicine.getExpireFactor());
         int id=(int)database.update(DBConstants.TABLE_MEDICINE,values,"id=?",new String[]{String.valueOf(medicine.getId())});
         return id;
@@ -78,7 +80,6 @@ public class MedicineDaoImpl extends BaseDao implements MedicineDao{
         String[] args=new String[1];
         args[0]=String.valueOf(medicineId);
         Medicine medicine=new Medicine();
-        dateFormat =new SimpleDateFormat(Constants.DATE_TIME_FORMAT);
         try {
             Cursor cursor = database.rawQuery(query, args);
 
@@ -97,11 +98,11 @@ public class MedicineDaoImpl extends BaseDao implements MedicineDao{
                 medicine.setDateIssued(dateFormat.parse(dateIssued));
                 medicine.setReminderId(cursor.getInt(cursor.getColumnIndex(DBConstants.MEDICINE_REMINDER_ID)));
 
-
             }
         }
         catch (Exception e)
         {
+            System.out.println(e.getMessage());
             Log.d("Error",e.getMessage());
         }
         return medicine;
@@ -131,7 +132,6 @@ public class MedicineDaoImpl extends BaseDao implements MedicineDao{
         String query="Select * from "+ DBConstants.TABLE_MEDICINE;
         Cursor cursor=database.rawQuery(query,null);
         List<Medicine> medicines=new ArrayList<>();
-        dateFormat =new SimpleDateFormat(Constants.DATE_TIME_FORMAT);
         while (cursor.moveToNext())
         {
             try {

@@ -30,6 +30,7 @@ import iss.medipal.dao.impl.MedicineDaoImpl;
 import iss.medipal.model.Medicine;
 import iss.medipal.ui.activities.MainActivity;
 import iss.medipal.ui.adapters.MedicineListAdapter;
+import iss.medipal.util.AppHelper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -103,6 +104,8 @@ public class ViewMedicineFragment extends Fragment {
         setList();
     }
 
+
+
     private void initialiseUI(View view){
         addMedicineButton=(FloatingActionButton)view.findViewById(R.id.addMedicine);
         medicineList=(ListView)view.findViewById(R.id.medicineList);
@@ -111,12 +114,12 @@ public class ViewMedicineFragment extends Fragment {
 
     private void setList(){
         medicines = MediPalApplication.getPersonStore().getmPersonalBio().getMedicines();
-        if(medicines==null)
+        if(medicines!=null)
         {
-            medicines=new ArrayList<>();
+            medicineListAdapter = new MedicineListAdapter(getContext(), medicines);
+            medicineList.setAdapter(medicineListAdapter);
         }
-        medicineListAdapter = new MedicineListAdapter(getContext(), medicines);
-        medicineList.setAdapter(medicineListAdapter);
+
     }
 
     public void setListeners() {
@@ -142,8 +145,20 @@ public class ViewMedicineFragment extends Fragment {
                 {
                     addMedicineButton.setVisibility(View.VISIBLE);
                     innerLayout.setVisibility(View.GONE);
-
-                    Log.d("Fragment value","hello");
+                    try {
+                        medicines = MediPalApplication.getPersonStore()
+                                .getmPersonalBio().getMedicines();
+                        if(!AppHelper.isListEmpty(medicines)) {
+                            if (medicineListAdapter != null) {
+                                medicineListAdapter.setMedicines(medicines);
+                            } else {
+                                medicineListAdapter = new MedicineListAdapter(getContext(), medicines);
+                                medicineList.setAdapter(medicineListAdapter);
+                            }
+                        }
+                    } catch (NullPointerException e){
+                        System.out.printf(e.getMessage());
+                    }
                 }
             }
         };
@@ -151,21 +166,17 @@ public class ViewMedicineFragment extends Fragment {
         ListView.OnItemClickListener itemClickListener=new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Toast.makeText(getContext(),  "position"+position+"id"+id, Toast.LENGTH_SHORT).show();
-                AddMedicineFragment addMedicineTab=AddMedicineFragment.newInstance(medicines.get(position+1));
-
+                AddMedicineFragment addMedicineTab=AddMedicineFragment.newInstance(medicines.get(position));
                 FragmentManager manager=getChildFragmentManager();
                 FragmentTransaction transaction= manager.beginTransaction();
                 transaction.replace(R.id.add_medicine_frame,addMedicineTab,Constants.ADD_MEDICINE_PAGE).commit();
-
                 innerLayout.setVisibility(View.VISIBLE);
                 addMedicineButton.setVisibility(View.INVISIBLE);
             }
         };
-         medicineList.setOnItemClickListener(itemClickListener);
-         innerLayout.addOnLayoutChangeListener(layoutChangeListener);
-         addMedicineButton.setOnClickListener(addMedicineEvent);
+        medicineList.setOnItemClickListener(itemClickListener);
+        innerLayout.addOnLayoutChangeListener(layoutChangeListener);
+        addMedicineButton.setOnClickListener(addMedicineEvent);
     }
 
 }

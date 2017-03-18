@@ -1,33 +1,21 @@
 package iss.medipal.ui.fragments;
 
-import android.app.AlertDialog;
-
-import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
-import java.nio.channels.CancelledKeyException;
 import java.util.Calendar;
 
 import iss.medipal.R;
-import iss.medipal.constants.Constants;
-import iss.medipal.model.Medicine;
 import iss.medipal.model.Reminder;
 
 
@@ -69,6 +57,7 @@ public class ReminderDialogFragment extends DialogFragment {
 
         saveReminder=(Button)view.findViewById(R.id.saveReminder);
 
+        setReminderData();
         setListeners(this);
 
     }
@@ -82,41 +71,44 @@ public class ReminderDialogFragment extends DialogFragment {
 
                 FragmentManager manager=getChildFragmentManager();
                 FragmentTransaction transaction=manager.beginTransaction();
-                //AddMedicineFragment fragment=(AddMedicineFragment) getFragmentManager().findFragmentById(R.id.add_medicine_frame);
-
-               // AddMedicineFragment fragment=(AddMedicineFragment)getFragmentManager().findFragmentByTag(Constants.ADD_MEDICINE_PAGE);
-                Log.d("fragment",String.valueOf(getParentFragment()));
-
-
-
-                    Log.d("fragment",String.valueOf(getParentFragment().getClass()));
-                    StringBuilder builder=new StringBuilder();
-                    builder.append(timePicker.getCurrentHour());
-                    builder.append(":");
-                    builder.append(timePicker.getCurrentMinute());
-
 
                 Fragment fragment=getParentFragment();
-                if(fragment instanceof AddMedicineFragment) {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
-                    calendar.set(Calendar.MINUTE, timePicker.getCurrentMinute());
+                if(fragment instanceof AddMedicineFragment)
+                {
+                    Calendar calendar=Calendar.getInstance();
+                    calendar.set(Calendar.HOUR_OF_DAY,timePicker.getCurrentHour());
+                    calendar.set(Calendar.MINUTE,timePicker.getCurrentMinute());
 
-                    AddMedicineFragment addMedicineFragment = (AddMedicineFragment) fragment;
-//                    addMedicineFragment.addDosageTimeButton.setText(builder.toString());
-                    Reminder reminder = new Reminder();
+                    AddMedicineFragment addMedicineFragment=(AddMedicineFragment)fragment;
+
+                    Reminder reminder=new Reminder();
                     reminder.setFrequency(Integer.parseInt(frequencyText.getSelectedItem().toString()));
                     reminder.setInterval(Integer.parseInt(intervalText.getSelectedItem().toString()));
                     reminder.setStartTime(calendar.getTime());
-                    addMedicineFragment.setReminder(reminder);
+//                    addMedicineFragment.setmReminder(reminder);
                     transaction.hide(currentfragment).commit();
-
+//                    addMedicineFragment.addDosageTimeButton.setText(addMedicineFragment.setReminderText(reminder));
                 }
 
             }
         };
 
         saveReminder.setOnClickListener(timeListener);
+
+    }
+
+
+    public void setReminderData()
+    {
+        if(reminder!=null) {
+            frequencyText.setSelection(reminder.getFrequency());
+            intervalText.setSelection(reminder.getInterval());
+            timePicker.setIs24HourView(Boolean.TRUE);
+            Calendar calendar=Calendar.getInstance();
+            calendar.setTime(reminder.getStartTime());
+            timePicker.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY));
+            timePicker.setCurrentMinute(calendar.get(Calendar.MINUTE));
+        }
 
     }
 }

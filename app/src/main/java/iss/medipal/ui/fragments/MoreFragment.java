@@ -57,7 +57,10 @@ public class MoreFragment extends BaseFragment {
                 switch (position){
                     case 0:
                         ((MainActivity)getActivity()).launchActivityWithoutFinishing(UserProfileActivity.class);
-                    case 2:((MainActivity)getActivity()).launchActivityWithoutFinishing(MeasurementActivity.class);
+                        break;
+                    case 2:
+                        ((MainActivity)getActivity()).launchActivityWithoutFinishing(MeasurementActivity.class);
+                        break;
                 }
             }
         });

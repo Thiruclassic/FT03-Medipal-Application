@@ -15,4 +15,6 @@ public interface MeasurementDao {
     public Measurement getMeasurement(int id);
 
     public List<Measurement> getMeasurements();
+    public void close();
+
 }
