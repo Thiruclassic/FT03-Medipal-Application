@@ -16,19 +16,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.MainActivity">
-        </activity>
-        <activity android:name=".ui.activities.UserProfileActivity">
-        </activity>
-
-        <activity android:name=".ui.activities.AppointmentActivity">
-        </activity>
-
+        <activity android:name=".ui.activities.MainActivity"></activity>
+        <activity android:name=".ui.activities.UserProfileActivity"></activity>
+        <activity android:name=".ui.activities.AppointmentActivity"></activity>
+        <activity android:name=".ui.activities.MeasurementActivity"></activity>
         <receiver android:name=".receivers.AlarmReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-    </application>
+
+     </application>
 
 </manifest>

@@ -68,6 +68,8 @@
     <string name="date_select">Select Date</string>
     <string name="app_time">Time</string>
     <string name="description">Description</string>
+    <string name="StatusReport">Status Report</string>
+
 
     <string name="strt_time_select">Start Time</string>
     <string name="save">Save</string>
