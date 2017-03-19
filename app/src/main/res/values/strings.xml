@@ -91,5 +91,6 @@
     <string name="blood_type_text">Blood Type</string>
     <string name="enter_all_details_text">Please enter all fields</string>
     <string name="submit_text">Submit</string>
+    <string name="title_activity_ice">IceActivity</string>
 
 </resources>

@@ -46,4 +46,11 @@ public class DBConstants {
     public static final String MEDICINE_DATE_ISSUED="DateIssued";
     public static final String MEDICINE_REMINDER_ID ="ReminderID";
 
+    //ICE Table
+    public static final String CONTACT_NAME="ContactName";
+    public static final String CONTACT_NUMBER="ContactNumber";
+    public static final String CONTACT_TYPE="ContactType";
+    public static final String CONTACT_DESCRIPTION="ContactDescription";
+    public static final String CONTACT_SEQUENCE="ContactSequence";
+
 }

@@ -27,6 +27,8 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
         this.mFragments = new ArrayList<>();
     }
 
+
+
     @Override
     public int getCount() {
         return mTitles.length;
