@@ -2,6 +2,7 @@ package iss.medipal.dao;
 
 import java.util.List;
 
+import iss.medipal.model.BloodPressure;
 import iss.medipal.model.Measurement;
 
 
@@ -17,9 +18,9 @@ public interface MeasurementDao {
 
     public List<Measurement> getMeasurements();
 
-    public List<Measurement> getBloodPressureValues();
+    public List<BloodPressure> getBloodPressureValues();
 
-    public int addBloodPressure(Measurement measurement);
+    public int addBloodPressure(BloodPressure measurement);
 
     public void close();
 
