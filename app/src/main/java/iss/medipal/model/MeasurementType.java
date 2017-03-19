@@ -13,6 +13,7 @@ public class MeasurementType {
     private String systolic;
     private String diastolic;
     private String measuredOn;
+    private String type;
 
     public int getImageType() {
         return imageType;
@@ -46,5 +47,13 @@ public class MeasurementType {
 
     public void setMeasuredOn(String measuredOn) {
         this.measuredOn = measuredOn;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

@@ -48,18 +48,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView title;
+        TextView title1,title2;
         ImageView imgThumb;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            title       = (TextView)  itemView.findViewById(R.id.txv_row);
-            imgThumb    = (ImageView) itemView.findViewById(R.id.img_row);
+            title1       = (TextView)  itemView.findViewById(R.id.txv_row1);
+            title2       = (TextView)  itemView.findViewById(R.id.txv_row2);
+            imgThumb    = (ImageView) itemView.findViewById(R.id.img_row1);
 
         }
 
         public void setData(MeasurementType current) {
-            this.title.setText(current.getSystolic());
+            this.title1.setText("Sys:"+current.getSystolic()+"Dias"+current.getSystolic());
+            this.title2.setText(" "+current.getMeasuredOn());
             this.imgThumb.setImageResource(current.getImageType());
 
         }
