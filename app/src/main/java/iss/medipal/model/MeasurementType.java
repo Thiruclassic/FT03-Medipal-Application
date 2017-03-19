@@ -1,9 +1,8 @@
 package iss.medipal.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import iss.medipal.R;
 
 /**
  * Created by sreekumar on 3/18/2017.
@@ -11,6 +10,9 @@ import iss.medipal.R;
 
 public class MeasurementType {
 
+    private String systolic;
+    private String diastolic;
+    private String measuredOn;
     private String type;
 
     public int getImageType() {
@@ -23,36 +25,35 @@ public class MeasurementType {
 
     private int imageType;
 
+    public String getDiastolic() {
+        return diastolic;
+    }
+
+    public void setDiastolic(String diastolic) {
+        this.diastolic = diastolic;
+    }
+
+    public String getSystolic() {
+        return systolic;
+    }
+
+    public void setSystolic(String systolic) {
+        this.systolic = systolic;
+    }
+
+    public String getMeasuredOn() {
+        return measuredOn;
+    }
+
+    public void setMeasuredOn(String measuredOn) {
+        this.measuredOn = measuredOn;
+    }
+
     public String getType() {
         return type;
     }
 
     public void setType(String type) {
         this.type = type;
-    }
-
-
-    public static List<MeasurementType> getData() {
-
-        List<MeasurementType> data = new ArrayList<>();
-
-        int[] images = {
-                R.drawable.heart_pulse,
-                R.drawable.pulse,
-                R.drawable.oil_temperature,
-                R.drawable.weight_kilogram
-        };
-
-        String[] Categories = {"Blood Pressure","Pulse","Temperature", "Weight"};
-
-        for (int i = 0; i < images.length; i++) {
-
-            MeasurementType current = new MeasurementType();
-            current.setType(Categories[i]);
-            current.setImageType(images[i]);
-            data.add(current);
-        }
-
-        return data;
     }
 }

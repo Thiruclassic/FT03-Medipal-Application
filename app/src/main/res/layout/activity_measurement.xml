@@ -1,17 +1,65 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.activities.MeasurementActivity">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.activities.MeasurementActivity">
 
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_marginTop="50dp"
+            android:columnCount="2"
+            android:rowCount="2">
 
-</LinearLayout>
+            <Button
+                android:id="@+id/button_weight"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/weight_kilogram"
+                android:text="@string/weight"
+                android:tint="@android:color/white"
+                android:layout_gravity="center_horizontal"/>
+
+            <Button
+                android:id="@+id/button_blood"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/heart_pulse"
+                android:text="@string/blood_pres"
+                android:tint="@android:color/white"
+                android:layout_gravity="center_horizontal"/>
+
+            <Button
+                android:id="@+id/button_pulse"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/pulse"
+                android:text="@string/pulse"
+                android:tint="@android:color/white"
+                android:layout_gravity="center_horizontal"/>
+
+            <Button
+                android:id="@+id/button_temp"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/oil_temperature"
+                android:text="@string/temperature"
+                android:tint="@android:color/white"
+                android:layout_gravity="center_horizontal"/>
+
+
+        </GridLayout>
+</FrameLayout>

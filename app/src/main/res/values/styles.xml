@@ -73,6 +73,20 @@
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
+
+  <!--  <item name="android:elevation">1dp</item>
+    <item name="android:translationZ">1dp</item>-->
+    <style name="MyBtnStyle">
+        <item name="android:background">@drawable/green_btn_bg</item>
+        <item name="android:shadowColor">@android:color/white</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">-1</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_size_btn</item>
+    </style>
+
+
     <style name="GreenBtnStyle">
         <item name="android:background">@drawable/green_btn_bg</item>
         <item name="android:shadowColor">@android:color/black</item>

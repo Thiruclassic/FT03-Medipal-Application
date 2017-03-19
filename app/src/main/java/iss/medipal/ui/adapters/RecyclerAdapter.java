@@ -7,11 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import iss.medipal.R;
-import iss.medipal.model.MeasurementType;
-
 
 import java.util.List;
+
+import iss.medipal.R;
+import iss.medipal.model.MeasurementType;
+/**
+ * Created by Sreekumar on 3/17/2017.
+ */
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> {
 
@@ -45,18 +48,22 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView title;
+        TextView title1,title2;
         ImageView imgThumb;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            title       = (TextView)  itemView.findViewById(R.id.txv_row);
-            imgThumb    = (ImageView) itemView.findViewById(R.id.img_row);
+            title1       = (TextView)  itemView.findViewById(R.id.txv_row1);
+            title2       = (TextView)  itemView.findViewById(R.id.txv_row2);
+            imgThumb    = (ImageView) itemView.findViewById(R.id.img_row1);
+
         }
 
         public void setData(MeasurementType current) {
-            this.title.setText(current.getType());
+            this.title1.setText("Sys:"+current.getSystolic()+"Dias"+current.getSystolic());
+            this.title2.setText(" "+current.getMeasuredOn());
             this.imgThumb.setImageResource(current.getImageType());
+
         }
     }
 }
