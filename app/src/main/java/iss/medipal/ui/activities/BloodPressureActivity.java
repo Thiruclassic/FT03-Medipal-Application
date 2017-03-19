@@ -2,8 +2,6 @@ package iss.medipal.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -19,7 +17,6 @@ import iss.medipal.dao.impl.MeasurementDaoImpl;
 import iss.medipal.model.Measurement;
 import iss.medipal.model.MeasurementType;
 import iss.medipal.ui.adapters.RecyclerAdapter;
-import iss.medipal.ui.fragments.AddBloodPressureFragment;
 
 /**
  * Created by Sreekumar on 3/17/2017.
@@ -35,7 +32,7 @@ public class BloodPressureActivity extends BaseActivity implements Toolbar.OnMen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bloodpressure);
+        setContentView(R.layout.activity_blood_pressure);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Blood Pressure");

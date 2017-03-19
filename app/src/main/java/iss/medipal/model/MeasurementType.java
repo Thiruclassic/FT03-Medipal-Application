@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import iss.medipal.R;
-import iss.medipal.dao.MeasurementDao;
-
 /**
  * Created by sreekumar on 3/18/2017.
  */
@@ -16,7 +13,6 @@ public class MeasurementType {
     private String systolic;
     private String diastolic;
     private String measuredOn;
-    private MeasurementDao measurementDao;
 
     public int getImageType() {
         return imageType;
