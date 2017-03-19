@@ -12,6 +12,7 @@ import java.util.List;
 import iss.medipal.constants.Constants;
 import iss.medipal.constants.DBConstants;
 import iss.medipal.dao.MeasurementDao;
+import iss.medipal.model.BloodPressure;
 import iss.medipal.model.Measurement;
 
 /**
@@ -48,32 +49,34 @@ public class MeasurementDaoImpl extends BaseDao implements MeasurementDao{
 
         return mesList;
     }
-    public int addBloodPressure(Measurement measurement){
+    public int addBloodPressure(BloodPressure bloodPressure){
 
         ContentValues values = new ContentValues();
-        values.put(DBConstants.MES_SYS, measurement.getSystolic());
-        values.put(DBConstants.MES_DIA, measurement.getDiastolic());
-        values.put(DBConstants.MES_measuredOn, measurement.getMeasuredOn().toString());
+        values.put(DBConstants.MES_SYS, bloodPressure.getSystolic());
+        values.put(DBConstants.MES_DIA, bloodPressure.getDiastolic());
+        values.put(DBConstants.MES_measuredOn, bloodPressure.getMeasuredOn().toString());
         int id = (int) database.insert(DBConstants.TABLE_MEASUREMENT, null, values);
         return id;
     }
 
     @Override
-    public List<Measurement> getBloodPressureValues(){
-
+    public List<BloodPressure> getBloodPressureValues(){
+        BloodPressure bloodPressure=null;
         String query = "Select * from " + DBConstants.TABLE_MEASUREMENT;
         Cursor cursor = database.rawQuery(query, null);
-        List<Measurement> bloodPressureList = new ArrayList<>();
+        List<BloodPressure> bloodPressureList = new ArrayList<>();
         dateFormat = new SimpleDateFormat(Constants.DATE_TIME_FORMAT);
         while (cursor.moveToNext()) {
             try {
 
-                Measurement measurement = new Measurement();
-                measurement.setId(cursor.getColumnIndex(DBConstants.MES_ID));
+                bloodPressure= new BloodPressure(cursor.getColumnIndex(DBConstants.MES_ID),
+                        cursor.getColumnIndex(DBConstants.MES_SYS),cursor.getColumnIndex(DBConstants.MES_DIA),
+                        dateFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.MES_measuredOn))));
+               /* measurement.setId(cursor.getColumnIndex(DBConstants.MES_ID));
                 measurement.setDiastolic(cursor.getColumnIndex(DBConstants.MES_DIA));
                 measurement.setSystolic(cursor.getColumnIndex(DBConstants.MES_SYS));
-                measurement.setMeasuredOn(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.MES_measuredOn))));
-                bloodPressureList.add(measurement);
+                measurement.setMeasuredOn(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.MES_measuredOn))));*/
+                bloodPressureList.add(bloodPressure);
 
             } catch (Exception e) {
                 Log.d("Error", e.getMessage());
