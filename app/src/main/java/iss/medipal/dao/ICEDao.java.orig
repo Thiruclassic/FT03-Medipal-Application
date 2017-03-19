@@ -1,0 +1,27 @@
+package iss.medipal.dao;
+
+<<<<<<< HEAD
+import java.util.List;
+
+import iss.medipal.model.InCaseofEmergencyContact;
+=======
+import iss.medipal.model.InCaseofEmergencyContact;
+import iss.medipal.model.PersonalBio;
+>>>>>>> 51ed947a05c017926c72bf23fa96be4a932d50b9
+
+/**
+ * Created by Thirumal on 2/24/17.
+ */
+
+public interface ICEDao {
+<<<<<<< HEAD
+    public int addContact(InCaseofEmergencyContact contact);
+    public List<InCaseofEmergencyContact> getContactsbyType(int type);
+    public List<InCaseofEmergencyContact> getContactsbyPriority();
+=======
+
+    public int createContact(InCaseofEmergencyContact contact);
+    public void close();
+
+>>>>>>> 51ed947a05c017926c72bf23fa96be4a932d50b9
+}

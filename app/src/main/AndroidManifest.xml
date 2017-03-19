@@ -16,13 +16,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.MainActivity" />
-        <activity android:name=".ui.activities.UserProfileActivity" />
+       
+ 
         <activity
             android:name=".ui.activities.IceActivity"
             android:label="Emergency Contacts"
             android:theme="@style/AppTheme" />
         <activity android:name=".ui.activities.Add_ICE"></activity>
-    </application>
+
+        <activity android:name=".ui.activities.MainActivity" />
+        <activity android:name=".ui.activities.UserProfileActivity" />
+        <activity android:name=".ui.activities.AppointmentActivity" />
+        <activity android:name=".ui.activities.BloodPressureActivity" />
+        <activity android:name=".ui.activities.MeasurementActivity" />
+        <activity android:name=".ui.activities.AddBpActivity"/>
+		<receiver android:name=".receivers.AlarmReceiver">
+        <intent-filter>
+            <action android:name="android.intent.action.BOOT_COMPLETED" />
+        </intent-filter>
+       </receiver>
+    </application> 
+
+
 
 </manifest>

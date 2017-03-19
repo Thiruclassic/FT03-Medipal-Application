@@ -11,7 +11,7 @@ import android.widget.TimePicker;
 import java.util.Calendar;
 
 /**
- * Created by sreek on 3/8/2017.
+ * Created by sreekumar on 3/8/2017.
  */
 
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
@@ -35,5 +35,6 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         // Do something with the time chosen by the user
+        ((AddMedicineFragment) getParentFragment()).onTimeSelected(hourOfDay, minute);
     }
 }

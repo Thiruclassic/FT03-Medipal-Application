@@ -82,25 +82,20 @@ public class BaseSpinnerAdapter extends ArrayAdapter<String> {
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            DropDownViewHolder viewHolder;
-            if (convertView == null) {
-                convertView = LayoutInflater.from(parent.getContext()).
-                        inflate(R.layout.spinner_item, parent, false);
-                viewHolder = new DropDownViewHolder(convertView);
-                convertView.setTag(viewHolder);
-            } else {
-                viewHolder = (DropDownViewHolder) convertView.getTag();
-            }
-            if (position == 0) {
-                viewHolder.spinnerText.setTypeface(null, Typeface.BOLD);
-                viewHolder.spinnerText.setTextColor(AppHelper.getAppPrimaryColor(parent.getContext()));
-            } else {
-                viewHolder.spinnerText.setTypeface(null, Typeface.NORMAL);
-                viewHolder.spinnerText.setTextColor(ContextCompat.getColor(parent.getContext(),
-                        R.color.mineShaft));
-            }
-            viewHolder.spinnerText.setText(mDataArray.get(position));
-            return convertView;
+        DropDownViewHolder viewHolder;
+        if (convertView == null) {
+            convertView = LayoutInflater.from(parent.getContext()).
+                    inflate(R.layout.spinner_item, parent, false);
+            viewHolder = new DropDownViewHolder(convertView);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (DropDownViewHolder) convertView.getTag();
         }
+        viewHolder.spinnerText.setTypeface(null, Typeface.NORMAL);
+        viewHolder.spinnerText.setTextColor(ContextCompat.getColor(parent.getContext(),
+                R.color.mineShaft));
+        viewHolder.spinnerText.setText(mDataArray.get(position));
+        return convertView;
+    }
 }
 

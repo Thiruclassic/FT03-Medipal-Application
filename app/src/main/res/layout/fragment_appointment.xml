@@ -1,115 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:id="@+id/view_fragment_appointment"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
-    tools:context="iss.medipal.ui.fragments.AppointmentFragment">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <ScrollView
+    <ListView
+        android:id="@+id/lvTodos"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+    <FrameLayout
+        android:id="@+id/add_appointment_frame"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="gone">
 
-            <TextView
-                android:id="@+id/cd4_title_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/score_prompt_text"
-                android:paddingBottom="@dimen/padding_generic_low"
-                android:text="@string/location"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/text_size_normal" />
+    </FrameLayout>
 
-            <EditText
-                android:id="@+id/et_location"
-                android:ems="10"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_margin="10dp"
-                android:background="@drawable/cylinder_border"/>
-
-            <TextView
-                android:id="@+id/tv_appdate"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:text="@string/date_select"
-                android:textStyle="bold" />
-<!--
-            <EditText
-                android:id="@+id/et_appdate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_appdate"
-                android:layout_gravity="center"
-                android:layout_margin="10dp"
-                android:background="@drawable/cylinder_border"
-                android:focusable="false"
-                android:hint="@string/date_select"
-                android:inputType="date" />-->
-            <EditText
-                android:id="@+id/et_appdate"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="10dp"
-                android:background="@drawable/cylinder_border"
-                android:drawableRight="@drawable/cal2"
-                android:hint="@string/date_select"
-                android:inputType="none" />
-
-            <TextView
-                android:id="@+id/tv_appTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/et_appdate"
-                android:text="@string/date_time_select"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/et_appTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_appTime"
-                android:layout_margin="10dp"
-                android:textSize="16sp"
-                android:background="@drawable/cylinder_border"
-                android:drawableRight="@drawable/clock3"
-                android:focusable="false"
-                android:hint="@string/strt_time_select"
-                android:inputType="datetime" />
-            <!--     <Button
-                     android:id="@+id/saveApp"
-                     android:layout_height="match_parent"
-                     android:layout_width="390dp"
-                     android:layout_margin="10dp"
-                     android:text="@string/save"
-                     android:textColor="@android:color/white" />-->
-
-            <Button
-                android:id="@+id/saveApp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="10dp"
-                android:layout_marginBottom="@dimen/margin_generic_med"
-                android:background="@drawable/green_button_selector"
-                android:text="Save Appointment"
-                android:textAllCaps="false"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="14sp"/>
-
-        </LinearLayout>
-    </ScrollView>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/addAppointment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:src="@drawable/plus"
+        android:tint="@android:color/white"
+        />
 
 </RelativeLayout>
+
+    <!--</android.support.design.widget.CoordinatorLayout>-->

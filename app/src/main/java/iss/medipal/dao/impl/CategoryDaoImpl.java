@@ -40,13 +40,18 @@ public class CategoryDaoImpl extends BaseDao implements CategoryDao {
     }
 
     @Override
-    public List<String> getAllCategories() {
+    public List<Category> getAllCategories() {
         String query="Select * from "+ DBConstants.TABLE_CATEGORY;
-        Cursor cursor=database.rawQuery(query,null);
-        List<String> categories=new ArrayList<>();
+        Cursor cursor = database.rawQuery(query,null);
+        List<Category> categories=new ArrayList<>();
         while (cursor.moveToNext())
         {
-            String category=cursor.getString(1);
+            Category category = new Category();
+            category.setId(cursor.getInt(0));
+            category.setCategory(cursor.getString(cursor.getColumnIndex(DBConstants.CATEGORY_NAME)));
+            category.setCode(cursor.getString(cursor.getColumnIndex(DBConstants.CATEGORY_CODE)));
+            category.setDescription(cursor.getString(cursor.getColumnIndex(DBConstants.CATEGORY_DESCRIPTION)));
+            category.setRemind(cursor.getInt(cursor.getColumnIndex(DBConstants.CATEGORY_REMIND)) > 0);
             categories.add(category);
         }
 

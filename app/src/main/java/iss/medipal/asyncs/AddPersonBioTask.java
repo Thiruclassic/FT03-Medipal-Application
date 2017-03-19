@@ -29,6 +29,4 @@ public class AddPersonBioTask extends AsyncTask<PersonalBio, Void, Long> {
             if (mBioDao != null)
                 mBioDao.close();
     }
-
-
 }

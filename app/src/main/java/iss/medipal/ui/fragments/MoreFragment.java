@@ -14,6 +14,7 @@ import java.util.Arrays;
 import iss.medipal.R;
 import iss.medipal.ui.activities.IceActivity;
 import iss.medipal.ui.activities.MainActivity;
+import iss.medipal.ui.activities.MeasurementActivity;
 import iss.medipal.ui.activities.UserProfileActivity;
 import iss.medipal.ui.adapters.MoreAdapter;
 
@@ -60,6 +61,10 @@ public class MoreFragment extends BaseFragment {
 
                     case 3:
                         ((MainActivity)getActivity()).launchActivityWithoutFinishing(IceActivity.class);
+                        break;
+                    case 2:
+                        ((MainActivity)getActivity()).launchActivityWithoutFinishing(MeasurementActivity.class);
+                        break;
                 }
             }
         });

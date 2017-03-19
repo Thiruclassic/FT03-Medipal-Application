@@ -17,6 +17,5 @@ public interface ReminderDao {
     public List<Reminder> getAllReminders();
 
     public Reminder getReminderById(int reminderId);
-
-
+    public void close();
 }

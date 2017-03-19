@@ -8,6 +8,7 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import iss.medipal.constants.Constants;
 import iss.medipal.constants.DBConstants;
 import iss.medipal.dao.ReminderDao;
 import iss.medipal.model.Reminder;
@@ -18,30 +19,37 @@ import iss.medipal.model.Reminder;
 
 public class ReminderDaoImpl extends BaseDao implements ReminderDao {
 
+    SimpleDateFormat mDateFormat;
+
     public static ReminderDaoImpl newInstance(Context context) {
         return new ReminderDaoImpl(context);
     }
 
     public ReminderDaoImpl(Context context){
         super(context);
+        mDateFormat = new SimpleDateFormat(Constants.TIME_FORMAT_STORAGE);
     }
 
     @Override
     public int addReminder(Reminder reminder) {
-        Log.d("testing","testing");
         ContentValues values=new ContentValues();
-        values.put("Frequency",reminder.getFrequency());
-        values.put("StartTime",String.valueOf(reminder.getStartTime()));
-        values.put("Interval",reminder.getInterval());
-        Log.d("testing end","testing");
+        values.put(DBConstants.REMINDER_FREQUENCY,reminder.getFrequency());
+        values.put(DBConstants.REMINDER_START_TIME,mDateFormat.format(reminder.getStartTime()));
+        values.put(DBConstants.REMINDER_INTERVAL,reminder.getInterval());
         int id=(int)database.insert(DBConstants.TABLE_REMINDER,null,values);
-        return reminder.getId();
+        return id;
 
     }
 
     @Override
     public int modifyReminder(Reminder reminder) {
-        return 0;
+        ContentValues values=new ContentValues();
+        values.put(DBConstants.REMINDER_FREQUENCY,reminder.getFrequency());
+        values.put(DBConstants.REMINDER_START_TIME,mDateFormat.format(reminder.getStartTime()));
+        values.put(DBConstants.REMINDER_INTERVAL,reminder.getInterval());
+        int id=(int)database.update(DBConstants.TABLE_REMINDER,values, "id=?",
+                new String[]{String.valueOf(reminder.getId())});
+        return id;
     }
 
     @Override
@@ -59,7 +67,6 @@ public class ReminderDaoImpl extends BaseDao implements ReminderDao {
         String query="Select * from "+ DBConstants.TABLE_REMINDER+ " where id=?";
         String[] args=new String[1];
         args[0]=String.valueOf(reminderId);
-        Log.d("Timetime","dgdggfd");
         Reminder reminder=new Reminder();
         try {
             Cursor cursor = database.rawQuery(query, args);
@@ -69,20 +76,42 @@ public class ReminderDaoImpl extends BaseDao implements ReminderDao {
             if (cursor.moveToNext()) {
 
                 Log.d("enter cursor","cursor entry");
-                reminder.setId(reminderId);
+                reminder.setId(cursor.getInt(cursor.getColumnIndex("ID")));
+                reminder.setFrequency(cursor.getInt(cursor.getColumnIndex("Frequency")));
+                reminder.setInterval(cursor.getInt(cursor.getColumnIndex("Interval")));
+                String startTime = cursor.getString(cursor.getColumnIndex("StartTime"));
+                reminder.setStartTime(mDateFormat.parse(startTime));
+
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        return reminder;
+    }
+
+    public Reminder getReminder() {
+        String query="Select * from "+ DBConstants.TABLE_REMINDER;
+        Reminder reminder=new Reminder();
+        try {
+            Cursor cursor = database.rawQuery(query, null);
+            if (cursor.moveToNext()) {
+
+                reminder.setId(cursor.getInt(cursor.getColumnIndex("ID")));
                 reminder.setFrequency(cursor.getInt(cursor.getColumnIndex("Frequency")));
                 reminder.setInterval(cursor.getInt(cursor.getColumnIndex("Interval")));
                 String startTime = cursor.getString(cursor.getColumnIndex("StartTime"));
                 SimpleDateFormat dateFormat =new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-                Log.d("Timetime",startTime);
                 reminder.setStartTime(dateFormat.parse(startTime));
 
             }
         }
         catch (Exception e)
         {
-            Log.d("Error",e.getMessage());
+            System.out.println(e.getMessage());
         }
         return reminder;
     }
+
 }

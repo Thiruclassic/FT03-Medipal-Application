@@ -27,15 +27,21 @@
     <color name="lightWhite">#88FFFFFF</color>
     <color name="half_transparent_brown">#335D5A58</color>
     <color name="mineShaft">#333333</color>
+    <color name="colorIcons">#757575</color>
+
+    <color name="overflowMenuBg">#fffcfff6</color>
+
+    <!-- Grey Color Shades -->
+    <color name="grey_25">#FDFDFD</color>
+    <color name="grey_50">#FAFAFA</color>
+    <color name="grey_100">#F5F5F5</color>
+    <color name="grey_200">#EEEEEE</color>
+    <color name="grey_300">#E0E0E0</color>
+    <color name="grey_400">#BDBDBD</color>
+    <color name="grey_500">#9E9E9E</color>
+    <color name="grey_600">#757575</color>
+    <color name="grey_700">#616161</color>
+    <color name="grey_800">#424242</color>
 
 
 </resources>
-
-<!--
-    <?xml version="1.0" encoding="utf-8"?>
-<resources>
-<color name="colorPrimary">#FF5722</color>
-<color name="colorPrimaryDark">#E64A19</color>
-<color name="colorAccent">#607D8B</color>
-<color name="colorIcons">#757575</color>
-</resources>-->
