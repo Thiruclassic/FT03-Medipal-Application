@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/view_fragment_frame"
@@ -6,37 +6,34 @@
     android:layout_height="match_parent"
     >
 
-    <!-- TODO: Update blank fragment layout -->
-
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/medicineList">
+        android:layout_height="wrap_content"
+        android:id="@+id/medicineList"
+        android:divider="@drawable/list_divider_dark"
+        android:dividerHeight="1dp">
 
     </ListView>
 
 
     <FrameLayout
         android:id="@+id/add_medicine_frame"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:visibility="invisible"
-        >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
     </FrameLayout>
 
-    <Button
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/addMedicine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:layout_alignBottom="@id/add_medicine_frame"
-        android:layout_alignEnd="@id/add_medicine_frame"
-        android:layout_alignRight="@id/add_medicine_frame"
-        android:layout_margin="16dp"
-        android:drawableBottom="@android:drawable/btn_plus"
-        android:background="@android:color/transparent"
-
+        android:layout_gravity="right|bottom"
+        android:layout_marginBottom="@dimen/margin_generic_med"
+        android:layout_marginRight="@dimen/margin_generic_med"
+        android:src="@drawable/plus"
+        android:tint="@android:color/white"
         />
 
-</RelativeLayout>
+
+</FrameLayout>

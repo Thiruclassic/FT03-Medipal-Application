@@ -6,9 +6,9 @@ package iss.medipal.constants;
 
 public class DBConstants {
 
-    public static final int DATABASE_VERSION = 9;
+    public static final int DATABASE_VERSION = 1;
 
-    public static final String DATABASE_NAME="MediPal";
+    public static final String DATABASE_NAME="MediPal.db";
 
     public static final String TABLE_PERSONAL_BIO="PersonalBio";
     public static final String TABLE_HEALTH_BIO="HealthBio";
@@ -52,6 +52,7 @@ public class DBConstants {
     public static final String APP_DESCRIPTION="Description";
     public static final String APP_DATETIME="Appointment";
 
+
     //Measurement Table  Table
     public static final String MES_ID="ID";
     public static final String MES_SYS="Systolic";
@@ -60,6 +61,19 @@ public class DBConstants {
     public static final String MES_measuredOn="MeasuredOn";
     public static final String MES_temp="Temperature";
     public static final String MES_weight="Weight";
+
+    //Catogery Table
+    public static final String CATEGORY_ID="ID";
+    public static final String CATEGORY_NAME="Category";
+    public static final String CATEGORY_CODE="Code";
+    public static final String CATEGORY_DESCRIPTION="Description";
+    public static final String CATEGORY_REMIND="Remind";
+
+    //Reminder Table
+    public static final String REMINDER_ID="ID";
+    public static final String REMINDER_FREQUENCY="Frequency";
+    public static final String REMINDER_START_TIME="StartTime";
+    public static final String REMINDER_INTERVAL="Interval";
 
 
 }

@@ -12,8 +12,15 @@ public class Constants {
     public static final String ADD_REMINDER_DIALOG="ADD_REMINDER_DIALOG";
 
     public static final String DATE_FORMAT = "dd MMM yyyy";
-    public static final String TIME_FORMAT = "hh:mm a";
+    public static final String TIME_12_HOUR_FORMAT ="hh:mm a";
+    public static final String TIME_FORMAT_STORAGE ="HH/mm";
     public static final String DATE_TIME_FORMAT = "EEE MMM dd HH:mm:ss zzz yyyy";
+    public static final String ISSUE_DATE_FORMAT = "dd/MM/yyyy";
+
+    public static final String SAVE_MEDICINE_BUTTON="Save Medicine";
+    public static final String EDIT_MEDICINE_BUTTON="Modify Medicine";
+
+
 
     public static final int MYMEDICINE_VIEW_PAGE_ID = 2;
 }

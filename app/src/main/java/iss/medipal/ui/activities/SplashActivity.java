@@ -9,11 +9,15 @@ import java.util.ArrayList;
 
 import iss.medipal.MediPalApplication;
 import iss.medipal.R;
+import iss.medipal.dao.impl.CategoryDaoImpl;
 import iss.medipal.dao.impl.PersonBioDaoImpl;
 import iss.medipal.dao.impl.MedicineDaoImpl;
+import iss.medipal.dao.impl.ReminderDaoImpl;
+import iss.medipal.model.Category;
 import iss.medipal.model.Medicine;
 import iss.medipal.model.PersonStore;
 import iss.medipal.model.PersonalBio;
+import iss.medipal.model.Reminder;
 import iss.medipal.util.SharedPreferenceManager;
 
 /**
@@ -43,36 +47,42 @@ public class SplashActivity extends BaseFullScreenActivity {
         }
     }
 
-    private class GetPersonTask extends AsyncTask<Void, Void, PersonalBio> {
+    private class GetPersonTask extends AsyncTask<Void, Void, Void> {
 
-        private PersonalBio mPersonalBio = null;
         private PersonBioDaoImpl mBioDao;
         private MedicineDaoImpl mMedicationDao;
+        private ReminderDaoImpl mRemiderDao;
+        private PersonStore mPersonStore;
 
         public GetPersonTask(Context context) {
             this.mBioDao = new PersonBioDaoImpl(context);
             this.mMedicationDao = new MedicineDaoImpl(context);
+            this.mRemiderDao = new ReminderDaoImpl(context);
         }
 
         @Override
-        protected PersonalBio doInBackground(Void... params) {
+        protected Void doInBackground(Void... params) {
+            mPersonStore = MediPalApplication.getPersonStore();
             PersonalBio result = mBioDao.getPersonalBio();
-            result.setMedicines((ArrayList<Medicine>) mMedicationDao.getAllMedicines());
+            ArrayList<Medicine> meds = (ArrayList<Medicine>) mMedicationDao.getAllMedicines();
+            for(Medicine med: meds){
+                Reminder rem = mRemiderDao.getReminderById(med.getReminderId());
+                if(rem != null){
+                    med.setReminder(rem);
+                }
+            }
+            result.setMedicines(meds);
+            mPersonStore.setmPersonalBio(result);
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            return result;
+            return null;
         }
 
         @Override
-        protected void onPostExecute(PersonalBio result) {
-            mPersonalBio = result;
-            PersonStore personStore = ((MediPalApplication)getApplicationContext()).getPersonStore();
-            personStore.setmPersonalBio(mPersonalBio);
-            mBioDao.close();
-            mMedicationDao.close();
+        protected void onPostExecute(Void result) {
             launchActivity(MainActivity.class);
         }
     }

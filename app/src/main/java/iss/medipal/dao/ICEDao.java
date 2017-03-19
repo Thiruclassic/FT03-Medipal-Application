@@ -10,5 +10,6 @@ import iss.medipal.model.PersonalBio;
 public interface ICEDao {
 
     public int createContact(InCaseofEmergencyContact contact);
+    public void close();
 
 }

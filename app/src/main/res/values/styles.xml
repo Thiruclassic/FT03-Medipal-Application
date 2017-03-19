@@ -40,7 +40,7 @@
     <style name="HintTextStyle" parent="TextAppearance.AppCompat">
         <item name="android:textColor">?colorPrimary</item>
         <item name="android:textAllCaps">true</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:gravity">left|center_vertical</item>
     </style>
 
@@ -63,7 +63,7 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_gravity">left</item>
     </style>
 
     <style name="SignUpTextViewStyle">
