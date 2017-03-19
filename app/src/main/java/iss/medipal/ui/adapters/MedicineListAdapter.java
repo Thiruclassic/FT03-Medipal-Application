@@ -15,7 +15,6 @@ import iss.medipal.model.Medicine;
 /**
  * Created by junaidramis on 17/3/17.
  */
-
 public class MedicineListAdapter extends BaseAdapter {
     private Context mContext;
     private ArrayList<Medicine> mMedicines;

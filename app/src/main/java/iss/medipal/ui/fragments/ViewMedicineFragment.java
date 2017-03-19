@@ -166,7 +166,7 @@ public class ViewMedicineFragment extends Fragment {
         ListView.OnItemClickListener itemClickListener=new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AddMedicineFragment addMedicineTab=AddMedicineFragment.newInstance(medicines.get(position));
+                AddMedicineFragment addMedicineTab = AddMedicineFragment.newInstance(medicines.get(position));
                 FragmentManager manager=getChildFragmentManager();
                 FragmentTransaction transaction= manager.beginTransaction();
                 transaction.replace(R.id.add_medicine_frame,addMedicineTab,Constants.ADD_MEDICINE_PAGE).commit();

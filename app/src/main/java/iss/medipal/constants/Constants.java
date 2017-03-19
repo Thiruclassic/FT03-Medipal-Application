@@ -21,6 +21,9 @@ public class Constants {
     public static final String EDIT_MEDICINE_BUTTON="Modify Medicine";
 
 
-
     public static final int MYMEDICINE_VIEW_PAGE_ID = 2;
+
+    public static final int TOOKIT_STATUS = 1;
+
+
 }
