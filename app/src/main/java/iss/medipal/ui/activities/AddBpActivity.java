@@ -21,6 +21,7 @@ import java.util.Locale;
 import iss.medipal.R;
 import iss.medipal.dao.MeasurementDao;
 import iss.medipal.dao.impl.MeasurementDaoImpl;
+import iss.medipal.model.BloodPressure;
 import iss.medipal.model.Measurement;
 
 public class AddBpActivity extends BaseActivity implements View.OnClickListener {
@@ -109,18 +110,18 @@ public class AddBpActivity extends BaseActivity implements View.OnClickListener 
 
     public String addMeasurement() throws Exception
     {
-        Measurement measurement = getMeasurementDetails();
+        BloodPressure measurement = getMeasurementDetails();
         measurementDao = MeasurementDaoImpl.newInstance(AddBpActivity.this);
         measurementDao.addBloodPressure(measurement);
 
         return "Appointment Added !";
     }
-    public Measurement getMeasurementDetails() throws Exception {
+    public BloodPressure getMeasurementDetails() throws Exception {
 
-        Measurement measurement = new Measurement();
+        BloodPressure measurement =null;
 
         Integer systolic = Integer.parseInt(String.valueOf(etSystolic.getText()));
-        Integer diastolic = Integer.valueOf(String.valueOf(etDiastolic.getText()));
+        Integer diastolic = Integer.parseInt(String.valueOf(etDiastolic.getText()));
         Calendar date= Calendar.getInstance();
         date.setTime(dateFormatter.parse(String.valueOf(measuredOn.getText())));
         Calendar dateTime= Calendar.getInstance();
@@ -128,10 +129,10 @@ public class AddBpActivity extends BaseActivity implements View.OnClickListener 
         dateTime.set(Calendar.MONTH, date.get(Calendar.MONTH));
         dateTime.set(Calendar.YEAR, date.get(Calendar.YEAR));
         try{
-
-            measurement.setMeasuredOn(dateTime.getTime());
+            measurement =new BloodPressure(systolic.intValue(),diastolic.intValue(),dateTime.getTime());
+         /*   measurement.setMeasuredOn(dateTime.getTime());
             measurement.setDiastolic(diastolic);
-            measurement.setSystolic(systolic);
+            measurement.setSystolic(systolic);*/
 
         }
         catch(Exception ex){
