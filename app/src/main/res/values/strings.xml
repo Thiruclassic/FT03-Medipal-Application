@@ -105,6 +105,7 @@
     <string name="enter_all_details_text">Please enter all fields</string>
     <string name="submit_text">Submit</string>
 
+
     <!--Meds Screen -->
     <string name="category_text">Category</string>
     <string name="dosage_text">Dosage (Pills per Dosage)</string>
@@ -115,9 +116,21 @@
 
 
 
+
     <!--Home Screen -->
     <string name="home_screen_no_meds_text">You must enter medications to begin using this application</string>
     <string name="home_screen_go_to_my_meds_button_text">Add New Drug</string>
     <string name="i_took_it">I took it!</string>
     <string name="select_dose">Please select a dose</string>
+
+    <!---Health Bio -->
+    <string name="condition">Condition</string>
+    <string name="enter_details">Enter your Health Bio</string>
+    <string name="start_date">Start Date</string>
+    <string name="condition_type">Condition Type</string>
+    <string name="condition_type_condition">Condition</string>
+    <string name="condition_type_allergy">Allergy</string>
+    <string name="unsuccesful">Sorry something went wrong!!</string>
+    <string name="succesful">Data succesfully saved</string>
+
 </resources>

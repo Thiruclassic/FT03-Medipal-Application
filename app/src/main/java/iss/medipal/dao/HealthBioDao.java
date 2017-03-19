@@ -15,5 +15,5 @@ public interface HealthBioDao {
     public int deleteHealthBio(int id);
     public List<HealthBio> getAllHealthBio(int id);
     public void close();
-
+    public List<HealthBio> getAllHealthBio();
 }

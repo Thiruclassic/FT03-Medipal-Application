@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightWhite">
+
+    <include layout="@layout/toolbar_generic"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_small"
+            android:layout_weight="1"
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true">
+
+          <!--  <TextView
+                android:id="@+id/heading_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/enter_details"
+                style="@style/HeadingTextViewStyle"/> !-->
+
+            <android.support.design.widget.TextInputLayout
+
+                android:id="@+id/text_condition_edit"
+                android:layout_marginTop="50dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/padding_small"
+                android:textColorHint="?colorPrimary"
+                app:hintTextAppearance="@style/HintTextStyle">
+
+                <android.support.v7.widget.AppCompatEditText
+                    style="@style/InputLayoutEditTextStyleDark"
+                    android:id="@+id/condition_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/condition"
+                    android:imeOptions="actionNext"
+                    android:inputType="text" />
+            </android.support.design.widget.TextInputLayout>
+
+
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/text_start_date_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/padding_small"
+                android:textColorHint="?colorPrimary"
+                app:hintTextAppearance="@style/HintTextStyle">
+
+                <android.support.v7.widget.AppCompatEditText
+                    style="@style/InputLayoutEditTextStyleDark"
+                    android:id="@+id/start_date_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/start_date"
+                    android:imeOptions="actionDone"
+                    android:inputType="number" />
+            </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/radio_hint"
+                    style="@style/SubHeadingTextViewStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/condition_type" />
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/radio_group">
+
+                    <RadioButton
+                        android:text="@string/condition_type_allergy"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/radioButtonAllergy"
+                        android:layout_weight="1"
+                        android:tag="A"
+                        android:checked="true"/>
+
+                    <RadioButton
+                        android:text="@string/condition_type_condition"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/radioButtonCondition"
+                        android:layout_weight="1"
+                        android:tag="C"/>
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/submit_bttn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_generic_tiny"
+                android:layout_marginRight="@dimen/margin_generic_tiny"
+                android:layout_marginBottom="@dimen/margin_generic_low"
+                android:text="@string/submit_text"
+
+                style="@style/GreenBtnStyle"
+                android:layout_marginTop="10dp" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</RelativeLayout>

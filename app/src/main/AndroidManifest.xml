@@ -21,6 +21,7 @@
         <activity android:name=".ui.activities.AppointmentActivity" />
         <activity android:name=".ui.activities.BloodPressureActivity" />
         <activity android:name=".ui.activities.MeasurementActivity" />
+
         <activity android:name=".ui.activities.AddBpActivity" />
 
         <receiver android:name=".receivers.AlarmReceiver">
@@ -38,6 +39,8 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".ui.activities.PulseActivity" />
         <activity android:name=".ui.activities.AddPulseActivity"></activity>
+        <activity android:name=".ui.activities.HealthBioActivity" />
+        <activity android:name=".ui.activities.AddhealthBioActivity"></activity>
     </application>
 
 </manifest>

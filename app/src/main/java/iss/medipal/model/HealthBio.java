@@ -9,7 +9,7 @@ import java.util.Date;
 public class HealthBio {
     int id;
     String condition;
-    Date startDate;
+    String startDate;
     String conditionType;
 
     public int getId() {
@@ -28,11 +28,11 @@ public class HealthBio {
         this.condition = condition;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
