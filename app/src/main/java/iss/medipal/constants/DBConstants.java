@@ -52,5 +52,14 @@ public class DBConstants {
     public static final String APP_DESCRIPTION="Description";
     public static final String APP_DATETIME="Appointment";
 
+    //Measurement Table  Table
+    public static final String MES_ID="ID";
+    public static final String MES_SYS="Systolic";
+    public static final String MES_DIA="Diastolic";
+    public static final String MES_PULSE="Pulse";
+    public static final String MES_measuredOn="MeasuredOn";
+    public static final String MES_temp="Temperature";
+    public static final String MES_weight="Weight";
+
 
 }

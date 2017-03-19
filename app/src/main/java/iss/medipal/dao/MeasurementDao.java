@@ -10,9 +10,14 @@ import iss.medipal.model.Measurement;
  */
 
 public interface MeasurementDao {
+
     public Measurement getMeasurement();
 
     public Measurement getMeasurement(int id);
 
     public List<Measurement> getMeasurements();
+
+    public List<Measurement> getBloodPressureValues();
+
+    public int addBloodPressure(Measurement measurement);
 }

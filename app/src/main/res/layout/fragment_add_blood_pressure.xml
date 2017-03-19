@@ -1,0 +1,61 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="iss.medipal.ui.fragments.AddBloodPressureFragment">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:titleTextColor="@color/white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="20dp"
+        android:orientation="vertical">
+
+       <!-- <android.support.design.widget.TextInputLayout
+            android:id="@+id/inputLayoutSystolic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/etSystolic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/blood_sys" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/inputLayoutDiastolic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/etDiastolic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/blood_dia" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/measuredOn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/etMeasuredOn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/blood_mes" />
+        </android.support.design.widget.TextInputLayout>-->
+
+
+    </LinearLayout>
+</RelativeLayout>
