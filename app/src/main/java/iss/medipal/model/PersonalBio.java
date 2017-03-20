@@ -2,6 +2,7 @@ package iss.medipal.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Thirumal on 2/20/2017.
@@ -17,7 +18,7 @@ public class PersonalBio {
     int height;
     String bloodType;
     ArrayList<Appointment> appointments;
-    ArrayList<HealthBio> healthBios;
+    List<HealthBio> healthBios;
     ArrayList<Medicine> medicines;
 
     public int getId() {
@@ -92,11 +93,11 @@ public class PersonalBio {
         this.appointments = appointments;
     }
 
-    public ArrayList<HealthBio> getHealthBios() {
+    public List<HealthBio> getHealthBios() {
         return healthBios;
     }
 
-    public void setHealthBios(ArrayList<HealthBio> healthBios) {
+    public void setHealthBios(List<HealthBio> healthBios) {
         this.healthBios = healthBios;
     }
 

@@ -3,8 +3,10 @@ package iss.medipal.asyncs;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import iss.medipal.MediPalApplication;
 import iss.medipal.dao.impl.HealthBioDaoImpl;
 import iss.medipal.model.HealthBio;
+import iss.medipal.model.PersonalBio;
 
 /**
  * Created by Mridul on 20-03-2017.
@@ -21,6 +23,9 @@ public class AddHealthBioTask extends AsyncTask<HealthBio, Void, Long> {
     @Override
     protected Long doInBackground(HealthBio... params) {
         long  result=1L;
+        PersonalBio personalBio=MediPalApplication.getPersonStore().getmPersonalBio();
+        personalBio.setHealthBios(mHealthBioDao.getAllHealthBio());
+
         return result;
     }
 

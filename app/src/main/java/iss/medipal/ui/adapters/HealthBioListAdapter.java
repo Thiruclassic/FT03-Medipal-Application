@@ -1,6 +1,7 @@
 package iss.medipal.ui.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import iss.medipal.R;
 import iss.medipal.model.HealthBio;
@@ -18,9 +20,9 @@ import iss.medipal.model.HealthBio;
 
 public class HealthBioListAdapter extends BaseAdapter {
     private Context mContext;
-    private ArrayList<HealthBio> mHealthBio;
+    private List<HealthBio> mHealthBio;
 
-    public HealthBioListAdapter(Context mContext, ArrayList<HealthBio> mHealthBio) {
+    public HealthBioListAdapter(Context mContext, List<HealthBio> mHealthBio) {
         this.mContext = mContext;
         this.mHealthBio = mHealthBio;
     }
@@ -43,6 +45,7 @@ public class HealthBioListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        Log.d("position",String.valueOf(position));
         HealthBioListAdapter.ViewHolder viewHolder;
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).
@@ -52,11 +55,12 @@ public class HealthBioListAdapter extends BaseAdapter {
         } else {
             viewHolder = (HealthBioListAdapter.ViewHolder) convertView.getTag();
         }
+        Log.d("position",String.valueOf(mHealthBio.get(position).getCondition()));
         viewHolder.mItemTextview.setText(mHealthBio.get(position).getCondition());
         return convertView;
     }
 
-    public void setHealthBio(ArrayList<HealthBio> healthbio){
+    public void setHealthBio(List<HealthBio> healthbio){
         this.mHealthBio = healthbio;
         notifyDataSetChanged();
     }

@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatSpinner;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ public class HealthBioFragment extends Fragment implements View.OnClickListener{
     private Button addHealthBio;
     private ImageView deleteHealthBio;
     private HealthBioListAdapter healthBioListAdapter;
-    private ArrayList<HealthBio> healthBios;
+    private List<HealthBio> healthBios;
     HealthBioDao healthBioDao;
     ListView lv;
     List<String> itemname;
@@ -48,6 +49,12 @@ public class HealthBioFragment extends Fragment implements View.OnClickListener{
     public static HealthBioFragment newInstance() {
         HealthBioFragment fragment = new HealthBioFragment();
         return fragment;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setList();
     }
 
     @Override
@@ -74,7 +81,7 @@ public class HealthBioFragment extends Fragment implements View.OnClickListener{
         addHealthBio.setOnClickListener(this);
         healthBioDao = HealthBioDaoImpl.newInstance(getActivity());
 
-        List<HealthBio> healthBioList = healthBioDao.getAllHealthBio();
+       /* List<HealthBio> healthBioList = healthBioDao.getAllHealthBio();
 
         if(itemname==null)
         {
@@ -85,17 +92,33 @@ public class HealthBioFragment extends Fragment implements View.OnClickListener{
                 itemname.add(hb.getCondition());
             }
         }
-        lv.setAdapter(new ArrayAdapter<String>(getContext(),R.layout.healthbio_list_item, R.id.tvNote, itemname));
-       // setList();
+        lv.setAdapter(new ArrayAdapter<String>(getContext(),R.layout.healthbio_list_item, R.id.tvNote, itemname));*/
+
+       setList();
     }
 
     private void setList(){
         healthBios = MediPalApplication.getPersonStore().getmPersonalBio().getHealthBios();
-        if(healthBios!=null)
+        if(healthBios==null) {
+            healthBioDao = HealthBioDaoImpl.newInstance(getActivity());
+
+            List<HealthBio> healthBioList = healthBioDao.getAllHealthBio();
+            healthBios=healthBioList;
+        }
+
+
+        Log.d("enter",String.valueOf(healthBios));
+        if(healthBioListAdapter==null)
         {
             healthBioListAdapter = new HealthBioListAdapter(getContext(), healthBios);
             lv.setAdapter(healthBioListAdapter);
         }
+        else
+        {
+            healthBioListAdapter.setHealthBio(healthBios);
+            lv.setAdapter(healthBioListAdapter);
+        }
+
 
     }
 
