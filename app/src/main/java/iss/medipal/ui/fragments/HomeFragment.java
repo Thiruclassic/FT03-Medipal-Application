@@ -24,6 +24,7 @@ import iss.medipal.model.Medicine;
 import iss.medipal.model.homeMedicineModels.MedDayModel;
 import iss.medipal.ui.activities.MainActivity;
 import iss.medipal.ui.adapters.DoseViewPagerAdapter;
+import iss.medipal.ui.customViews.CircleIndicator;
 import iss.medipal.ui.interfaces.HomeInterface;
 import iss.medipal.util.AppHelper;
 
@@ -36,6 +37,7 @@ public class HomeFragment extends BaseFragment implements
         HomeInterface {
 
     private ViewPager mViewPager;
+    private CircleIndicator mCircleIndicator;
     private RelativeLayout mMedPresentLayout;
     private FrameLayout mInnerFragmentFrame;
     private RelativeLayout mOuterFragmentFrame;
@@ -92,6 +94,11 @@ public class HomeFragment extends BaseFragment implements
     }
 
     @Override
+    public void onMedAdded() {
+        setLayout(true);
+    }
+
+    @Override
     public void onNextMedArrowClicked() {
         mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
     }
@@ -112,6 +119,7 @@ public class HomeFragment extends BaseFragment implements
         mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
         mRightArrow = (ImageButton) view.findViewById(R.id.next_day_button);
         mLeftArrow = (ImageButton) view.findViewById(R.id.prev_day_button);
+        mCircleIndicator = (CircleIndicator) view.findViewById(R.id.indicator);
     }
 
     private void setListeners(){
@@ -142,8 +150,10 @@ public class HomeFragment extends BaseFragment implements
         if(AppHelper.isListEmpty(mMedicines)){
             mMedAbsentLayout.setVisibility(View.VISIBLE);
             mDateLayout.setVisibility(View.GONE);
+            mCircleIndicator.setVisibility(View.GONE);
         } else {
             mDateLayout.setVisibility(View.VISIBLE);
+            mCircleIndicator.setVisibility(View.VISIBLE);
             mMedAbsentLayout.setVisibility(View.GONE);
             mDoseContainer = DoseContainer.getInstance(getActivity());
             if(isReload){
@@ -172,6 +182,8 @@ public class HomeFragment extends BaseFragment implements
      */
     public void populateUi(ArrayList<MedDayModel> tempMeds){
         mViewPager.setAdapter(new DoseViewPagerAdapter(getChildFragmentManager(), tempMeds, mMedicines));
+        mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
+        mCircleIndicator.setViewPager(mViewPager);
     }
 
     /**
@@ -235,12 +247,44 @@ public class HomeFragment extends BaseFragment implements
         }
     }
 
-    @Override
-    public void onMedAdded() {
-        setLayout(true);
-    }
-
     public interface MedInterface {
         void gotoAddMed();
+    }
+
+    public class ZoomOutPageTransformer implements ViewPager.PageTransformer {
+        private static final float MIN_SCALE = 0.85f;
+        private static final float MIN_ALPHA = 0.5f;
+
+        public void transformPage(View view, float position) {
+            int pageWidth = view.getWidth();
+            int pageHeight = view.getHeight();
+            if (position < -1) { // [-Infinity,-1)
+                // This page is way off-screen to the left.
+                view.setAlpha(0);
+
+            } else if (position <= 1) { // [-1,1]
+                // Modify the default slide transition to shrink the page as well
+                float scaleFactor = Math.max(MIN_SCALE, 1 - Math.abs(position));
+                float vertMargin = pageHeight * (1 - scaleFactor) / 2;
+                float horzMargin = pageWidth * (1 - scaleFactor) / 2;
+                if (position < 0) {
+                    view.setTranslationX(horzMargin - vertMargin / 2);
+                } else {
+                    view.setTranslationX(-horzMargin + vertMargin / 2);
+                }
+
+                // Scale the page down (between MIN_SCALE and 1)
+                view.setScaleX(scaleFactor);
+                view.setScaleY(scaleFactor);
+
+                // Fade the page relative to its size.
+                view.setAlpha(MIN_ALPHA +
+                        (scaleFactor - MIN_SCALE) /
+                                (1 - MIN_SCALE) * (1 - MIN_ALPHA));
+
+            } else { // (1,+Infinity]
+                view.setAlpha(0);
+            }
+        }
     }
 }
