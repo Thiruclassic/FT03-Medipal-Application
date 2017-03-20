@@ -29,7 +29,7 @@ import iss.medipal.util.DialogUtility;
 public class AddhealthBioActivity extends AppCompatActivity {
 
 
-
+    private static final String ARGS_HEALTH= "ARGS_HEALTH";
     private AppCompatEditText mCondition;
     private AppCompatEditText mStartDate;
     private SimpleDateFormat mTimeFormatter;
@@ -133,8 +133,9 @@ public class AddhealthBioActivity extends AppCompatActivity {
                 Toast.makeText(this,getString(R.string.unsuccesful),Toast.LENGTH_SHORT).show() ;
             else {
                 Toast.makeText(this, getString(R.string.succesful), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this,HealthBioActivity.class);
-                startActivity(intent);
+               // Intent intent = new Intent(this,HealthBioActivity.class);
+                //startActivity(intent);
+                finish();
             }
 
         }

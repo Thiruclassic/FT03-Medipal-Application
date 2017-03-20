@@ -62,6 +62,7 @@ public class MoreFragment extends BaseFragment {
 
                     case 1:
                         ((MainActivity)getActivity()).launchActivityWithoutFinishing(HealthBioActivity.class);
+                        break;
 
                     case 2:
                         ((MainActivity)getActivity()).launchActivityWithoutFinishing(MeasurementActivity.class);

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
+import iss.medipal.asyncs.AddHealthBioTask;
 import iss.medipal.asyncs.AddMedicineTask;
 import iss.medipal.asyncs.AddPersonBioTask;
 import iss.medipal.asyncs.EditMedicineTask;
@@ -27,6 +28,7 @@ public class PersonStore {
     private EditPersonalBioTask mEditPersonalBioTask;
     private AddMedicineTask mAddMedicineTask;
     private EditMedicineTask mEditMedicineTask;
+    private AddHealthBioTask mAddHealthBioTask;
 
     public PersonStore(PersonalBio personBio, Context context){
         this.mPersonalBio = personBio;
@@ -84,6 +86,15 @@ public class PersonStore {
         mPersonalBio.getMedicines().add(medicine);
         mAddMedicineTask = new AddMedicineTask(mContext);
         mAddMedicineTask.execute(medicine);
+    }
+
+    public void addHealthBioTask(HealthBio healthBio){
+        if(AppHelper.isListEmpty(mPersonalBio.getHealthBios())){
+            mPersonalBio.setHealthBios(new ArrayList<HealthBio>());
+        }
+        mPersonalBio.getHealthBios().add(healthBio);
+        mAddHealthBioTask = new AddHealthBioTask(mContext);
+        mAddHealthBioTask.execute(healthBio);
     }
 
     public void editMedicine(Medicine medicine){
