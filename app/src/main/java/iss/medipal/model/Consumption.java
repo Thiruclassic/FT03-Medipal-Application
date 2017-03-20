@@ -7,6 +7,7 @@ import java.util.Date;
  */
 
 public class Consumption {
+
     int id;
     int medicineId;
     int quantity;

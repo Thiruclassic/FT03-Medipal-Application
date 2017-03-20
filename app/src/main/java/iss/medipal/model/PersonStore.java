@@ -4,6 +4,7 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
+import iss.medipal.asyncs.AddConsumptionTask;
 import iss.medipal.asyncs.AddMedicineTask;
 import iss.medipal.asyncs.AddPersonBioTask;
 import iss.medipal.asyncs.EditMedicineTask;
@@ -19,6 +20,7 @@ public class PersonStore {
 
     private PersonalBio mPersonalBio;
     private ArrayList<Category> mCategory;
+    private ArrayList<Consumption> mConsumptions;
     private Context mContext;
     private PersonBioDaoImpl mBioDao;
 
@@ -27,6 +29,7 @@ public class PersonStore {
     private EditPersonalBioTask mEditPersonalBioTask;
     private AddMedicineTask mAddMedicineTask;
     private EditMedicineTask mEditMedicineTask;
+    private AddConsumptionTask mAddConsumptionTask;
 
     public PersonStore(PersonalBio personBio, Context context){
         this.mPersonalBio = personBio;
@@ -49,6 +52,14 @@ public class PersonStore {
 
     public void setCategory(ArrayList<Category> mCategory) {
         this.mCategory = mCategory;
+    }
+
+    public ArrayList<Consumption> getmConsumptions() {
+        return mConsumptions;
+    }
+
+    public void setmConsumptions(ArrayList<Consumption> mConsumptions) {
+        this.mConsumptions = mConsumptions;
     }
 
     //personal bio
@@ -106,5 +117,14 @@ public class PersonStore {
         }
         mEditMedicineTask = new EditMedicineTask(mContext);
         mEditMedicineTask.execute(medicine);
+    }
+
+    public void addConsumption(Consumption consumption){
+        if(AppHelper.isListEmpty(mConsumptions)){
+            mConsumptions = new ArrayList<>();
+        }
+        mConsumptions.add(consumption);
+        mAddConsumptionTask = new AddConsumptionTask(mContext);
+        mAddConsumptionTask.execute(consumption);
     }
 }

@@ -83,8 +83,6 @@ public class MeasurementDaoImpl extends BaseDao implements MeasurementDao{
     }
 
     public List<Weight> getWeightValues(){
-
-
         Weight weight =null;
         String query = "Select * from " + DBConstants.TABLE_MEASUREMENT+" where Weight IS NOT NULL";
         Cursor cursor = database.rawQuery(query, null);

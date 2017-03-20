@@ -3,6 +3,7 @@ package iss.medipal.dao;
 import java.util.List;
 
 import iss.medipal.model.Consumption;
+import iss.medipal.model.HealthBio;
 
 
 /**
@@ -10,6 +11,8 @@ import iss.medipal.model.Consumption;
  */
 
 public interface ConsumptionDao {
+
+    public long createConsumtion(Consumption consumption);
 
     public Consumption getConsumptionForMedicine(int medicineId);
 

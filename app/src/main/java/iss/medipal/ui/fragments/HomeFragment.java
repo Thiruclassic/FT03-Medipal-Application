@@ -181,7 +181,7 @@ public class HomeFragment extends BaseFragment implements
      * populate Ui
      */
     public void populateUi(ArrayList<MedDayModel> tempMeds){
-        mViewPager.setAdapter(new DoseViewPagerAdapter(getChildFragmentManager(), tempMeds, mMedicines));
+        mViewPager.setAdapter(new DoseViewPagerAdapter(getChildFragmentManager(), tempMeds, mMedicines, mCurrentDay));
         mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         mCircleIndicator.setViewPager(mViewPager);
     }

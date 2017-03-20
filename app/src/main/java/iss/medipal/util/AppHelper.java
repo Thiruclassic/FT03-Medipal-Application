@@ -225,6 +225,15 @@ public class AppHelper {
                 .get(Calendar.DAY_OF_YEAR);
     }
 
+    // return the difference in the number of days, given 2 date objects
+    public static boolean sameTime(Calendar startDate, Calendar endDate) {
+        return startDate.get(Calendar.YEAR) == endDate.get(Calendar.YEAR)
+                && startDate.get(Calendar.DAY_OF_YEAR) == endDate
+                .get(Calendar.DAY_OF_YEAR) && startDate.get(Calendar.HOUR_OF_DAY) ==
+                endDate.get(Calendar.HOUR_OF_DAY) && startDate.get(Calendar.MINUTE) ==
+                endDate.get(Calendar.MINUTE);
+    }
+
     /**
      * This method return a string of month from int
      *
