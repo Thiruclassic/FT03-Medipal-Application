@@ -94,7 +94,7 @@ public class TemperatureActivity extends BaseActivity implements Toolbar.OnMenuI
 
             for (int i = 0; i < tempList.size(); i++) {
 
-                Measurement temperature = new Temperature(i, images[2], tempList.get(i).getTemperature(),
+                Measurement temperature = new Temperature(tempList.get(i).getId(), images[2], tempList.get(i).getTemperature(),
                         tempList.get(i).getMeasuredOn());
        /*   bloodPressure.setSystolic(measurementList.get(i).getSystolic());
             bloodPressure.setDiastolic(measurementList.get(i).getDiastolic());
