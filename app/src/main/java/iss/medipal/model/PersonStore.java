@@ -4,6 +4,7 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
+import iss.medipal.asyncs.AddContactTask;
 import iss.medipal.asyncs.AddMedicineTask;
 import iss.medipal.asyncs.AddPersonBioTask;
 import iss.medipal.asyncs.EditMedicineTask;
@@ -27,6 +28,7 @@ public class PersonStore {
     private EditPersonalBioTask mEditPersonalBioTask;
     private AddMedicineTask mAddMedicineTask;
     private EditMedicineTask mEditMedicineTask;
+    private AddContactTask mAddContactTask;
 
     public PersonStore(PersonalBio personBio, Context context){
         this.mPersonalBio = personBio;
@@ -106,5 +108,14 @@ public class PersonStore {
         }
         mEditMedicineTask = new EditMedicineTask(mContext);
         mEditMedicineTask.execute(medicine);
+    }
+
+    public void addContact(InCaseofEmergencyContact contact){
+        if(AppHelper.isListEmpty(mPersonalBio.getContacts())){
+            mPersonalBio.setContacts(new ArrayList<InCaseofEmergencyContact>());
+        }
+        mPersonalBio.getContacts().add(contact);
+        mAddContactTask = new AddContactTask((mContext));
+        mAddContactTask.execute(contact);
     }
 }

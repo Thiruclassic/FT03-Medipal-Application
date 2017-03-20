@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,9 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import iss.medipal.MediPalApplication;
 import iss.medipal.R;
+import iss.medipal.constants.Constants;
 import iss.medipal.model.InCaseofEmergencyContact;
 import iss.medipal.util.DialogUtility;
 
@@ -31,6 +34,7 @@ public class AddContactFragment extends Fragment {
     private RadioButton mTypeSelect;
     private AppCompatEditText mPriorityEdit;
     private Button mSubmitButton;
+    private InCaseofEmergencyContact mContact;
 
 
 
@@ -57,7 +61,7 @@ public class AddContactFragment extends Fragment {
                 mTypeSelect = (RadioButton) view.findViewById(checkedId);
             }
         });*/
-
+        setListeners();
     }
 
     private void initialiseViews(View view)
@@ -94,26 +98,30 @@ public class AddContactFragment extends Fragment {
     private View.OnClickListener mSubmitListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(isValid())
-            {
-                InCaseofEmergencyContact contact = new InCaseofEmergencyContact();
-                contact.setContactName(mNameEdit.getText().toString());
-                contact.setContactNo(Long.parseLong(mNumberEdit.getText().toString()));
-                contact.setDescription(mDescriptionEdit.getText().toString());
-                contact.setSequence(Integer.parseInt(mPriorityEdit.getText().toString()));
-                switch (mTypeSelect.getText().toString()){
-                    case "FAMILY":
-                        contact.setContactType(1);
-                        break;
-                    case "FRIEND":
-                        contact.setContactType(2);
-                        break;
-                    case "DOCTOR":
-                        contact.setContactType(3);
-                        break;
-
+            try {
+                if(isValid())
+                {
+                    mContact = new InCaseofEmergencyContact();
+                    mContact.setContactName(mNameEdit.getText().toString());
+                    mContact.setContactNo(Long.parseLong(mNumberEdit.getText().toString()));
+                    mContact.setDescription(mDescriptionEdit.getText().toString());
+                    mContact.setSequence(Integer.parseInt(mPriorityEdit.getText().toString()));
+                    switch (mTypeSelect.getText().toString()){
+                        case "FAMILY":
+                            mContact.setContactType(Constants.FAMILY_CONTACT);
+                            break;
+                        case "FRIEND":
+                            mContact.setContactType(Constants.FRIEND_CONTACT);
+                            break;
+                        case "DOCTOR":
+                            mContact.setContactType(Constants.DOCTOR_CONTACT);
+                            break;
+                    }
+                    MediPalApplication.getPersonStore().addContact(mContact);
                 }
-
+            } catch (Exception e) {
+                Log.d("error",e.toString());
+                Log.d("Error:", "error in Add Contact Page");
             }
         }
     };

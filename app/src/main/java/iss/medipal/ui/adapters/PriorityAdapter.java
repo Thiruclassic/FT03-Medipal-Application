@@ -14,18 +14,18 @@ import iss.medipal.R;
 import iss.medipal.model.InCaseofEmergencyContact;
 
 /**
- * Created by Manish on 19/3/2017.
+ * Created by Manish on 20/3/2017.
  */
 
-public class FamilyAdapter extends ArrayAdapter<InCaseofEmergencyContact> {
+public class PriorityAdapter extends ArrayAdapter<InCaseofEmergencyContact> {
 
     private Context context;
-    private List<InCaseofEmergencyContact> familyMembers = new ArrayList<>();
+    private List<InCaseofEmergencyContact> sortedContacts = new ArrayList<>();
 
-    public FamilyAdapter(Context context, ArrayList<InCaseofEmergencyContact> familyMembers) {
+    public PriorityAdapter(Context context, ArrayList<InCaseofEmergencyContact> contacts) {
         super(context, R.layout.row_layout);
         this.context = context;
-        this.familyMembers = familyMembers;
+        this.sortedContacts = contacts;
     }
 
     static class ViewHolder{
@@ -48,10 +48,10 @@ public class FamilyAdapter extends ArrayAdapter<InCaseofEmergencyContact> {
             viewHolder.tvName = (TextView) convertView.findViewById(R.id.tv_name);
             convertView.setTag(viewHolder);
         } else {
-            viewHolder = (FamilyAdapter.ViewHolder) convertView.getTag();
+            viewHolder = (PriorityAdapter.ViewHolder) convertView.getTag();
         }
 
-        final InCaseofEmergencyContact contacts = familyMembers.get(position);
+        final InCaseofEmergencyContact contacts = sortedContacts.get(position);
         viewHolder.tvName.setText(contacts.getContactName());
         return convertView;
     }

@@ -19,6 +19,15 @@ public class PersonalBio {
     ArrayList<Appointment> appointments;
     ArrayList<HealthBio> healthBios;
     ArrayList<Medicine> medicines;
+    ArrayList<InCaseofEmergencyContact> contacts;
+
+    public ArrayList<InCaseofEmergencyContact> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(ArrayList<InCaseofEmergencyContact> contacts) {
+        this.contacts = contacts;
+    }
 
     public int getId() {
         return id;

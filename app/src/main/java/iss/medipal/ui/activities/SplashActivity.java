@@ -10,10 +10,12 @@ import java.util.ArrayList;
 import iss.medipal.MediPalApplication;
 import iss.medipal.R;
 import iss.medipal.dao.impl.CategoryDaoImpl;
+import iss.medipal.dao.impl.IceDaoImpl;
 import iss.medipal.dao.impl.PersonBioDaoImpl;
 import iss.medipal.dao.impl.MedicineDaoImpl;
 import iss.medipal.dao.impl.ReminderDaoImpl;
 import iss.medipal.model.Category;
+import iss.medipal.model.InCaseofEmergencyContact;
 import iss.medipal.model.Medicine;
 import iss.medipal.model.PersonStore;
 import iss.medipal.model.PersonalBio;
@@ -53,17 +55,21 @@ public class SplashActivity extends BaseFullScreenActivity {
         private MedicineDaoImpl mMedicationDao;
         private ReminderDaoImpl mRemiderDao;
         private PersonStore mPersonStore;
+        private IceDaoImpl mIceDao;
 
         public GetPersonTask(Context context) {
             this.mBioDao = new PersonBioDaoImpl(context);
             this.mMedicationDao = new MedicineDaoImpl(context);
             this.mRemiderDao = new ReminderDaoImpl(context);
+            this.mIceDao = new IceDaoImpl(context);
         }
 
         @Override
         protected Void doInBackground(Void... params) {
             mPersonStore = MediPalApplication.getPersonStore();
             PersonalBio result = mBioDao.getPersonalBio();
+            ArrayList<InCaseofEmergencyContact> contacts = (ArrayList<InCaseofEmergencyContact>) mIceDao.getAllContacts();
+            result.setContacts(contacts);
             ArrayList<Medicine> meds = (ArrayList<Medicine>) mMedicationDao.getAllMedicines();
             for(Medicine med: meds){
                 Reminder rem = mRemiderDao.getReminderById(med.getReminderId());

@@ -12,5 +12,7 @@ public interface ICEDao {
     public int addContact(InCaseofEmergencyContact contact);
     public List<InCaseofEmergencyContact> getContactsbyType(int type);
     public List<InCaseofEmergencyContact> getContactsbyPriority();
+    public List<InCaseofEmergencyContact> getAllContacts();
+    public void close();
 
 }

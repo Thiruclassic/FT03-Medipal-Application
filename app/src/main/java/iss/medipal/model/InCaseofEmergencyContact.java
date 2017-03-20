@@ -2,6 +2,8 @@ package iss.medipal.model;
 
 import android.support.annotation.NonNull;
 
+import java.util.Comparator;
+
 import static android.R.attr.description;
 import static android.R.attr.id;
 
@@ -9,7 +11,7 @@ import static android.R.attr.id;
  * Created by Thirumal on 2/20/2017.
  */
 
-public class InCaseofEmergencyContact implements Comparable<InCaseofEmergencyContact> {
+public class InCaseofEmergencyContact implements Comparator<InCaseofEmergencyContact> {
     int contactId;
     String contactName;
     long contactNo;
@@ -65,9 +67,14 @@ public class InCaseofEmergencyContact implements Comparable<InCaseofEmergencyCon
         this.contactDescription = contactDescription;
     }
 
-    @Override
+    /*@Override
     public int compareTo(@NonNull InCaseofEmergencyContact o) {  //
         return 0;
+    }*/
+
+    @Override
+    public int compare(InCaseofEmergencyContact contact1, InCaseofEmergencyContact contact2) {
+        return contact1.getContactType() - contact2.getContactType();
     }
 }
 

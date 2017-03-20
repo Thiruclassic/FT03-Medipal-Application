@@ -28,9 +28,10 @@ public class DoctorAdapter extends ArrayAdapter<InCaseofEmergencyContact> {
     private Context context;
     private List<InCaseofEmergencyContact> doctors = new ArrayList<>();
 
-    public DoctorAdapter(Context context) {
+    public DoctorAdapter(Context context, ArrayList<InCaseofEmergencyContact> doctors) {
         super(context, R.layout.row_layout);
         this.context = context;
+        this.doctors = doctors;
     }
 
     static class ViewHolder{
