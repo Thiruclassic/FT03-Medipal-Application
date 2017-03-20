@@ -3,6 +3,7 @@ package iss.medipal.ui.activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -53,9 +54,8 @@ public class TemperatureActivity extends BaseActivity implements Toolbar.OnMenuI
 
         switch (id) {
             case R.id.linearViewHorizontal:
-                LinearLayoutManager mLinearLayoutManagerHorizontal = new LinearLayoutManager(this);
-                mLinearLayoutManagerHorizontal.setOrientation(LinearLayoutManager.HORIZONTAL);
-                recyclerView.setLayoutManager(mLinearLayoutManagerHorizontal);
+                GridLayoutManager mGridLayoutManager = new GridLayoutManager(this, 2);
+                recyclerView.setLayoutManager(mGridLayoutManager);
                 break;
 
             case R.id.add_blood:
