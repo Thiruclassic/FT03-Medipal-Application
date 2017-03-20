@@ -78,7 +78,6 @@ public class MedicineReminderListAdapter extends BaseAdapter {
         Switch.OnCheckedChangeListener listener= new Switch.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.d("Postion ",String.valueOf(buttonView.getTag()));
                 Medicine medicine=medicines.get(Integer.parseInt(String.valueOf(buttonView.getTag())));
                 medicine.setRemind(isChecked);
             }
