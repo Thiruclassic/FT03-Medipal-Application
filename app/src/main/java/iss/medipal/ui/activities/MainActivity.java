@@ -1,15 +1,7 @@
 package iss.medipal.ui.activities;
 
-import android.app.AlertDialog;
-import android.net.Uri;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -18,10 +10,14 @@ import iss.medipal.R;
 import iss.medipal.ui.adapters.MainPagerAdapter;
 import iss.medipal.ui.customViews.CommonTabLayout;
 import iss.medipal.ui.entities.TabEntity;
+import iss.medipal.ui.fragments.HomeFragment;
+import iss.medipal.ui.fragments.ViewMedicineFragment;
 import iss.medipal.ui.interfaces.CustomTabEntity;
+import iss.medipal.ui.interfaces.HomeInterface;
 import iss.medipal.ui.interfaces.OnTabSelectListener;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements HomeFragment.MedInterface,
+        ViewMedicineFragment.HomeInterface {
 
     private String[] mTabItems;
 
@@ -35,8 +31,7 @@ public class MainActivity extends BaseActivity {
     private int[] mIconUnselectIds = {
             R.mipmap.home_white, R.mipmap.pills_white,
             R.mipmap.calendar_white, R.mipmap.bell_white, R.mipmap.more_white};
-
-
+   private HomeInterface mHomeInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +42,30 @@ public class MainActivity extends BaseActivity {
         setTabs();
     }
 
+    @Override
+    public void gotoAddMed() {
+        mTabLayout.setCurrentTab(1);
+        mPager.setCurrentItem(1);
+    }
+
+    @Override
+    public void onMedAdded() {
+        mHomeInterface.onMedAdded();
+    }
+
     private void initialise(){
         mTabItems = getResources().getStringArray(R.array.tab_items);
         mToolbarTitle = (TextView) findViewById(R.id.toolbar_title);
         mPager = (ViewPager) findViewById(R.id.pager);
         mTabLayout = (CommonTabLayout) findViewById(R.id.tab_layout);
+    }
+
+    public synchronized void registerDataUpdateListener(HomeInterface listener) {
+        mHomeInterface = listener;
+    }
+
+    public synchronized void unregisterDataUpdateListener() {
+        mHomeInterface = null;
     }
 
     private void setPager(){
@@ -96,8 +110,4 @@ public class MainActivity extends BaseActivity {
             }
         });
     }
-
-
-
-
 }

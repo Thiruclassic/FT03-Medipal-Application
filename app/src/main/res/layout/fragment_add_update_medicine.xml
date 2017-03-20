@@ -21,6 +21,7 @@
             android:paddingRight="@dimen/margin_generic_med">
 
             <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/name_hint"
                 style="@style/SubHeadingTextViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

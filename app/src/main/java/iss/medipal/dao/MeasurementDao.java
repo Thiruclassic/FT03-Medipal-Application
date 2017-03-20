@@ -2,7 +2,11 @@ package iss.medipal.dao;
 
 import java.util.List;
 
+import iss.medipal.model.BloodPressure;
 import iss.medipal.model.Measurement;
+import iss.medipal.model.Pulse;
+import iss.medipal.model.Temperature;
+import iss.medipal.model.Weight;
 
 
 /**
@@ -17,9 +21,16 @@ public interface MeasurementDao {
 
     public List<Measurement> getMeasurements();
 
-    public List<Measurement> getBloodPressureValues();
+    public List<BloodPressure> getBloodPressureValues();
 
-    public int addBloodPressure(Measurement measurement);
+    public List<Weight> getWeightValues();
+    public List<Temperature> getTempValues();
+    public List<Pulse> getPulseValues();
+
+    public int addBloodPressure(BloodPressure measurement);
+    public int addWeight(Weight weight);
+    public int addTemperature(Temperature temperature);
+    public int addPulse(Pulse pulse);
 
     public void close();
 

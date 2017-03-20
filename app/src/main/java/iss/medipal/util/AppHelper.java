@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import iss.medipal.R;
 import iss.medipal.constants.Constants;
@@ -203,4 +204,109 @@ public class AppHelper {
         return convertedTimeString;
     }
 
+    //
+    // parse a string date in the form: "2013-09-13"
+    public static Calendar getCalendarFromString(String date) {
+
+        int day = Integer.parseInt(date.split("/")[0]);
+        int month = Integer.parseInt(date.split("/")[1]) - 1;
+        int year = Integer.parseInt(date.split("/")[2]);
+        Calendar cal = Calendar.getInstance(Locale.US);
+        cal.clear();
+        cal.set(year, month, day);
+
+        return cal;
+    }
+
+    // return the difference in the number of days, given 2 date objects
+    public static boolean sameDay(Calendar startDate, Calendar endDate) {
+        return startDate.get(Calendar.YEAR) == endDate.get(Calendar.YEAR)
+                && startDate.get(Calendar.DAY_OF_YEAR) == endDate
+                .get(Calendar.DAY_OF_YEAR);
+    }
+
+    /**
+     * This method return a string of month from int
+     *
+     * @return
+     */
+    public static String monthName(int i) {
+        String sequence = "";
+        switch (i) {
+            case 0:
+                sequence = "Jan";
+                break;
+            case 1:
+                sequence = "Feb";
+                break;
+            case 2:
+                sequence = "Mar";
+                break;
+            case 3:
+                sequence = "Apr";
+                break;
+            case 4:
+                sequence = "May";
+                break;
+            case 5:
+                sequence = "Jun";
+                break;
+            case 6:
+                sequence = "Jul";
+                break;
+            case 7:
+                sequence = "Aug";
+                break;
+            case 8:
+                sequence = "Sep";
+                break;
+            case 9:
+                sequence = "Oct";
+                break;
+            case 10:
+                sequence = "Nov";
+                break;
+            case 11:
+                sequence = "Dec";
+                break;
+
+            default:
+                break;
+        }
+        return sequence;
+    }
+
+    public static String formatTime(int hour, int minute) {
+        String nextDose = "";
+        boolean am = true;
+        if (hour > 12) {
+            hour = hour - 12;
+            am = false;
+            if (hour == 0) {
+                hour = 12;
+                am = false;
+            }
+
+        } else if (hour == 12) {
+            am = false;
+        } else if (hour == 0) {
+            hour = 12;
+            // am = false;
+        }
+
+        nextDose += hour;
+        nextDose += (minute < 10) ? ":0" + minute : ":" + minute;
+        nextDose += (am) ? " AM" : " PM";
+        return nextDose;
+    }
+
+    public static Calendar getTimeFromString(String time) {
+        SimpleDateFormat format = new SimpleDateFormat(Constants.TIME_FORMAT_STORAGE);
+        Calendar cal = Calendar.getInstance();
+        int hr = Integer.parseInt(time.split("/")[0]);
+        int min = Integer.parseInt(time.split("/")[1]);
+        cal.set(Calendar.HOUR_OF_DAY, hr);
+        cal.set(Calendar.MINUTE, min);
+        return cal;
+    }
 }

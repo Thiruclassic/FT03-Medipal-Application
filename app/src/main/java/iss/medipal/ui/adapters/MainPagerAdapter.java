@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 import iss.medipal.ui.fragments.AppointmentFragment;
+import iss.medipal.ui.fragments.HomeFragment;
 import iss.medipal.ui.fragments.MoreFragment;
 import iss.medipal.ui.fragments.SimpleCardFragment;
 import iss.medipal.ui.fragments.ViewMedicineFragment;
@@ -42,7 +43,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return SimpleCardFragment.getInstance("Screen : " + mTitles[position]);
+                return HomeFragment.newInstance();
             case 1:
                 return ViewMedicineFragment.newInstance();
             case 2:

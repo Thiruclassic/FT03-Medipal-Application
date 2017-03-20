@@ -141,16 +141,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     // MEASUREMENT table create statement
+    //Modified table @Sree on 20/3/2017
     public String getMeasurementTableCreateQuery()
     {
         StringBuilder builder=new StringBuilder("CREATE TABLE ");
         builder.append(DBConstants.TABLE_MEASUREMENT);
         builder.append("(");
         builder.append("ID"+" INTEGER PRIMARY KEY AUTOINCREMENT,");
-        builder.append("Systolic"+" INTEGER NOT NULL,");
+        builder.append("Systolic"+" INTEGER,");
         builder.append("Diastolic"+" INTEGER, ");
-        builder.append("Pulse"+" Integer ");
-        builder.append("Temperature"+" VARCHAR(5) ,");
+        builder.append("Pulse"+" INTEGER, ");
+        builder.append("Temperature"+" INTEGER,");
         builder.append("Weight"+" INTEGER ,");
         builder.append("MeasuredOn"+" DATETIME ");
         builder.append(")");

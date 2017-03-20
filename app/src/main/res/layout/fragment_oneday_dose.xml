@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/scarpa">
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        card_view:cardCornerRadius="10dp"
+        android:layout_marginLeft="@dimen/margin_generic_med"
+        android:layout_marginRight="@dimen/margin_generic_med"
+        card_view:cardElevation="5dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="5dp">
+        <RelativeLayout
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <RelativeLayout
+                android:id="@+id/drugLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:layout_centerHorizontal="true">
+
+                <ImageButton
+                    android:id="@+id/prev_drug_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:src="@drawable/arrow_left"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:id="@+id/medNameText"
+                    android:layout_width="wrap_content"
+                    android:text="TestDrug 123"
+                    android:textAllCaps="true"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/scarpa"
+                    android:textSize="18sp"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/margin_generic_med" />
+
+                <ImageButton
+                    android:id="@+id/next_drug_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:src="@drawable/arrow_right"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/actionButtonLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/drugLayout"
+                android:layout_marginBottom="@dimen/margin_generic_med"
+                android:layout_marginTop="@dimen/margin_generic_med"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp">
+                <RadioButton
+                    android:id="@+id/tookButton"
+                    android:layout_width="@dimen/big_button_height"
+                    android:layout_height="@dimen/big_button_height"
+                    android:background="@drawable/took_it_selector"
+                    android:textAllCaps="true"
+                    android:text="@string/i_took_it"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:layout_centerInParent="true"
+                    android:textSize="@dimen/big_button_textsize"
+                    android:checked="false"/>
+
+            </RelativeLayout>
+
+            <ListView
+                android:id="@+id/dose_list_view"
+                android:layout_below="@+id/actionButtonLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@drawable/list_divider"
+                android:dividerHeight="1dp"
+                />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</RelativeLayout>

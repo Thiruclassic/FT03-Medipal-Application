@@ -14,15 +14,16 @@ import iss.medipal.R;
 
 import iss.medipal.dao.MeasurementDao;
 import iss.medipal.dao.impl.MeasurementDaoImpl;
+import iss.medipal.model.BloodPressure;
 import iss.medipal.model.Measurement;
-import iss.medipal.model.MeasurementType;
 import iss.medipal.ui.adapters.RecyclerAdapter;
+import android.support.v7.widget.GridLayoutManager;
 
 /**
  * Created by Sreekumar on 3/17/2017.
  */
 
-public class BloodPressureActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener{
+public class BloodPressureActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
 
     private Toolbar toolbar;
     private RecyclerView recyclerView;
@@ -46,7 +47,7 @@ public class BloodPressureActivity extends BaseActivity implements Toolbar.OnMen
     private void setUpRecyclerView() {
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        RecyclerAdapter adapter = new RecyclerAdapter(this,getData());
+        RecyclerAdapter adapter = new RecyclerAdapter(this, getData());
         recyclerView.setAdapter(adapter);
 
         LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(this);
@@ -60,9 +61,8 @@ public class BloodPressureActivity extends BaseActivity implements Toolbar.OnMen
 
         switch (id) {
             case R.id.linearViewHorizontal:
-                LinearLayoutManager mLinearLayoutManagerHorizontal = new LinearLayoutManager(this);
-                mLinearLayoutManagerHorizontal.setOrientation(LinearLayoutManager.HORIZONTAL);
-                recyclerView.setLayoutManager(mLinearLayoutManagerHorizontal);
+                GridLayoutManager mGridLayoutManager = new GridLayoutManager(this, 2);
+                recyclerView.setLayoutManager(mGridLayoutManager);
                 break;
 
             case R.id.add_blood:
@@ -73,16 +73,21 @@ public class BloodPressureActivity extends BaseActivity implements Toolbar.OnMen
                 FragmentTransaction transaction = manager.beginTransaction();
                 transaction.replace(R.id.add_blood_pressure,addBloodPressureFragment).commit();*/
                 break;
+            case R.id.home:
+                Intent intentHome = new Intent(BloodPressureActivity.this, MeasurementActivity.class);
+                startActivity(intentHome);
+
+                break;
         }
         return true;
 
     }
 
-    public List<MeasurementType> getData() {
+    public List<Measurement> getData() {
 
-        List<MeasurementType> data = new ArrayList<>();
+        List<Measurement> data = new ArrayList<>();
         measurementDao = MeasurementDaoImpl.newInstance(BloodPressureActivity.this);
-        List<Measurement> measurementList= measurementDao.getBloodPressureValues();
+        List<BloodPressure> measurementList = measurementDao.getBloodPressureValues();
 
         int[] images = {
                 R.drawable.heart_pulse,
@@ -91,16 +96,20 @@ public class BloodPressureActivity extends BaseActivity implements Toolbar.OnMen
                 R.drawable.weight_kilogram
         };
 
-        String[] Categories = {"Blood Pressure","Pulse","Temperature", "Weight"};
+        String[] Categories = {"Blood Pressure", "Pulse", "Temperature", "Weight"};
 
-        for (int i = 0; i < measurementList.size(); i++) {
+        if (!measurementList.isEmpty()) {
 
-            MeasurementType current = new MeasurementType();
-            current.setSystolic(String.valueOf(measurementList.get(i).getSystolic()));
-            current.setDiastolic(String.valueOf(measurementList.get(i).getDiastolic()));
-            current.setMeasuredOn(measurementList.get(i).getMeasuredOn().toString());
-            current.setImageType(images[0]);
-            data.add(current);
+            for (int i = 0; i < measurementList.size(); i++) {
+
+                Measurement bloodPressure = new BloodPressure(i, images[0], measurementList.get(i).getSystolic(),
+                        measurementList.get(i).getDiastolic(), measurementList.get(i).getMeasuredOn());
+       /*     bloodPressure.setSystolic(measurementList.get(i).getSystolic());
+            bloodPressure.setDiastolic(measurementList.get(i).getDiastolic());
+            bloodPressure.setMeasuredOn(measurementList.get(i).getMeasuredOn());
+            bloodPressure.setImageType(images[0]);*/
+                data.add(bloodPressure);
+            }
         }
 
         return data;

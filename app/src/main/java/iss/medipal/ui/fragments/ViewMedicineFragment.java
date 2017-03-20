@@ -37,7 +37,7 @@ import iss.medipal.util.AppHelper;
  * Use the {@link ViewMedicineFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ViewMedicineFragment extends Fragment {
+public class ViewMedicineFragment extends Fragment implements AddMedicineFragment.ViewMedInterface {
 
     private FloatingActionButton addMedicineButton;
     private ListView medicineList;
@@ -46,6 +46,7 @@ public class ViewMedicineFragment extends Fragment {
     private ArrayList<Medicine> medicines;
     private List<String> medicineNames;
     private MedicineDao medicineDao;
+    private HomeInterface mMedAddCallback;
 
     public ViewMedicineFragment() {
         // Required empty public constructor
@@ -69,15 +70,20 @@ public class ViewMedicineFragment extends Fragment {
         return view;
     }
 
-
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mMedAddCallback = (HomeInterface)context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mMedAddCallback = null;
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
     }
 
     @Override
@@ -92,11 +98,6 @@ public class ViewMedicineFragment extends Fragment {
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initialiseUI(view);
@@ -104,7 +105,29 @@ public class ViewMedicineFragment extends Fragment {
         setList();
     }
 
+    @Override
+    public void onMedAddedUiUpdate() {
+        addMedicineButton.setVisibility(View.VISIBLE);
+        innerLayout.setVisibility(View.GONE);
+        try {
+            medicines = MediPalApplication.getPersonStore()
+                    .getmPersonalBio().getMedicines();
+            if(!AppHelper.isListEmpty(medicines)) {
+                if (medicineListAdapter != null) {
+                    medicineListAdapter.setMedicines(medicines);
+                } else {
+                    medicineListAdapter = new MedicineListAdapter(getContext(), medicines);
+                    medicineList.setAdapter(medicineListAdapter);
+                }
+                if(mMedAddCallback != null){
+                    mMedAddCallback.onMedAdded();
+                }
 
+            }
+        } catch (NullPointerException e){
+            System.out.printf(e.getMessage());
+        }
+    }
 
     private void initialiseUI(View view){
         addMedicineButton=(FloatingActionButton)view.findViewById(R.id.addMedicine);
@@ -134,39 +157,10 @@ public class ViewMedicineFragment extends Fragment {
                 addMedicineButton.setVisibility(View.GONE);
             }
         };
-
-
-        FrameLayout.OnLayoutChangeListener layoutChangeListener=new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom,
-                                       int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                MainActivity activity=(MainActivity) v.getContext();
-                if(activity.getmListener()==null)
-                {
-                    addMedicineButton.setVisibility(View.VISIBLE);
-                    innerLayout.setVisibility(View.GONE);
-                    try {
-                        medicines = MediPalApplication.getPersonStore()
-                                .getmPersonalBio().getMedicines();
-                        if(!AppHelper.isListEmpty(medicines)) {
-                            if (medicineListAdapter != null) {
-                                medicineListAdapter.setMedicines(medicines);
-                            } else {
-                                medicineListAdapter = new MedicineListAdapter(getContext(), medicines);
-                                medicineList.setAdapter(medicineListAdapter);
-                            }
-                        }
-                    } catch (NullPointerException e){
-                        System.out.printf(e.getMessage());
-                    }
-                }
-            }
-        };
-
         ListView.OnItemClickListener itemClickListener=new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AddMedicineFragment addMedicineTab=AddMedicineFragment.newInstance(medicines.get(position));
+                AddMedicineFragment addMedicineTab = AddMedicineFragment.newInstance(medicines.get(position));
                 FragmentManager manager=getChildFragmentManager();
                 FragmentTransaction transaction= manager.beginTransaction();
                 transaction.replace(R.id.add_medicine_frame,addMedicineTab,Constants.ADD_MEDICINE_PAGE).commit();
@@ -175,8 +169,10 @@ public class ViewMedicineFragment extends Fragment {
             }
         };
         medicineList.setOnItemClickListener(itemClickListener);
-        innerLayout.addOnLayoutChangeListener(layoutChangeListener);
         addMedicineButton.setOnClickListener(addMedicineEvent);
     }
 
+    public interface HomeInterface {
+        void onMedAdded();
+    }
 }

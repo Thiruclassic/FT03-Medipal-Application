@@ -8,10 +8,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import iss.medipal.R;
-import iss.medipal.model.MeasurementType;
+import iss.medipal.model.BloodPressure;
+import iss.medipal.model.Measurement;
+import iss.medipal.model.Pulse;
+import iss.medipal.model.Temperature;
+import iss.medipal.model.Weight;
+
 /**
  * Created by Sreekumar on 3/17/2017.
  */
@@ -20,10 +29,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     private static final String TAG = RecyclerAdapter.class.getSimpleName();
 
-    private List<MeasurementType> mData;
+    private List<Measurement> mData;
     private LayoutInflater mInflater;
 
-    public RecyclerAdapter(Context context, List<MeasurementType> data) {
+    public RecyclerAdapter(Context context, List<Measurement> data) {
         this.mData = data;
         this.mInflater = LayoutInflater.from(context);
     }
@@ -37,7 +46,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        MeasurementType currentObj = mData.get(position);
+        Measurement currentObj = mData.get(position);
         holder.setData(currentObj);
     }
 
@@ -59,10 +68,74 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
         }
 
-        public void setData(MeasurementType current) {
-            this.title1.setText("Sys:"+current.getSystolic()+"Dias"+current.getSystolic());
-            this.title2.setText(" "+current.getMeasuredOn());
-            this.imgThumb.setImageResource(current.getImageType());
+        public void setData(Measurement current) {
+
+            if(current instanceof BloodPressure)
+            {
+                if(null!=current) {
+                    BloodPressure bloodPressure = (BloodPressure) current;
+                    this.title1.setText("Sys:" + bloodPressure.getSystolic() + "Dias" + bloodPressure.getSystolic());
+                    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                    Date dateTime = bloodPressure.getMeasuredOn();
+                    Calendar calendarhere = Calendar.getInstance();
+                    calendarhere.set(Calendar.YEAR, dateTime.getYear());
+                    calendarhere.set(Calendar.MONTH, dateTime.getMonth());
+                    calendarhere.set(Calendar.DATE, dateTime.getDate());
+
+                    this.title2.setText(dateFormatter.format(calendarhere.getTime()));
+                    this.imgThumb.setImageResource(bloodPressure.getImageType());
+                }
+
+            }
+            else if(current instanceof Weight){
+
+                if(null!=current) {
+
+                    Weight weight = (Weight) current;
+                    this.title1.setText("Weight:" + weight.getWeight());
+                    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                    Date dateTime = weight.getMeasuredOn();
+                    Calendar calendarhere = Calendar.getInstance();
+                    calendarhere.set(Calendar.YEAR, dateTime.getYear());
+                    calendarhere.set(Calendar.MONTH, dateTime.getMonth());
+                    calendarhere.set(Calendar.DATE, dateTime.getDate());
+
+                    this.title2.setText(dateFormatter.format(calendarhere.getTime()));
+                    this.imgThumb.setImageResource(weight.getImageType());
+                }
+            }
+            else if(current instanceof Temperature){
+                if(null!=current) {
+                    Temperature temp = (Temperature) current;
+                    this.title1.setText("Temperature:" + temp.getTemperature());
+                    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                    Date dateTime = temp.getMeasuredOn();
+                    Calendar calendarhere = Calendar.getInstance();
+                    calendarhere.set(Calendar.YEAR, dateTime.getYear());
+                    calendarhere.set(Calendar.MONTH, dateTime.getMonth());
+                    calendarhere.set(Calendar.DATE, dateTime.getDate());
+
+                    this.title2.setText(dateFormatter.format(calendarhere.getTime()));
+                    this.imgThumb.setImageResource(temp.getImageType());
+                }
+
+            }
+            else if(current instanceof Pulse){
+                if(null!=current) {
+                    Pulse pulse = (Pulse) current;
+                    this.title1.setText("Pulse:" + pulse.getPulse());
+                    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                    Date dateTime = pulse.getMeasuredOn();
+                    Calendar calendarhere = Calendar.getInstance();
+                    calendarhere.set(Calendar.YEAR, dateTime.getYear());
+                    calendarhere.set(Calendar.MONTH, dateTime.getMonth());
+                    calendarhere.set(Calendar.DATE, dateTime.getDate());
+
+                    this.title2.setText(dateFormatter.format(calendarhere.getTime()));
+                    this.imgThumb.setImageResource(pulse.getImageType());
+                }
+
+            }
 
         }
     }
