@@ -177,6 +177,9 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         FragmentTransaction transaction=manager.beginTransaction();
         transaction.detach(this).commit();
         ((MainActivity)getActivity()).setmListener(null);
+        if(mUIUpdateListener != null){
+            mUIUpdateListener.onMedAddedUiUpdate();
+        }
     }
 
     @Override
@@ -246,9 +249,6 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
                             MediPalApplication.getPersonStore().addMedicine(mMedicine);
                         } else {
                             MediPalApplication.getPersonStore().editMedicine(mMedicine);
-                        }
-                        if(mUIUpdateListener != null){
-                            mUIUpdateListener.onMedAddedUiUpdate();
                         }
                         doBack();
                     } catch (Exception e) {
