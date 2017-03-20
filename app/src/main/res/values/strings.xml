@@ -62,6 +62,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ok_text">OK</string>
     <string name="warning">Warning!</string>
+    <string name="alert">Alert</string>
 
     <!--Appointment functionality -->
     <string name="location">Location</string>
@@ -110,5 +111,13 @@
     <string name="frequency_text">Frequency</string>
     <string name="interval_text">Interval</string>
     <string name="title_activity_add_temperature">AddTemperatureActivity</string>
+    <string name="not_editable_name">Name(Not Editable)</string>
 
+
+
+    <!--Home Screen -->
+    <string name="home_screen_no_meds_text">You must enter medications to begin using this application</string>
+    <string name="home_screen_go_to_my_meds_button_text">Add New Drug</string>
+    <string name="i_took_it">I took it!</string>
+    <string name="select_dose">Please select a dose</string>
 </resources>

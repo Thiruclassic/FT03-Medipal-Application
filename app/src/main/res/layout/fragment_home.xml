@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/scarpa">
+
+    <RelativeLayout
+        android:id="@+id/outer_fragment_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:id="@+id/med_present_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/date_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_vertical">
+                <ImageButton
+                    android:id="@+id/prev_day_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:src="@drawable/arrow_fill_left"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/date_text"
+                    android:text="June 29th"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_normal"
+                    android:layout_margin="@dimen/margin_generic_low"/>
+
+                <ImageButton
+                    android:id="@+id/next_day_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:src="@drawable/arrow_fill_right"
+                    />
+
+            </LinearLayout>
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_below="@id/date_layout"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/med_absent_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:visibility="gone">
+
+
+            <TextView
+                android:id="@+id/nomeds_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:text="@string/home_screen_no_meds_text"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_large"
+                android:layout_margin="@dimen/margin_generic_med"/>
+
+            <Button
+                android:id="@+id/go_to_meds_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nomeds_text"
+                android:background="@drawable/green_btn_bg"
+                android:shadowColor="@android:color/black"
+                android:layout_marginTop="@dimen/margin_generic_med"
+                android:layout_marginLeft="@dimen/margin_generic_med"
+                android:layout_marginRight="@dimen/margin_generic_med"
+                android:shadowDx="0"
+                android:shadowDy="-1"
+                android:shadowRadius="1"
+                android:text="@string/home_screen_go_to_my_meds_button_text"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_btn" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/inner_fragment_frame"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+</LinearLayout>

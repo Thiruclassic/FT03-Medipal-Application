@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatSpinner;
+import android.support.v7.widget.AppCompatTextView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -77,6 +78,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
     private AppCompatSpinner mIntervalSpinner;
     private Switch mRemindSwitch;
     private Switch mRefillReminderSwitch;
+    private AppCompatTextView mNameHint;
 
     private MedicineDao medicineDao;
     private ReminderDao reminderDao;
@@ -91,6 +93,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
 
 
     private CustomBackPressedListener mListener;
+    private ViewMedInterface mUIUpdateListener;
 
     public AddMedicineFragment() {
         // Required empty public constructor
@@ -159,11 +162,13 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
     public void onAttach(Context context) {
         super.onAttach(context);
         ((MainActivity)getActivity()).setmListener(this);
+        mUIUpdateListener = ((ViewMedInterface)getParentFragment());
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        mUIUpdateListener = null;
     }
 
     @Override
@@ -210,6 +215,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         mIssueDateEditText =(AppCompatEditText)view.findViewById(R.id.dateIssuedText);
         mPillsBeforeRefillEditText =(AppCompatEditText)view.findViewById(R.id.pillsBeforeRefill);
         mDescriptionEditText =(AppCompatEditText)view.findViewById(R.id.medicineDescriptionText);
+        mNameHint = (AppCompatTextView) view.findViewById(R.id.name_hint);
         mCategorySpinner =(AppCompatSpinner)view.findViewById(R.id.categorySpinner);
         mDosageSpinner =(AppCompatSpinner)view.findViewById(R.id.dosageSpinner);
         mFrequencySpinner =(AppCompatSpinner)view.findViewById(R.id.frequencySpinner);
@@ -240,6 +246,9 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
                             MediPalApplication.getPersonStore().addMedicine(mMedicine);
                         } else {
                             MediPalApplication.getPersonStore().editMedicine(mMedicine);
+                        }
+                        if(mUIUpdateListener != null){
+                            mUIUpdateListener.onMedAddedUiUpdate();
                         }
                         doBack();
                     } catch (Exception e) {
@@ -291,10 +300,9 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         DatePickerDialog datePickerDialog=new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                mIssueDateEditText.setText(dayOfMonth+"/"+month+"/"+year);
+                mIssueDateEditText.setText(dayOfMonth+"/"+(month+1)+"/"+year);
             }
         },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
-        
         datePickerDialog.show();
     }
 
@@ -319,6 +327,10 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         } else if(mDosageSpinner.getSelectedItemPosition() <= 0){
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
                     "Enter Valid dosage").show();
+            return false;
+        } else if(TextUtils.isEmpty(mTotalQuantityEditText.getText())){
+            DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
+                    "Enter Valid quantity").show();
             return false;
         } else if(TextUtils.isEmpty(mIssueDateEditText.getText())){
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
@@ -360,6 +372,8 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
     {
         SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.ISSUE_DATE_FORMAT);
         mMedicineNameEditText.setText(mMedicine.getMedicine());
+        mNameHint.setText(getString(R.string.not_editable_name));
+        mMedicineNameEditText.setEnabled(false);
         mDosageSpinner.setSelection(mMedicine.getDosage());
         mCategorySpinner.setSelection(mMedicine.getCatId() - 1);
         mTotalQuantityEditText.setText(String.valueOf(mMedicine.getQuantity()));
@@ -384,5 +398,9 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
             mFrequencySpinner.setSelection(mReminder.getFrequency());
             mIntervalSpinner.setSelection(mReminder.getInterval());
         }
+    }
+
+    public interface ViewMedInterface {
+        void onMedAddedUiUpdate();
     }
 }
