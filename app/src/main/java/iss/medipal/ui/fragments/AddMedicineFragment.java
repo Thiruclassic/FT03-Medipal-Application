@@ -241,6 +241,16 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
                         } else {
                             MediPalApplication.getPersonStore().editMedicine(mMedicine);
                         }
+
+                        StringBuilder builder=new StringBuilder();
+                        builder.append(DBConstants.TABLE_MEDICINE);
+                        builder.append(Constants.SPACE);
+                        builder.append(mMedicine.getMedicine());
+                        builder.append(Constants.SPACE);
+                        builder.append(Constants.SAVE);
+
+                        Toast.makeText(getContext(),builder.toString(),Toast.LENGTH_SHORT);
+
                         doBack();
                     } catch (Exception e) {
                         Log.d("error",e.toString());

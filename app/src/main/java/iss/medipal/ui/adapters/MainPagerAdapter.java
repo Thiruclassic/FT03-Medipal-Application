@@ -9,6 +9,7 @@ import iss.medipal.ui.fragments.AppointmentFragment;
 import iss.medipal.ui.fragments.MoreFragment;
 import iss.medipal.ui.fragments.SimpleCardFragment;
 import iss.medipal.ui.fragments.ViewMedicineFragment;
+import iss.medipal.ui.fragments.ViewTabbedReminderFragment;
 
 
 /**
@@ -47,7 +48,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
             case 2:
                 return AppointmentFragment.newInstance();
             case 3:
-                return SimpleCardFragment.getInstance("Screen : " + mTitles[position]);
+                return ViewTabbedReminderFragment.newInstance();
             case 4:
                 return MoreFragment.newInstance();
         }

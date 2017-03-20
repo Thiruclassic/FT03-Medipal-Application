@@ -1,0 +1,21 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="iss.medipal.ui.fragments.ViewReminderFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/medicineReminderList"
+        android:divider="@drawable/list_divider_dark"
+        android:dividerHeight="1dp">
+
+    </ListView>
+
+
+
+
+</FrameLayout>
