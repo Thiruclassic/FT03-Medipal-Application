@@ -109,5 +109,6 @@
     <string name="dosage_text">Dosage (Pills per Dosage)</string>
     <string name="frequency_text">Frequency</string>
     <string name="interval_text">Interval</string>
+    <string name="title_activity_add_temperature">AddTemperatureActivity</string>
 
 </resources>

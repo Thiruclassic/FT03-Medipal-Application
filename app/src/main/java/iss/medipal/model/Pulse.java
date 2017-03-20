@@ -10,6 +10,21 @@ public class Pulse extends Measurement{
 
     private int pulse;
 
+
+    public Pulse(int id,int imageId,int pulse,Date measuredOn){
+
+        super(id,imageId,measuredOn);
+        this.pulse=pulse;
+
+    }
+
+    public Pulse(int id,int pulse,Date measuredOn){
+
+        super(id,measuredOn);
+        this.pulse=pulse;
+
+    }
+
     public Pulse(){
 
     }

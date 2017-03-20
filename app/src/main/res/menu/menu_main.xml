@@ -14,5 +14,10 @@
         android:title="Horizontal"
         android:orderInCategory="100"
         app:showAsAction="always"/>
+    <item android:id="@+id/home"
+        android:icon="@drawable/home"
+        android:title="Horizontal"
+        android:orderInCategory="100"
+        app:showAsAction="always"/>
 
 </menu>

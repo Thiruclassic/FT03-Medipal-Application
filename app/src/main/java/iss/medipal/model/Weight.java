@@ -10,10 +10,22 @@ public class Weight extends Measurement {
 
     private int weight;
 
-    public Weight(){
+    public Weight(int id,int imageId,int weight,Date measuredOn){
+
+        super(id,imageId,measuredOn);
+        this.weight=weight;
 
     }
 
+    public Weight(){
+
+    }
+    public Weight(int id,int weight,Date measuredOn){
+
+        super(id,measuredOn);
+        this.weight=weight;
+
+    }
     public Weight(Date measuredOn, int weight){
 
         super(measuredOn);
