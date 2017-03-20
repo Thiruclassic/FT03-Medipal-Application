@@ -11,36 +11,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 import iss.medipal.R;
-
 import iss.medipal.dao.MeasurementDao;
 import iss.medipal.dao.impl.MeasurementDaoImpl;
-import iss.medipal.model.BloodPressure;
 import iss.medipal.model.Measurement;
+import iss.medipal.model.Weight;
 import iss.medipal.ui.adapters.RecyclerAdapter;
 
 /**
- * Created by Sreekumar on 3/17/2017.
+ * Created by Sreekumar on 19/3/2017
  */
 
-public class BloodPressureActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
+public class WeightActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
 
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private MeasurementDao measurementDao;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_blood_pressure);
+        setContentView(R.layout.activity_weight);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Blood Pressure");
+        toolbar = (Toolbar) findViewById(R.id.toolbarWeight);
+        toolbar.setTitle("Weight");
         toolbar.inflateMenu(R.menu.menu_main);
         toolbar.setOnMenuItemClickListener(this);
 
         setUpRecyclerView();
-
     }
 
     private void setUpRecyclerView() {
@@ -66,7 +63,7 @@ public class BloodPressureActivity extends BaseActivity implements Toolbar.OnMen
                 break;
 
             case R.id.add_blood:
-                Intent intent = new Intent(BloodPressureActivity.this, AddBpActivity.class);
+                Intent intent = new Intent(WeightActivity.this, AddWeightActivity.class);
                 startActivity(intent);
               /*  AddBloodPressureFragment addBloodPressureFragment = AddBloodPressureFragment.newInstance("bp","bp1");
                 FragmentManager manager = getSupportFragmentManager();
@@ -74,7 +71,7 @@ public class BloodPressureActivity extends BaseActivity implements Toolbar.OnMen
                 transaction.replace(R.id.add_blood_pressure,addBloodPressureFragment).commit();*/
                 break;
             case R.id.home:
-                Intent intentHome = new Intent(BloodPressureActivity.this, MeasurementActivity.class);
+                Intent intentHome = new Intent(WeightActivity.this, MeasurementActivity.class);
                 startActivity(intentHome);
 
                 break;
@@ -86,8 +83,8 @@ public class BloodPressureActivity extends BaseActivity implements Toolbar.OnMen
     public List<Measurement> getData() {
 
         List<Measurement> data = new ArrayList<>();
-        measurementDao = MeasurementDaoImpl.newInstance(BloodPressureActivity.this);
-        List<BloodPressure> measurementList = measurementDao.getBloodPressureValues();
+        measurementDao = MeasurementDaoImpl.newInstance(WeightActivity.this);
+        List<Weight> weightList = measurementDao.getWeightValues();
 
         int[] images = {
                 R.drawable.heart_pulse,
@@ -97,22 +94,20 @@ public class BloodPressureActivity extends BaseActivity implements Toolbar.OnMen
         };
 
         String[] Categories = {"Blood Pressure", "Pulse", "Temperature", "Weight"};
+        if (!weightList.isEmpty()) {
 
-        if (!measurementList.isEmpty()) {
+            for (int i = 0; i < weightList.size(); i++) {
 
-            for (int i = 0; i < measurementList.size(); i++) {
-
-                Measurement bloodPressure = new BloodPressure(i, images[0], measurementList.get(i).getSystolic(),
-                        measurementList.get(i).getDiastolic(), measurementList.get(i).getMeasuredOn());
-       /*     bloodPressure.setSystolic(measurementList.get(i).getSystolic());
+                Measurement weight = new Weight(i, images[3], weightList.get(i).getWeight(),
+                        weightList.get(i).getMeasuredOn());
+       /*   bloodPressure.setSystolic(measurementList.get(i).getSystolic());
             bloodPressure.setDiastolic(measurementList.get(i).getDiastolic());
             bloodPressure.setMeasuredOn(measurementList.get(i).getMeasuredOn());
             bloodPressure.setImageType(images[0]);*/
-                data.add(bloodPressure);
+                data.add(weight);
             }
         }
 
         return data;
     }
-
 }
