@@ -21,6 +21,7 @@ import iss.medipal.dao.ICEDao;
 import iss.medipal.model.InCaseofEmergencyContact;
 import iss.medipal.ui.adapters.DoctorAdapter;
 import iss.medipal.ui.adapters.PriorityAdapter;
+import iss.medipal.util.AppHelper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,12 +48,12 @@ public class PriorityFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        priorityList = (ListView) view.findViewById(R.id.lv_doctor_list);
-        tvEmpty = (TextView) view.findViewById(R.id.tv_empty_doctor);
+        priorityList = (ListView) view.findViewById(R.id.lv_priority_list);
+        tvEmpty = (TextView) view.findViewById(R.id.tv_empty_contacts);
         allContacts = MediPalApplication.getPersonStore().getmPersonalBio().getContacts();  //store all contacts
         Collections.sort(allContacts, new InCaseofEmergencyContact());
 
-        if(allContacts != null){
+        if(!AppHelper.isListEmpty(allContacts)){
             priorityAdapter = new PriorityAdapter(getContext(), allContacts);
             priorityList.setAdapter(priorityAdapter);
         }

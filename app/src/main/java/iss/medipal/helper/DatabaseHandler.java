@@ -212,10 +212,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         builder.append(DBConstants.TABLE_ICE);
         builder.append("(");
         builder.append("ID"+" INTEGER PRIMARY KEY AUTOINCREMENT,");
-        builder.append("Name"+" Varchar(100) NOT NULL,");
-        builder.append("ContactNo"+" Varchar(20) NOT NULL,");
+        builder.append("ContactName"+" Varchar(100) NOT NULL,");
+        builder.append("ContactNumber"+" Varchar(20) NOT NULL,");
         builder.append("ContactType"+" INTEGER NOT NULL,");
-        builder.append("Description"+" INTEGER");
+        builder.append("ContactSequence"+" INTEGER NOT NULL,");
+        builder.append("ContactDescription"+" Varchar(255) NOT NULL");
         builder.append(")");
 
         return builder.toString();

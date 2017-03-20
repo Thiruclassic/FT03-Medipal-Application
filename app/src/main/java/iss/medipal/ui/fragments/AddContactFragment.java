@@ -1,6 +1,7 @@
 package iss.medipal.ui.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import iss.medipal.MediPalApplication;
 import iss.medipal.R;
@@ -118,6 +120,12 @@ public class AddContactFragment extends Fragment {
                             break;
                     }
                     MediPalApplication.getPersonStore().addContact(mContact);
+                    Context context = getContext();
+                    CharSequence text = "Successfully Added Contact";
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
                 }
             } catch (Exception e) {
                 Log.d("error",e.toString());

@@ -31,12 +31,13 @@ public class IceDaoImpl extends BaseDao implements ICEDao{
         contentValues.put(DBConstants.CONTACT_TYPE,contact.getContactType());
         contentValues.put(DBConstants.CONTACT_SEQUENCE,contact.getSequence());
         int id=(int)database.insert(DBConstants.TABLE_ICE,null,contentValues);
+        Log.d("inserting Contact",String.valueOf(id));
         return id;
     }
 
     @Override
     public List<InCaseofEmergencyContact> getContactsbyType(int type) {
-        String query = "Select * from" + DBConstants.TABLE_ICE + "where contactId=?";
+        String query = "Select * from" + DBConstants.TABLE_ICE + "where ID=?";
         String args[] = new String[1];
         args[0] = String.valueOf(type);
         List<InCaseofEmergencyContact> contacts= new ArrayList<>();
@@ -66,7 +67,7 @@ public class IceDaoImpl extends BaseDao implements ICEDao{
 
     @Override
     public List<InCaseofEmergencyContact> getContactsbyPriority() {
-        String query = "Select * from" + DBConstants.TABLE_ICE + "order by contactSequence asc";
+        String query = "Select * from" + DBConstants.TABLE_ICE + "order by ContactSequence asc";
         List<InCaseofEmergencyContact> contacts= new ArrayList<>();
 
         try {
