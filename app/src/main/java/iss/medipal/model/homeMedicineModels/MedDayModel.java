@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import iss.medipal.model.Medicine;
+import iss.medipal.util.AppHelper;
 
 /**
  * Created by junaidramis on 19/3/17.
@@ -82,7 +83,11 @@ public class MedDayModel implements Parcelable {
     public void reorderDoseRecordList() {
         Collections.sort(doseRecordList, new Comparator<MedDoseModel>() {
             public int compare(MedDoseModel dr1, MedDoseModel dr2) {
-                return dr1.getDoseTime().compareTo(dr2.getDoseTime());
+                if(AppHelper.getTimeFromString(dr1.getDoseTime()).before(
+                        AppHelper.getTimeFromString(dr2.getDoseTime()
+                ))) {
+                    return 1;
+                } else return 0;
             }
         });
     }

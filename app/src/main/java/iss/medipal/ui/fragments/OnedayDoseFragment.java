@@ -8,11 +8,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.concurrent.ThreadFactory;
 
 import iss.medipal.R;
 import iss.medipal.constants.Constants;
@@ -22,12 +24,13 @@ import iss.medipal.model.homeMedicineModels.MedDayModel;
 import iss.medipal.model.homeMedicineModels.MedDoseModel;
 import iss.medipal.ui.adapters.DoseListAdapter;
 import iss.medipal.util.AppHelper;
+import iss.medipal.util.DialogUtility;
 
 /**
  * Created by junaidramis on 19/3/17.
  */
 
-public class OnedayDoseFragment extends BaseFragment {
+public class OnedayDoseFragment extends BaseFragment implements DoseListAdapter.OnItemSelectedListener {
 
     private static final String ARGS_MED = "ARGS_MED";
     private static final String ARGS_MEDS = "ARGS_MEDS";
@@ -36,7 +39,7 @@ public class OnedayDoseFragment extends BaseFragment {
 
     private TextView mMedTitle;
     private ListView mDoseList;
-    private Button mTookItButton;
+    private RadioButton mTookItButton;
     private ImageButton mPrevMedButton;
     private ImageButton mNextMedButton;
 
@@ -44,7 +47,7 @@ public class OnedayDoseFragment extends BaseFragment {
     private ArrayList<Medicine> myMeds;
     private ArrayList<MedDoseModel> mDoseRecords;
     private Boolean isFirst, isLast;
-
+    private OnMedicineArrowClickListener mArrowCallback;
     private DoseContainer mDoseContainer;
     private DoseListAdapter mAdapter;
     private int mSelectedPosition = -1;
@@ -88,12 +91,25 @@ public class OnedayDoseFragment extends BaseFragment {
         setupDoseList();
         setUpButton(mSelectedPosition);
         setUpArrows();
+        setListeners();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mArrowCallback = null;
+    }
+
+    @Override
+    public void onItemSelected(int pos) {
+        mSelectedPosition = pos;
+        setUpButton(mSelectedPosition);
     }
 
     private void initialise(View view){
         mMedTitle = (TextView) view.findViewById(R.id.medNameText);
         mDoseList = (ListView) view.findViewById(R.id.dose_list_view);
-        mTookItButton = (Button) view.findViewById(R.id.tookButton);
+        mTookItButton = (RadioButton) view.findViewById(R.id.tookButton);
         mPrevMedButton = (ImageButton) view.findViewById(R.id.prev_drug_button);
         mNextMedButton = (ImageButton) view.findViewById(R.id.next_drug_button);
     }
@@ -104,7 +120,7 @@ public class OnedayDoseFragment extends BaseFragment {
         }
         mDoseRecords = mMedicine.getDoseRecordList();
         if(!AppHelper.isListEmpty(mDoseRecords)){
-            mAdapter = new DoseListAdapter(getActivity(), mDoseRecords, myMeds);
+            mAdapter = new DoseListAdapter(getActivity(), this, mDoseRecords, myMeds);
             mDoseList.setAdapter(mAdapter);
         }
     }
@@ -113,12 +129,12 @@ public class OnedayDoseFragment extends BaseFragment {
         if(!AppHelper.isListEmpty(mDoseRecords)) {
             if(mSelectedPosition >= 0) {
                 if(mDoseRecords.get(mSelectedPosition).getStatus() == Constants.TOOKIT_STATUS){
-                    mTookItButton.setClickable(true);
-                    mTookItButton.setSelected(true);
+                    mTookItButton.setChecked(true);
+                } else {
+                    mTookItButton.setChecked(false);
                 }
             } else {
-                mTookItButton.setSelected(true);
-                mTookItButton.setClickable(true);
+                mTookItButton.setChecked(false);
             }
         }
     }
@@ -136,5 +152,43 @@ public class OnedayDoseFragment extends BaseFragment {
         }
     }
 
+    private void setListeners(){
+        mArrowCallback = ((OnMedicineArrowClickListener)getParentFragment());
+        mNextMedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mArrowCallback.onNextMedArrowClicked();
+            }
+        });
+        mPrevMedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mArrowCallback.onPreviousMedArrowClicked();
+            }
+        });
+        mTookItButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onTookItClicked();
+            }
+        });
+    }
 
+    public void onTookItClicked(){
+        if(!AppHelper.isListEmpty(mDoseRecords)) {
+            if(mSelectedPosition >= 0){
+                mDoseRecords.get(mSelectedPosition).setStatus(Constants.TOOKIT_STATUS);
+                mAdapter.notifyDataSetChanged();
+            } else {
+                DialogUtility.newMessageDialog(getContext(), getString(R.string.alert),
+                        getString(R.string.select_dose)).show();
+            }
+            setUpButton(mSelectedPosition);
+        }
+    }
+
+    public interface OnMedicineArrowClickListener{
+        void onNextMedArrowClicked();
+        void onPreviousMedArrowClicked();
+    }
 }

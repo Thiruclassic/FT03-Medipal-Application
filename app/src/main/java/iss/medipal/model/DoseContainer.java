@@ -67,15 +67,15 @@ public class DoseContainer {
                     if(med.getReminder() != null){
                         Reminder rem = med.getReminder();
                         Date date = rem.getStartTime();
-                        mDoseCalendar.setTime(date);
                         while (mMedAddedDate.before(mCurrentDate) || AppHelper.sameDay(mMedAddedDate, mCurrentDate)){
+                            mDoseCalendar.setTime(date);
                             for (int i = 0; i < rem.getFrequency(); i++) {
                                 MedDoseModel medDoseModel = new MedDoseModel();
                                 medDoseModel.setIdMed(med.getId());
                                 medDoseModel.setDrugName(med.getMedicine());
-                                mDoseCalendar.add(Calendar.HOUR, i * rem.getInterval());
                                 medDoseModel.setDoseTime(
                                         mTimeFormat.format(mDoseCalendar.getTime()));
+                                mDoseCalendar.add(Calendar.HOUR, rem.getInterval());
                                 medDoseModel.setDate(mDateFormat.format(mMedAddedDate.getTime()));
                                 mDayDoseRecords.add(medDoseModel);
                             }

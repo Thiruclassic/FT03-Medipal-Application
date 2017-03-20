@@ -1,5 +1,6 @@
 package iss.medipal.ui.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -9,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,20 +22,25 @@ import iss.medipal.R;
 import iss.medipal.model.DoseContainer;
 import iss.medipal.model.Medicine;
 import iss.medipal.model.homeMedicineModels.MedDayModel;
+import iss.medipal.ui.activities.MainActivity;
 import iss.medipal.ui.adapters.DoseViewPagerAdapter;
+import iss.medipal.ui.interfaces.HomeInterface;
 import iss.medipal.util.AppHelper;
 
 /**
  * Created by junaidramis on 19/3/17.
  */
 
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment implements
+        OnedayDoseFragment.OnMedicineArrowClickListener,
+        HomeInterface {
 
     private ViewPager mViewPager;
     private RelativeLayout mMedPresentLayout;
     private FrameLayout mInnerFragmentFrame;
     private RelativeLayout mOuterFragmentFrame;
     private RelativeLayout mMedAbsentLayout;
+    private LinearLayout mDateLayout;
     private Button mNoMedsBtn;
     private TextView mDateText;
     private ImageButton mLeftArrow;
@@ -44,6 +50,7 @@ public class HomeFragment extends BaseFragment {
     private DoseContainer mDoseContainer;
     private Calendar mToday;
     private Calendar mCurrentDay;
+    private MedInterface mCallback;
 
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
@@ -70,8 +77,33 @@ public class HomeFragment extends BaseFragment {
         setLayout(false);
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallback = (MedInterface)context;
+        ((MainActivity)context).registerDataUpdateListener(this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallback = null;
+        ((MainActivity)getActivity()).unregisterDataUpdateListener();
+    }
+
+    @Override
+    public void onNextMedArrowClicked() {
+        mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
+    }
+
+    @Override
+    public void onPreviousMedArrowClicked() {
+        mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
+    }
+
     private void initialiseViews(View view){
         mDateText = (TextView) view.findViewById(R.id.date_text);
+        mDateLayout = (LinearLayout) view.findViewById(R.id.date_layout);
         mNoMedsBtn = (Button) view.findViewById(R.id.go_to_meds_btn);
         mMedAbsentLayout = (RelativeLayout) view.findViewById(R.id.med_absent_layout);
         mOuterFragmentFrame = (RelativeLayout) view.findViewById(R.id.outer_fragment_frame);
@@ -95,13 +127,23 @@ public class HomeFragment extends BaseFragment {
                 onPreviousDayClick();
             }
         });
+        mNoMedsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mCallback != null){
+                    mCallback.gotoAddMed();
+                }
+            }
+        });
     }
 
     private void setLayout(boolean isReload){
         mMedicines = MediPalApplication.getPersonStore().getmPersonalBio().getMedicines();
         if(AppHelper.isListEmpty(mMedicines)){
             mMedAbsentLayout.setVisibility(View.VISIBLE);
+            mDateLayout.setVisibility(View.GONE);
         } else {
+            mDateLayout.setVisibility(View.VISIBLE);
             mMedAbsentLayout.setVisibility(View.GONE);
             mDoseContainer = DoseContainer.getInstance(getActivity());
             if(isReload){
@@ -111,7 +153,6 @@ public class HomeFragment extends BaseFragment {
             ArrayList<MedDayModel> tempMeds = mDoseContainer.getDosesForDay(mCurrentDay);
             setDateArrowVisibility(mCurrentDay);
             populateUi(tempMeds);
-
         }
     }
 
@@ -192,5 +233,14 @@ public class HomeFragment extends BaseFragment {
         } else {
             mCurrentDay.add(Calendar.DATE, -1);
         }
+    }
+
+    @Override
+    public void onMedAdded() {
+        setLayout(true);
+    }
+
+    public interface MedInterface {
+        void gotoAddMed();
     }
 }

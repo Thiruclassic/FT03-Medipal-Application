@@ -2,6 +2,7 @@ package iss.medipal.ui.adapters;
 
 import android.content.Context;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import iss.medipal.R;
 import iss.medipal.constants.Constants;
 import iss.medipal.model.Medicine;
 import iss.medipal.model.homeMedicineModels.MedDoseModel;
+import iss.medipal.ui.fragments.BaseFragment;
 import iss.medipal.util.AppHelper;
 
 /**
@@ -32,13 +34,15 @@ public class DoseListAdapter extends BaseAdapter {
     private ArrayList<Medicine> mMeds;
     private Medicine mCurrentMed;
     private Context mContext;
+    private OnItemSelectedListener mItemSelectedListener;
     private int mSelectedPosition = -1;
 
 
-    public DoseListAdapter(Context context , ArrayList<MedDoseModel> doseRecords, ArrayList<Medicine> meds) {
+    public DoseListAdapter(Context context , BaseFragment fragment, ArrayList<MedDoseModel> doseRecords, ArrayList<Medicine> meds) {
         mDoseRecords = doseRecords;
         mContext = context;
         mMeds = meds;
+        mItemSelectedListener = (OnItemSelectedListener)fragment;
         mCurrentMed = getCurrentMed();
     }
 
@@ -148,8 +152,12 @@ public class DoseListAdapter extends BaseAdapter {
                 int pos = (int)view.getTag(view.getId());
                 mSelectedPosition = pos;
                 notifyDataSetChanged();
-//                mBus.post(new DoseItemClickedEvent(mCurrentMed.getId_mymed(), pos));
+                mItemSelectedListener.onItemSelected(mSelectedPosition);
             }
         };
+    }
+
+    public interface OnItemSelectedListener{
+        void onItemSelected(int pos);
     }
 }

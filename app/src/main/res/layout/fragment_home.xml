@@ -37,7 +37,8 @@
                     android:id="@+id/date_text"
                     android:text="June 29th"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_normal" />
+                    android:textSize="@dimen/text_size_normal"
+                    android:layout_margin="@dimen/margin_generic_low"/>
 
                 <ImageButton
                     android:id="@+id/next_day_button"

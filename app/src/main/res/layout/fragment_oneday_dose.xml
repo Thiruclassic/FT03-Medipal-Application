@@ -75,7 +75,7 @@
                 android:layout_marginTop="@dimen/margin_generic_med"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp">
-                <Button
+                <RadioButton
                     android:id="@+id/tookButton"
                     android:layout_width="@dimen/big_button_height"
                     android:layout_height="@dimen/big_button_height"
@@ -85,7 +85,8 @@
                     android:button="@null"
                     android:gravity="center"
                     android:layout_centerInParent="true"
-                    android:textSize="@dimen/big_button_textsize" />
+                    android:textSize="@dimen/big_button_textsize"
+                    android:checked="false"/>
 
             </RelativeLayout>
 

@@ -300,4 +300,13 @@ public class AppHelper {
         return nextDose;
     }
 
+    public static Calendar getTimeFromString(String time) {
+        SimpleDateFormat format = new SimpleDateFormat(Constants.TIME_FORMAT_STORAGE);
+        Calendar cal = Calendar.getInstance();
+        int hr = Integer.parseInt(time.split("/")[0]);
+        int min = Integer.parseInt(time.split("/")[1]);
+        cal.set(Calendar.HOUR_OF_DAY, hr);
+        cal.set(Calendar.MINUTE, min);
+        return cal;
+    }
 }
