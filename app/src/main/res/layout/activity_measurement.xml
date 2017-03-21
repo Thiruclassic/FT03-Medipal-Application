@@ -63,4 +63,65 @@
 
 
         </GridLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom|center">
+
+       <ImageView
+                android:layout_gravity="bottom|center"
+                android:id="@+id/color1"
+                android:src="@color/blue_500"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="5dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:text="Normal"
+            android:layout_gravity="bottom|center"/>
+        <ImageView
+            android:layout_gravity="bottom|center"
+            android:id="@+id/color2"
+            android:src="@color/green_A700"
+            android:layout_marginRight="5dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:text="Ideal"
+            android:layout_gravity="bottom|center"/>
+        <ImageView
+            android:layout_gravity="bottom|center"
+            android:id="@+id/color3"
+            android:src="@color/yellow_500"
+            android:layout_marginRight="5dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:text="High"
+            android:layout_gravity="bottom|center"/>
+        <ImageView
+            android:layout_gravity="bottom|center"
+            android:id="@+id/color4"
+            android:src="@color/red_500"
+            android:layout_marginRight="5dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:text="Very High"
+            android:layout_gravity="bottom|center"/>
+    </LinearLayout>
+
+
 </FrameLayout>

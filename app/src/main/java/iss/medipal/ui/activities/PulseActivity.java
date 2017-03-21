@@ -62,10 +62,6 @@ public class PulseActivity extends BaseActivity implements Toolbar.OnMenuItemCli
             case R.id.add_blood:
                 Intent intent = new Intent(PulseActivity.this, AddPulseActivity.class);
                 startActivity(intent);
-              /*  AddBloodPressureFragment addBloodPressureFragment = AddBloodPressureFragment.newInstance("bp","bp1");
-                FragmentManager manager = getSupportFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.replace(R.id.add_blood_pressure,addBloodPressureFragment).commit();*/
                 break;
             case R.id.home:
                 Intent intentHome = new Intent(PulseActivity.this, MeasurementActivity.class);
@@ -96,12 +92,8 @@ public class PulseActivity extends BaseActivity implements Toolbar.OnMenuItemCli
 
             for (int i = 0; i < pulseList.size(); i++) {
 
-                Measurement pulse = new Pulse(pulseList.get(i).getId(), images[3], pulseList.get(i).getPulse(),
+                Measurement pulse = new Pulse(pulseList.get(i).getId(), images[1], pulseList.get(i).getPulse(),
                         pulseList.get(i).getMeasuredOn());
-       /*   bloodPressure.setSystolic(measurementList.get(i).getSystolic());
-            bloodPressure.setDiastolic(measurementList.get(i).getDiastolic());
-            bloodPressure.setMeasuredOn(measurementList.get(i).getMeasuredOn());
-            bloodPressure.setImageType(images[0]);*/
                 data.add(pulse);
             }
         }

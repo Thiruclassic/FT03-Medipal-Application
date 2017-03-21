@@ -34,7 +34,7 @@ public class EditMedicineTask extends AsyncTask<Medicine, Void, Long> {
 
     @Override
     protected Long doInBackground(Medicine... params) {
-        int reminderId = mReminderDao.modifyReminder(params[0].getReminder());
+//        int reminderId = mReminderDao.modifyReminder(params[0].getReminder());
         long result = mMedDao.updateMedicine(params[0]);
         return result;
     }
