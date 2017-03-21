@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -50,6 +51,8 @@ public class AddAppointmentFragment extends Fragment {
     Calendar dateCalendar;
     DatePickerDialog datePickerDialog;
     Calendar selectedDate = Calendar.getInstance();
+    private DatePickerDialog mDatePickerDialog;
+    private TimePickerDialog mTimePickerDialog;
     private static final SimpleDateFormat formatter = new SimpleDateFormat(
             "yyyy-MM-dd", Locale.ENGLISH);
     AppointmentDao appointmentDao;
@@ -139,9 +142,31 @@ public class AddAppointmentFragment extends Fragment {
         };
 
         etDate.setOnClickListener(appDateListner);
+        etDate.setOnFocusChangeListener(mDateFocusListener);
         etTime.setOnClickListener(appTimeListner);
+        etTime.setOnFocusChangeListener(mTimeFocusListener);
         btnSave.setOnClickListener(saveListener);
     }
+
+    private View.OnFocusChangeListener mDateFocusListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if(hasFocus) {
+                mDatePickerDialog = showDatePicker();
+                mDatePickerDialog.show();
+            }
+        }
+    };
+    private View.OnFocusChangeListener mTimeFocusListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if(hasFocus) {
+                mTimePickerDialog = showTimePicker();
+                mTimePickerDialog.show();
+            }
+        }
+    };
+
 
     public void onBackPressed(){
         AppointmentFragment appointmentFragment = AppointmentFragment.newInstance();
@@ -149,7 +174,7 @@ public class AddAppointmentFragment extends Fragment {
         FragmentTransaction transaction= manager.beginTransaction();
         transaction.replace(R.id.add_appointment_frame,appointmentFragment).commit();
     }
-    public void showTimePicker()
+    public TimePickerDialog showTimePicker()
     {
 
         final Calendar calendar = Calendar.getInstance();
@@ -163,9 +188,11 @@ public class AddAppointmentFragment extends Fragment {
             }
 
         },hour,minute,false);
-        timePickerDialog.show();
+//        timePickerDialog.show();
+        return timePickerDialog;
     }
-    public void showDatePicker()
+
+    public DatePickerDialog showDatePicker()
     {
         Calendar calendar=Calendar.getInstance();
         DatePickerDialog datePickerDialog=new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
@@ -175,7 +202,8 @@ public class AddAppointmentFragment extends Fragment {
             }
         },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
 
-        datePickerDialog.show();
+//        datePickerDialog.show();
+        return datePickerDialog;
     }
     @Override
     public void onAttach(Context context) {
@@ -241,6 +269,16 @@ public class AddAppointmentFragment extends Fragment {
         return appointment;
 
     }
+
+/*    private View.OnFocusChangeListener mTimeFocusListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if(hasFocus) {
+                mDatePickerDialog = showDatePicker();
+                mDatePickerDialog.show();
+            }
+        }
+    };*/
     private boolean isValid() {
         boolean isValid = true;
         try {

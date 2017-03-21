@@ -36,7 +36,7 @@ public class AddTemperatureActivity extends BaseActivity implements View.OnClick
     private MeasurementDao measurementDao;
     private Toolbar toolbar;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-
+    private DatePickerDialog mDatePickerDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,10 +72,21 @@ public class AddTemperatureActivity extends BaseActivity implements View.OnClick
             }
         };
         etTempMeasuredOn.setOnClickListener(appDateListner);
+        etTempMeasuredOn.setOnFocusChangeListener(mDateFocusListener);
 
     }
 
-    public void showDatePicker() {
+    private View.OnFocusChangeListener mDateFocusListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if(hasFocus) {
+                mDatePickerDialog = showDatePicker();
+                mDatePickerDialog.show();
+            }
+        }
+    };
+
+    public DatePickerDialog showDatePicker() {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(AddTemperatureActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -84,7 +95,8 @@ public class AddTemperatureActivity extends BaseActivity implements View.OnClick
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
-        datePickerDialog.show();
+//        datePickerDialog.show();
+        return datePickerDialog;
     }
 
     @Override
