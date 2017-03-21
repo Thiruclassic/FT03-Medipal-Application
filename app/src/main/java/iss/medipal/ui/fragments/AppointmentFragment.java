@@ -1,7 +1,6 @@
 package iss.medipal.ui.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,13 +16,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import iss.medipal.R;
-import iss.medipal.constants.Constants;
 import iss.medipal.dao.AppointmentDao;
 import iss.medipal.dao.impl.AppointmentDaoImpl;
 import iss.medipal.model.Appointment;
@@ -74,17 +71,17 @@ public class AppointmentFragment extends Fragment {
         appointmentDao = AppointmentDaoImpl.newInstance(getActivity());
         List<Appointment> appointmentList = appointmentDao.getAllAppointments();
 
-        if(itemname==null)
-        {
-            itemname=new ArrayList<>();
+        if (itemname == null) {
+            itemname = new ArrayList<>();
         }
         if (!appointmentList.isEmpty()) {
             for (Appointment appointment : appointmentList) {
                 itemname.add(appointment.getLocation());
             }
         }
-          lv.setAdapter(new ArrayAdapter<String>(getContext(),R.layout.todo_list_item, R.id.tvNote, itemname));
+        lv.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.todo_list_item, R.id.tvNote, itemname));
     }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
     }
@@ -109,8 +106,9 @@ public class AppointmentFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
+
     public void setListeners() {
-      lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
              /*   Intent intent = new Intent(getActivity(), TodoFragment.class);
@@ -120,31 +118,31 @@ public class AppointmentFragment extends Fragment {
 
                 AddAppointmentFragment addAppointmentFragment = AddAppointmentFragment.newInstance();
                 FragmentManager manager = getActivity().getSupportFragmentManager();
-                FragmentTransaction transaction= manager.beginTransaction();
+                FragmentTransaction transaction = manager.beginTransaction();
 //                transaction.replace(R.id.add_appointment_frame,addAppointmentFragment,Constants.ADD_FRAGMENT_PAGE).commit();
-                transaction.replace(R.id.add_appointment_frame,addAppointmentFragment).commit();
+                transaction.replace(R.id.add_appointment_frame, addAppointmentFragment).commit();
                 lv.setVisibility(View.INVISIBLE);
                 innerLayout.setVisibility(View.VISIBLE);
                 addAppointment.setVisibility(View.INVISIBLE);
             }
         });
 
-          addAppointment.setOnClickListener(new View.OnClickListener() {
+        addAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
               /*  Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();*/
                 AddAppointmentFragment addAppointmentFragment = AddAppointmentFragment.newInstance();
                 FragmentManager manager = getActivity().getSupportFragmentManager();
-                FragmentTransaction transaction= manager.beginTransaction();
+                FragmentTransaction transaction = manager.beginTransaction();
 //                transaction.replace(R.id.add_appointment_frame,addAppointmentFragment,Constants.ADD_FRAGMENT_PAGE).commit();
-                transaction.replace(R.id.add_appointment_frame,addAppointmentFragment).commit();
+                transaction.replace(R.id.add_appointment_frame, addAppointmentFragment).commit();
                 lv.setVisibility(View.INVISIBLE);
                 innerLayout.setVisibility(View.VISIBLE);
                 addAppointment.setVisibility(View.INVISIBLE);
             }
         });
-        final View.OnClickListener addAppEvent=new View.OnClickListener() {
+        final View.OnClickListener addAppEvent = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                innerLayout.setVisibility(View.INVISIBLE);
@@ -152,24 +150,23 @@ public class AppointmentFragment extends Fragment {
 
 //                FragmentManager manager=getChildFragmentManager();
                 FragmentManager manager = getActivity().getSupportFragmentManager();
-                FragmentTransaction transaction= manager.beginTransaction();
+                FragmentTransaction transaction = manager.beginTransaction();
 //                transaction.replace(R.id.add_appointment_frame,addAppointmentFragment,Constants.ADD_FRAGMENT_PAGE).commit();
-                transaction.replace(R.id.add_appointment_frame,addAppointmentFragment).commit();
+                transaction.replace(R.id.add_appointment_frame, addAppointmentFragment).commit();
                 innerLayout.setVisibility(View.VISIBLE);
                 addAppointment.setVisibility(View.INVISIBLE);
             }
         };
 
-        FrameLayout.OnLayoutChangeListener AppLayoutChangeListener=new View.OnLayoutChangeListener() {
+        FrameLayout.OnLayoutChangeListener AppLayoutChangeListener = new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                MainActivity activity=(MainActivity) v.getContext();
-                if(activity.getmListener()==null)
-                {
+                MainActivity activity = (MainActivity) v.getContext();
+                if (activity.getmListener() == null) {
 
                     innerLayout.setVisibility(View.VISIBLE);
                     addAppointment.setVisibility(View.INVISIBLE);
-                    Log.d("Fragment value","hello");
+                    Log.d("Fragment value", "hello");
                 }
             }
         };
@@ -184,7 +181,7 @@ public class AppointmentFragment extends Fragment {
                 FragmentManager manager = getActivity().getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
 //                transaction.replace(R.id.add_appointment_frame, addAppointmentFragment, Constants.ADD_FRAGMENT_PAGE).commit();
-                transaction.replace(R.id.add_appointment_frame,addAppointmentFragment);
+                transaction.replace(R.id.add_appointment_frame, addAppointmentFragment);
                 innerLayout.setVisibility(View.VISIBLE);
                 addAppointment.setVisibility(View.INVISIBLE);
             }
