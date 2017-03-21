@@ -34,6 +34,7 @@ public class AddWeightActivity extends BaseActivity implements View.OnClickListe
     private Toolbar toolbar;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     private DatePickerDialog mDatePickerDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +75,7 @@ public class AddWeightActivity extends BaseActivity implements View.OnClickListe
     private View.OnFocusChangeListener mDateFocusListener = new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
-            if(hasFocus) {
+            if (hasFocus) {
                 mDatePickerDialog = showDatePicker();
                 mDatePickerDialog.show();
             }
@@ -104,9 +105,8 @@ public class AddWeightActivity extends BaseActivity implements View.OnClickListe
                     String measurement = addMeasurement();
                     Snackbar.make(v, "Saved reading .... !", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                }
-                catch (Exception ex){
-                    Log.d("error",ex.toString());
+                } catch (Exception ex) {
+                    Log.d("error", ex.toString());
                     Log.d("Error:", "error in add Appointment Page");
 
                 }
@@ -117,8 +117,7 @@ public class AddWeightActivity extends BaseActivity implements View.OnClickListe
     }
 
 
-    public String addMeasurement() throws Exception
-    {
+    public String addMeasurement() throws Exception {
         Weight weight = getMeasurementDetails();
         measurementDao = MeasurementDaoImpl.newInstance(AddWeightActivity.this);
         measurementDao.addWeight(weight);
@@ -128,26 +127,25 @@ public class AddWeightActivity extends BaseActivity implements View.OnClickListe
 
     public Weight getMeasurementDetails() throws Exception {
 
-        Weight measurement =null;
+        Weight measurement = null;
 
         Integer weight = Integer.parseInt(String.valueOf(etWeight.getText()));
 
-        Calendar date= Calendar.getInstance();
+        Calendar date = Calendar.getInstance();
         date.setTime(dateFormatter.parse(String.valueOf(etWeightMeasuredOn.getText())));
-        Calendar dateTime= Calendar.getInstance();
+        Calendar dateTime = Calendar.getInstance();
         dateTime.set(Calendar.DAY_OF_MONTH, date.get(Calendar.DAY_OF_MONTH));
         dateTime.set(Calendar.MONTH, date.get(Calendar.MONTH));
         dateTime.set(Calendar.YEAR, date.get(Calendar.YEAR));
-        try{
-            measurement =new Weight(dateTime.getTime(),weight.intValue());
+        try {
+            measurement = new Weight(dateTime.getTime(), weight.intValue());
          /*   measurement.setMeasuredOn(dateTime.getTime());
             measurement.setDiastolic(diastolic);
             measurement.setSystolic(systolic);*/
 
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
 
-            Toast.makeText(AddWeightActivity.this,"Date format exception"+ex, Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddWeightActivity.this, "Date format exception" + ex, Toast.LENGTH_SHORT).show();
         }
 
         return measurement;
