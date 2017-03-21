@@ -27,10 +27,10 @@ public class MainActivity extends BaseActivity implements HomeFragment.MedInterf
     private ArrayList<CustomTabEntity> mTabEntities;
     private int[] mIconselectIds = {
             R.mipmap.home, R.mipmap.pills,
-            R.mipmap.calendar_g_w, R.mipmap.bell, R.mipmap.more};
+            R.mipmap.calendar, R.mipmap.bell, R.mipmap.more};
     private int[] mIconUnselectIds = {
             R.mipmap.home_white, R.mipmap.pills_white,
-            R.mipmap.calendar_g_b, R.mipmap.bell_white, R.mipmap.more_white};
+            R.mipmap.calendar_white, R.mipmap.bell_white, R.mipmap.more_white};
    private HomeInterface mHomeInterface;
 
     @Override
