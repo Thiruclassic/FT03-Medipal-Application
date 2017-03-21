@@ -20,6 +20,7 @@ import iss.medipal.R;
 import iss.medipal.dao.MeasurementDao;
 import iss.medipal.dao.impl.MeasurementDaoImpl;
 import iss.medipal.model.Pulse;
+import iss.medipal.ui.fragments.DatePickerFragment;
 
 /**
  * Created by Sreekumar on 3/20/2017
@@ -32,7 +33,7 @@ public class AddPulseActivity extends BaseActivity implements View.OnClickListen
     private MeasurementDao measurementDao;
     private Toolbar toolbar;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-
+    private DatePickerDialog mDatePickerDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,18 +57,28 @@ public class AddPulseActivity extends BaseActivity implements View.OnClickListen
 
         savePulse.setOnClickListener(this);
 
-        View.OnClickListener appDateListner = new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                showDatePicker();
+    View.OnClickListener appDateListner = new View.OnClickListener() {
+        @Override
+        public void onClick(final View v) {
+            showDatePicker();
 
-            }
-        };
-        etPulseMeasuredOn.setOnClickListener(appDateListner);
+        }
+    };
+    etPulseMeasuredOn.setOnClickListener(appDateListner);
+    etPulseMeasuredOn.setOnFocusChangeListener(mDateFocusListener);
 
     }
+    private View.OnFocusChangeListener mDateFocusListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if(hasFocus) {
+                mDatePickerDialog = showDatePicker();
+                mDatePickerDialog.show();
+            }
+        }
+    };
 
-    public void showDatePicker() {
+    public DatePickerDialog showDatePicker() {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(AddPulseActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -76,9 +87,9 @@ public class AddPulseActivity extends BaseActivity implements View.OnClickListen
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
-        datePickerDialog.show();
+//        datePickerDialog.show();
+        return datePickerDialog;
     }
-
 
     @Override
     public void onClick(View v) {
