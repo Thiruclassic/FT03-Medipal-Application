@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -15,8 +16,10 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import iss.medipal.R;
@@ -24,7 +27,6 @@ import iss.medipal.constants.Constants;
 import iss.medipal.constants.DBConstants;
 import iss.medipal.dao.impl.HealthBioDaoImpl;
 import iss.medipal.model.HealthBio;
-import iss.medipal.ui.fragments.HealthBioFragment;
 import iss.medipal.util.DialogUtility;
 
 public class AddhealthBioActivity extends AppCompatActivity {
@@ -33,12 +35,14 @@ public class AddhealthBioActivity extends AppCompatActivity {
     private static final String ARGS_HEALTH= "ARGS_HEALTH";
     private AppCompatEditText mCondition;
     private AppCompatEditText mStartDate;
-    private SimpleDateFormat mTimeFormatter;
+    private SimpleDateFormat mDateFormatter;
     private DatePickerDialog mDatePickerDialog;
 
     private RadioGroup mConditionType_Rg;
     private Button mSubmitButton;
     private RadioButton mConditionType_Rb;
+    private RadioButton mConditionType_allergy;
+    private RadioButton mConditionType_condition;
 
     private ImageView imageBack;
     private TextView title;
@@ -54,9 +58,11 @@ public class AddhealthBioActivity extends AppCompatActivity {
         mStartDate = (AppCompatEditText) findViewById(R.id.start_date_edit);
         mConditionType_Rg = (RadioGroup) findViewById(R.id.radio_group);
         mSubmitButton = (Button) findViewById(R.id.submit_bttn);
-        mTimeFormatter = new SimpleDateFormat(Constants.DATE_FORMAT, Locale.getDefault());
-        mStartDate.setOnClickListener(mTimeClickListener);
-        mStartDate.setOnFocusChangeListener(mTimeFocusListener);
+        mConditionType_allergy = (RadioButton) findViewById(R.id.radioButtonAllergy);
+        mConditionType_condition = (RadioButton) findViewById(R.id.radioButtonCondition);
+        mDateFormatter = new SimpleDateFormat(Constants.DATE_FORMAT, Locale.getDefault());
+        mStartDate.setOnClickListener(mDateClickListener);
+        mStartDate.setOnFocusChangeListener(mDateFocusListener);
         mSubmitButton.setOnClickListener(mSubmitListener);
        // getSupportActionBar().setHomeButtonEnabled(true);
        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -79,20 +85,20 @@ public class AddhealthBioActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-                mStartDate.setText(mTimeFormatter.format(newDate.getTime()));
+                mStartDate.setText(mDateFormatter.format(newDate.getTime()));
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         return dialog;
     }
 
-    private View.OnClickListener mTimeClickListener = new View.OnClickListener() {
+    private View.OnClickListener mDateClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             mDatePickerDialog = getDialog();
             mDatePickerDialog.show();
         }
     };
-    private View.OnFocusChangeListener mTimeFocusListener = new View.OnFocusChangeListener() {
+    private View.OnFocusChangeListener mDateFocusListener = new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus) {
@@ -131,6 +137,7 @@ public class AddhealthBioActivity extends AppCompatActivity {
             healthBio.setStartDate(mStartDate.getText().toString());
             int Rb_id=mConditionType_Rg.getCheckedRadioButtonId();
             mConditionType_Rb= (RadioButton)findViewById(Rb_id);
+
             healthBio.setConditionType(mConditionType_Rb.getTag().toString());
 
             int rowId = healthBioDao.createHealthBio(healthBio);
@@ -155,6 +162,25 @@ public class AddhealthBioActivity extends AppCompatActivity {
     {
         HealthBio healthBio=bundle.getParcelable(DBConstants.TABLE_HEALTH_BIO);
         mCondition.setText(healthBio.getCondition());
+        Date date = null;
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
+            date = sdf.parse(healthBio.getStartDate());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        mStartDate.setText(mDateFormatter.format(date));
+        Log.e("date","set");
+        if(healthBio.getConditionType().equalsIgnoreCase("C"))
+            mConditionType_condition.setChecked(true);
+        else
+            mConditionType_allergy.setChecked(true);
+
+        mCondition.setEnabled(false);
+        mStartDate.setEnabled(false);
+       mConditionType_condition.setEnabled(false);
+       mConditionType_allergy.setEnabled(false);
+        mSubmitButton.setVisibility(View.INVISIBLE);
 
     }
 
