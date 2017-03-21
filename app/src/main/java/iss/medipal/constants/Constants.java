@@ -31,6 +31,7 @@ public class Constants {
     public static final int MYMEDICINE_VIEW_PAGE_ID = 2;
 
     public static final int TOOKIT_STATUS = 1;
+    public static final int MISSEDIT_STATUS = 0;
 
 
 

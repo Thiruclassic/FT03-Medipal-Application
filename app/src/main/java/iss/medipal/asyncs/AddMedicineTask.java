@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
+import iss.medipal.MediPalApplication;
 import iss.medipal.constants.DBConstants;
 import iss.medipal.dao.MedicineDao;
 import iss.medipal.dao.ReminderDao;
@@ -42,6 +43,11 @@ public class AddMedicineTask extends AsyncTask<Medicine, Void, Long> {
         params[0].getReminder().setId(reminderId);
         setMedicineReminder(params[0]);
         long result = mMedDao.addMedicine(params[0]);
+        for(Medicine med: MediPalApplication.getPersonStore().getmPersonalBio().getMedicines()){
+            if(med.equals(params[0])){
+                med.setId(reminderId);
+            }
+        }
         return result;
     }
 

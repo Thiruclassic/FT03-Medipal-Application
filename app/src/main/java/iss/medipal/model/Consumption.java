@@ -1,12 +1,16 @@
 package iss.medipal.model;
 
+import android.support.annotation.NonNull;
+
 import java.util.Date;
+
+import iss.medipal.util.AppHelper;
 
 /**
  * Created by Thirumal on 2/20/2017.
  */
 
-public class Consumption {
+public class Consumption implements Comparable<Consumption>{
 
     int id;
     int medicineId;
@@ -43,5 +47,14 @@ public class Consumption {
 
     public void setConsumedOn(Date consumedOn) {
         this.consumedOn = consumedOn;
+    }
+
+    @Override
+    public int compareTo(@NonNull Consumption o) {
+        if(medicineId == o.medicineId && consumedOn.equals(o.consumedOn)){
+            return 0;
+        } else {
+            return 1;
+        }
     }
 }

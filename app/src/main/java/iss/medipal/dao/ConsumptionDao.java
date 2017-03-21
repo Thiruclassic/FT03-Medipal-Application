@@ -18,6 +18,8 @@ public interface ConsumptionDao {
 
     public List<Consumption> getAllConsumptions();
 
+    public void deleteConsumtion(Consumption consumtion);
+
     public List<Consumption> getAllConsumptionsForLastXDays(int days);
 
     public List<Consumption> getMissedConsumptions();

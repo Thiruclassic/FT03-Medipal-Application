@@ -3,6 +3,7 @@ package iss.medipal.dao.impl;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
@@ -68,6 +69,18 @@ public class ConsumptionDaoImpl extends BaseDao implements ConsumptionDao {
             }
         }
         return consumptions;
+    }
+
+    @Override
+    public void deleteConsumtion(Consumption consumtion){
+        try {
+            database.delete(DBConstants.TABLE_CONSUMPTION, DBConstants.CONSUMPTION_MEDID +"=? and "+
+                    DBConstants.CONSUMPTION_CONSUMED_ON+"=?", new String[]{String.valueOf(consumtion.getMedicineId()),
+                    mDateFormat.format(consumtion.getConsumedOn())});
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
     }
 
     @Override

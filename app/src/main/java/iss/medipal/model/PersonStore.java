@@ -8,6 +8,7 @@ import iss.medipal.asyncs.AddConsumptionTask;
 import iss.medipal.asyncs.AddMedicineTask;
 import iss.medipal.asyncs.AddPersonBioTask;
 import iss.medipal.asyncs.AddReminderAlarmTask;
+import iss.medipal.asyncs.DeleteConsumptionTask;
 import iss.medipal.asyncs.EditMedicineTask;
 import iss.medipal.asyncs.EditPersonalBioTask;
 import iss.medipal.asyncs.GetCategoriesTask;
@@ -31,6 +32,7 @@ public class PersonStore {
     private AddMedicineTask mAddMedicineTask;
     private EditMedicineTask mEditMedicineTask;
     private AddConsumptionTask mAddConsumptionTask;
+    private DeleteConsumptionTask mDeleteConsumptionTask;
 
     public PersonStore(PersonalBio personBio, Context context){
         this.mPersonalBio = personBio;
@@ -132,5 +134,18 @@ public class PersonStore {
         mConsumptions.add(consumption);
         mAddConsumptionTask = new AddConsumptionTask(mContext);
         mAddConsumptionTask.execute(consumption);
+    }
+
+    public void deleteConsumption(Consumption consumption){
+        if(AppHelper.isListEmpty(mConsumptions)){
+            return;
+        }
+        for(Consumption consumption1: mConsumptions) {
+            if(consumption == consumption1){
+                mConsumptions.remove(consumption1);
+            }
+            mDeleteConsumptionTask = new DeleteConsumptionTask(mContext);
+            mDeleteConsumptionTask.execute(consumption);
+        }
     }
 }
