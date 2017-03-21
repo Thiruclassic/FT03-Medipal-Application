@@ -168,7 +168,6 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
     @Override
     public void onDetach() {
         super.onDetach();
-        mUIUpdateListener = null;
     }
 
     @Override
@@ -177,6 +176,9 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         FragmentTransaction transaction=manager.beginTransaction();
         transaction.detach(this).commit();
         ((MainActivity)getActivity()).setmListener(null);
+        if(mUIUpdateListener != null){
+            mUIUpdateListener.onMedAddedUiUpdate();
+        }
     }
 
     @Override
@@ -247,17 +249,13 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
                         } else {
                             MediPalApplication.getPersonStore().editMedicine(mMedicine);
                         }
-                        if(mUIUpdateListener != null){
-                            mUIUpdateListener.onMedAddedUiUpdate();
-                        }
 
                         StringBuilder builder=new StringBuilder();
                         builder.append(DBConstants.TABLE_MEDICINE);
                         builder.append(Constants.SPACE);
                         builder.append(mMedicine.getMedicine());
                         builder.append(Constants.SPACE);
-                        builder.append(Constants.SAVE);
-
+                        builder.append(getString(R.string.saved));
                         Toast.makeText(getContext(),builder.toString(),Toast.LENGTH_SHORT);
 
                         doBack();

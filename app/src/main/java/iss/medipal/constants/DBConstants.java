@@ -75,5 +75,9 @@ public class DBConstants {
     public static final String REMINDER_START_TIME="StartTime";
     public static final String REMINDER_INTERVAL="Interval";
 
-
+    //Consumption Table
+    public static final String CONSUMPTION_ID="ID";
+    public static final String CONSUMPTION_MEDID="MedicineId";
+    public static final String CONSUMPTION_QUANTITY="Quantity";
+    public static final String CONSUMPTION_CONSUMED_ON="ConsumedOn";
 }

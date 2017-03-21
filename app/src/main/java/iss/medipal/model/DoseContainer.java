@@ -10,6 +10,7 @@ import java.util.Date;
 
 import iss.medipal.MediPalApplication;
 import iss.medipal.constants.Constants;
+import iss.medipal.model.homeMedicineModels.ConsumptionDayModel;
 import iss.medipal.model.homeMedicineModels.MedDayModel;
 import iss.medipal.model.homeMedicineModels.MedDoseModel;
 import iss.medipal.util.AppHelper;
@@ -17,7 +18,6 @@ import iss.medipal.util.AppHelper;
 /**
  * Created by junaidramis on 19/3/17.
  */
-
 public class DoseContainer {
 
     private static DoseContainer instance;
@@ -30,6 +30,8 @@ public class DoseContainer {
     private Calendar mDoseCalendar;
     private ArrayList<Medicine> mMeds;
     private ArrayList<MedDayModel> mMedDayModel;
+    private ArrayList<Consumption> mConsumption;
+    private ArrayList<ConsumptionDayModel> mConsumtionDayModel;
 
     public static DoseContainer getInstance(Activity activity) {
         if (instance == null) {
@@ -48,16 +50,25 @@ public class DoseContainer {
         mMedAddedDate = Calendar.getInstance();
         mCurrentActivity = activity;
         mMeds = MediPalApplication.getPersonStore().getmPersonalBio().getMedicines();
+        mConsumption = MediPalApplication.getPersonStore().getmConsumptions();
         mTimeFormat = new SimpleDateFormat(Constants.TIME_FORMAT_STORAGE);
         mDateFormat = new SimpleDateFormat(Constants.ISSUE_DATE_FORMAT);
-        reloadData();
+        reloadData(false);
     }
 
     private void setActivity(Activity activity) {
         mCurrentActivity = activity;
     }
 
-    public void reloadData() {
+    public void reloadData(boolean isReload) {
+        if(!isReload) {
+            if (AppHelper.isListEmpty(mConsumption)) {
+                mConsumption = new ArrayList<>();
+                mConsumtionDayModel = new ArrayList<>();
+            } else {
+                setConsumtion();
+            }
+        }
         if (mCurrentActivity != null) {
             mMedDayModel = new ArrayList<>();
             if (!AppHelper.isListEmpty(mMeds)) {
@@ -68,6 +79,7 @@ public class DoseContainer {
                         Reminder rem = med.getReminder();
                         Date date = rem.getStartTime();
                         while (mMedAddedDate.before(mCurrentDate) || AppHelper.sameDay(mMedAddedDate, mCurrentDate)){
+                            ArrayList<Consumption> consumptions = getCurrentDayConsumtion(mMedAddedDate);
                             mDoseCalendar.setTime(date);
                             for (int i = 0; i < rem.getFrequency(); i++) {
                                 MedDoseModel medDoseModel = new MedDoseModel();
@@ -75,8 +87,21 @@ public class DoseContainer {
                                 medDoseModel.setDrugName(med.getMedicine());
                                 medDoseModel.setDoseTime(
                                         mTimeFormat.format(mDoseCalendar.getTime()));
-                                mDoseCalendar.add(Calendar.HOUR, rem.getInterval());
                                 medDoseModel.setDate(mDateFormat.format(mMedAddedDate.getTime()));
+                                mMedAddedDate.set(Calendar.HOUR_OF_DAY, mDoseCalendar.get(Calendar.HOUR_OF_DAY));
+                                mMedAddedDate.set(Calendar.MINUTE, mDoseCalendar.get(Calendar.MINUTE));
+                                Calendar consumtionCal = Calendar.getInstance();
+                                if(!AppHelper.isListEmpty(consumptions)) {
+                                    for (Consumption consumption : consumptions) {
+                                        if (consumption.getMedicineId() == med.getId()) {
+                                            consumtionCal.setTime(consumption.getConsumedOn());
+                                            if (AppHelper.sameTime(mMedAddedDate, consumtionCal)) {
+                                                medDoseModel.setStatus(Constants.TOOKIT_STATUS);
+                                            }
+                                        }
+                                    }
+                                }
+                                mDoseCalendar.add(Calendar.HOUR, rem.getInterval());
                                 mDayDoseRecords.add(medDoseModel);
                             }
                             mMedAddedDate.add(Calendar.DAY_OF_YEAR, 1);
@@ -91,6 +116,15 @@ public class DoseContainer {
         }
     }
 
+    private ArrayList<Consumption> getCurrentDayConsumtion(Calendar date){
+        for (ConsumptionDayModel consumptionDayModel: mConsumtionDayModel){
+            if(AppHelper.sameDay(consumptionDayModel.getDate(),date)){
+                return consumptionDayModel.getConsumptions();
+            }
+        }
+        return new ArrayList<>();
+    }
+
 
     public void addDoseRecord(MedDoseModel dr) {
         int id = dr.getId_med();
@@ -99,7 +133,7 @@ public class DoseContainer {
 
         boolean foundDMD = false;
         for (MedDayModel dmd : mMedDayModel) {
-            if (dmd.getMedId() == id && AppHelper.sameDay(date, dmd.getDate())) {
+            if (dmd.getMedName().equalsIgnoreCase(name) && AppHelper.sameDay(date, dmd.getDate())) {
                 dmd.getDoseRecordList().add(dr);
                 dmd.reorderDoseRecordList();
                 foundDMD = true;
@@ -150,6 +184,37 @@ public class DoseContainer {
             }
         }
         return count;
+    }
+
+    private void setConsumtion(){
+        mConsumtionDayModel = new ArrayList<>();
+        Calendar cal = Calendar.getInstance();
+        for(Consumption consumption :mConsumption) {
+            int id = consumption.getMedicineId();
+            cal.setTime(consumption.getConsumedOn());
+
+            boolean foundDMD = false;
+            for (ConsumptionDayModel dmd : mConsumtionDayModel) {
+                if (AppHelper.sameDay(cal, dmd.getDate())) {
+                    dmd.getConsumptions().add(consumption);
+                    foundDMD = true;
+                    break;
+                }
+            }
+            if (!foundDMD) {
+                ArrayList<Consumption> dList = new ArrayList<Consumption>();
+                dList.add(consumption);
+
+                // Gets the MyMed object for the specific medicine and
+                // stores it in the DoseMedicine. This is done here instead
+                // of the the constructor to avoid creating the med more than
+                // once and wasting DB calls
+                ConsumptionDayModel temDMD = new ConsumptionDayModel(cal);
+                temDMD.setConsumptions(dList);
+                // Adds the DoseMedicineDay object
+                mConsumtionDayModel.add(temDMD);
+            }
+        }
     }
 
 

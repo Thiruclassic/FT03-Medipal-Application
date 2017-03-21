@@ -11,7 +11,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -225,6 +227,15 @@ public class AppHelper {
                 .get(Calendar.DAY_OF_YEAR);
     }
 
+    // return the difference in the number of days, given 2 date objects
+    public static boolean sameTime(Calendar startDate, Calendar endDate) {
+        return startDate.get(Calendar.YEAR) == endDate.get(Calendar.YEAR)
+                && startDate.get(Calendar.DAY_OF_YEAR) == endDate
+                .get(Calendar.DAY_OF_YEAR) && startDate.get(Calendar.HOUR_OF_DAY) ==
+                endDate.get(Calendar.HOUR_OF_DAY) && startDate.get(Calendar.MINUTE) ==
+                endDate.get(Calendar.MINUTE);
+    }
+
     /**
      * This method return a string of month from int
      *
@@ -309,4 +320,19 @@ public class AppHelper {
         cal.set(Calendar.MINUTE, min);
         return cal;
     }
+
+    /**
+     * Hide keyboard
+     *
+     * @param activity
+     */
+    public static void hideKeyboard(FragmentActivity activity) {
+        View view = activity.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
 }

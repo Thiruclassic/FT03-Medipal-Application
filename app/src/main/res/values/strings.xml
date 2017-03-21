@@ -82,6 +82,7 @@
 
     <string name="strt_time_select">Start Time</string>
     <string name="save">Save</string>
+    <string name="saved">Saved</string>
     <string name="generic_error">Sorry something went wrong! We\'re looking into it!</string>
     <string name="st_time_et_time_validation_msg">Start time should be greater than End time</string>
     <string name="date_validation_msg">Please select a valid date for booking</string>

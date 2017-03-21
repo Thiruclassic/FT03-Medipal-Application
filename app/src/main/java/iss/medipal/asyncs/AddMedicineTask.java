@@ -37,9 +37,9 @@ public class AddMedicineTask extends AsyncTask<Medicine, Void, Long> {
 
     @Override
     protected Long doInBackground(Medicine... params) {
-//        int reminderId = mReminderDao.addReminder(params[0].getReminder());
-//        params[0].setReminderId(reminderId);
-//        params[0].getReminder().setId(reminderId);
+        int reminderId = mReminderDao.addReminder(params[0].getReminder()).getId();
+        params[0].setReminderId(reminderId);
+        params[0].getReminder().setId(reminderId);
         setMedicineReminder(params[0]);
         long result = mMedDao.addMedicine(params[0]);
         return result;

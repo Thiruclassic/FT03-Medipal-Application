@@ -15,6 +15,7 @@ import iss.medipal.ui.fragments.ViewMedicineFragment;
 import iss.medipal.ui.interfaces.CustomTabEntity;
 import iss.medipal.ui.interfaces.HomeInterface;
 import iss.medipal.ui.interfaces.OnTabSelectListener;
+import iss.medipal.util.AppHelper;
 
 public class MainActivity extends BaseActivity implements HomeFragment.MedInterface,
         ViewMedicineFragment.HomeInterface {
@@ -102,6 +103,7 @@ public class MainActivity extends BaseActivity implements HomeFragment.MedInterf
             public void onTabSelect(int position) {
                 mPager.setCurrentItem(position);
                 mToolbarTitle.setText(mTabItems[position]);
+                AppHelper.hideKeyboard(MainActivity.this);
             }
 
             @Override

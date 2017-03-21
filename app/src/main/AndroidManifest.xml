@@ -16,8 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.MainActivity" />
-        <activity android:name=".ui.activities.UserProfileActivity" />
+        <activity android:name=".ui.activities.MainActivity"
+            android:windowSoftInputMode="adjustResize"
+            />
+        <activity android:name=".ui.activities.UserProfileActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ui.activities.AppointmentActivity" />
         <activity android:name=".ui.activities.BloodPressureActivity" />
         <activity android:name=".ui.activities.MeasurementActivity" />

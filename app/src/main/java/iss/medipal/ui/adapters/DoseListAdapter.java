@@ -37,7 +37,6 @@ public class DoseListAdapter extends BaseAdapter {
     private OnItemSelectedListener mItemSelectedListener;
     private int mSelectedPosition = -1;
 
-
     public DoseListAdapter(Context context , BaseFragment fragment, ArrayList<MedDoseModel> doseRecords, ArrayList<Medicine> meds) {
         mDoseRecords = doseRecords;
         mContext = context;
@@ -155,6 +154,14 @@ public class DoseListAdapter extends BaseAdapter {
                 mItemSelectedListener.onItemSelected(mSelectedPosition);
             }
         };
+    }
+
+    public Medicine getmCurrentMed() {
+        return mCurrentMed;
+    }
+
+    public void setmCurrentMed(Medicine mCurrentMed) {
+        this.mCurrentMed = mCurrentMed;
     }
 
     public interface OnItemSelectedListener{

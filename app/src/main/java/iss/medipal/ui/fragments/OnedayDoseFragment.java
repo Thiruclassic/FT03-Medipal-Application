@@ -5,19 +5,18 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.concurrent.ThreadFactory;
+import java.util.Calendar;
 
+import iss.medipal.MediPalApplication;
 import iss.medipal.R;
 import iss.medipal.constants.Constants;
+import iss.medipal.model.Consumption;
 import iss.medipal.model.DoseContainer;
 import iss.medipal.model.Medicine;
 import iss.medipal.model.homeMedicineModels.MedDayModel;
@@ -36,6 +35,7 @@ public class OnedayDoseFragment extends BaseFragment implements DoseListAdapter.
     private static final String ARGS_MEDS = "ARGS_MEDS";
     private static final String ARGS_IS_FIRST = "ARGS_IS_FIRST";
     private static final String ARGS_IS_LAST = "ARGS_IS_LAST";
+    private static final String ARGS_CAL = "ARGS_CAL";
 
     private TextView mMedTitle;
     private ListView mDoseList;
@@ -43,6 +43,8 @@ public class OnedayDoseFragment extends BaseFragment implements DoseListAdapter.
     private ImageButton mPrevMedButton;
     private ImageButton mNextMedButton;
 
+    private Calendar mCal;
+    private Calendar mCurrentCal;
     private MedDayModel mMedicine;
     private ArrayList<Medicine> myMeds;
     private ArrayList<MedDoseModel> mDoseRecords;
@@ -52,12 +54,14 @@ public class OnedayDoseFragment extends BaseFragment implements DoseListAdapter.
     private DoseListAdapter mAdapter;
     private int mSelectedPosition = -1;
 
-    public static OnedayDoseFragment newInstance(MedDayModel med, ArrayList<Medicine> meds, Boolean isFront,
+    public static OnedayDoseFragment newInstance(MedDayModel med, ArrayList<Medicine> meds, Calendar cal,
+                                                 Boolean isFront,
                                                  Boolean isLast) {
         OnedayDoseFragment fragment = new OnedayDoseFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARGS_MED, med);
         args.putParcelableArrayList(ARGS_MEDS, meds);
+        args.putSerializable(ARGS_CAL, cal);
         args.putBoolean(ARGS_IS_FIRST, isFront);
         args.putBoolean(ARGS_IS_LAST, isLast);
         fragment.setArguments(args);
@@ -85,6 +89,7 @@ public class OnedayDoseFragment extends BaseFragment implements DoseListAdapter.
             if(!AppHelper.isListEmpty(getArguments().getParcelableArrayList(ARGS_MEDS))){
                 myMeds = getArguments().getParcelableArrayList(ARGS_MEDS);
             }
+            mCal = (Calendar) getArguments().getSerializable(ARGS_CAL);
             isFirst = getArguments().getBoolean(ARGS_IS_FIRST, false);
             isLast = getArguments().getBoolean(ARGS_IS_LAST, false);
         }
@@ -92,6 +97,7 @@ public class OnedayDoseFragment extends BaseFragment implements DoseListAdapter.
         setUpButton(mSelectedPosition);
         setUpArrows();
         setListeners();
+        setCalendar();
     }
 
     @Override
@@ -174,11 +180,26 @@ public class OnedayDoseFragment extends BaseFragment implements DoseListAdapter.
         });
     }
 
+    private void setCalendar(){
+        mCurrentCal = Calendar.getInstance();
+    }
+
     public void onTookItClicked(){
         if(!AppHelper.isListEmpty(mDoseRecords)) {
             if(mSelectedPosition >= 0){
                 mDoseRecords.get(mSelectedPosition).setStatus(Constants.TOOKIT_STATUS);
                 mAdapter.notifyDataSetChanged();
+                Consumption consumption = new Consumption();
+                Medicine medicine = mAdapter.getmCurrentMed();
+                consumption.setMedicineId(mMedicine.getMedId());
+                consumption.setQuantity(medicine.getDosage());
+                mCurrentCal.setTime(medicine.getReminder().getStartTime());
+                mCurrentCal.set(Calendar.YEAR, mCal.get(Calendar.YEAR));
+                mCurrentCal.set(Calendar.MONTH, mCal.get(Calendar.MONTH));
+                mCurrentCal.set(Calendar.DAY_OF_MONTH, mCal.get(Calendar.DAY_OF_MONTH));
+                mCurrentCal.add(Calendar.HOUR, mSelectedPosition * medicine.getReminder().getInterval());
+                consumption.setConsumedOn(mCurrentCal.getTime());
+                MediPalApplication.getPersonStore().addConsumption(consumption);
             } else {
                 DialogUtility.newMessageDialog(getContext(), getString(R.string.alert),
                         getString(R.string.select_dose)).show();
