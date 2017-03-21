@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import iss.medipal.asyncs.AddConsumptionTask;
 import iss.medipal.asyncs.AddMedicineTask;
 import iss.medipal.asyncs.AddPersonBioTask;
+import iss.medipal.asyncs.AddReminderAlarmTask;
 import iss.medipal.asyncs.EditMedicineTask;
 import iss.medipal.asyncs.EditPersonalBioTask;
 import iss.medipal.asyncs.GetCategoriesTask;
@@ -95,6 +96,9 @@ public class PersonStore {
         mPersonalBio.getMedicines().add(medicine);
         mAddMedicineTask = new AddMedicineTask(mContext);
         mAddMedicineTask.execute(medicine);
+
+
+
     }
 
     public void editMedicine(Medicine medicine){
@@ -117,6 +121,8 @@ public class PersonStore {
         }
         mEditMedicineTask = new EditMedicineTask(mContext);
         mEditMedicineTask.execute(medicine);
+
+
     }
 
     public void addConsumption(Consumption consumption){

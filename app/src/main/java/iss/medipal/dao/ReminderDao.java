@@ -10,8 +10,8 @@ import iss.medipal.model.Reminder;
  */
 
 public interface ReminderDao {
-    public int addReminder(Reminder reminder);
-    public int modifyReminder(Reminder reminder);
+    public Reminder addReminder(Reminder reminder);
+    public Reminder modifyReminder(Reminder reminder);
     public int deleteReminder(int reminderId);
 
     public List<Reminder> getAllReminders();

@@ -18,7 +18,6 @@ import iss.medipal.util.AppHelper;
 /**
  * Created by junaidramis on 19/3/17.
  */
-
 public class DoseContainer {
 
     private static DoseContainer instance;

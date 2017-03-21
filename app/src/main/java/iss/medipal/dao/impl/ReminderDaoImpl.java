@@ -31,25 +31,26 @@ public class ReminderDaoImpl extends BaseDao implements ReminderDao {
     }
 
     @Override
-    public int addReminder(Reminder reminder) {
+    public Reminder addReminder(Reminder reminder) {
         ContentValues values=new ContentValues();
         values.put(DBConstants.REMINDER_FREQUENCY,reminder.getFrequency());
         values.put(DBConstants.REMINDER_START_TIME,mDateFormat.format(reminder.getStartTime()));
         values.put(DBConstants.REMINDER_INTERVAL,reminder.getInterval());
-        int id=(int)database.insert(DBConstants.TABLE_REMINDER,null,values);
-        return id;
+        reminder.setId((int)database.insert(DBConstants.TABLE_REMINDER,null,values));
+        return reminder;
 
     }
 
     @Override
-    public int modifyReminder(Reminder reminder) {
+    public Reminder modifyReminder(Reminder reminder) {
         ContentValues values=new ContentValues();
         values.put(DBConstants.REMINDER_FREQUENCY,reminder.getFrequency());
         values.put(DBConstants.REMINDER_START_TIME,mDateFormat.format(reminder.getStartTime()));
         values.put(DBConstants.REMINDER_INTERVAL,reminder.getInterval());
         int id=(int)database.update(DBConstants.TABLE_REMINDER,values, "id=?",
                 new String[]{String.valueOf(reminder.getId())});
-        return id;
+        reminder.setId(id);
+        return reminder;
     }
 
     @Override
