@@ -96,7 +96,7 @@ public class PulseActivity extends BaseActivity implements Toolbar.OnMenuItemCli
 
             for (int i = 0; i < pulseList.size(); i++) {
 
-                Measurement pulse = new Pulse(i, images[3], pulseList.get(i).getPulse(),
+                Measurement pulse = new Pulse(pulseList.get(i).getId(), images[3], pulseList.get(i).getPulse(),
                         pulseList.get(i).getMeasuredOn());
        /*   bloodPressure.setSystolic(measurementList.get(i).getSystolic());
             bloodPressure.setDiastolic(measurementList.get(i).getDiastolic());

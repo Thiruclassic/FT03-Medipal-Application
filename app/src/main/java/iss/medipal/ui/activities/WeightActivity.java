@@ -98,7 +98,7 @@ public class WeightActivity extends BaseActivity implements Toolbar.OnMenuItemCl
 
             for (int i = 0; i < weightList.size(); i++) {
 
-                Measurement weight = new Weight(i, images[3], weightList.get(i).getWeight(),
+                Measurement weight = new Weight(weightList.get(i).getId(), images[3], weightList.get(i).getWeight(),
                         weightList.get(i).getMeasuredOn());
        /*   bloodPressure.setSystolic(measurementList.get(i).getSystolic());
             bloodPressure.setDiastolic(measurementList.get(i).getDiastolic());

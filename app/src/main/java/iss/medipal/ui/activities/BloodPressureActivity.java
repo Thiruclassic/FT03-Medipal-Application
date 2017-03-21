@@ -102,7 +102,7 @@ public class BloodPressureActivity extends BaseActivity implements Toolbar.OnMen
 
             for (int i = 0; i < measurementList.size(); i++) {
 
-                Measurement bloodPressure = new BloodPressure(i, images[0], measurementList.get(i).getSystolic(),
+                Measurement bloodPressure = new BloodPressure(measurementList.get(i).getId(), images[0], measurementList.get(i).getSystolic(),
                         measurementList.get(i).getDiastolic(), measurementList.get(i).getMeasuredOn());
        /*     bloodPressure.setSystolic(measurementList.get(i).getSystolic());
             bloodPressure.setDiastolic(measurementList.get(i).getDiastolic());
