@@ -1,6 +1,7 @@
 package iss.medipal.ui.fragments;
 import iss.medipal.MediPalApplication;
 import iss.medipal.R;
+import iss.medipal.constants.DBConstants;
 import iss.medipal.dao.HealthBioDao;
 import iss.medipal.dao.impl.HealthBioDaoImpl;
 import iss.medipal.model.HealthBio;
@@ -19,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -95,13 +97,14 @@ public class HealthBioFragment extends Fragment implements View.OnClickListener{
         lv.setAdapter(new ArrayAdapter<String>(getContext(),R.layout.healthbio_list_item, R.id.tvNote, itemname));*/
 
        setList();
+        setListeners();
+
     }
 
     private void setList(){
         healthBios = MediPalApplication.getPersonStore().getmPersonalBio().getHealthBios();
         if(healthBios==null) {
             healthBioDao = HealthBioDaoImpl.newInstance(getActivity());
-
             List<HealthBio> healthBioList = healthBioDao.getAllHealthBio();
             healthBios=healthBioList;
         }
@@ -146,8 +149,22 @@ public class HealthBioFragment extends Fragment implements View.OnClickListener{
             //    deleteHealthBio
 
         }
+    }
 
+    public void setListeners()
+    {
+        ListView.OnItemClickListener itemClickListener=new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(),AddhealthBioActivity.class);
 
+                Bundle bundle=new Bundle();
+                bundle.putParcelable(DBConstants.TABLE_HEALTH_BIO,healthBios.get(position));
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        };
 
+        lv.setOnItemClickListener(itemClickListener);
     }
 }

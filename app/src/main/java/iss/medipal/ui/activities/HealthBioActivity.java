@@ -1,6 +1,7 @@
 package iss.medipal.ui.activities;
 
 
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import iss.medipal.R;
+import iss.medipal.constants.DBConstants;
+import iss.medipal.model.HealthBio;
 import iss.medipal.ui.fragments.HealthBioFragment;
 import iss.medipal.util.AppHelper;
 
@@ -36,8 +39,11 @@ public class HealthBioActivity extends AppCompatActivity {
         title = (TextView) findViewById(R.id.toolbar_title);
         title.setText("Health Bio");
         imageBack.setVisibility(View.VISIBLE);
-       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-       //getSupportActionBar().setHomeButtonEnabled(true);
+        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setHomeButtonEnabled(true);
 
     }
+
+
+
 }

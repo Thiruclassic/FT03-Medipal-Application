@@ -21,6 +21,7 @@ import java.util.Locale;
 
 import iss.medipal.R;
 import iss.medipal.constants.Constants;
+import iss.medipal.constants.DBConstants;
 import iss.medipal.dao.impl.HealthBioDaoImpl;
 import iss.medipal.model.HealthBio;
 import iss.medipal.ui.fragments.HealthBioFragment;
@@ -63,6 +64,11 @@ public class AddhealthBioActivity extends AppCompatActivity {
         title = (TextView) findViewById(R.id.toolbar_title);
         title.setText("Enter HealthBio");
         imageBack.setVisibility(View.VISIBLE);
+        Intent i = getIntent();
+        if(i.getExtras()!=null)
+        {
+            setData(i.getExtras());
+        }
 
 
     }
@@ -140,5 +146,17 @@ public class AddhealthBioActivity extends AppCompatActivity {
 
         }
     }
+
+
+
+
+
+    public void setData(Bundle bundle)
+    {
+        HealthBio healthBio=bundle.getParcelable(DBConstants.TABLE_HEALTH_BIO);
+        mCondition.setText(healthBio.getCondition());
+
+    }
+
 
 }
