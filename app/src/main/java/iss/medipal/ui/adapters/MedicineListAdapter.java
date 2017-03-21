@@ -1,6 +1,7 @@
 package iss.medipal.ui.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,7 @@ public class MedicineListAdapter extends BaseAdapter {
             viewHolder = (MedicineListAdapter.ViewHolder) convertView.getTag();
         }
         viewHolder.mItemTextview.setText(mMedicines.get(position).getMedicine());
+
         return convertView;
     }
 
@@ -58,6 +60,8 @@ public class MedicineListAdapter extends BaseAdapter {
         this.mMedicines = medicines;
         notifyDataSetChanged();
     }
+
+
 
     /**
      * Static view holder class.

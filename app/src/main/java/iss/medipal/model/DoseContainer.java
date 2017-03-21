@@ -54,19 +54,21 @@ public class DoseContainer {
         mConsumption = MediPalApplication.getPersonStore().getmConsumptions();
         mTimeFormat = new SimpleDateFormat(Constants.TIME_FORMAT_STORAGE);
         mDateFormat = new SimpleDateFormat(Constants.ISSUE_DATE_FORMAT);
-        reloadData();
+        reloadData(false);
     }
 
     private void setActivity(Activity activity) {
         mCurrentActivity = activity;
     }
 
-    public void reloadData() {
-        if(AppHelper.isListEmpty(mConsumption)){
-            mConsumption = new ArrayList<>();
-            mConsumtionDayModel = new ArrayList<>();
-        } else {
-            setConsumtion();
+    public void reloadData(boolean isReload) {
+        if(!isReload) {
+            if (AppHelper.isListEmpty(mConsumption)) {
+                mConsumption = new ArrayList<>();
+                mConsumtionDayModel = new ArrayList<>();
+            } else {
+                setConsumtion();
+            }
         }
         if (mCurrentActivity != null) {
             mMedDayModel = new ArrayList<>();
@@ -132,7 +134,7 @@ public class DoseContainer {
 
         boolean foundDMD = false;
         for (MedDayModel dmd : mMedDayModel) {
-            if (dmd.getMedId() == id && AppHelper.sameDay(date, dmd.getDate())) {
+            if (dmd.getMedName().equalsIgnoreCase(name) && AppHelper.sameDay(date, dmd.getDate())) {
                 dmd.getDoseRecordList().add(dr);
                 dmd.reorderDoseRecordList();
                 foundDMD = true;

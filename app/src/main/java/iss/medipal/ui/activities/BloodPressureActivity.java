@@ -17,6 +17,7 @@ import iss.medipal.dao.impl.MeasurementDaoImpl;
 import iss.medipal.model.BloodPressure;
 import iss.medipal.model.Measurement;
 import iss.medipal.ui.adapters.RecyclerAdapter;
+import android.support.v7.widget.GridLayoutManager;
 
 /**
  * Created by Sreekumar on 3/17/2017.
@@ -60,9 +61,8 @@ public class BloodPressureActivity extends BaseActivity implements Toolbar.OnMen
 
         switch (id) {
             case R.id.linearViewHorizontal:
-                LinearLayoutManager mLinearLayoutManagerHorizontal = new LinearLayoutManager(this);
-                mLinearLayoutManagerHorizontal.setOrientation(LinearLayoutManager.HORIZONTAL);
-                recyclerView.setLayoutManager(mLinearLayoutManagerHorizontal);
+                GridLayoutManager mGridLayoutManager = new GridLayoutManager(this, 2);
+                recyclerView.setLayoutManager(mGridLayoutManager);
                 break;
 
             case R.id.add_blood:
@@ -102,7 +102,7 @@ public class BloodPressureActivity extends BaseActivity implements Toolbar.OnMen
 
             for (int i = 0; i < measurementList.size(); i++) {
 
-                Measurement bloodPressure = new BloodPressure(i, images[0], measurementList.get(i).getSystolic(),
+                Measurement bloodPressure = new BloodPressure(measurementList.get(i).getId(), images[0], measurementList.get(i).getSystolic(),
                         measurementList.get(i).getDiastolic(), measurementList.get(i).getMeasuredOn());
        /*     bloodPressure.setSystolic(measurementList.get(i).getSystolic());
             bloodPressure.setDiastolic(measurementList.get(i).getDiastolic());

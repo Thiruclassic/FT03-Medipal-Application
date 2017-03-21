@@ -19,6 +19,11 @@ public class Constants {
 
     public static final String SAVE_MEDICINE_BUTTON="Save Medicine";
     public static final String EDIT_MEDICINE_BUTTON="Modify Medicine";
+    public static final String SPACE=" ";
+
+    public static final String REMINDER_TAB_1="REMINDER_TAB_1";
+    public static final String REMINDER_TAB_2="REMINDER_TAB_2";
+    public static final String REMINDER_TAB_3="REMINDER_TAB_3";
 
 
     public static final int MYMEDICINE_VIEW_PAGE_ID = 2;

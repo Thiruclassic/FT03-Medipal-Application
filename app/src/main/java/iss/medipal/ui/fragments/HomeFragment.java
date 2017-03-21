@@ -157,7 +157,7 @@ public class HomeFragment extends BaseFragment implements
             mMedAbsentLayout.setVisibility(View.GONE);
             mDoseContainer = DoseContainer.getInstance(getActivity());
             if(isReload){
-                mDoseContainer.reloadData();
+                mDoseContainer.reloadData(isReload);
             }
             setTodayCurrent();
             ArrayList<MedDayModel> tempMeds = mDoseContainer.getDosesForDay(mCurrentDay);

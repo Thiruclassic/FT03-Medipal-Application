@@ -31,6 +31,7 @@ public interface MeasurementDao {
     public int addWeight(Weight weight);
     public int addTemperature(Temperature temperature);
     public int addPulse(Pulse pulse);
+    public Boolean deleteMeasurement(int measurementId);
 
     public void close();
 

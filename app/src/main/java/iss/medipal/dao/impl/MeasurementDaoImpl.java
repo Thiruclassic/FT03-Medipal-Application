@@ -22,10 +22,11 @@ import iss.medipal.model.Weight;
  * Created by sreekumar on 3/18/2017.
  */
 
-public class MeasurementDaoImpl extends BaseDao implements MeasurementDao{
+public class MeasurementDaoImpl extends BaseDao implements MeasurementDao {
 
 
     SimpleDateFormat dateFormat;
+
     public MeasurementDaoImpl(Context context) {
         super(context);
     }
@@ -35,18 +36,20 @@ public class MeasurementDaoImpl extends BaseDao implements MeasurementDao{
     }
 
     @Override
-    public Measurement getMeasurement(){
+    public Measurement getMeasurement() {
 
         return null;
 
     }
+
     @Override
-    public Measurement getMeasurement(int id){
+    public Measurement getMeasurement(int id) {
 
         return null;
     }
+
     @Override
-    public List<Measurement> getMeasurements(){
+    public List<Measurement> getMeasurements() {
 
         List<Measurement> mesList = new ArrayList<>();
 
@@ -55,17 +58,18 @@ public class MeasurementDaoImpl extends BaseDao implements MeasurementDao{
 
 
     @Override
-    public List<BloodPressure> getBloodPressureValues(){
-        BloodPressure bloodPressure=null;
-        String query = "Select * from " + DBConstants.TABLE_MEASUREMENT+" where Systolic IS NOT NULL";
+    public List<BloodPressure> getBloodPressureValues() {
+        BloodPressure bloodPressure = null;
+        String query = "Select * from " + DBConstants.TABLE_MEASUREMENT + " where Systolic IS NOT NULL";
         Cursor cursor = database.rawQuery(query, null);
         List<BloodPressure> bloodPressureList = new ArrayList<>();
         dateFormat = new SimpleDateFormat(Constants.DATE_TIME_FORMAT);
         while (cursor.moveToNext()) {
             try {
 
-                bloodPressure= new BloodPressure(cursor.getColumnIndex(DBConstants.MES_ID),
-                        cursor.getColumnIndex(DBConstants.MES_SYS),cursor.getColumnIndex(DBConstants.MES_DIA),
+                bloodPressure = new BloodPressure(cursor.getInt(cursor.getColumnIndex(DBConstants.MES_ID)),
+                        cursor.getInt(cursor.getColumnIndex(DBConstants.MES_SYS)),
+                        cursor.getInt(cursor.getColumnIndex(DBConstants.MES_DIA)),
                         dateFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.MES_measuredOn))));
                /* measurement.setId(cursor.getColumnIndex(DBConstants.MES_ID));
                 measurement.setDiastolic(cursor.getColumnIndex(DBConstants.MES_DIA));
@@ -82,17 +86,17 @@ public class MeasurementDaoImpl extends BaseDao implements MeasurementDao{
 
     }
 
-    public List<Weight> getWeightValues(){
-        Weight weight =null;
-        String query = "Select * from " + DBConstants.TABLE_MEASUREMENT+" where Weight IS NOT NULL";
+    public List<Weight> getWeightValues() {
+        Weight weight = null;
+        String query = "Select * from " + DBConstants.TABLE_MEASUREMENT + " where Weight IS NOT NULL";
         Cursor cursor = database.rawQuery(query, null);
         List<Weight> weightList = new ArrayList<>();
         dateFormat = new SimpleDateFormat(Constants.DATE_TIME_FORMAT);
 
         while (cursor.moveToNext()) {
             try {
-                weight= new Weight(cursor.getColumnIndex(DBConstants.MES_ID),
-                        cursor.getColumnIndex(DBConstants.MES_weight),
+                weight = new Weight(cursor.getInt(cursor.getColumnIndex(DBConstants.MES_ID)),
+                        cursor.getInt(cursor.getColumnIndex(DBConstants.MES_weight)),
                         dateFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.MES_measuredOn))));
 
                 weightList.add(weight);
@@ -103,18 +107,33 @@ public class MeasurementDaoImpl extends BaseDao implements MeasurementDao{
         return weightList;
 
     }
-    public List<Temperature> getTempValues(){
+
+    public Boolean deleteMeasurement(int measurementId) {
+        Boolean status = false;
+        try {
+            status = database.delete(DBConstants.TABLE_MEASUREMENT, "ID" + "=" + " '" + measurementId + "'", null) > 0;
+
+        } catch (Exception ex) {
+
+            Log.d("Error", ex.getMessage());
+
+        }
+        return status;
+    }
+
+
+    public List<Temperature> getTempValues() {
 
         List<Temperature> temperatureList = new ArrayList<>();
-        String query = "Select * from " + DBConstants.TABLE_MEASUREMENT+" where Temperature IS NOT NULL";
+        String query = "Select * from " + DBConstants.TABLE_MEASUREMENT + " where Temperature IS NOT NULL";
         Cursor cursor = database.rawQuery(query, null);
         dateFormat = new SimpleDateFormat(Constants.DATE_TIME_FORMAT);
-        Temperature temp=null;
+        Temperature temp = null;
 
         while (cursor.moveToNext()) {
             try {
-                temp= new Temperature(cursor.getColumnIndex(DBConstants.MES_ID),
-                        cursor.getColumnIndex(DBConstants.MES_temp),
+                temp = new Temperature(cursor.getInt(cursor.getColumnIndex(DBConstants.MES_ID)),
+                        cursor.getInt(cursor.getColumnIndex(DBConstants.MES_temp)),
                         dateFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.MES_measuredOn))));
 
                 temperatureList.add(temp);
@@ -127,18 +146,20 @@ public class MeasurementDaoImpl extends BaseDao implements MeasurementDao{
 
 
     }
-    public List<Pulse> getPulseValues(){
 
-        List<Pulse> pulseList =new ArrayList<>();
-        String query = "Select * from " + DBConstants.TABLE_MEASUREMENT+" where Pulse IS NOT NULL";;
+    public List<Pulse> getPulseValues() {
+
+        List<Pulse> pulseList = new ArrayList<>();
+        String query = "Select * from " + DBConstants.TABLE_MEASUREMENT + " where Pulse IS NOT NULL";
+        ;
         Cursor cursor = database.rawQuery(query, null);
         dateFormat = new SimpleDateFormat(Constants.DATE_TIME_FORMAT);
-        Pulse pulse=null;
+        Pulse pulse = null;
 
         while (cursor.moveToNext()) {
             try {
-                pulse= new Pulse(cursor.getColumnIndex(DBConstants.MES_ID),
-                        cursor.getColumnIndex(DBConstants.MES_PULSE),
+                pulse = new Pulse(cursor.getInt(cursor.getColumnIndex(DBConstants.MES_ID)),
+                        cursor.getInt(cursor.getColumnIndex(DBConstants.MES_PULSE)),
                         dateFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.MES_measuredOn))));
 
                 pulseList.add(pulse);
@@ -152,7 +173,7 @@ public class MeasurementDaoImpl extends BaseDao implements MeasurementDao{
 
     }
 
-    public int addBloodPressure(BloodPressure bloodPressure){
+    public int addBloodPressure(BloodPressure bloodPressure) {
 
         ContentValues values = new ContentValues();
         values.put(DBConstants.MES_SYS, bloodPressure.getSystolic());
@@ -162,7 +183,7 @@ public class MeasurementDaoImpl extends BaseDao implements MeasurementDao{
         return id;
     }
 
-    public int addWeight(Weight weight){
+    public int addWeight(Weight weight) {
 
         ContentValues values = new ContentValues();
         values.put(DBConstants.MES_weight, weight.getWeight());
@@ -172,7 +193,8 @@ public class MeasurementDaoImpl extends BaseDao implements MeasurementDao{
 
 
     }
-    public int addTemperature(Temperature temperature){
+
+    public int addTemperature(Temperature temperature) {
 
         ContentValues values = new ContentValues();
         values.put(DBConstants.MES_temp, temperature.getTemperature());
@@ -182,7 +204,8 @@ public class MeasurementDaoImpl extends BaseDao implements MeasurementDao{
 
 
     }
-    public int addPulse(Pulse pulse){
+
+    public int addPulse(Pulse pulse) {
 
         ContentValues values = new ContentValues();
         values.put(DBConstants.MES_PULSE, pulse.getPulse());
