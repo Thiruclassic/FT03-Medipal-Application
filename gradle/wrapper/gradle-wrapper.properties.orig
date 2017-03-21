@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 #Mon Mar 13 21:51:26 SGT 2017
-=======
-#Sun Mar 19 01:32:07 SGT 2017
->>>>>>> 51ed947a05c017926c72bf23fa96be4a932d50b9
 distributionBase=GRADLE_USER_HOME
 distributionPath=wrapper/dists
 zipStoreBase=GRADLE_USER_HOME

@@ -63,7 +63,9 @@ public class PriorityFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        tvEmpty.setVisibility(priorityAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
+        if(priorityAdapter != null) {
+            tvEmpty.setVisibility(priorityAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
+        }
     }
 
 }

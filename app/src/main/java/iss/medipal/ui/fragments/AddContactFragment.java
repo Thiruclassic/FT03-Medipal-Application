@@ -94,9 +94,6 @@ public class AddContactFragment extends Fragment {
         mSubmitButton.setOnClickListener(mSubmitListener);
     }
 
-
-
-
     private View.OnClickListener mSubmitListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {

@@ -66,6 +66,7 @@ public class FriendFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        if(friendAdapter!=null)
         tvEmpty.setVisibility(friendAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
     }
 }

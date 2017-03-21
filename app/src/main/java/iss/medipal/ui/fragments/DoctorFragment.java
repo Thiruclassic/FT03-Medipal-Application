@@ -70,6 +70,7 @@ public class DoctorFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        tvEmpty.setVisibility(doctorAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
+        if(doctorAdapter!=null)
+            tvEmpty.setVisibility(doctorAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
     }
 }

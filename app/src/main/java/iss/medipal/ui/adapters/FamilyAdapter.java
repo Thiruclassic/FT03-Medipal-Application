@@ -36,6 +36,10 @@ public class FamilyAdapter extends ArrayAdapter<InCaseofEmergencyContact> {
         }
     }
 
+    @Override
+    public int getCount() {
+        return familyMembers.size();
+    }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
