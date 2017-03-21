@@ -37,11 +37,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     private LayoutInflater mInflater;
     private MeasurementDao measurementDao;
     private  Measurement currentObj = null;
+    private Context context;
 
     public RecyclerAdapter(Context context, List<Measurement> data) {
         this.mData = data;
         this.mInflater = LayoutInflater.from(context);
         this.measurementDao= MeasurementDaoImpl.newInstance(context);
+        this.context=context;
     }
 
     @Override
@@ -55,7 +57,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
         currentObj = mData.get(position);
-        holder.setData(currentObj);
+        holder.setData(currentObj,context);
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,12 +106,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
         }
 
-        public void setData(Measurement current) {
+        public void setData(Measurement current,Context context) {
 
             if (current instanceof BloodPressure) {
                 if (null != current) {
                     BloodPressure bloodPressure = (BloodPressure) current;
-                    this.title1.setText("S :" + bloodPressure.getSystolic() + " mmHg" + " D: " + bloodPressure.getSystolic() + " mmHg");
+                    Integer systolic = bloodPressure.getSystolic();
+                    Integer diastolic = bloodPressure.getDiastolic();
+
+                    this.title1.setText("S :" + systolic + " mmHg" + " D: " + diastolic + " mmHg");
                     SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                     Date dateTime = bloodPressure.getMeasuredOn();
                     Calendar calendarhere = Calendar.getInstance();
@@ -119,12 +124,30 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
                     this.title2.setText(dateFormatter.format(calendarhere.getTime()));
                     this.imgThumb.setImageResource(bloodPressure.getImageType());
+                    if((systolic<=90) && (diastolic <=60)){
+                        //Low blood pressure
+                        imgThumb.setColorFilter(context.getResources().getColor(R.color.blue_500));
+
+                    }else if((systolic<=120) && (diastolic <=80)){
+
+                        //Ideal blood pressure
+                        imgThumb.setColorFilter(context.getResources().getColor(R.color.green_A700));
+                    }
+                    else if((systolic<=140) && (diastolic <=90)){
+                        //Pre high blood pressure
+                        imgThumb.setColorFilter(context.getResources().getColor(R.color.yellow_500));
+                    }
+                    else if((systolic<=190) && (diastolic <=100)){
+                        //High blood pressure
+                        imgThumb.setColorFilter(context.getResources().getColor(R.color.red_500));
+                    }
+
                 }
 
             } else if (current instanceof Weight) {
 
                 if (null != current) {
-
+                    //Need to implement BMI calculator
                     Weight weight = (Weight) current;
                     this.title1.setText(" " + weight.getWeight() + "Kg");
                     SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
@@ -136,11 +159,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
                     this.title2.setText(dateFormatter.format(calendarhere.getTime()));
                     this.imgThumb.setImageResource(weight.getImageType());
+
+
                 }
             } else if (current instanceof Temperature) {
                 if (null != current) {
                     Temperature temp = (Temperature) current;
-                    this.title1.setText(" " + temp.getTemperature() + " `C");
+                    Integer temperature = temp.getTemperature();
+                    this.title1.setText(" " +temperature + " `C");
                     SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                     Date dateTime = temp.getMeasuredOn();
                     Calendar calendarhere = Calendar.getInstance();
@@ -150,12 +176,29 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
                     this.title2.setText(dateFormatter.format(calendarhere.getTime()));
                     this.imgThumb.setImageResource(temp.getImageType());
+
+                    if(temperature<37){
+                        //Normal
+                        imgThumb.setColorFilter(context.getResources().getColor(R.color.blue_500));
+
+                    }else if(temperature==38) {
+
+                        //Ideal
+                        imgThumb.setColorFilter(context.getResources().getColor(R.color.green_A700));
+
+                    }
+                    else if(temperature>38)
+                    {
+                        //High
+                        imgThumb.setColorFilter(context.getResources().getColor(R.color.red_500));
+                    }
                 }
 
             } else if (current instanceof Pulse) {
                 if (null != current) {
                     Pulse pulse = (Pulse) current;
-                    this.title1.setText(" " + pulse.getPulse() + " bpm");
+                    Integer pulseRate = pulse.getPulse();
+                    this.title1.setText(" " +pulseRate+ " bpm");
                     SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                     Date dateTime = pulse.getMeasuredOn();
                     Calendar calendarhere = Calendar.getInstance();
@@ -165,6 +208,22 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
                     this.title2.setText(dateFormatter.format(calendarhere.getTime()));
                     this.imgThumb.setImageResource(pulse.getImageType());
+
+                    if(pulseRate<=60){
+                        //Normal
+                        imgThumb.setColorFilter(context.getResources().getColor(R.color.blue_500));
+
+                    }else if(pulseRate>60 && pulseRate<100) {
+
+                        //Ideal
+                        imgThumb.setColorFilter(context.getResources().getColor(R.color.green_A700));
+
+                    }
+                    else if(pulseRate>100)
+                    {
+                        //High
+                        imgThumb.setColorFilter(context.getResources().getColor(R.color.red_500));
+                    }
                 }
 
             }
