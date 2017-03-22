@@ -116,7 +116,6 @@
     <string name="not_editable_name">Name(Not Editable)</string>
 
 
-
     <!--Home Screen -->
     <string name="home_screen_no_meds_text">You must enter medications to begin using this application</string>
     <string name="home_screen_go_to_my_meds_button_text">Add New Drug</string>
@@ -135,5 +134,15 @@
     <string name="condition_type_allergy">Allergy</string>
     <string name="unsuccesful">Sorry something went wrong!!</string>
     <string name="succesful">Data succesfully saved</string>
+
+    <string name="category_title">Categories</string>
+    <string name="health_bio_title">Health Bio</string>
+
+    <!-- Category -->
+    <string name="category_name">Category Name</string>
+    <string name="category_code">Category Code</string>
+    <string name="category_remind">Remind</string>
+    <string name="category_description">Description</string>
+    <string name="category_save_pop_up_text">successfully saved</string>
 
 </resources>

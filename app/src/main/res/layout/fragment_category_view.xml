@@ -1,0 +1,30 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view_fragment_frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true">
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/categoryList"
+        android:clickable="true"
+       >
+
+
+    </ListView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/addCategoryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:layout_marginBottom="@dimen/margin_generic_med"
+        android:layout_marginRight="@dimen/margin_generic_med"
+        android:src="@drawable/plus"
+        android:tint="@android:color/white"
+        />
+
+</FrameLayout>
