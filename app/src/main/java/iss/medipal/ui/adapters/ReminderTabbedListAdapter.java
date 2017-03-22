@@ -35,18 +35,16 @@ public class ReminderTabbedListAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return  ViewReminderFragment.newInstance(DBConstants.TABLE_MEDICINE);
+                return  ViewReminderFragment.newInstance();
             case 1:
                 return SimpleCardFragment.getInstance("Screen : Appointment Reminders");
-            case 2:
-                return ViewReminderFragment.newInstance(DBConstants.TABLE_REMINDER);
         }
         return null;
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return 2;
     }
 
     @Override
@@ -56,8 +54,6 @@ public class ReminderTabbedListAdapter extends FragmentPagerAdapter {
                 return Constants.REMINDER_TAB_1;
             case 1:
                 return Constants.REMINDER_TAB_2;
-            case 2:
-                return Constants.REMINDER_TAB_3;
         }
         return null;
     }
