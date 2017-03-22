@@ -27,15 +27,16 @@
         android:text="Dummy Text"
         android:textSize="18sp" />
 
-  <!--  <ImageView
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_delete"
+        app:srcCompat="@drawable/ic_delete_black"
         android:layout_alignTop="@+id/tvNote"
         android:layout_alignRight="@+id/tvNote"
         android:layout_alignEnd="@+id/tvNote"
         android:layout_marginRight="19dp"
         android:layout_marginEnd="19dp"
-        android:id="@+id/deletebutton" />  -->
+        android:id="@+id/deletebutton"
+        android:layout_alignBottom="@+id/imageDocIcon" />
 
 </RelativeLayout>

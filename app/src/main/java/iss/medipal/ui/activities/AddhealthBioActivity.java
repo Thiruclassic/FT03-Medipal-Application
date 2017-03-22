@@ -97,6 +97,7 @@ public class AddhealthBioActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             mDatePickerDialog = getDialog();
+            mDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
             mDatePickerDialog.show();
         }
     };
@@ -105,6 +106,7 @@ public class AddhealthBioActivity extends AppCompatActivity {
         public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus) {
                 mDatePickerDialog = getDialog();
+                mDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
                 mDatePickerDialog.show();
             }
         }
