@@ -45,7 +45,7 @@ public class AddMedicineTask extends AsyncTask<Medicine, Void, Reminder> {
         long result = mMedDao.addMedicine(params[0]);
         for(Medicine med: MediPalApplication.getPersonStore().getmPersonalBio().getMedicines()){
             if(med.equals(params[0])){
-                med.setId(reminderId);
+                med.setId(reminder.getId());
             }
         }
         args=new Object[]{params[0],reminder};

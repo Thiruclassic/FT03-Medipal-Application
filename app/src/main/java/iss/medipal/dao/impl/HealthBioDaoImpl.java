@@ -2,9 +2,14 @@ package iss.medipal.dao.impl;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.util.Log;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
+import iss.medipal.constants.Constants;
 import iss.medipal.constants.DBConstants;
 import iss.medipal.dao.HealthBioDao;
 import iss.medipal.model.HealthBio;
@@ -14,6 +19,10 @@ import iss.medipal.model.HealthBio;
  */
 
 public class HealthBioDaoImpl extends BaseDao implements HealthBioDao {
+
+    public static HealthBioDaoImpl newInstance(Context context) {
+        return new HealthBioDaoImpl(context);
+    }
 
 
     public HealthBioDaoImpl(Context context) {
@@ -37,11 +46,38 @@ public class HealthBioDaoImpl extends BaseDao implements HealthBioDao {
 
     @Override
     public int deleteHealthBio(int id) {
-        return 0;
+        int rowId = database.delete(DBConstants.TABLE_HEALTH_BIO, "ID = ?",new String[]{String.valueOf(id)});
+        return rowId;
+
     }
 
     @Override
-    public List<HealthBio> getAllHealthBio(int id) {
-        return null;
+    public List<HealthBio> getAllHealthBio() {
+
+        String query = "Select * from " + DBConstants.TABLE_HEALTH_BIO;
+        Cursor cursor = database.rawQuery(query, null);
+
+        List<HealthBio> healthbio_list = new ArrayList<>();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
+        while (cursor.moveToNext()) {
+            try {
+
+                HealthBio healthBio = new HealthBio();
+                healthBio.setId(cursor.getColumnIndex(DBConstants.APP_ID));
+                healthBio.setStartDate(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.HEALTH_START_DATE))).toString());
+                healthBio.setCondition(cursor.getString(cursor.getColumnIndex(DBConstants.HEALTH_CONDITION)));
+                healthBio.setConditionType(cursor.getString(cursor.getColumnIndex(DBConstants.HEALTH_CONDITION_TYPE)));
+
+                healthbio_list.add(healthBio);
+
+
+            } catch (Exception e) {
+                Log.d("Error", e.getMessage());
+            }
+        }
+        return healthbio_list;
     }
+
 }
+

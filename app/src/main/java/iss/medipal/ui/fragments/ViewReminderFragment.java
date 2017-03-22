@@ -1,36 +1,22 @@
 package iss.medipal.ui.fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Switch;
-import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import iss.medipal.MediPalApplication;
 import iss.medipal.R;
-import iss.medipal.constants.Constants;
-import iss.medipal.constants.DBConstants;
 import iss.medipal.model.Medicine;
-import iss.medipal.model.Reminder;
-import iss.medipal.ui.adapters.MedicineListAdapter;
 import iss.medipal.ui.adapters.MedicineReminderListAdapter;
-import iss.medipal.ui.adapters.RefillReminderListAdapter;
 import iss.medipal.util.AppHelper;
 
 /**
@@ -44,7 +30,6 @@ public class ViewReminderFragment extends Fragment {
 
     private ListView reminderList;
     private BaseAdapter adapter;
-    private String listType;
 
     private Switch mSwitch;
 
@@ -58,9 +43,8 @@ public class ViewReminderFragment extends Fragment {
      * @return A new instance of fragment ViewReminderFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ViewReminderFragment newInstance(String listType) {
+    public static ViewReminderFragment newInstance() {
         ViewReminderFragment fragment = new ViewReminderFragment();
-        fragment.listType=listType;
         return fragment;
     }
 
@@ -106,19 +90,7 @@ public class ViewReminderFragment extends Fragment {
         List<Medicine> medicines=medicines = MediPalApplication.getPersonStore()
                 .getmPersonalBio().getMedicines();
 
-        if(listType==null)
-        {
-            listType=Constants.SPACE;
-        }
-        switch (listType)
-        {
-            case DBConstants.TABLE_MEDICINE:
-                setReminderListAdapter(medicines);
-                break;
-            case DBConstants.TABLE_REMINDER:
-                setRefillListAdapter(medicines);
-                break;
-        }
+        setReminderListAdapter(medicines);
         reminderList.setAdapter(adapter);
 
 
@@ -138,18 +110,5 @@ public class ViewReminderFragment extends Fragment {
         }
     }
 
-    public void setRefillListAdapter(List<Medicine> medicines)
-    {
-        if(!AppHelper.isListEmpty(medicines)) {
-            if(adapter==null)
-            {
-                adapter=new RefillReminderListAdapter(getContext(),medicines);
-            }
-            else
-            {
-                ((RefillReminderListAdapter)adapter).setMedicines(medicines);
-            }
-        }
-    }
 
 }
