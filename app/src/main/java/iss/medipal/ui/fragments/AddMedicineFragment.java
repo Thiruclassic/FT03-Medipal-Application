@@ -1,10 +1,7 @@
 package iss.medipal.ui.fragments;
 
-import android.app.AlarmManager;
 import android.app.DatePickerDialog;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -20,7 +17,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Switch;
@@ -31,7 +27,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import iss.medipal.MediPalApplication;
@@ -41,12 +36,9 @@ import iss.medipal.constants.DBConstants;
 import iss.medipal.dao.CategoryDao;
 import iss.medipal.dao.MedicineDao;
 import iss.medipal.dao.ReminderDao;
-import iss.medipal.dao.impl.MedicineDaoImpl;
-import iss.medipal.dao.impl.ReminderDaoImpl;
 import iss.medipal.model.Category;
 import iss.medipal.model.Medicine;
 import iss.medipal.model.Reminder;
-import iss.medipal.receivers.AlarmReceiver;
 import iss.medipal.ui.activities.MainActivity;
 import iss.medipal.ui.adapters.BaseSpinnerAdapter;
 import iss.medipal.ui.adapters.CategorySpinnerAdapter;
@@ -71,13 +63,11 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
     private AppCompatEditText mPillsBeforeRefillEditText;
     private Button mSaveMedicineButton;
     private Button mAddDosageTimeButton;
-    private Button mAddRefillReminderTime;
     private AppCompatSpinner mCategorySpinner;
     private AppCompatSpinner mDosageSpinner;
     private AppCompatSpinner mFrequencySpinner;
     private AppCompatSpinner mIntervalSpinner;
     private Switch mRemindSwitch;
-    private Switch mRefillReminderSwitch;
     private AppCompatTextView mNameHint;
 
     private MedicineDao medicineDao;
@@ -190,8 +180,10 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         if(mReminder == null){
             mReminder  = new Reminder();
         }
-        mReminder.setStartTime(calendar.getTime());
-        mAddDosageTimeButton.setText(mReminderStartTime);
+                mReminder.setStartTime(calendar.getTime());
+                mAddDosageTimeButton.setText(mReminderStartTime);
+                mAddDosageTimeButton.setText(mReminderStartTime);
+
     }
 
     private void setSpinners(){
@@ -222,7 +214,6 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         mIntervalSpinner =(AppCompatSpinner)view.findViewById(R.id.intervalSpinner);
         mSaveMedicineButton =(Button)view.findViewById(R.id.saveMedicine);
         mAddDosageTimeButton =(Button)view.findViewById(R.id.dosageTime);
-        mAddRefillReminderTime =(Button)view.findViewById(R.id.refillReminderTime);
         mRemindSwitch =(Switch)view.findViewById(R.id.remindSwitch);
     }
 
@@ -231,10 +222,11 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
 
             @Override
             public void onClick(final View v) {
-                DialogFragment timerFragment = new TimePickerFragment();
+                DialogFragment timerFragment = TimePickerFragment.newInstance(Constants.REMINDER_TAB_1);
                 timerFragment.show(getChildFragmentManager(), Constants.ADD_REMINDER_DIALOG);
             }
         };
+
         View.OnClickListener saveListener=new View.OnClickListener()
         {
             @Override
@@ -289,7 +281,6 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         mIssueDateEditText.setOnFocusChangeListener(focusChangeListener);
 
         mAddDosageTimeButton.setOnClickListener(setTimeListener);
-        mAddRefillReminderTime.setOnClickListener(setTimeListener);
         mSaveMedicineButton.setOnClickListener(saveListener);
     }
 
@@ -371,6 +362,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
                 .isEmpty(mPillsBeforeRefillEditText.getText())?"0":mPillsBeforeRefillEditText.getText())));
         mMedicine.setExpireFactor(Integer.parseInt(String.valueOf(TextUtils
                 .isEmpty(mMonthsToExpireEditText.getText())?"0":mMonthsToExpireEditText.getText())));
+
         try {
             mMedicine.setDateIssued(dateFormat.parse(mIssueDateEditText.getText().toString()));
         } catch (ParseException e) {
@@ -392,7 +384,9 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         mIssueDateEditText.setText(String.valueOf(dateFormat.format(mMedicine.getDateIssued())));
         mRemindSwitch.setChecked(mMedicine.isRemind());
         mMonthsToExpireEditText.setText(String.valueOf(mMedicine.getExpireFactor()));
+
     }
+
 
     public void updateReminderDetails()
     {

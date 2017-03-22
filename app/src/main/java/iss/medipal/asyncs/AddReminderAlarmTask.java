@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 
 import java.util.Calendar;
 
+import iss.medipal.constants.Constants;
 import iss.medipal.constants.DBConstants;
 import iss.medipal.model.Medicine;
 import iss.medipal.model.Reminder;
@@ -49,15 +50,11 @@ public class AddReminderAlarmTask extends AsyncTask {
         intent.putExtra(DBConstants.MEDICINE_DOSAGE, medicine.getDosage());
         intent.putExtra(DBConstants.REMINDER_ID, medicine.getReminderId());
         intent.putExtra(DBConstants.APP_ID, medicine.getId());
-
+        Calendar calendar = Calendar.getInstance();
         if(medicine.isRemind()) {
-            Calendar calendar = Calendar.getInstance();
             calendar.setTime(medicine.getReminder().getStartTime());
             calendar.set(Calendar.SECOND, 0);
-
-
-
-
+            
             int interval = 0;
             for (int i = 0; i < reminder.getFrequency(); i++) {
                 pendingIntent = PendingIntent.getBroadcast(mContext, medicine.getId() + i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -66,13 +63,13 @@ public class AddReminderAlarmTask extends AsyncTask {
             }
         }
         else
-        { for (int i = 0; i < reminder.getFrequency(); i++) {
+        {
+            for (int i = 0; i < reminder.getFrequency(); i++)
             pendingIntent = PendingIntent.getBroadcast(mContext, medicine.getId() + i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             manager.cancel(pendingIntent);
 
         }
-
         }
 
-    }
+
 }

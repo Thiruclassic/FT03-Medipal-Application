@@ -38,6 +38,7 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".ui.activities.PulseActivity" />
         <activity android:name=".ui.activities.AddPulseActivity"></activity>
+
     </application>
 
 </manifest>

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -24,10 +25,12 @@ import java.util.List;
 import iss.medipal.MediPalApplication;
 import iss.medipal.R;
 import iss.medipal.constants.Constants;
+import iss.medipal.constants.DBConstants;
 import iss.medipal.model.Medicine;
 import iss.medipal.model.Reminder;
 import iss.medipal.ui.adapters.MedicineListAdapter;
 import iss.medipal.ui.adapters.MedicineReminderListAdapter;
+import iss.medipal.ui.adapters.RefillReminderListAdapter;
 import iss.medipal.util.AppHelper;
 
 /**
@@ -40,7 +43,8 @@ import iss.medipal.util.AppHelper;
 public class ViewReminderFragment extends Fragment {
 
     private ListView reminderList;
-    private MedicineReminderListAdapter adapter;
+    private BaseAdapter adapter;
+    private String listType;
 
     private Switch mSwitch;
 
@@ -54,9 +58,9 @@ public class ViewReminderFragment extends Fragment {
      * @return A new instance of fragment ViewReminderFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ViewReminderFragment newInstance() {
+    public static ViewReminderFragment newInstance(String listType) {
         ViewReminderFragment fragment = new ViewReminderFragment();
-
+        fragment.listType=listType;
         return fragment;
     }
 
@@ -102,21 +106,50 @@ public class ViewReminderFragment extends Fragment {
         List<Medicine> medicines=medicines = MediPalApplication.getPersonStore()
                 .getmPersonalBio().getMedicines();
 
-        if(!AppHelper.isListEmpty(medicines)) {
-            if (adapter == null) {
-                adapter = new MedicineReminderListAdapter(getContext(), medicines);
-                reminderList.setAdapter(adapter);
-            } else {
-                adapter.setMedicines(medicines);
-                reminderList.setAdapter(adapter);
-            }
+        if(listType==null)
+        {
+            listType=Constants.SPACE;
         }
+        switch (listType)
+        {
+            case DBConstants.TABLE_MEDICINE:
+                setReminderListAdapter(medicines);
+                break;
+            case DBConstants.TABLE_REMINDER:
+                setRefillListAdapter(medicines);
+                break;
+        }
+        reminderList.setAdapter(adapter);
 
 
     }
 
+    public void setReminderListAdapter(List<Medicine> medicines)
+    {
+        if(!AppHelper.isListEmpty(medicines)) {
+            if(adapter==null)
+            {
+                adapter=new MedicineReminderListAdapter(getContext(),medicines);
+            }
+            else
+            {
+                ((MedicineReminderListAdapter)adapter).setMedicines(medicines);
+            }
+        }
+    }
 
-
-
+    public void setRefillListAdapter(List<Medicine> medicines)
+    {
+        if(!AppHelper.isListEmpty(medicines)) {
+            if(adapter==null)
+            {
+                adapter=new RefillReminderListAdapter(getContext(),medicines);
+            }
+            else
+            {
+                ((RefillReminderListAdapter)adapter).setMedicines(medicines);
+            }
+        }
+    }
 
 }

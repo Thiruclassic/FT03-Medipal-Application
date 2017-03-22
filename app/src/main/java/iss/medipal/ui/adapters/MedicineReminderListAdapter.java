@@ -74,7 +74,6 @@ public class MedicineReminderListAdapter extends BaseAdapter {
     }
     public void setSwitchListeners(Switch switcher)
     {
-
         Switch.OnCheckedChangeListener listener= new Switch.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

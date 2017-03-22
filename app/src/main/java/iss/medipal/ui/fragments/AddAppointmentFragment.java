@@ -201,9 +201,9 @@ public class AddAppointmentFragment extends Fragment {
         if(reminder!=null)
         {
             reminderDao= ReminderDaoImpl.newInstance(getActivity());
-            reminderId=reminderDao.addReminder(reminder);
+            reminder=reminderDao.addReminder(reminder);
         }
-        return reminderId;
+        return reminder.getId();
     }
     public Appointment getAppointmentDetails() throws Exception{
         appointment = new Appointment();
