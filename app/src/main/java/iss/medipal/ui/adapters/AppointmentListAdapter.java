@@ -1,7 +1,6 @@
 package iss.medipal.ui.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,30 +8,34 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import iss.medipal.R;
-import iss.medipal.model.Medicine;
+import iss.medipal.model.Appointment;
 
 /**
- * Created by junaidramis on 17/3/17.
+ * Created by sreekumar on 3/21/2017.
  */
-public class MedicineListAdapter extends BaseAdapter {
-    private Context mContext;
-    private ArrayList<Medicine> mMedicines;
 
-    public MedicineListAdapter(Context context , ArrayList<Medicine> medicines) {
+public class AppointmentListAdapter extends BaseAdapter {
+
+    private Context mContext;
+    private List<Appointment> appointments;
+
+    public AppointmentListAdapter(Context context, List<Appointment> appointments) {
+
         this.mContext = context;
-        this.mMedicines = medicines;
+        this.appointments = appointments;
     }
 
     @Override
     public int getCount() {
-        return mMedicines.size();
+        return appointments.size();
     }
 
     @Override
     public String getItem(int i) {
-        return mMedicines.get(i).getMedicine();
+        return appointments.get(i).getLocation();
     }
 
     @Override
@@ -42,33 +45,34 @@ public class MedicineListAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        MedicineListAdapter.ViewHolder viewHolder;
+        AppointmentListAdapter.ViewHolder viewHolder;
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).
-                    inflate(R.layout.item_med, parent, false);
-            viewHolder = new MedicineListAdapter.ViewHolder(convertView);
+                    inflate(R.layout.todo_list_item, parent, false);
+            viewHolder = new AppointmentListAdapter.ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {
-            viewHolder = (MedicineListAdapter.ViewHolder) convertView.getTag();
+            viewHolder = (AppointmentListAdapter.ViewHolder) convertView.getTag();
         }
-        viewHolder.mItemTextview.setText(mMedicines.get(position).getMedicine());
+        viewHolder.mItemTextview.setText(appointments.get(position).getLocation());
 
         return convertView;
     }
 
-    public void setMedicines(ArrayList<Medicine> medicines){
-        this.mMedicines = medicines;
+    public void setAppointments(List<Appointment>appointments){
+        this.appointments=appointments;
         notifyDataSetChanged();
     }
     /**
      * Static view holder class.
      */
     class ViewHolder {
+
+        //todo add more items to the list view
         TextView mItemTextview;
 
         public ViewHolder(View view) {
-            mItemTextview = (TextView) view.findViewById(R.id.med_item_tv);
+            mItemTextview = (TextView) view.findViewById(R.id.tvNote);
         }
-
     }
 }

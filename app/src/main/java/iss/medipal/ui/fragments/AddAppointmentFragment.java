@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,19 +25,25 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import iss.medipal.R;
+import iss.medipal.constants.Constants;
 import iss.medipal.dao.AppointmentDao;
 import iss.medipal.dao.ReminderDao;
 import iss.medipal.dao.impl.AppointmentDaoImpl;
 import iss.medipal.dao.impl.ReminderDaoImpl;
 import iss.medipal.model.Appointment;
+import iss.medipal.model.Medicine;
 import iss.medipal.model.Reminder;
+import iss.medipal.ui.activities.MainActivity;
+import iss.medipal.ui.interfaces.CustomBackPressedListener;
+import iss.medipal.util.AppHelper;
+import iss.medipal.util.DialogUtility;
 
 /**
  * Created by sreekumar on 3/14/2017.
  */
 
-public class AddAppointmentFragment extends Fragment {
-
+public class AddAppointmentFragment extends Fragment implements CustomBackPressedListener {
+    private static final String APP_STRING = "APP_STRING";
     private EditText etDate, etTime, etLocation, etDescription;
     private Button btnSave;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
@@ -49,11 +56,12 @@ public class AddAppointmentFragment extends Fragment {
     private TimePickerDialog mTimePickerDialog;
     private static final SimpleDateFormat formatter = new SimpleDateFormat(
             "yyyy-MM-dd", Locale.ENGLISH);
-    AppointmentDao appointmentDao;
-    ReminderDao reminderDao;
-
+    private AppointmentDao appointmentDao;
+    private ReminderDao reminderDao;
+    private AddAppointmentFragment.viewRefreshWhenAdded mUIUpdateListener;
     private Appointment appointment;
     private Reminder reminder;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,7 +70,14 @@ public class AddAppointmentFragment extends Fragment {
 
     public static AddAppointmentFragment newInstance() {
         AddAppointmentFragment fragment = new AddAppointmentFragment();
+        return fragment;
+    }
 
+    public static AddAppointmentFragment newInstance(Appointment appointment) {
+        AddAppointmentFragment fragment = new AddAppointmentFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(APP_STRING, appointment);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -90,32 +105,66 @@ public class AddAppointmentFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
+        if (getArguments() != null && getArguments().getParcelable(APP_STRING) != null) {
+            appointment = (Appointment) getArguments().getParcelable(APP_STRING);
+        }
+        if (appointment != null) {
+            updateAppointmentDetails();
+//            updateReminderDetails();
+//            mSaveMedicineButton.setText("Modify Medicine");
+//            isEditMedicine = true;
+        } else {
+            appointment = new Appointment();
+//            isEditMedicine = false;
+        }
+
         setListeners();
     }
+
+    public void updateAppointmentDetails() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.ISSUE_DATE_FORMAT);
+        etLocation.setText(appointment.getLocation());
+        etLocation.setText(getString(R.string.not_editable_name));
+        etLocation.setEnabled(false);
+
+        etDescription.setText(appointment.getDescription());
+        etDate.setText(String.valueOf(dateFormat.format(appointment.getAppointment())));
+
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        ((MainActivity) getActivity()).setmListener(this);
+        mUIUpdateListener = ((AddAppointmentFragment.viewRefreshWhenAdded) getParentFragment());
+
+    }
+
 
     private void setListeners() {
         View.OnClickListener saveListener = new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-//                if(validate()) {
-
-                try {
-
+                if (validateAppointmentDetails()) {
+                    try {
 //                        int reminderId = addReminder();
-                    String appointment = addAppointment();
 
-                    Toast.makeText(getContext(), appointment + "Appointment successfully saved", Toast.LENGTH_SHORT).show();
-                    Log.d("Fragment type", String.valueOf(getParentFragment()));
+                        String appointment = addAppointment();
+
+                        Toast.makeText(getContext(), appointment + "Appointment successfully saved", Toast.LENGTH_SHORT).show();
+                        Log.d("Fragment type", String.valueOf(getParentFragment()));
 //                        ViewMedicineFragment fragment=(ViewMedicineFragment) getParentFragment();
 //                        fragment.medicineListAdapter.add(medicine);
 
-                } catch (Exception e) {
-                    Log.d("error", e.toString());
-                    Log.d("Error:", "error in add Appointment Page");
+
+                    } catch (Exception e) {
+                        Log.d("error", e.toString());
+                        Log.d("Error:", "error in add Appointment Page");
+                    }
+                    doBack();
+//                    onBackPressed();
+
                 }
-
-                onBackPressed();
-
             }
         };
         View.OnClickListener appDateListner = new View.OnClickListener() {
@@ -143,6 +192,23 @@ public class AddAppointmentFragment extends Fragment {
         btnSave.setOnClickListener(saveListener);
     }
 
+    public boolean validateAppointmentDetails() {
+        if (TextUtils.isEmpty(etLocation.getText())) {
+            DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
+                    "Enter Location details").show();
+            return false;
+        } else if (TextUtils.isEmpty(etDate.getText())) {
+            DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
+                    "Enter Appointment date").show();
+            return false;
+        } else if (TextUtils.isEmpty(etTime.getText())) {
+            DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
+                    "Enter Appointment time").show();
+            return false;
+        }
+        return true;
+    }
+
     private View.OnFocusChangeListener mDateFocusListener = new View.OnFocusChangeListener() {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
@@ -162,13 +228,22 @@ public class AddAppointmentFragment extends Fragment {
         }
     };
 
-
-    public void onBackPressed() {
+    @Override
+    public void doBack() {
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.detach(this).commit();
+        ((MainActivity) getActivity()).setmListener(null);
+        if (mUIUpdateListener != null) {
+            mUIUpdateListener.onAppointmentAddedUiUpdate();
+        }
+    }
+   /* public void onBackPressed() {
         AppointmentFragment appointmentFragment = AppointmentFragment.newInstance();
         FragmentManager manager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.add_appointment_frame, appointmentFragment).commit();
-    }
+    }*/
 
     public TimePickerDialog showTimePicker() {
 
@@ -183,6 +258,7 @@ public class AddAppointmentFragment extends Fragment {
             }
 
         }, hour, minute, false);
+
 //        timePickerDialog.show();
         return timePickerDialog;
     }
@@ -200,11 +276,6 @@ public class AddAppointmentFragment extends Fragment {
         return datePickerDialog;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-    }
 
     @Override
     public void onDetach() {
@@ -306,5 +377,11 @@ public class AddAppointmentFragment extends Fragment {
 
         return isValid;
     }
+
+    public interface viewRefreshWhenAdded {
+
+        void onAppointmentAddedUiUpdate();
+    }
+
 
 }
