@@ -30,8 +30,6 @@ public class Appointment implements Parcelable, Comparable<Appointment> {
         description = in.readString();
         appointment = (Date) in.readSerializable();
         reminder = in.readParcelable(Reminder.class.getClassLoader());
-
-
     }
 
     public int getId() {

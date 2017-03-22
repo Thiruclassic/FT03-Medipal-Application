@@ -5,9 +5,11 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +24,7 @@ import android.widget.Toast;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import iss.medipal.R;
@@ -48,6 +51,7 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
     private Button btnSave;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     private SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm", Locale.getDefault());
+    private SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("dd/MM/yyyy hh:mm", Locale.getDefault());
     //    Calendar currentCal = Calendar.getInstance();
     Calendar dateCalendar;
     DatePickerDialog datePickerDialog;
@@ -61,6 +65,7 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
     private AddAppointmentFragment.viewRefreshWhenAdded mUIUpdateListener;
     private Appointment appointment;
     private Reminder reminder;
+    private TextInputLayout textInputLayoutLocation;
 
 
     @Override
@@ -100,6 +105,7 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
         btnSave = (Button) fragmentView.findViewById(R.id.saveApp);
         etDescription = (EditText) fragmentView.findViewById(R.id.et_description);
         etDate.setText(dateFormatter.format(selectedDate.getTime()));
+        textInputLayoutLocation=(TextInputLayout) fragmentView.findViewById(R.id.tv_location);
     }
 
     @Override
@@ -110,9 +116,9 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
         }
         if (appointment != null) {
             updateAppointmentDetails();
-//            updateReminderDetails();
-//            mSaveMedicineButton.setText("Modify Medicine");
-//            isEditMedicine = true;
+//           updateReminderDetails();
+            btnSave.setText("Modify Appointment");
+//           isEditMedicine = true;
         } else {
             appointment = new Appointment();
 //            isEditMedicine = false;
@@ -122,13 +128,13 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
     }
 
     public void updateAppointmentDetails() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.ISSUE_DATE_FORMAT);
-        etLocation.setText(appointment.getLocation());
-        etLocation.setText(getString(R.string.not_editable_name));
-        etLocation.setEnabled(false);
 
+        etLocation.setText(appointment.getLocation());
+        textInputLayoutLocation.setHint(getString(R.string.not_editable_Location));
+        etLocation.setEnabled(false);
         etDescription.setText(appointment.getDescription());
-        etDate.setText(String.valueOf(dateFormat.format(appointment.getAppointment())));
+        etDate.setText(String.valueOf(dateFormatter.format(appointment.getAppointment())));
+        etTime.setText(String.valueOf(timeFormatter.format(appointment.getAppointment())));
 
     }
 

@@ -72,11 +72,11 @@ public class AppointmentDaoImpl extends BaseDao implements AppointmentDao {
     }
 
     @Override
-    public List<Appointment> getAllAppointments() {
+    public ArrayList<Appointment> getAllAppointments() {
 
         String query = "Select * from " + DBConstants.TABLE_APPOINTMENT;
         Cursor cursor = database.rawQuery(query, null);
-        List<Appointment> appointments = new ArrayList<>();
+        ArrayList<Appointment> appointments = new ArrayList<Appointment>();
 
         dateFormat = new SimpleDateFormat(Constants.DATE_TIME_FORMAT);
         while (cursor.moveToNext()) {

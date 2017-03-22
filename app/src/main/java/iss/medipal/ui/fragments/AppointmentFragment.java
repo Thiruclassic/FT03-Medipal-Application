@@ -43,11 +43,13 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
     FrameLayout innerLayout;
     private List<String> itemname;
     private AppointmentListAdapter appointmentListAdapter;
-    private ArrayList<Appointment> appointmentViewList;
+//    private ArrayList<Appointment> appointmentViewList;
+    private ArrayList<Appointment> appointmentList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     public static AppointmentFragment newInstance() {
@@ -75,7 +77,7 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
 
         //Change this to the singleton class
         appointmentDao = AppointmentDaoImpl.newInstance(getActivity());
-        List<Appointment> appointmentList = appointmentDao.getAllAppointments();
+        appointmentList = appointmentDao.getAllAppointments();
 
         if (itemname == null) {
             itemname = new ArrayList<>();
@@ -122,13 +124,13 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
     //todo similar logic
     @Override
     public void onAppointmentAddedUiUpdate() {
-
+        lv.setVisibility(View.VISIBLE);
         addAppointment.setVisibility(View.VISIBLE);
         innerLayout.setVisibility(View.GONE);
 
         try {
 
-            List<Appointment> appointmentList = appointmentDao.getAllAppointments();
+            appointmentList = appointmentDao.getAllAppointments();
          /*   medicines = MediPalApplication.getPersonStore()
                     .getmPersonalBio().getMedicines();*/
             if (!AppHelper.isListEmpty(appointmentList)) {
@@ -166,7 +168,7 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
                 FragmentManager manager = getActivity().getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
                 transaction.replace(R.id.add_appointment_frame, addAppointmentFragment).commit();
-//                lv.setVisibility(View.INVISIBLE);
+                lv.setVisibility(View.INVISIBLE);
                 innerLayout.setVisibility(View.VISIBLE);
                 addAppointment.setVisibility(View.GONE);
             }
@@ -200,10 +202,11 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
         ListView.OnItemClickListener itemClickListener = new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AddAppointmentFragment addAppointmentFragment = AddAppointmentFragment.newInstance(appointmentViewList.get(position));
+                AddAppointmentFragment addAppointmentFragment = AddAppointmentFragment.newInstance(appointmentList.get(position));
                 FragmentManager manager = getChildFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
-                transaction.replace(R.id.add_appointment_frame, addAppointmentFragment, Constants.ADD_MEDICINE_PAGE).commit();
+                transaction.replace(R.id.add_appointment_frame, addAppointmentFragment, Constants.ADD_FRAGMENT_PAGE).commit();
+                lv.setVisibility(View.INVISIBLE);
                 innerLayout.setVisibility(View.VISIBLE);
                 addAppointment.setVisibility(View.INVISIBLE);
             }

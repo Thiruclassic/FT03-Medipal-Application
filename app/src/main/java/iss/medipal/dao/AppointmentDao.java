@@ -1,5 +1,6 @@
 package iss.medipal.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import iss.medipal.model.Appointment;
@@ -16,7 +17,7 @@ public interface AppointmentDao {
     public int deleteAppointment(int appointmentId);
 
     public Appointment getAppointmentById(int appointmentId);
-    public List<Appointment> getAllAppointments();
+    public ArrayList<Appointment> getAllAppointments();
     public void close();
 
 }
