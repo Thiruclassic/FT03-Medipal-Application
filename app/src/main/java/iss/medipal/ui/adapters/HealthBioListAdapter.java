@@ -43,11 +43,11 @@ public class HealthBioListAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return mHealthBio.get(position).getId();
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         Log.d("position",String.valueOf(position));
         healthBioDao = HealthBioDaoImpl.newInstance(mContext);
         HealthBioListAdapter.ViewHolder viewHolder;
@@ -62,13 +62,11 @@ public class HealthBioListAdapter extends BaseAdapter {
         Log.d("position",String.valueOf(mHealthBio.get(position).getCondition()));
         viewHolder.mItemTextview.setText(mHealthBio.get(position).getCondition());
 
-
-
-        final int pos = position;
         viewHolder.deleteHealthBio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                healthBioDao.deleteHealthBio(mHealthBio.get(pos).getId());
+                healthBioDao.deleteHealthBio(mHealthBio.get(position).getId());
+                removeHealthBio(position);
 
             }
         });
@@ -92,6 +90,10 @@ public class HealthBioListAdapter extends BaseAdapter {
             mItemTextview = (TextView) view.findViewById(R.id.tvNote);
             deleteHealthBio = (ImageView) view.findViewById(R.id.deletebutton);
         }
-
+    }
+    public void removeHealthBio(int position)
+    {
+        mHealthBio.remove(position);
+        setHealthBio(mHealthBio);
     }
 }

@@ -262,10 +262,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             String[] categoryAttr=categoryData.split("\\|");
 
             ContentValues values=new ContentValues();
-            values.put("Code",categoryAttr[0]);
-            values.put("Category",categoryAttr[1]);
-            values.put("Description",categoryAttr[2]);
-            values.put("Remind",categoryAttr[3]);
+            values.put(DBConstants.CATEGORY_CODE,categoryAttr[0]);
+            values.put(DBConstants.CATEGORY_NAME,categoryAttr[1]);
+            values.put(DBConstants.CATEGORY_DESCRIPTION,categoryAttr[2]);
+            values.put(DBConstants.CATEGORY_REMIND,categoryAttr[3]);
 
             sqLiteDatabase.insert(DBConstants.TABLE_CATEGORY,null,values);
 
@@ -275,11 +275,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public String[] getDefaultCategoryData()
     {
         String[] categoryDataList=new String[5];
-        categoryDataList[0]="SUP|Supplement|User may opt to set reminder for consumption of supplement|true";
-        categoryDataList[1]="CHR|Chronic|This is to categorise medication for long term/life-time consumption for diseases i.e. diabetes, hypertension, heart regulation, etc.|true";
-        categoryDataList[2]="INC|Incidental|For Common Cold,flu or Symptions happen to be unplanned or subordinate conjunction with something and prescriptioin from general practitioners.|true";
-        categoryDataList[3]="COM|Complete Course|This may applies to medication like antibiotics for sinus infection,pneumonia bronchitis, acne, step throat,cellulitis, etc.|true";
-        categoryDataList[4]="SEL|Self Apply|To note down any self-prescribed or consume medication, i.e. applying band aids, balms, etc.|true";
+        categoryDataList[0]="SUP|Supplement|User may opt to set reminder for consumption of supplement|0";
+        categoryDataList[1]="CHR|Chronic|This is to categorise medication for long term/life-time consumption for diseases i.e. diabetes, hypertension, heart regulation, etc.|1";
+        categoryDataList[2]="INC|Incidental|For Common Cold,flu or Symptions happen to be unplanned or subordinate conjunction with something and prescriptioin from general practitioners.|1";
+        categoryDataList[3]="COM|Complete Course|This may applies to medication like antibiotics for sinus infection,pneumonia bronchitis, acne, step throat,cellulitis, etc.|1";
+        categoryDataList[4]="SEL|Self Apply|To note down any self-prescribed or consume medication, i.e. applying band aids, balms, etc.|0";
 
         return  categoryDataList;
     }

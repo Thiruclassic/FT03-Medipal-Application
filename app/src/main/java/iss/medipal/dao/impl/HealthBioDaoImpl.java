@@ -62,9 +62,8 @@ public class HealthBioDaoImpl extends BaseDao implements HealthBioDao {
         SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
         while (cursor.moveToNext()) {
             try {
-
                 HealthBio healthBio = new HealthBio();
-                healthBio.setId(cursor.getColumnIndex(DBConstants.APP_ID));
+                healthBio.setId(cursor.getInt(cursor.getColumnIndex(DBConstants.APP_ID)));
                 healthBio.setStartDate(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.HEALTH_START_DATE))).toString());
                 healthBio.setCondition(cursor.getString(cursor.getColumnIndex(DBConstants.HEALTH_CONDITION)));
                 healthBio.setConditionType(cursor.getString(cursor.getColumnIndex(DBConstants.HEALTH_CONDITION_TYPE)));
