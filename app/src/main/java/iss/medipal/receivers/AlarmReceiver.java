@@ -77,7 +77,6 @@ public class AlarmReceiver extends BroadcastReceiver {
                         setContentTitle(DBConstants.TABLE_REMINDER)
                         .setContentText(message);
 
-
                 Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 builder.setSound(notificationSound);
                 notificationManager.notify(notifyId, builder.build());
