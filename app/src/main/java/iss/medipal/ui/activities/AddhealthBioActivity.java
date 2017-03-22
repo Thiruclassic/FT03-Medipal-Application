@@ -76,6 +76,8 @@ public class AddhealthBioActivity extends AppCompatActivity {
             setData(i.getExtras());
         }
 
+        setListeners();
+
 
     }
 
@@ -146,8 +148,6 @@ public class AddhealthBioActivity extends AppCompatActivity {
                 Toast.makeText(this,getString(R.string.unsuccesful),Toast.LENGTH_SHORT).show() ;
             else {
                 Toast.makeText(this, getString(R.string.succesful), Toast.LENGTH_SHORT).show();
-               // Intent intent = new Intent(this,HealthBioActivity.class);
-                //startActivity(intent);
                 finish();
             }
 
@@ -164,13 +164,12 @@ public class AddhealthBioActivity extends AppCompatActivity {
         mCondition.setText(healthBio.getCondition());
         Date date = null;
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.HEALTH_BIO_DATE_TIME_FORMAT);
             date = sdf.parse(healthBio.getStartDate());
         } catch (ParseException e) {
             e.printStackTrace();
         }
         mStartDate.setText(mDateFormatter.format(date));
-        Log.e("date","set");
         if(healthBio.getConditionType().equalsIgnoreCase("C"))
             mConditionType_condition.setChecked(true);
         else
@@ -182,6 +181,18 @@ public class AddhealthBioActivity extends AppCompatActivity {
        mConditionType_allergy.setEnabled(false);
         mSubmitButton.setVisibility(View.INVISIBLE);
 
+    }
+
+    public void setListeners()
+    {
+        ImageView.OnClickListener clickListener=new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Click",String.valueOf(v));
+                finish();
+            }
+        };
+        imageBack.setOnClickListener(clickListener);
     }
 
 
