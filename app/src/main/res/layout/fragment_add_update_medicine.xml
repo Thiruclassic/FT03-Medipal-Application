@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_margin="@dimen/padding_small"
-                android:spinnerMode="dropdown" />
+                android:spinnerMode="dialog" />
 
             <Switch
                 android:text="Reminder"
@@ -87,7 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_margin="@dimen/padding_small"
-                android:spinnerMode="dropdown" />
+                android:spinnerMode="dialog" />
 
 
 
@@ -103,7 +103,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_margin="@dimen/padding_small"
-                android:spinnerMode="dropdown" />
+                android:spinnerMode="dialog" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/dosage_hint"
@@ -118,7 +118,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_margin="@dimen/padding_small"
-                android:spinnerMode="dropdown" />
+                android:spinnerMode="dialog" />
 
             <android.support.v7.widget.AppCompatTextView
                 style="@style/SubHeadingTextViewStyle"

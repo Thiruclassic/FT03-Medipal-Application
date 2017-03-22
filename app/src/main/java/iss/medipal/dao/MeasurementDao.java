@@ -17,10 +17,6 @@ public interface MeasurementDao {
 
     public Measurement getMeasurement();
 
-    public Measurement getMeasurement(int id);
-
-    public List<Measurement> getMeasurements();
-
     public List<BloodPressure> getBloodPressureValues();
 
     public List<Weight> getWeightValues();

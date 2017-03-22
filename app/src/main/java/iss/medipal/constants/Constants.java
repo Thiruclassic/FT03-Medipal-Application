@@ -19,6 +19,7 @@ public class Constants {
 
     public static final String SAVE_MEDICINE_BUTTON="Save Medicine";
     public static final String EDIT_MEDICINE_BUTTON="Modify Medicine";
+
     public static final String REMINDER_TAB_1="Medications";
     public static final String REMINDER_TAB_2="Appointments";
     public static final String REMINDER_TAB_3="Refill Reminders";
@@ -32,6 +33,7 @@ public class Constants {
 
     public static final int TOOKIT_STATUS = 1;
     public static final int REFILL_BROADCAST_ID=100000;
+    public static final int MISSEDIT_STATUS = 0;
 
 
 

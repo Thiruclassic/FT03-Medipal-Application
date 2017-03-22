@@ -28,10 +28,11 @@ public class AddBpActivity extends BaseActivity implements View.OnClickListener 
 
     private EditText etSystolic, etDiastolic, measuredOn;
     private Button saveBloodPressure;
-    private TextInputLayout inputLayoutSystolic, inputLayoutDiastolic,inputLayoutMeasuredOn;
+    private TextInputLayout inputLayoutSystolic, inputLayoutDiastolic, inputLayoutMeasuredOn;
     private Toolbar toolbar;
     private MeasurementDao measurementDao;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+    private DatePickerDialog mDatePickerDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,7 @@ public class AddBpActivity extends BaseActivity implements View.OnClickListener 
         saveBloodPressure = (Button) findViewById(R.id.saveBp);
 
         inputLayoutSystolic = (TextInputLayout) findViewById(R.id.inputLayoutSystolic);
-        inputLayoutDiastolic =(TextInputLayout) findViewById(R.id.inputLayoutDiastolic);
+        inputLayoutDiastolic = (TextInputLayout) findViewById(R.id.inputLayoutDiastolic);
         inputLayoutMeasuredOn = (TextInputLayout) findViewById(R.id.inputLayoutMeasuredOn);
         etSystolic = (EditText) findViewById(R.id.etSystolic);
         etDiastolic = (EditText) findViewById(R.id.etDiastolic);
@@ -70,10 +71,21 @@ public class AddBpActivity extends BaseActivity implements View.OnClickListener 
             }
         };
         measuredOn.setOnClickListener(appDateListner);
+        measuredOn.setOnFocusChangeListener(mDateFocusListener);
 
     }
 
-    public void showDatePicker() {
+    private View.OnFocusChangeListener mDateFocusListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus) {
+                mDatePickerDialog = showDatePicker();
+                mDatePickerDialog.show();
+            }
+        }
+    };
+
+    public DatePickerDialog showDatePicker() {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(AddBpActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -82,7 +94,8 @@ public class AddBpActivity extends BaseActivity implements View.OnClickListener 
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
-        datePickerDialog.show();
+//        datePickerDialog.show();
+        return datePickerDialog;
     }
 
 
@@ -96,9 +109,8 @@ public class AddBpActivity extends BaseActivity implements View.OnClickListener 
                     String measurement = addMeasurement();
                     Snackbar.make(v, "Saved reading .... !", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                }
-                catch (Exception ex){
-                    Log.d("error",ex.toString());
+                } catch (Exception ex) {
+                    Log.d("error", ex.toString());
                     Log.d("Error:", "error in add Appointment Page");
 
                 }
@@ -108,36 +120,35 @@ public class AddBpActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
-    public String addMeasurement() throws Exception
-    {
+    public String addMeasurement() throws Exception {
         BloodPressure measurement = getMeasurementDetails();
         measurementDao = MeasurementDaoImpl.newInstance(AddBpActivity.this);
         measurementDao.addBloodPressure(measurement);
 
         return "Blood Pressure Added !";
     }
+
     public BloodPressure getMeasurementDetails() throws Exception {
 
-        BloodPressure measurement =null;
+        BloodPressure measurement = null;
 
         Integer systolic = Integer.parseInt(String.valueOf(etSystolic.getText()));
         Integer diastolic = Integer.parseInt(String.valueOf(etDiastolic.getText()));
-        Calendar date= Calendar.getInstance();
+        Calendar date = Calendar.getInstance();
         date.setTime(dateFormatter.parse(String.valueOf(measuredOn.getText())));
-        Calendar dateTime= Calendar.getInstance();
+        Calendar dateTime = Calendar.getInstance();
         dateTime.set(Calendar.DAY_OF_MONTH, date.get(Calendar.DAY_OF_MONTH));
         dateTime.set(Calendar.MONTH, date.get(Calendar.MONTH));
         dateTime.set(Calendar.YEAR, date.get(Calendar.YEAR));
-        try{
-            measurement =new BloodPressure(systolic.intValue(),diastolic.intValue(),dateTime.getTime());
+        try {
+            measurement = new BloodPressure(systolic.intValue(), diastolic.intValue(), dateTime.getTime());
          /*   measurement.setMeasuredOn(dateTime.getTime());
             measurement.setDiastolic(diastolic);
             measurement.setSystolic(systolic);*/
 
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
 
-            Toast.makeText(AddBpActivity.this,"Date format exception"+ex, Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddBpActivity.this, "Date format exception" + ex, Toast.LENGTH_SHORT).show();
         }
 
         return measurement;

@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import iss.medipal.model.Medicine;
 import iss.medipal.model.homeMedicineModels.MedDayModel;
@@ -20,24 +21,26 @@ public class DoseViewPagerAdapter extends FragmentStatePagerAdapter {
 
     ArrayList<MedDayModel> mMedDoses;
     ArrayList<Medicine> mMeds;
+    Calendar cal;
 
     public DoseViewPagerAdapter(FragmentManager fm, ArrayList<MedDayModel> medsDoses,
-                                ArrayList<Medicine> meds) {
+                                ArrayList<Medicine> meds, Calendar currentCal) {
         super(fm);
         mMedDoses = medsDoses;
         mMeds = meds;
+        cal = currentCal;
     }
 
     @Override
     public Fragment getItem(int position) {
         if (position == 0 && getCount() == 1) {
-            return OnedayDoseFragment.newInstance(mMedDoses.get(position), mMeds, true, true);
+            return OnedayDoseFragment.newInstance(mMedDoses.get(position), mMeds, cal, true, true);
         } else if (position == 0) {
-            return OnedayDoseFragment.newInstance(mMedDoses.get(position), mMeds, true, false);
+            return OnedayDoseFragment.newInstance(mMedDoses.get(position), mMeds, cal, true, false);
         } else if(position == mMedDoses.size() - 1){
-            return OnedayDoseFragment.newInstance(mMedDoses.get(position), mMeds, false, true);
+            return OnedayDoseFragment.newInstance(mMedDoses.get(position), mMeds, cal, false, true);
         } else
-            return OnedayDoseFragment.newInstance(mMedDoses.get(position), mMeds, false, false);
+            return OnedayDoseFragment.newInstance(mMedDoses.get(position), mMeds, cal, false, false);
     }
 
     @Override

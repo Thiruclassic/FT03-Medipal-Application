@@ -43,21 +43,6 @@ public class MeasurementDaoImpl extends BaseDao implements MeasurementDao {
     }
 
     @Override
-    public Measurement getMeasurement(int id) {
-
-        return null;
-    }
-
-    @Override
-    public List<Measurement> getMeasurements() {
-
-        List<Measurement> mesList = new ArrayList<>();
-
-        return mesList;
-    }
-
-
-    @Override
     public List<BloodPressure> getBloodPressureValues() {
         BloodPressure bloodPressure = null;
         String query = "Select * from " + DBConstants.TABLE_MEASUREMENT + " where Systolic IS NOT NULL";
@@ -71,24 +56,16 @@ public class MeasurementDaoImpl extends BaseDao implements MeasurementDao {
                         cursor.getInt(cursor.getColumnIndex(DBConstants.MES_SYS)),
                         cursor.getInt(cursor.getColumnIndex(DBConstants.MES_DIA)),
                         dateFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.MES_measuredOn))));
-               /* measurement.setId(cursor.getColumnIndex(DBConstants.MES_ID));
-                measurement.setDiastolic(cursor.getColumnIndex(DBConstants.MES_DIA));
-                measurement.setSystolic(cursor.getColumnIndex(DBConstants.MES_SYS));
-                measurement.setMeasuredOn(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.MES_measuredOn))));*/
                 bloodPressureList.add(bloodPressure);
 
             } catch (Exception e) {
                 Log.d("Error", e.getMessage());
             }
         }
-
         return bloodPressureList;
-
     }
 
     public List<Weight> getWeightValues() {
-
-
         Weight weight = null;
         String query = "Select * from " + DBConstants.TABLE_MEASUREMENT + " where Weight IS NOT NULL";
         Cursor cursor = database.rawQuery(query, null);
@@ -107,7 +84,6 @@ public class MeasurementDaoImpl extends BaseDao implements MeasurementDao {
             }
         }
         return weightList;
-
     }
 
     public Boolean deleteMeasurement(int measurementId) {
@@ -122,7 +98,6 @@ public class MeasurementDaoImpl extends BaseDao implements MeasurementDao {
         }
         return status;
     }
-
 
     public List<Temperature> getTempValues() {
 
@@ -143,10 +118,7 @@ public class MeasurementDaoImpl extends BaseDao implements MeasurementDao {
                 Log.d("Error", e.getMessage());
             }
         }
-
         return temperatureList;
-
-
     }
 
     public List<Pulse> getPulseValues() {
@@ -169,53 +141,61 @@ public class MeasurementDaoImpl extends BaseDao implements MeasurementDao {
                 Log.d("Error", e.getMessage());
             }
         }
-
         return pulseList;
-
-
     }
 
     public int addBloodPressure(BloodPressure bloodPressure) {
 
-        ContentValues values = new ContentValues();
-        values.put(DBConstants.MES_SYS, bloodPressure.getSystolic());
-        values.put(DBConstants.MES_DIA, bloodPressure.getDiastolic());
-        values.put(DBConstants.MES_measuredOn, bloodPressure.getMeasuredOn().toString());
-        int id = (int) database.insert(DBConstants.TABLE_MEASUREMENT, null, values);
+        int id = -1;
+        try {
+            ContentValues values = new ContentValues();
+            values.put(DBConstants.MES_SYS, bloodPressure.getSystolic());
+            values.put(DBConstants.MES_DIA, bloodPressure.getDiastolic());
+            values.put(DBConstants.MES_measuredOn, bloodPressure.getMeasuredOn().toString());
+            id = (int) database.insert(DBConstants.TABLE_MEASUREMENT, null, values);
+        } catch (Exception e) {
+            Log.d("Error", e.getMessage());
+        }
         return id;
     }
 
     public int addWeight(Weight weight) {
-
-        ContentValues values = new ContentValues();
-        values.put(DBConstants.MES_weight, weight.getWeight());
-        values.put(DBConstants.MES_measuredOn, weight.getMeasuredOn().toString());
-        int id = (int) database.insert(DBConstants.TABLE_MEASUREMENT, null, values);
+        int id = -1;
+        try {
+            ContentValues values = new ContentValues();
+            values.put(DBConstants.MES_weight, weight.getWeight());
+            values.put(DBConstants.MES_measuredOn, weight.getMeasuredOn().toString());
+            id = (int) database.insert(DBConstants.TABLE_MEASUREMENT, null, values);
+        } catch (Exception e) {
+            Log.d("Error", e.getMessage());
+        }
         return id;
-
-
     }
 
     public int addTemperature(Temperature temperature) {
-
-        ContentValues values = new ContentValues();
-        values.put(DBConstants.MES_temp, temperature.getTemperature());
-        values.put(DBConstants.MES_measuredOn, temperature.getMeasuredOn().toString());
-        int id = (int) database.insert(DBConstants.TABLE_MEASUREMENT, null, values);
+        int id = -1;
+        try {
+            ContentValues values = new ContentValues();
+            values.put(DBConstants.MES_temp, temperature.getTemperature());
+            values.put(DBConstants.MES_measuredOn, temperature.getMeasuredOn().toString());
+            id = (int) database.insert(DBConstants.TABLE_MEASUREMENT, null, values);
+        } catch (Exception e) {
+            Log.d("Error", e.getMessage());
+        }
         return id;
-
-
     }
 
     public int addPulse(Pulse pulse) {
-
-        ContentValues values = new ContentValues();
-        values.put(DBConstants.MES_PULSE, pulse.getPulse());
-        values.put(DBConstants.MES_measuredOn, pulse.getMeasuredOn().toString());
-        int id = (int) database.insert(DBConstants.TABLE_MEASUREMENT, null, values);
+        int id = -1;
+        try {
+            ContentValues values = new ContentValues();
+            values.put(DBConstants.MES_PULSE, pulse.getPulse());
+            values.put(DBConstants.MES_measuredOn, pulse.getMeasuredOn().toString());
+            id = (int) database.insert(DBConstants.TABLE_MEASUREMENT, null, values);
+        } catch (Exception e) {
+            Log.d("Error", e.getMessage());
+        }
         return id;
-
-
     }
 
 }

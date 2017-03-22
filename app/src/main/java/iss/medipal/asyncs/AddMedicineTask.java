@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
+import iss.medipal.MediPalApplication;
 import iss.medipal.constants.DBConstants;
 import iss.medipal.dao.MedicineDao;
 import iss.medipal.dao.ReminderDao;
@@ -42,6 +43,11 @@ public class AddMedicineTask extends AsyncTask<Medicine, Void, Reminder> {
         params[0].setReminderId(reminder.getId());
         params[0].getReminder().setId(reminder.getId());
         long result = mMedDao.addMedicine(params[0]);
+        for(Medicine med: MediPalApplication.getPersonStore().getmPersonalBio().getMedicines()){
+            if(med.equals(params[0])){
+                med.setId(reminderId);
+            }
+        }
         args=new Object[]{params[0],reminder};
         return reminder;
     }
@@ -53,6 +59,19 @@ public class AddMedicineTask extends AsyncTask<Medicine, Void, Reminder> {
         AddReminderAlarmTask mAddReminderAlarmTask=new AddReminderAlarmTask(mContext);
         mAddReminderAlarmTask.execute(args);
 
+    }
+
+    public void setMedicineReminder(Medicine medicine)
+    {
+        Intent intent = new Intent(mContext, AlarmReceiver.class);
+        intent.putExtra(DBConstants.MEDICINE_NAME, medicine.getMedicine());
+        intent.putExtra(DBConstants.MEDICINE_DOSAGE, medicine.getDosage());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(medicine.getReminder().getStartTime());
+        calendar.set(Calendar.SECOND, 0);
+        AlarmManager manager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+        manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
 
 

@@ -79,7 +79,6 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
     @Override
     public void onDetach() {
         super.onDetach();
-        mMedAddCallback = null;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

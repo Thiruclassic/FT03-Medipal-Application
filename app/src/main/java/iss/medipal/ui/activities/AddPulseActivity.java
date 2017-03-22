@@ -20,6 +20,7 @@ import iss.medipal.R;
 import iss.medipal.dao.MeasurementDao;
 import iss.medipal.dao.impl.MeasurementDaoImpl;
 import iss.medipal.model.Pulse;
+import iss.medipal.ui.fragments.DatePickerFragment;
 
 /**
  * Created by Sreekumar on 3/20/2017
@@ -32,6 +33,7 @@ public class AddPulseActivity extends BaseActivity implements View.OnClickListen
     private MeasurementDao measurementDao;
     private Toolbar toolbar;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+    private DatePickerDialog mDatePickerDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +46,9 @@ public class AddPulseActivity extends BaseActivity implements View.OnClickListen
         findViewsById();
         setListeners();
     }
+
     private void findViewsById() {
-        savePulse= (Button) findViewById(R.id.savePulse);
+        savePulse = (Button) findViewById(R.id.savePulse);
         etPulseMeasuredOn = (EditText) findViewById(R.id.etPulseMeasuredOn);
         etPulse = (EditText) findViewById(R.id.etPulse);
 
@@ -64,10 +67,21 @@ public class AddPulseActivity extends BaseActivity implements View.OnClickListen
             }
         };
         etPulseMeasuredOn.setOnClickListener(appDateListner);
+        etPulseMeasuredOn.setOnFocusChangeListener(mDateFocusListener);
 
     }
 
-    public void showDatePicker() {
+    private View.OnFocusChangeListener mDateFocusListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus) {
+                mDatePickerDialog = showDatePicker();
+                mDatePickerDialog.show();
+            }
+        }
+    };
+
+    public DatePickerDialog showDatePicker() {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(AddPulseActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -76,9 +90,9 @@ public class AddPulseActivity extends BaseActivity implements View.OnClickListen
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
-        datePickerDialog.show();
+//        datePickerDialog.show();
+        return datePickerDialog;
     }
-
 
     @Override
     public void onClick(View v) {
@@ -90,9 +104,8 @@ public class AddPulseActivity extends BaseActivity implements View.OnClickListen
                     String measurement = addMeasurement();
                     Snackbar.make(v, "Saved reading .... !", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                }
-                catch (Exception ex){
-                    Log.d("error",ex.toString());
+                } catch (Exception ex) {
+                    Log.d("error", ex.toString());
                     Log.d("Error:", "error in add Appointment Page");
 
                 }
@@ -103,8 +116,7 @@ public class AddPulseActivity extends BaseActivity implements View.OnClickListen
     }
 
 
-    public String addMeasurement() throws Exception
-    {
+    public String addMeasurement() throws Exception {
         Pulse pulse = getMeasurementDetails();
         measurementDao = MeasurementDaoImpl.newInstance(AddPulseActivity.this);
         measurementDao.addPulse(pulse);
@@ -114,26 +126,25 @@ public class AddPulseActivity extends BaseActivity implements View.OnClickListen
 
     public Pulse getMeasurementDetails() throws Exception {
 
-        Pulse measurement =null;
+        Pulse measurement = null;
 
         Integer pulse = Integer.parseInt(String.valueOf(etPulse.getText()));
 
-        Calendar date= Calendar.getInstance();
+        Calendar date = Calendar.getInstance();
         date.setTime(dateFormatter.parse(String.valueOf(etPulseMeasuredOn.getText())));
-        Calendar dateTime= Calendar.getInstance();
+        Calendar dateTime = Calendar.getInstance();
         dateTime.set(Calendar.DAY_OF_MONTH, date.get(Calendar.DAY_OF_MONTH));
         dateTime.set(Calendar.MONTH, date.get(Calendar.MONTH));
         dateTime.set(Calendar.YEAR, date.get(Calendar.YEAR));
-        try{
-            measurement =new Pulse(dateTime.getTime(),pulse.intValue());
+        try {
+            measurement = new Pulse(dateTime.getTime(), pulse.intValue());
          /*   measurement.setMeasuredOn(dateTime.getTime());
             measurement.setDiastolic(diastolic);
             measurement.setSystolic(systolic);*/
 
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
 
-            Toast.makeText(AddPulseActivity.this,"Date format exception"+ex, Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddPulseActivity.this, "Date format exception" + ex, Toast.LENGTH_SHORT).show();
         }
 
         return measurement;

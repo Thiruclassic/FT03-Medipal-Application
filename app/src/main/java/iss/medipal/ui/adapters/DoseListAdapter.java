@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -20,6 +21,7 @@ import iss.medipal.constants.Constants;
 import iss.medipal.model.Medicine;
 import iss.medipal.model.homeMedicineModels.MedDoseModel;
 import iss.medipal.ui.fragments.BaseFragment;
+import iss.medipal.ui.fragments.ChangeDoseDialogFragment;
 import iss.medipal.util.AppHelper;
 
 /**
@@ -34,15 +36,14 @@ public class DoseListAdapter extends BaseAdapter {
     private ArrayList<Medicine> mMeds;
     private Medicine mCurrentMed;
     private Context mContext;
-    private OnItemSelectedListener mItemSelectedListener;
+    private Fragment mFragment;
     private int mSelectedPosition = -1;
-
 
     public DoseListAdapter(Context context , BaseFragment fragment, ArrayList<MedDoseModel> doseRecords, ArrayList<Medicine> meds) {
         mDoseRecords = doseRecords;
         mContext = context;
         mMeds = meds;
-        mItemSelectedListener = (OnItemSelectedListener)fragment;
+        mFragment = (Fragment)fragment;
         mCurrentMed = getCurrentMed();
     }
 
@@ -131,18 +132,9 @@ public class DoseListAdapter extends BaseAdapter {
         ImageView.OnClickListener onCheckClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                DialogFragment newFragment = ChangeDoseDialogFragment.newInstance(mCurrentMed.getId_mymed(),
-//                        (int)view.getTag());
-//                newFragment.show(((FragmentActivity)mContext).getSupportFragmentManager(), CHANGE_TOOK);
-            }
-        };
-
-        ImageView.OnClickListener onNoteClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                DialogFragment newFragment = ChangeDoseDialogFragment.newInstance(mCurrentMed.getId_mymed(),
-//                        (int)view.getTag());
-//                newFragment.show(((FragmentActivity)mContext).getSupportFragmentManager(), CHANGE_TOOK);
+                DialogFragment newFragment = ChangeDoseDialogFragment.newInstance(mCurrentMed,
+                        (int)view.getTag(), mDoseRecords.get((int)doseCheckBox.getTag()).getStatus());
+                newFragment.show(mFragment.getChildFragmentManager(), CHANGE_TOOK);
             }
         };
 
@@ -152,9 +144,17 @@ public class DoseListAdapter extends BaseAdapter {
                 int pos = (int)view.getTag(view.getId());
                 mSelectedPosition = pos;
                 notifyDataSetChanged();
-                mItemSelectedListener.onItemSelected(mSelectedPosition);
+                ((OnItemSelectedListener)mFragment).onItemSelected(mSelectedPosition);
             }
         };
+    }
+
+    public Medicine getmCurrentMed() {
+        return mCurrentMed;
+    }
+
+    public void setmCurrentMed(Medicine mCurrentMed) {
+        this.mCurrentMed = mCurrentMed;
     }
 
     public interface OnItemSelectedListener{

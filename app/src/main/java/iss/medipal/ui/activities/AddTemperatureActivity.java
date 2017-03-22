@@ -36,6 +36,7 @@ public class AddTemperatureActivity extends BaseActivity implements View.OnClick
     private MeasurementDao measurementDao;
     private Toolbar toolbar;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+    private DatePickerDialog mDatePickerDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,7 @@ public class AddTemperatureActivity extends BaseActivity implements View.OnClick
     }
 
     private void findViewsById() {
-        saveTemperature= (Button) findViewById(R.id.saveTemperature);
+        saveTemperature = (Button) findViewById(R.id.saveTemperature);
         etTempMeasuredOn = (EditText) findViewById(R.id.etTemperatureMeasuredOn);
         etTemperature = (EditText) findViewById(R.id.etTemperature);
 
@@ -72,10 +73,21 @@ public class AddTemperatureActivity extends BaseActivity implements View.OnClick
             }
         };
         etTempMeasuredOn.setOnClickListener(appDateListner);
+        etTempMeasuredOn.setOnFocusChangeListener(mDateFocusListener);
 
     }
 
-    public void showDatePicker() {
+    private View.OnFocusChangeListener mDateFocusListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus) {
+                mDatePickerDialog = showDatePicker();
+                mDatePickerDialog.show();
+            }
+        }
+    };
+
+    public DatePickerDialog showDatePicker() {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(AddTemperatureActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -84,7 +96,8 @@ public class AddTemperatureActivity extends BaseActivity implements View.OnClick
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
-        datePickerDialog.show();
+//        datePickerDialog.show();
+        return datePickerDialog;
     }
 
     @Override
@@ -97,9 +110,8 @@ public class AddTemperatureActivity extends BaseActivity implements View.OnClick
                     String measurement = addMeasurement();
                     Snackbar.make(v, "Saved reading .... !", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                }
-                catch (Exception ex){
-                    Log.d("error",ex.toString());
+                } catch (Exception ex) {
+                    Log.d("error", ex.toString());
                     Log.d("Error:", "error in add Appointment Page");
 
                 }
@@ -109,8 +121,7 @@ public class AddTemperatureActivity extends BaseActivity implements View.OnClick
         }
     }
 
-    public String addMeasurement() throws Exception
-    {
+    public String addMeasurement() throws Exception {
         Temperature temperature = getMeasurementDetails();
         measurementDao = MeasurementDaoImpl.newInstance(AddTemperatureActivity.this);
         measurementDao.addTemperature(temperature);
@@ -120,26 +131,25 @@ public class AddTemperatureActivity extends BaseActivity implements View.OnClick
 
     public Temperature getMeasurementDetails() throws Exception {
 
-        Temperature measurement =null;
+        Temperature measurement = null;
 
         Integer temp = Integer.parseInt(String.valueOf(etTemperature.getText()));
 
-        Calendar date= Calendar.getInstance();
+        Calendar date = Calendar.getInstance();
         date.setTime(dateFormatter.parse(String.valueOf(etTempMeasuredOn.getText())));
-        Calendar dateTime= Calendar.getInstance();
+        Calendar dateTime = Calendar.getInstance();
         dateTime.set(Calendar.DAY_OF_MONTH, date.get(Calendar.DAY_OF_MONTH));
         dateTime.set(Calendar.MONTH, date.get(Calendar.MONTH));
         dateTime.set(Calendar.YEAR, date.get(Calendar.YEAR));
-        try{
-            measurement =new Temperature(temp.intValue(),dateTime.getTime());
+        try {
+            measurement = new Temperature(temp.intValue(), dateTime.getTime());
          /*   measurement.setMeasuredOn(dateTime.getTime());
             measurement.setDiastolic(diastolic);
             measurement.setSystolic(systolic);*/
 
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
 
-            Toast.makeText(AddTemperatureActivity.this,"Date format exception"+ex, Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddTemperatureActivity.this, "Date format exception" + ex, Toast.LENGTH_SHORT).show();
         }
 
         return measurement;

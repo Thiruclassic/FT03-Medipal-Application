@@ -9,11 +9,18 @@ import java.util.ArrayList;
 
 import iss.medipal.MediPalApplication;
 import iss.medipal.R;
+import iss.medipal.dao.ConsumptionDao;
+import iss.medipal.dao.MedicineDao;
+import iss.medipal.dao.PersonBioDao;
+import iss.medipal.dao.ReminderDao;
 import iss.medipal.dao.impl.CategoryDaoImpl;
+import iss.medipal.dao.impl.ConsumptionDaoImpl;
 import iss.medipal.dao.impl.PersonBioDaoImpl;
 import iss.medipal.dao.impl.MedicineDaoImpl;
 import iss.medipal.dao.impl.ReminderDaoImpl;
 import iss.medipal.model.Category;
+import iss.medipal.model.Consumption;
+import iss.medipal.model.DoseContainer;
 import iss.medipal.model.Medicine;
 import iss.medipal.model.PersonStore;
 import iss.medipal.model.PersonalBio;
@@ -49,15 +56,17 @@ public class SplashActivity extends BaseFullScreenActivity {
 
     private class GetPersonTask extends AsyncTask<Void, Void, Void> {
 
-        private PersonBioDaoImpl mBioDao;
-        private MedicineDaoImpl mMedicationDao;
-        private ReminderDaoImpl mRemiderDao;
+        private PersonBioDao mBioDao;
+        private MedicineDao mMedicationDao;
+        private ReminderDao mRemiderDao;
+        private ConsumptionDao mConsumptionDao;
         private PersonStore mPersonStore;
 
         public GetPersonTask(Context context) {
             this.mBioDao = new PersonBioDaoImpl(context);
             this.mMedicationDao = new MedicineDaoImpl(context);
             this.mRemiderDao = new ReminderDaoImpl(context);
+            this.mConsumptionDao = new ConsumptionDaoImpl(context);
         }
 
         @Override
@@ -71,10 +80,13 @@ public class SplashActivity extends BaseFullScreenActivity {
                     med.setReminder(rem);
                 }
             }
+            ArrayList<Consumption> consumptions = (ArrayList<Consumption>) mConsumptionDao.getAllConsumptions();
             result.setMedicines(meds);
             mPersonStore.setmPersonalBio(result);
+            mPersonStore.setmConsumptions(consumptions);
+            DoseContainer.getInstance(SplashActivity.this);
             try {
-                Thread.sleep(2000);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -61,10 +61,6 @@ public class TemperatureActivity extends BaseActivity implements Toolbar.OnMenuI
             case R.id.add_blood:
                 Intent intent = new Intent(TemperatureActivity.this, AddTemperatureActivity.class);
                 startActivity(intent);
-              /*  AddBloodPressureFragment addBloodPressureFragment = AddBloodPressureFragment.newInstance("bp","bp1");
-                FragmentManager manager = getSupportFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.replace(R.id.add_blood_pressure,addBloodPressureFragment).commit();*/
                 break;
             case R.id.home:
                 Intent intentHome = new Intent(TemperatureActivity.this, MeasurementActivity.class);
@@ -96,10 +92,6 @@ public class TemperatureActivity extends BaseActivity implements Toolbar.OnMenuI
 
                 Measurement temperature = new Temperature(tempList.get(i).getId(), images[2], tempList.get(i).getTemperature(),
                         tempList.get(i).getMeasuredOn());
-       /*   bloodPressure.setSystolic(measurementList.get(i).getSystolic());
-            bloodPressure.setDiastolic(measurementList.get(i).getDiastolic());
-            bloodPressure.setMeasuredOn(measurementList.get(i).getMeasuredOn());
-            bloodPressure.setImageType(images[0]);*/
                 data.add(temperature);
             }
         }

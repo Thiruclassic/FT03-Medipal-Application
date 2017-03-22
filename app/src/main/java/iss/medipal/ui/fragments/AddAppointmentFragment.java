@@ -31,10 +31,6 @@ import iss.medipal.dao.impl.AppointmentDaoImpl;
 import iss.medipal.dao.impl.ReminderDaoImpl;
 import iss.medipal.model.Appointment;
 import iss.medipal.model.Reminder;
-import iss.medipal.ui.activities.MainActivity;
-import iss.medipal.ui.activities.UserProfileActivity;
-
-import static iss.medipal.R.anim.slide_in_left;
 
 /**
  * Created by sreekumar on 3/14/2017.
@@ -42,7 +38,7 @@ import static iss.medipal.R.anim.slide_in_left;
 
 public class AddAppointmentFragment extends Fragment {
 
-    private EditText etDate, etTime,etLocation,etDescription;
+    private EditText etDate, etTime, etLocation, etDescription;
     private Button btnSave;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     private SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm", Locale.getDefault());
@@ -50,6 +46,8 @@ public class AddAppointmentFragment extends Fragment {
     Calendar dateCalendar;
     DatePickerDialog datePickerDialog;
     Calendar selectedDate = Calendar.getInstance();
+    private DatePickerDialog mDatePickerDialog;
+    private TimePickerDialog mTimePickerDialog;
     private static final SimpleDateFormat formatter = new SimpleDateFormat(
             "yyyy-MM-dd", Locale.ENGLISH);
     AppointmentDao appointmentDao;
@@ -62,6 +60,7 @@ public class AddAppointmentFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     public static AddAppointmentFragment newInstance() {
         AddAppointmentFragment fragment = new AddAppointmentFragment();
 
@@ -79,6 +78,7 @@ public class AddAppointmentFragment extends Fragment {
         setListeners();
         return fragmentView;
     }
+
     private void findViewsById(View fragmentView) {
         etLocation = (EditText) fragmentView.findViewById(R.id.et_location);
         etDate = (EditText) fragmentView.findViewById(R.id.et_appdate);
@@ -95,8 +95,7 @@ public class AddAppointmentFragment extends Fragment {
     }
 
     private void setListeners() {
-        View.OnClickListener saveListener=new View.OnClickListener()
-        {
+        View.OnClickListener saveListener = new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
 //                if(validate()) {
@@ -112,7 +111,7 @@ public class AddAppointmentFragment extends Fragment {
 //                        fragment.medicineListAdapter.add(medicine);
 
                 } catch (Exception e) {
-                    Log.d("error",e.toString());
+                    Log.d("error", e.toString());
                     Log.d("Error:", "error in add Appointment Page");
                 }
 
@@ -120,7 +119,7 @@ public class AddAppointmentFragment extends Fragment {
 
             }
         };
-        View.OnClickListener appDateListner= new View.OnClickListener() {
+        View.OnClickListener appDateListner = new View.OnClickListener() {
 
             @Override
             public void onClick(final View v) {
@@ -129,7 +128,7 @@ public class AddAppointmentFragment extends Fragment {
             }
         };
 
-        View.OnClickListener appTimeListner= new View.OnClickListener() {
+        View.OnClickListener appTimeListner = new View.OnClickListener() {
 
             @Override
             public void onClick(final View v) {
@@ -139,44 +138,69 @@ public class AddAppointmentFragment extends Fragment {
         };
 
         etDate.setOnClickListener(appDateListner);
+        etDate.setOnFocusChangeListener(mDateFocusListener);
         etTime.setOnClickListener(appTimeListner);
+        etTime.setOnFocusChangeListener(mTimeFocusListener);
         btnSave.setOnClickListener(saveListener);
     }
 
-    public void onBackPressed(){
+    private View.OnFocusChangeListener mDateFocusListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus) {
+                mDatePickerDialog = showDatePicker();
+                mDatePickerDialog.show();
+            }
+        }
+    };
+    private View.OnFocusChangeListener mTimeFocusListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus) {
+                mTimePickerDialog = showTimePicker();
+                mTimePickerDialog.show();
+            }
+        }
+    };
+
+
+    public void onBackPressed() {
         AppointmentFragment appointmentFragment = AppointmentFragment.newInstance();
         FragmentManager manager = getActivity().getSupportFragmentManager();
-        FragmentTransaction transaction= manager.beginTransaction();
-        transaction.replace(R.id.add_appointment_frame,appointmentFragment).commit();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.replace(R.id.add_appointment_frame, appointmentFragment).commit();
     }
-    public void showTimePicker()
-    {
+
+    public TimePickerDialog showTimePicker() {
 
         final Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(),new TimePickerDialog.OnTimeSetListener(){
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                etTime.setText(hourOfDay+":"+minute);
+                etTime.setText(hourOfDay + ":" + minute);
             }
 
-        },hour,minute,false);
-        timePickerDialog.show();
+        }, hour, minute, false);
+//        timePickerDialog.show();
+        return timePickerDialog;
     }
-    public void showDatePicker()
-    {
-        Calendar calendar=Calendar.getInstance();
-        DatePickerDialog datePickerDialog=new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+
+    public DatePickerDialog showDatePicker() {
+        Calendar calendar = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                etDate.setText(dayOfMonth+"/"+month+"/"+year);
+                etDate.setText(dayOfMonth + "/" + month + "/" + year);
             }
-        },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
-        datePickerDialog.show();
+//        datePickerDialog.show();
+        return datePickerDialog;
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -187,37 +211,37 @@ public class AddAppointmentFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
-    public String addAppointment() throws Exception
-    {
+
+    public String addAppointment() throws Exception {
         Appointment appointment = getAppointmentDetails();
         appointmentDao = AppointmentDaoImpl.newInstance(getActivity());
         appointmentDao.addAppointment(appointment);
 
         return "Appointment Added !";
     }
-    public Integer addReminder()
-    {
-        Integer reminderId=null;
-        if(reminder!=null)
-        {
-            reminderDao= ReminderDaoImpl.newInstance(getActivity());
-            reminder=reminderDao.addReminder(reminder);
+
+    public Integer addReminder() {
+        Integer reminderId = null;
+        if (reminder != null) {
+            reminderDao = ReminderDaoImpl.newInstance(getActivity());
+            reminderId = reminderDao.addReminder(reminder).getId();
         }
-        return reminder.getId();
+        return reminderId;
     }
-    public Appointment getAppointmentDetails() throws Exception{
+
+    public Appointment getAppointmentDetails() throws Exception {
         appointment = new Appointment();
         String description = String.valueOf(etDescription.getText());
         String location = String.valueOf(etLocation.getText());
 //        String appDate = String.valueOf(etDate.getText());
 
-        Calendar time=Calendar.getInstance();
+        Calendar time = Calendar.getInstance();
         time.setTime(timeFormatter.parse(String.valueOf(etTime.getText())));
 
-        Calendar date= Calendar.getInstance();
+        Calendar date = Calendar.getInstance();
         date.setTime(dateFormatter.parse(String.valueOf(etDate.getText())));
 
-        Calendar dateTime= Calendar.getInstance();
+        Calendar dateTime = Calendar.getInstance();
         dateTime.set(Calendar.DAY_OF_MONTH, date.get(Calendar.DAY_OF_MONTH));
         dateTime.set(Calendar.MONTH, date.get(Calendar.MONTH));
         dateTime.set(Calendar.YEAR, date.get(Calendar.YEAR));
@@ -225,14 +249,13 @@ public class AddAppointmentFragment extends Fragment {
         dateTime.set(Calendar.MINUTE, time.get(Calendar.MINUTE));
 //        dateTime.set(Calendar.AM_PM, time.get(Calendar.AM_PM));
 
-        try{
+        try {
 
             appointment.setAppointment(dateTime.getTime());
 
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
 
-            Toast.makeText(getActivity().getApplicationContext(),"Date format exception"+ex, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity().getApplicationContext(), "Date format exception" + ex, Toast.LENGTH_SHORT).show();
         }
 
         appointment.setLocation(location);
@@ -241,6 +264,16 @@ public class AddAppointmentFragment extends Fragment {
         return appointment;
 
     }
+
+    /*    private View.OnFocusChangeListener mTimeFocusListener = new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus) {
+                    mDatePickerDialog = showDatePicker();
+                    mDatePickerDialog.show();
+                }
+            }
+        };*/
     private boolean isValid() {
         boolean isValid = true;
         try {
