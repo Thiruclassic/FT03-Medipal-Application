@@ -64,6 +64,22 @@ public class Appointment implements Parcelable, Comparable<Appointment> {
         this.description = description;
     }
 
+    public int getReminderId() {
+        return reminderId;
+    }
+
+    public void setReminderId(int reminderId) {
+        this.reminderId = reminderId;
+    }
+
+    public Reminder getReminder() {
+        return reminder;
+    }
+
+    public void setReminder(Reminder reminder) {
+        this.reminder = reminder;
+    }
+
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(id);

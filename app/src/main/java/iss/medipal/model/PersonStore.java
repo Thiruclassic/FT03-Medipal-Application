@@ -4,6 +4,7 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
+import iss.medipal.asyncs.AddAppointmentTask;
 import iss.medipal.asyncs.AddConsumptionTask;
 import iss.medipal.asyncs.AddMedicineTask;
 import iss.medipal.asyncs.AddPersonBioTask;
@@ -31,8 +32,9 @@ public class PersonStore {
     private AddMedicineTask mAddMedicineTask;
     private EditMedicineTask mEditMedicineTask;
     private AddConsumptionTask mAddConsumptionTask;
+    private AddAppointmentTask mAddAppointmentTask;
 
-    public PersonStore(PersonalBio personBio, Context context){
+    public PersonStore(PersonalBio personBio, Context context) {
         this.mPersonalBio = personBio;
         this.mContext = context;
         new GetCategoriesTask(context).execute();
@@ -64,7 +66,7 @@ public class PersonStore {
     }
 
     //personal bio
-    public void addPersonBio(PersonalBio personalBio){
+    public void addPersonBio(PersonalBio personalBio) {
         mPersonalBio.setName(personalBio.getName());
         mPersonalBio.setIdNo(personalBio.getIdNo());
         mPersonalBio.setDob(personalBio.getDob());
@@ -76,7 +78,7 @@ public class PersonStore {
         mAddPersonalBioTask.execute(personalBio);
     }
 
-    public void editPersonalBio(PersonalBio personalBio){
+    public void editPersonalBio(PersonalBio personalBio) {
         mPersonalBio.setId(personalBio.getId());
         mPersonalBio.setName(personalBio.getName());
         mPersonalBio.setIdNo(personalBio.getIdNo());
@@ -89,8 +91,8 @@ public class PersonStore {
         mEditPersonalBioTask.execute(personalBio);
     }
 
-    public void addMedicine(Medicine medicine){
-        if(AppHelper.isListEmpty(mPersonalBio.getMedicines())){
+    public void addMedicine(Medicine medicine) {
+        if (AppHelper.isListEmpty(mPersonalBio.getMedicines())) {
             mPersonalBio.setMedicines(new ArrayList<Medicine>());
         }
         mPersonalBio.getMedicines().add(medicine);
@@ -98,13 +100,12 @@ public class PersonStore {
         mAddMedicineTask.execute(medicine);
 
 
-
     }
 
-    public void editMedicine(Medicine medicine){
+    public void editMedicine(Medicine medicine) {
         ArrayList<Medicine> meds = mPersonalBio.getMedicines();
-        for(Medicine med: meds){
-            if(med.equals(medicine)){
+        for (Medicine med : meds) {
+            if (med.equals(medicine)) {
                 med.setMedicine(medicine.getMedicine());
                 med.setCatId(medicine.getCatId());
                 med.setRemind(medicine.isRemind());
@@ -121,12 +122,33 @@ public class PersonStore {
         }
         mEditMedicineTask = new EditMedicineTask(mContext);
         mEditMedicineTask.execute(medicine);
-
-
+    }
+    public void addAppointment(Appointment appointment) {
+        if (AppHelper.isListEmpty(mPersonalBio.getAppointments())) {
+            mPersonalBio.setAppointments(new ArrayList<Appointment>());
+        }
+        mPersonalBio.getAppointments().add(appointment);
+        mAddAppointmentTask = new AddAppointmentTask(mContext);
+        mAddAppointmentTask.execute(appointment);
     }
 
-    public void addConsumption(Consumption consumption){
-        if(AppHelper.isListEmpty(mConsumptions)){
+    public void editAppointment(Appointment appointment) {
+        ArrayList<Appointment> appointments = mPersonalBio.getAppointments();
+        for (Appointment appointment1 : appointments) {
+            if (appointment1.equals(appointment)) {
+                appointment1.setId(appointment.getId());
+                appointment1.setLocation(appointment.getLocation());
+                appointment1.setDescription(appointment.getDescription());
+                appointment1.setAppointment(appointment.getAppointment());
+                break;
+            }
+        }
+        mAddAppointmentTask = new AddAppointmentTask(mContext);
+        mAddAppointmentTask.execute(appointment);
+    }
+
+    public void addConsumption(Consumption consumption) {
+        if (AppHelper.isListEmpty(mConsumptions)) {
             mConsumptions = new ArrayList<>();
         }
         mConsumptions.add(consumption);
