@@ -8,6 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/lv_friend_list"
+        android:divider="@drawable/list_divider_dark"
+        android:dividerHeight="1dp"
         >
     </ListView>
 

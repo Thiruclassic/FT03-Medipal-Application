@@ -36,6 +36,10 @@ public class PriorityAdapter extends ArrayAdapter<InCaseofEmergencyContact> {
         }
     }
 
+    public void setAllContacts(ArrayList<InCaseofEmergencyContact> allContacts){
+        this.sortedContacts = allContacts;
+        notifyDataSetChanged();
+    }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {

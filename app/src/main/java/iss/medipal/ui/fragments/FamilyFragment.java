@@ -69,17 +69,23 @@ public class FamilyFragment extends Fragment {
         tvEmpty = (TextView) view.findViewById(R.id.tv_empty_family);
         allContacts = MediPalApplication.getPersonStore().getmPersonalBio().getContacts();  //store all contacts
         familyContacts = new ArrayList<>();
-        if(!AppHelper.isListEmpty(allContacts)) {
+        if (!AppHelper.isListEmpty(allContacts)) {
             for (InCaseofEmergencyContact contact : allContacts) {
                 if (contact.getContactType() == Constants.FAMILY_CONTACT)
                     familyContacts.add(contact);
             }
             if (!AppHelper.isListEmpty(allContacts)) {
-                familyAdapter = new FamilyAdapter(getContext(), familyContacts);
-                familyMembersList.setAdapter(familyAdapter);
+                if (familyAdapter != null)
+                    familyAdapter.setFamilyContacts(familyContacts);
+                else {
+                    familyAdapter = new FamilyAdapter(getContext(), familyContacts);
+                    familyMembersList.setAdapter(familyAdapter);
+                }
             }
         }
     }
+
+
 
     @Override
     public void onResume() {

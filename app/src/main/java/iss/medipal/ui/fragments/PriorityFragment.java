@@ -1,6 +1,7 @@
 package iss.medipal.ui.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -46,18 +47,38 @@ public class PriorityFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         priorityList = (ListView) view.findViewById(R.id.lv_priority_list);
         tvEmpty = (TextView) view.findViewById(R.id.tv_empty_contacts);
         allContacts = MediPalApplication.getPersonStore().getmPersonalBio().getContacts();  //store all contacts
-        Collections.sort(allContacts, new InCaseofEmergencyContact());
 
-        if(!AppHelper.isListEmpty(allContacts)){
-            priorityAdapter = new PriorityAdapter(getContext(), allContacts);
-            priorityList.setAdapter(priorityAdapter);
+
+        if (!AppHelper.isListEmpty(allContacts)) {
+            Collections.sort(allContacts, new InCaseofEmergencyContact());
+            if (priorityAdapter != null)
+                priorityAdapter.setAllContacts(allContacts);
+            else {
+                priorityAdapter = new PriorityAdapter(getContext(), allContacts);
+                priorityList.setAdapter(priorityAdapter);
+            }
+
         }
-
     }
 
     @Override

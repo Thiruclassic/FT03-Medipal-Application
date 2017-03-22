@@ -56,13 +56,13 @@ public class AddContactFragment extends Fragment {
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initialiseViews(view);
-        /*mTypeGroup = (RadioGroup) view.findViewById(R.id.contact_type_group);
+        mTypeGroup = (RadioGroup) view.findViewById(R.id.contact_type_group);
         mTypeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 mTypeSelect = (RadioButton) view.findViewById(checkedId);
             }
-        });*/
+        });
         setListeners();
     }
 

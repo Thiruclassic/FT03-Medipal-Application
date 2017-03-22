@@ -1,6 +1,7 @@
 package iss.medipal.ui.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,7 @@ import iss.medipal.dao.ICEDao;
 import iss.medipal.dao.impl.IceDaoImpl;
 import iss.medipal.model.InCaseofEmergencyContact;
 import iss.medipal.ui.adapters.DoctorAdapter;
+import iss.medipal.util.AppHelper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,26 +47,44 @@ public class DoctorFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         doctorList = (ListView) view.findViewById(R.id.lv_doctor_list);
         tvEmpty = (TextView) view.findViewById(R.id.tv_empty_doctor);
 
         allContacts = MediPalApplication.getPersonStore().getmPersonalBio().getContacts();  //store all contacts
-        if(allContacts!=null)
-        {
+        if (!AppHelper.isListEmpty(allContacts)) {
             doctorContacts = new ArrayList<>();
-            for(InCaseofEmergencyContact contact:allContacts){
-                if(contact.getContactType() == Constants.DOCTOR_CONTACT)
+            for (InCaseofEmergencyContact contact : allContacts) {
+                if (contact.getContactType() == Constants.DOCTOR_CONTACT)
                     doctorContacts.add(contact);
             }
-            if(doctorContacts!=null) {
-                doctorAdapter = new DoctorAdapter(getContext(), doctorContacts);
-                doctorList.setAdapter(doctorAdapter);
+            if (!AppHelper.isListEmpty(doctorContacts)) {
+                if (doctorAdapter != null)
+                    doctorAdapter.setDoctorContacts(doctorContacts);
+                else {
+                    doctorAdapter = new DoctorAdapter(getContext(), doctorContacts);
+                    doctorList.setAdapter(doctorAdapter);
+                }
             }
+            //iceDao = new IceDaoImpl(getContext());
+            //iceDao.getContactsbyType(3);
         }
-        //iceDao = new IceDaoImpl(getContext());
-        //iceDao.getContactsbyType(3);
     }
 
     @Override

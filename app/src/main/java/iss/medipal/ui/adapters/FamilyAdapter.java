@@ -41,6 +41,11 @@ public class FamilyAdapter extends ArrayAdapter<InCaseofEmergencyContact> {
         return familyMembers.size();
     }
 
+    public void setFamilyContacts(ArrayList<InCaseofEmergencyContact> familyMembers){
+        this.familyMembers = familyMembers;
+        notifyDataSetChanged();
+    }
+
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;

@@ -35,6 +35,11 @@ public class FriendAdapter extends ArrayAdapter<InCaseofEmergencyContact> {
         }
     }
 
+    public void setFriendContacts(ArrayList<InCaseofEmergencyContact> friends){
+        this.friends = friends;
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {

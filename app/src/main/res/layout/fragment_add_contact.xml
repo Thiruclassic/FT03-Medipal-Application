@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:layout_above="@+id/submit_btn"
+        android:layout_above="@+id/submit_details_btn"
         android:scrollbars="none" >
 
         <LinearLayout
@@ -77,7 +77,6 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/Family"
                     android:text="FAMILY"
-                    android:onClick="onRadioButtonClicked"
                     android:checked="true"/>
 
                 <RadioButton
@@ -85,14 +84,14 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/Friend"
                     android:text="FRIEND"
-                    android:onClick="onRadioButtonClicked"/>
+                    />
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/Doctor"
                     android:text="DOCTOR"
-                    android:onClick="onRadioButtonClicked"/>
+                    />
 
             </RadioGroup>
 

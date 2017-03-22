@@ -42,6 +42,11 @@ public class DoctorAdapter extends ArrayAdapter<InCaseofEmergencyContact> {
         }
     }
 
+    public void setDoctorContacts(ArrayList<InCaseofEmergencyContact> doctors){
+        this.doctors = doctors;
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
