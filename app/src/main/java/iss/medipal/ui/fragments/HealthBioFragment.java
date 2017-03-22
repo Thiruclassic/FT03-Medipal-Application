@@ -3,6 +3,7 @@ package iss.medipal.ui.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,8 +27,8 @@ import iss.medipal.ui.adapters.HealthBioListAdapter;
 
 public class HealthBioFragment extends Fragment implements View.OnClickListener{
 
-    private Button addHealthBio;
-    private ImageView deleteHealthBio;
+    private FloatingActionButton addHealthBio;
+
     private HealthBioListAdapter healthBioListAdapter;
     private List<HealthBio> healthBios;
     HealthBioDao healthBioDao;
@@ -73,7 +74,7 @@ public class HealthBioFragment extends Fragment implements View.OnClickListener{
 
         super.onViewCreated(view, savedInstanceState);
         lv = (ListView) view.findViewById(R.id.healthbioList);
-        addHealthBio=(Button) view.findViewById(R.id.addHealthBio);
+        addHealthBio=(FloatingActionButton) view.findViewById(R.id.addHealthBio);
         addHealthBio.setOnClickListener(this);
         healthBioDao = HealthBioDaoImpl.newInstance(getActivity());
 
@@ -137,8 +138,8 @@ public class HealthBioFragment extends Fragment implements View.OnClickListener{
                 startActivity(intent);
                 break;
 
-           // case R.id.deletebutton:
-            //    deleteHealthBio
+           //case R.id.deletebutton:
+              // healthBioDao.deleteHealthBio();
 
         }
     }

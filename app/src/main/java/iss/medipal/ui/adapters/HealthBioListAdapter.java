@@ -6,11 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
 import iss.medipal.R;
+import iss.medipal.dao.HealthBioDao;
+import iss.medipal.dao.impl.HealthBioDaoImpl;
 import iss.medipal.model.HealthBio;
 
 /**
@@ -20,6 +23,7 @@ import iss.medipal.model.HealthBio;
 public class HealthBioListAdapter extends BaseAdapter {
     private Context mContext;
     private List<HealthBio> mHealthBio;
+    HealthBioDao healthBioDao;
 
     public HealthBioListAdapter(Context mContext, List<HealthBio> mHealthBio) {
         this.mContext = mContext;
@@ -45,6 +49,7 @@ public class HealthBioListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Log.d("position",String.valueOf(position));
+        healthBioDao = HealthBioDaoImpl.newInstance(mContext);
         HealthBioListAdapter.ViewHolder viewHolder;
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).
@@ -56,6 +61,17 @@ public class HealthBioListAdapter extends BaseAdapter {
         }
         Log.d("position",String.valueOf(mHealthBio.get(position).getCondition()));
         viewHolder.mItemTextview.setText(mHealthBio.get(position).getCondition());
+
+
+
+        final int pos = position;
+        viewHolder.deleteHealthBio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                healthBioDao.deleteHealthBio(mHealthBio.get(pos).getId());
+
+            }
+        });
         return convertView;
     }
 
@@ -70,9 +86,11 @@ public class HealthBioListAdapter extends BaseAdapter {
      */
     class ViewHolder {
         TextView mItemTextview;
+        ImageView deleteHealthBio;
 
         public ViewHolder(View view) {
             mItemTextview = (TextView) view.findViewById(R.id.tvNote);
+            deleteHealthBio = (ImageView) view.findViewById(R.id.deletebutton);
         }
 
     }

@@ -25,7 +25,17 @@
 
     </FrameLayout> -->
 
-    <Button
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/addHealthBio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="20dp"
+        android:src="@drawable/plus"
+        android:tint="@android:color/white" />
+
+   <!--  <Button
         android:id="@+id/addHealthBio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,6 +49,6 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
         android:layout_margin="16dp"
-        />
+        /> -->
 
 </RelativeLayout>
