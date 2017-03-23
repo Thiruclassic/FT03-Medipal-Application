@@ -140,14 +140,6 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
 
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        ((MainActivity) getActivity()).setmListener(this);
-        mUIUpdateListener = ((AddAppointmentFragment.viewRefreshWhenAdded) getParentFragment());
-
-    }
-
 
     private void setListeners() {
         View.OnClickListener saveListener = new View.OnClickListener() {
@@ -164,7 +156,7 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
                             MediPalApplication.getPersonStore().editAppointment(appointment);
                         }
 //                        String appointment = addAppointment();
-                        Toast.makeText(getContext(), appointment + "Appointment successfully saved", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Appointment successfully saved", Toast.LENGTH_SHORT).show();
                         Log.d("Fragment type", String.valueOf(getParentFragment()));
 //                      ViewMedicineFragment fragment=(ViewMedicineFragment) getParentFragment();
 //                      fragment.medicineListAdapter.add(medicine);
@@ -174,7 +166,7 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
                         Log.d("error", e.toString());
                         Log.d("Error:", "error in add Appointment Page");
                     }
-//                    onBackPressed();
+//                    onBackPressed();//Not implemeted as the screen loads only after main activity
                 }
             }
         };
@@ -244,23 +236,12 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
             }
         }
     };
-
-    @Override
-    public void doBack() {
-        FragmentManager manager = getActivity().getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.detach(this).commit();
-        ((MainActivity) getActivity()).setmListener(null);
-        if (mUIUpdateListener != null) {
-            mUIUpdateListener.onAppointmentAddedUiUpdate();
-        }
-    }
-   /* public void onBackPressed() {
+    public void onBackPressed() {
         AppointmentFragment appointmentFragment = AppointmentFragment.newInstance();
         FragmentManager manager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.add_appointment_frame, appointmentFragment).commit();
-    }*/
+    }
 
     public TimePickerDialog showTimePicker() {
 
@@ -293,7 +274,25 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
         return datePickerDialog;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        ((MainActivity)getActivity()).setmListener(this);
+        mUIUpdateListener = ((viewRefreshWhenAdded)getParentFragment());
 
+    }
+    @Override
+    public void doBack() {
+        if(getActivity()!=null) {
+            FragmentManager manager = getActivity().getSupportFragmentManager();
+            FragmentTransaction transaction = manager.beginTransaction();
+            transaction.detach(this).commit();
+            ((MainActivity) getActivity()).setmListener(null);
+            if (mUIUpdateListener != null) {
+                mUIUpdateListener.onAppointmentAddedUiUpdate();
+            }
+        }
+    }
     @Override
     public void onDetach() {
         super.onDetach();

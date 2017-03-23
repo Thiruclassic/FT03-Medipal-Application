@@ -47,7 +47,7 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
     private AppointmentListAdapter appointmentListAdapter;
 //    private ArrayList<Appointment> appointmentViewList;
     private ArrayList<Appointment> appointmentList;
-    private AppointmentFragment.HomeInterface aAddCallback;
+    private AppointmentFragment.MainActivityInterface aAddCallback;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,8 +79,8 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
         setListeners();
 
         //Change this to the singleton class
-        appointmentDao = AppointmentDaoImpl.newInstance(getActivity());
-        appointmentList = appointmentDao.getAllAppointments();
+//        appointmentDao = AppointmentDaoImpl.newInstance(getActivity());
+//        appointmentList = appointmentDao.getAllAppointments();
 
        /* if (itemname == null) {
             itemname = new ArrayList<>();
@@ -103,7 +103,7 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        aAddCallback = (HomeInterface)context;
+        aAddCallback = (MainActivityInterface) context;
     }
 
     @Override
@@ -133,9 +133,9 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
 
     }
 
-    //todo similar logic
-    @Override
+   @Override
     public void onAppointmentAddedUiUpdate() {
+
         lv.setVisibility(View.VISIBLE);
         addAppointment.setVisibility(View.VISIBLE);
         innerLayout.setVisibility(View.GONE);
@@ -177,12 +177,13 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
             @Override
             public void onClick(View view) {
                 AddAppointmentFragment addAppointmentFragment = AddAppointmentFragment.newInstance();
-                FragmentManager manager = getActivity().getSupportFragmentManager();
+//                FragmentManager manager = getActivity().getSupportFragmentManager();
+                FragmentManager manager = getChildFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
-                transaction.replace(R.id.add_appointment_frame, addAppointmentFragment).commit();
+                transaction.replace(R.id.add_appointment_frame, addAppointmentFragment, Constants.ADD_FRAGMENT_PAGE).commit();
                 lv.setVisibility(View.INVISIBLE);
                 innerLayout.setVisibility(View.VISIBLE);
-                addAppointment.setVisibility(View.GONE);
+                addAppointment.setVisibility(View.INVISIBLE);
             }
         });
       /*  FrameLayout.OnLayoutChangeListener AppLayoutChangeListener = new View.OnLayoutChangeListener() {
@@ -227,7 +228,7 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
 
     }
 
-    public interface HomeInterface {
+    public interface MainActivityInterface {
         void onAppointmentNew();
     }
 }
