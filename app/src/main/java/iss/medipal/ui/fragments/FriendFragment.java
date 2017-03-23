@@ -68,7 +68,7 @@ public class FriendFragment extends Fragment {
         tvEmpty = (TextView) view.findViewById(R.id.tv_empty_friend);
         allContacts = MediPalApplication.getPersonStore().getmPersonalBio().getContacts();  //store all contacts
         friendContacts = new ArrayList<>();
-        Log.d("allContacts", Integer.toString(allContacts.size()));
+        //Log.d("allContacts", Integer.toString(allContacts.size()));
         if (!AppHelper.isListEmpty(allContacts)) {
             for (InCaseofEmergencyContact contact : allContacts) {
                 if (contact.getContactType() == Constants.FRIEND_CONTACT)

@@ -2,15 +2,24 @@ package iss.medipal.ui.fragments;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextClock;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +42,7 @@ public class FamilyFragment extends Fragment {
     private FamilyAdapter familyAdapter;
     private ArrayList<InCaseofEmergencyContact> allContacts;
     private ArrayList<InCaseofEmergencyContact> familyContacts;
+    private static int pos;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,9 +92,78 @@ public class FamilyFragment extends Fragment {
                     familyMembersList.setAdapter(familyAdapter);
                 }
             }
+            familyMembersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    pos = position;
+                    showPopupMenu(view);
+                }
+            });
         }
     }
 
+    private AlertDialog AskOption(final InCaseofEmergencyContact familyContact)
+    {
+        AlertDialog myQuittingDialogBox =new AlertDialog.Builder(this.getContext())
+                //set message, title, and icon
+                .setTitle("Delete")
+                .setMessage("Do you want to Delete")
+                .setIcon(R.drawable.delete_contact)
+
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        familyContacts.remove(familyContact);
+                        dialog.dismiss();
+                    }
+
+                })
+
+
+
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                    }
+                })
+                .create();
+        return myQuittingDialogBox;
+
+    }
+
+
+    public void showPopupMenu(View v){
+        PopupMenu popupMenu = new PopupMenu(this.getContext(), v);
+        MenuInflater inflater = popupMenu.getMenuInflater();
+        inflater.inflate(R.menu.contact_options_menu,popupMenu.getMenu());
+        popupMenu.show();
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId())
+                {
+                    case R.id.call_contact:
+                        Toast.makeText(getContext(), "calling " + familyContacts.get(pos).getContactName(),   Toast.LENGTH_SHORT).show();
+                        String number = "tel:" + familyContacts.get(pos).getContactNo();
+
+                        Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(number));
+                        startActivity(callIntent);
+                        return true;
+                    case R.id.edit_contact:
+                        return true;
+                    case R.id.delete_contact:
+                        AlertDialog diaBox = AskOption(familyContacts.get(pos));
+                        diaBox.show();
+
+
+                    default: return false;
+                }
+            }
+        });
+
+    }
 
 
     @Override
