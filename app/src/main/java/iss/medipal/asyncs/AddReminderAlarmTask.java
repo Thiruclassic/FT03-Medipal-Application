@@ -65,7 +65,7 @@ public class AddReminderAlarmTask extends AsyncTask {
             } else {
                 for (int i = 0; i < reminder.getFrequency(); i++)
                     pendingIntent = PendingIntent.getBroadcast(mContext, medicine.getId() + i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                manager.cancel(pendingIntent);
+                    manager.cancel(pendingIntent);
 
             }
 

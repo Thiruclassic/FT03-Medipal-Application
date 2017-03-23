@@ -13,8 +13,8 @@
         android:divider="@drawable/list_divider_dark"
         android:dividerHeight="1dp">
 
-    </ListView>
 
+    </ListView>
 
     <FrameLayout
         android:id="@+id/add_medicine_frame"

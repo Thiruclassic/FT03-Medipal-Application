@@ -12,6 +12,7 @@ import iss.medipal.asyncs.AddPersonBioTask;
 import iss.medipal.asyncs.AddReminderAlarmTask;
 import iss.medipal.asyncs.AddUpdateCategoryTask;
 import iss.medipal.asyncs.DeleteConsumptionTask;
+import iss.medipal.asyncs.DeleteMedicineTask;
 import iss.medipal.asyncs.EditMedicineTask;
 import iss.medipal.asyncs.EditPersonalBioTask;
 import iss.medipal.asyncs.GetCategoriesTask;
@@ -178,5 +179,13 @@ public class PersonStore {
         AddUpdateCategoryTask addUpdateCategoryTask=new AddUpdateCategoryTask(mContext,isEdit);
         addUpdateCategoryTask.execute(category);
 
+    }
+
+    public void deleteMedicine(Medicine medicine)
+    {
+        List<Medicine> medicines=mPersonalBio.getMedicines();
+        medicines.remove(medicine);
+        DeleteMedicineTask deleteMedicineTask=new DeleteMedicineTask(mContext);
+        deleteMedicineTask.execute(medicine);
     }
 }

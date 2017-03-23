@@ -37,9 +37,18 @@ public class EditMedicineTask extends AsyncTask<Medicine, Void, Reminder> {
 
     @Override
     protected Reminder doInBackground(Medicine... params) {
-        Reminder reminder = mReminderDao.modifyReminder(params[0].getReminder());
-        long result = mMedDao.updateMedicine(params[0]);
-        args=new Object[]{params[0],reminder};
+        Reminder reminder=null;
+
+        if (params[0].getReminderId() > 0) {
+            reminder=mReminderDao.modifyReminder(params[0].getReminder());
+        }
+        else
+        {
+            reminder=mReminderDao.addReminder(params[0].getReminder());
+            params[0].setReminderId(reminder.getId());
+        }
+            long result = mMedDao.updateMedicine(params[0]);
+            args = new Object[]{params[0], reminder};
         return reminder;
     }
 

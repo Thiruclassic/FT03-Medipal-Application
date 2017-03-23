@@ -63,7 +63,9 @@ public class ReminderDaoImpl extends BaseDao implements ReminderDao {
 
     @Override
     public int deleteReminder(int reminderId) {
-        return 0;
+
+        int rowId = database.delete(DBConstants.TABLE_REMINDER, "ID = ?",new String[]{String.valueOf(reminderId)});
+        return rowId;
     }
 
     @Override
