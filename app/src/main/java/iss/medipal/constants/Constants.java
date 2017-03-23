@@ -16,6 +16,7 @@ public class Constants {
     public static final String TIME_FORMAT_STORAGE ="HH/mm";
     public static final String DATE_TIME_FORMAT = "EEE MMM dd HH:mm:ss zzz yyyy";
     public static final String ISSUE_DATE_FORMAT = "dd/MM/yyyy";
+    public static final String HEALTH_BIO_DATE_TIME_FORMAT = "E MMM dd HH:mm:ss z yyyy";
 
     public static final String SAVE_MEDICINE_BUTTON="Save Medicine";
     public static final String EDIT_MEDICINE_BUTTON="Modify Medicine";
@@ -28,9 +29,12 @@ public class Constants {
     public static final String SAVE="saved";
 
 
+
     public static final int MYMEDICINE_VIEW_PAGE_ID = 2;
 
     public static final int TOOKIT_STATUS = 1;
+    public static final int REFILL_BROADCAST_ID=100000;
+    public static final int MISSEDIT_STATUS = 0;
 
 
 

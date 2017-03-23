@@ -70,7 +70,9 @@ public class MedicineDaoImpl extends BaseDao implements MedicineDao{
 
     @Override
     public int deleteMedicine(int medicineId) {
-        return 0;
+
+        int rowId = database.delete(DBConstants.TABLE_MEDICINE, "ID = ?",new String[]{String.valueOf(medicineId)});
+        return rowId;
     }
 
     @Override

@@ -12,9 +12,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import iss.medipal.R;
+import iss.medipal.ui.activities.HealthBioActivity;
 import iss.medipal.ui.activities.MainActivity;
 import iss.medipal.ui.activities.MeasurementActivity;
 import iss.medipal.ui.activities.UserProfileActivity;
+import iss.medipal.ui.activities.ViewCategoryActivity;
 import iss.medipal.ui.adapters.MoreAdapter;
 
 /**
@@ -58,8 +60,16 @@ public class MoreFragment extends BaseFragment {
                     case 0:
                         ((MainActivity)getActivity()).launchActivityWithoutFinishing(UserProfileActivity.class);
                         break;
+
+                    case 1:
+                        ((MainActivity)getActivity()).launchActivityWithoutFinishing(HealthBioActivity.class);
+                        break;
+
                     case 2:
                         ((MainActivity)getActivity()).launchActivityWithoutFinishing(MeasurementActivity.class);
+                        break;
+                    case 4:
+                        ((MainActivity)getActivity()).launchActivityWithoutFinishing(ViewCategoryActivity.class);
                         break;
                 }
             }

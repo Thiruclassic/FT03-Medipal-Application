@@ -37,6 +37,16 @@
             android:textSize="18sp"
             android:textStyle="bold"/>
 
+        <TextView
+            android:id="@+id/toolbar_right_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:text="@string/skip"/>
+
     </RelativeLayout>
 
 </android.support.v7.widget.Toolbar>

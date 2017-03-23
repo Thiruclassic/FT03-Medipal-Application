@@ -53,6 +53,31 @@ public class DialogUtility {
 
 
     /**
+     * Builds a new AlertDialog to display a simple message with Yes No Button
+     *
+     * @param context
+     * @param title
+     * @param message
+     * @param listener
+     * @return The new dialog.
+     */
+    public static AlertDialog.Builder newMessageDialogWIthYesNo(
+            Context context, String title, String message,
+            DialogInterface.OnClickListener listener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.CustomAlertDialogStyle);
+        builder.setCancelable(false);
+        builder.setNegativeButton(context.getString(android.R.string.no),null);
+        builder.setPositiveButton(context.getString(android.R.string.yes), listener);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        return builder;
+    }
+
+
+
+
+
+    /**
      * Builds a new AlertDialog to display a simple message and on clicking OK takes back to previous activity
      *
      * @param mActivity

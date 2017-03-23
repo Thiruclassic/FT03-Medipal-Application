@@ -16,8 +16,14 @@ import java.util.Calendar;
 
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
-    public TimePickerFragment() {
-        // Required empty public constructor
+    public TimePickerFragment()
+    {
+
+    }
+    public static TimePickerFragment newInstance(String dateTimeFor) {
+
+        TimePickerFragment pickerFragment=new TimePickerFragment();
+        return pickerFragment;
     }
 
     @Override

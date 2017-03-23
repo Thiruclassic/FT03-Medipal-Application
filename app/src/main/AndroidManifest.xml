@@ -40,7 +40,12 @@
             android:label="@string/title_activity_add_temperature"
             android:theme="@style/AppTheme" />
         <activity android:name=".ui.activities.PulseActivity" />
-        <activity android:name=".ui.activities.AddPulseActivity"></activity>
+        <activity android:name=".ui.activities.AddPulseActivity" />
+        <activity android:name=".ui.activities.HealthBioActivity" />
+        <activity android:name=".ui.activities.AddhealthBioActivity" />
+        <activity android:name=".ui.activities.ViewCategoryActivity"></activity>
+        <activity android:name=".ui.activities.AddCategoryActivity"></activity>
+
     </application>
 
 </manifest>

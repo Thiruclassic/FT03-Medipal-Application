@@ -19,6 +19,7 @@ import iss.medipal.MediPalApplication;
 import iss.medipal.R;
 import iss.medipal.model.Medicine;
 import iss.medipal.model.Reminder;
+import iss.medipal.util.DialogUtility;
 
 /**
  * Created by Thirumal on 20/3/2017.
@@ -75,19 +76,23 @@ public class MedicineReminderListAdapter extends BaseAdapter {
     public void setSwitchListeners(Switch switcher)
     {
 
-        Switch.OnCheckedChangeListener listener= new Switch.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Medicine medicine=medicines.get(Integer.parseInt(String.valueOf(buttonView.getTag())));
-                medicine.setRemind(isChecked);
-            }
-        };
        Switch.OnClickListener clickListener=new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Medicine medicine=medicines.get(Integer.parseInt(String.valueOf(v.getTag())));
-                medicine.setRemind(!medicine.isRemind());
-                MediPalApplication.getPersonStore().editMedicine(medicines.get(Integer.parseInt(String.valueOf(v.getTag()))));
+                if(medicine.getReminderId()>0)
+                {
+                    medicine.setRemind(!medicine.isRemind());
+                    MediPalApplication.getPersonStore().editMedicine(medicines.get(Integer.parseInt(String.valueOf(v.getTag()))));
+                }
+                else
+                {
+                    DialogUtility.newMessageDialog(mContext, mContext.getString(R.string.warning),
+                            "Please set Reminder Start time to Switch on the Reminder").show();
+                    ((Switch)v).setChecked(medicine.isRemind());
+                }
+
+
             }
         };
 

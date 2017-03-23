@@ -175,7 +175,7 @@ public class OnedayDoseFragment extends BaseFragment implements DoseListAdapter.
         mTookItButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onTookItClicked();
+                onTookItClicked(mSelectedPosition);
             }
         });
     }
@@ -184,10 +184,10 @@ public class OnedayDoseFragment extends BaseFragment implements DoseListAdapter.
         mCurrentCal = Calendar.getInstance();
     }
 
-    public void onTookItClicked(){
+    public void onTookItClicked(int selectedPosition){
         if(!AppHelper.isListEmpty(mDoseRecords)) {
-            if(mSelectedPosition >= 0){
-                mDoseRecords.get(mSelectedPosition).setStatus(Constants.TOOKIT_STATUS);
+            if(selectedPosition >= 0){
+                mDoseRecords.get(selectedPosition).setStatus(Constants.TOOKIT_STATUS);
                 mAdapter.notifyDataSetChanged();
                 Consumption consumption = new Consumption();
                 Medicine medicine = mAdapter.getmCurrentMed();
@@ -197,16 +197,41 @@ public class OnedayDoseFragment extends BaseFragment implements DoseListAdapter.
                 mCurrentCal.set(Calendar.YEAR, mCal.get(Calendar.YEAR));
                 mCurrentCal.set(Calendar.MONTH, mCal.get(Calendar.MONTH));
                 mCurrentCal.set(Calendar.DAY_OF_MONTH, mCal.get(Calendar.DAY_OF_MONTH));
-                mCurrentCal.add(Calendar.HOUR, mSelectedPosition * medicine.getReminder().getInterval());
+                mCurrentCal.add(Calendar.HOUR, selectedPosition * medicine.getReminder().getInterval());
                 consumption.setConsumedOn(mCurrentCal.getTime());
                 MediPalApplication.getPersonStore().addConsumption(consumption);
             } else {
                 DialogUtility.newMessageDialog(getContext(), getString(R.string.alert),
                         getString(R.string.select_dose)).show();
             }
-            setUpButton(mSelectedPosition);
+            setUpButton(selectedPosition);
         }
     }
+
+    public void onMissedit(int selectedPosition){
+        if(!AppHelper.isListEmpty(mDoseRecords)) {
+            if(selectedPosition >= 0){
+                mDoseRecords.get(selectedPosition).setStatus(Constants.MISSEDIT_STATUS);
+                mAdapter.notifyDataSetChanged();
+                Consumption consumption = new Consumption();
+                Medicine medicine = mAdapter.getmCurrentMed();
+                consumption.setMedicineId(mMedicine.getMedId());
+                consumption.setQuantity(medicine.getDosage());
+                mCurrentCal.setTime(medicine.getReminder().getStartTime());
+                mCurrentCal.set(Calendar.YEAR, mCal.get(Calendar.YEAR));
+                mCurrentCal.set(Calendar.MONTH, mCal.get(Calendar.MONTH));
+                mCurrentCal.set(Calendar.DAY_OF_MONTH, mCal.get(Calendar.DAY_OF_MONTH));
+                mCurrentCal.add(Calendar.HOUR, selectedPosition * medicine.getReminder().getInterval());
+                consumption.setConsumedOn(mCurrentCal.getTime());
+                MediPalApplication.getPersonStore().deleteConsumption(consumption);
+            } else {
+                DialogUtility.newMessageDialog(getContext(), getString(R.string.alert),
+                        getString(R.string.select_dose)).show();
+            }
+            setUpButton(selectedPosition);
+        }
+    }
+
 
     public interface OnMedicineArrowClickListener{
         void onNextMedArrowClicked();

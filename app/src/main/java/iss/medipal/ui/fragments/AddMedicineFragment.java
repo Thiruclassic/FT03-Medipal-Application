@@ -1,10 +1,7 @@
 package iss.medipal.ui.fragments;
 
-import android.app.AlarmManager;
 import android.app.DatePickerDialog;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -20,7 +17,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Switch;
@@ -31,7 +27,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import iss.medipal.MediPalApplication;
@@ -41,12 +36,9 @@ import iss.medipal.constants.DBConstants;
 import iss.medipal.dao.CategoryDao;
 import iss.medipal.dao.MedicineDao;
 import iss.medipal.dao.ReminderDao;
-import iss.medipal.dao.impl.MedicineDaoImpl;
-import iss.medipal.dao.impl.ReminderDaoImpl;
 import iss.medipal.model.Category;
 import iss.medipal.model.Medicine;
 import iss.medipal.model.Reminder;
-import iss.medipal.receivers.AlarmReceiver;
 import iss.medipal.ui.activities.MainActivity;
 import iss.medipal.ui.adapters.BaseSpinnerAdapter;
 import iss.medipal.ui.adapters.CategorySpinnerAdapter;
@@ -71,13 +63,11 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
     private AppCompatEditText mPillsBeforeRefillEditText;
     private Button mSaveMedicineButton;
     private Button mAddDosageTimeButton;
-    private Button mAddRefillReminderTime;
     private AppCompatSpinner mCategorySpinner;
     private AppCompatSpinner mDosageSpinner;
     private AppCompatSpinner mFrequencySpinner;
     private AppCompatSpinner mIntervalSpinner;
     private Switch mRemindSwitch;
-    private Switch mRefillReminderSwitch;
     private AppCompatTextView mNameHint;
 
     private MedicineDao medicineDao;
@@ -172,12 +162,14 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
 
     @Override
     public void doBack() {
-        FragmentManager manager = getActivity().getSupportFragmentManager();
-        FragmentTransaction transaction=manager.beginTransaction();
-        transaction.detach(this).commit();
-        ((MainActivity)getActivity()).setmListener(null);
-        if(mUIUpdateListener != null){
-            mUIUpdateListener.onMedAddedUiUpdate();
+        if(getActivity()!=null) {
+            FragmentManager manager = getActivity().getSupportFragmentManager();
+            FragmentTransaction transaction = manager.beginTransaction();
+            transaction.detach(this).commit();
+            ((MainActivity) getActivity()).setmListener(null);
+            if (mUIUpdateListener != null) {
+                mUIUpdateListener.onMedAddedUiUpdate();
+            }
         }
     }
 
@@ -192,8 +184,10 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         if(mReminder == null){
             mReminder  = new Reminder();
         }
-        mReminder.setStartTime(calendar.getTime());
-        mAddDosageTimeButton.setText(mReminderStartTime);
+                mReminder.setStartTime(calendar.getTime());
+                mAddDosageTimeButton.setText(mReminderStartTime);
+                mAddDosageTimeButton.setText(mReminderStartTime);
+
     }
 
     private void setSpinners(){
@@ -224,7 +218,6 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         mIntervalSpinner =(AppCompatSpinner)view.findViewById(R.id.intervalSpinner);
         mSaveMedicineButton =(Button)view.findViewById(R.id.saveMedicine);
         mAddDosageTimeButton =(Button)view.findViewById(R.id.dosageTime);
-        mAddRefillReminderTime =(Button)view.findViewById(R.id.refillReminderTime);
         mRemindSwitch =(Switch)view.findViewById(R.id.remindSwitch);
     }
 
@@ -233,10 +226,11 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
 
             @Override
             public void onClick(final View v) {
-                DialogFragment timerFragment = new TimePickerFragment();
+                DialogFragment timerFragment = TimePickerFragment.newInstance(Constants.REMINDER_TAB_1);
                 timerFragment.show(getChildFragmentManager(), Constants.ADD_REMINDER_DIALOG);
             }
         };
+
         View.OnClickListener saveListener=new View.OnClickListener()
         {
             @Override
@@ -256,7 +250,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
                         builder.append(mMedicine.getMedicine());
                         builder.append(Constants.SPACE);
                         builder.append(getString(R.string.saved));
-                        Toast.makeText(getContext(),builder.toString(),Toast.LENGTH_SHORT);
+                        Toast.makeText(getContext(),builder.toString(),Toast.LENGTH_SHORT).show();
 
                         doBack();
                     } catch (Exception e) {
@@ -287,7 +281,6 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         mIssueDateEditText.setOnFocusChangeListener(focusChangeListener);
 
         mAddDosageTimeButton.setOnClickListener(setTimeListener);
-        mAddRefillReminderTime.setOnClickListener(setTimeListener);
         mSaveMedicineButton.setOnClickListener(saveListener);
     }
 
@@ -316,19 +309,20 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
 
     public boolean validate()
     {
+        boolean isReminderRequired=!TextUtils.isEmpty(mReminderStartTime);
         if(TextUtils.isEmpty(mMedicineNameEditText.getText())) {
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
                     "Enter Medicine name").show();
             return false;
-        } else if(TextUtils.isEmpty(mReminderStartTime)){
+        } else if(isReminderNeeded()){
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
-                    "Enter Start time").show();
+                    "Enter Reminder Start time").show();
             return false;
-        } else if(mFrequencySpinner.getSelectedItemPosition() <= 0){
+        } else if(isReminderRequired && mFrequencySpinner.getSelectedItemPosition() <= 0){
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
                     "Enter Valid frequency").show();
             return false;
-        } else if(mIntervalSpinner.getSelectedItemPosition() <= 0){
+        } else if(isReminderRequired && mIntervalSpinner.getSelectedItemPosition() <= 0){
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
                     "Enter Valid interval").show();
             return false;
@@ -350,14 +344,32 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
 
     }
 
+    public boolean isReminderNeeded()
+    {
+        boolean checker=false;
+
+        List<Category> categories=MediPalApplication.getPersonStore().getCategory();
+        Category category=categories.get((int)mCategorySpinner.getSelectedItemId());
+        if(category.isRemind()|| mRemindSwitch.isChecked())
+        {
+            if(TextUtils.isEmpty(mReminderStartTime))
+            {
+                checker=true;
+            }
+        }
+        return checker;
+    }
+
     public void setMedicineDetails()
     {
         String medName = String.valueOf(mMedicineNameEditText.getText());
         String medDescription = String.valueOf(mDescriptionEditText.getText());
         SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.ISSUE_DATE_FORMAT);
         int quantity = Integer.parseInt(mTotalQuantityEditText.getText().toString());
-        mReminder.setInterval(Integer.valueOf(mSpinnerItems.get(mIntervalSpinner.getSelectedItemPosition())));
-        mReminder.setFrequency(Integer.valueOf(mSpinnerItems.get(mFrequencySpinner.getSelectedItemPosition())));
+        if(mReminder!=null) {
+            mReminder.setInterval(Integer.valueOf(mSpinnerItems.get(mIntervalSpinner.getSelectedItemPosition())));
+            mReminder.setFrequency(Integer.valueOf(mSpinnerItems.get(mFrequencySpinner.getSelectedItemPosition())));
+        }
         mMedicine.setMedicine(medName);
         mMedicine.setDescription(medDescription);
         mMedicine.setQuantity(quantity);
@@ -369,6 +381,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
                 .isEmpty(mPillsBeforeRefillEditText.getText())?"0":mPillsBeforeRefillEditText.getText())));
         mMedicine.setExpireFactor(Integer.parseInt(String.valueOf(TextUtils
                 .isEmpty(mMonthsToExpireEditText.getText())?"0":mMonthsToExpireEditText.getText())));
+
         try {
             mMedicine.setDateIssued(dateFormat.parse(mIssueDateEditText.getText().toString()));
         } catch (ParseException e) {
@@ -390,19 +403,23 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         mIssueDateEditText.setText(String.valueOf(dateFormat.format(mMedicine.getDateIssued())));
         mRemindSwitch.setChecked(mMedicine.isRemind());
         mMonthsToExpireEditText.setText(String.valueOf(mMedicine.getExpireFactor()));
+
     }
+
 
     public void updateReminderDetails()
     {
         mReminder = mMedicine.getReminder();
         if(mReminder != null) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(mReminder.getStartTime());
-            String doseTime = AppHelper.convert24TimeTo12String(cal.get(Calendar.HOUR_OF_DAY),
-                    cal.get(Calendar.MINUTE));
-            mReminderStartTime = AppHelper.convertTimeFormat(doseTime, Constants.TIME_FORMAT_STORAGE,
-                    Constants.TIME_12_HOUR_FORMAT);
-            mAddDosageTimeButton.setText(mReminderStartTime);
+            if(mReminder.getStartTime()!=null) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(mReminder.getStartTime());
+                String doseTime = AppHelper.convert24TimeTo12String(cal.get(Calendar.HOUR_OF_DAY),
+                        cal.get(Calendar.MINUTE));
+                mReminderStartTime = AppHelper.convertTimeFormat(doseTime, Constants.TIME_FORMAT_STORAGE,
+                        Constants.TIME_12_HOUR_FORMAT);
+                mAddDosageTimeButton.setText(mReminderStartTime);
+            }
             mFrequencySpinner.setSelection(mReminder.getFrequency());
             mIntervalSpinner.setSelection(mReminder.getInterval());
         }

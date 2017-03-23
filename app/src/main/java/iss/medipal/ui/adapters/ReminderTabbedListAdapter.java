@@ -6,7 +6,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import iss.medipal.MediPalApplication;
 import iss.medipal.constants.Constants;
+import iss.medipal.constants.DBConstants;
+import iss.medipal.model.Medicine;
 import iss.medipal.ui.fragments.SimpleCardFragment;
 import iss.medipal.ui.fragments.ViewReminderFragment;
 
@@ -32,15 +38,13 @@ public class ReminderTabbedListAdapter extends FragmentPagerAdapter {
                 return  ViewReminderFragment.newInstance();
             case 1:
                 return SimpleCardFragment.getInstance("Screen : Appointment Reminders");
-            case 2:
-                return SimpleCardFragment.getInstance("Screen : Refill Reminders");
         }
         return null;
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return 2;
     }
 
     @Override
@@ -50,8 +54,6 @@ public class ReminderTabbedListAdapter extends FragmentPagerAdapter {
                 return Constants.REMINDER_TAB_1;
             case 1:
                 return Constants.REMINDER_TAB_2;
-            case 2:
-                return Constants.REMINDER_TAB_3;
         }
         return null;
     }

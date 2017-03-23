@@ -1,7 +1,9 @@
 package iss.medipal.dao.impl;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,5 +58,31 @@ public class CategoryDaoImpl extends BaseDao implements CategoryDao {
         }
 
         return categories;
+    }
+
+    @Override
+    public long addCategory(Category category) {
+
+        ContentValues values=new ContentValues();
+        values.put(DBConstants.CATEGORY_CODE,category.getCode());
+        values.put(DBConstants.CATEGORY_NAME,category.getCategory());
+        values.put(DBConstants.CATEGORY_DESCRIPTION,category.getDescription());
+        values.put(DBConstants.CATEGORY_REMIND,category.isRemind());
+
+        long id=database.insert(DBConstants.TABLE_CATEGORY,null,values);
+
+        return id;
+    }
+
+    @Override
+    public long updateCategory(Category category) {
+
+        ContentValues values=new ContentValues();
+        values.put(DBConstants.CATEGORY_CODE,category.getCode());
+        values.put(DBConstants.CATEGORY_NAME,category.getCategory());
+        values.put(DBConstants.CATEGORY_DESCRIPTION,category.getDescription());
+        values.put(DBConstants.CATEGORY_REMIND,category.isRemind());
+        int id=(int)database.update(DBConstants.TABLE_CATEGORY,values,"id=?",new String[]{String.valueOf(category.getId())});
+        return id;
     }
 }

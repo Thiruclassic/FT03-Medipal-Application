@@ -1,15 +1,18 @@
 package iss.medipal.model;
 
 import android.content.Context;
-
+import android.util.Log;
 import java.util.ArrayList;
-
+import java.util.List;
 import iss.medipal.asyncs.AddAppointmentTask;
 import iss.medipal.asyncs.AddConsumptionTask;
 import iss.medipal.asyncs.AddMedicineTask;
 import iss.medipal.asyncs.AddPersonBioTask;
 import iss.medipal.asyncs.AddReminderAlarmTask;
 import iss.medipal.asyncs.EditAppointmentTask;
+import iss.medipal.asyncs.AddUpdateCategoryTask;
+import iss.medipal.asyncs.DeleteConsumptionTask;
+import iss.medipal.asyncs.DeleteMedicineTask;
 import iss.medipal.asyncs.EditMedicineTask;
 import iss.medipal.asyncs.EditPersonalBioTask;
 import iss.medipal.asyncs.GetCategoriesTask;
@@ -35,11 +38,13 @@ public class PersonStore {
     private AddConsumptionTask mAddConsumptionTask;
     private AddAppointmentTask mAddAppointmentTask;
     private EditAppointmentTask mEditAppointmentTask;
+    private DeleteConsumptionTask mDeleteConsumptionTask;
 
     public PersonStore(PersonalBio personBio, Context context) {
         this.mPersonalBio = personBio;
         this.mContext = context;
         new GetCategoriesTask(context).execute();
+
     }
 
     //getters/setters
@@ -156,5 +161,51 @@ public class PersonStore {
         mConsumptions.add(consumption);
         mAddConsumptionTask = new AddConsumptionTask(mContext);
         mAddConsumptionTask.execute(consumption);
+    }
+
+    public void deleteConsumption(Consumption consumption){
+        if(AppHelper.isListEmpty(mConsumptions)){
+            return;
+        }
+        for(Consumption consumption1: mConsumptions) {
+            if(consumption == consumption1){
+                mConsumptions.remove(consumption1);
+            }
+            mDeleteConsumptionTask = new DeleteConsumptionTask(mContext);
+            mDeleteConsumptionTask.execute(consumption);
+        }
+    }
+
+    public void addUpdateCategory(Category category,boolean isEdit)
+    {
+        List<Category> categoryList=getCategory();
+
+        if(!isEdit)
+        {
+            categoryList.add(category);
+        }
+        else
+        {
+            for(int i=0;i<categoryList.size();i++)
+            {
+                Category cat=categoryList.get(i);
+                if(category.equals(cat))
+                {
+                    categoryList.set(i,category);
+                    break;
+                }
+            }
+        }
+        AddUpdateCategoryTask addUpdateCategoryTask=new AddUpdateCategoryTask(mContext,isEdit);
+        addUpdateCategoryTask.execute(category);
+
+    }
+
+    public void deleteMedicine(Medicine medicine)
+    {
+        List<Medicine> medicines=mPersonalBio.getMedicines();
+        medicines.remove(medicine);
+        DeleteMedicineTask deleteMedicineTask=new DeleteMedicineTask(mContext);
+        deleteMedicineTask.execute(medicine);
     }
 }

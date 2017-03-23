@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 
 import java.util.Calendar;
 
+import iss.medipal.constants.Constants;
 import iss.medipal.constants.DBConstants;
 import iss.medipal.model.Medicine;
 import iss.medipal.model.Reminder;
@@ -41,38 +42,35 @@ public class AddReminderAlarmTask extends AsyncTask {
 
     public void setMedicineReminder(Medicine medicine,Reminder reminder)
     {
-        PendingIntent pendingIntent = null;
-        AlarmManager manager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+        if(reminder!=null) {
+            PendingIntent pendingIntent = null;
+            AlarmManager manager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
 
-        Intent intent = new Intent(mContext, AlarmReceiver.class);
-        intent.putExtra(DBConstants.MEDICINE_NAME, medicine.getMedicine());
-        intent.putExtra(DBConstants.MEDICINE_DOSAGE, medicine.getDosage());
-        intent.putExtra(DBConstants.REMINDER_ID, medicine.getReminderId());
-        intent.putExtra(DBConstants.APP_ID, medicine.getId());
-
-        if(medicine.isRemind()) {
+            Intent intent = new Intent(mContext, AlarmReceiver.class);
+            intent.putExtra(DBConstants.MEDICINE_NAME, medicine.getMedicine());
+            intent.putExtra(DBConstants.MEDICINE_DOSAGE, medicine.getDosage());
+            intent.putExtra(DBConstants.REMINDER_ID, medicine.getReminderId());
+            intent.putExtra(DBConstants.APP_ID, medicine.getId());
             Calendar calendar = Calendar.getInstance();
-            calendar.setTime(medicine.getReminder().getStartTime());
-            calendar.set(Calendar.SECOND, 0);
+            if (medicine.isRemind()) {
+                calendar.setTime(medicine.getReminder().getStartTime());
+                calendar.set(Calendar.SECOND, 0);
 
+                int interval = 0;
+                for (int i = 0; i < reminder.getFrequency(); i++) {
+                    pendingIntent = PendingIntent.getBroadcast(mContext, medicine.getId()*10 + i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+                    calendar.add(Calendar.HOUR_OF_DAY, reminder.getInterval());
+                }
+            } else {
+                for (int i = 0; i < reminder.getFrequency(); i++)
+                    pendingIntent = PendingIntent.getBroadcast(mContext, medicine.getId()*10 + i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    manager.cancel(pendingIntent);
 
-
-
-            int interval = 0;
-            for (int i = 0; i < reminder.getFrequency(); i++) {
-                pendingIntent = PendingIntent.getBroadcast(mContext, medicine.getId() + i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
-                calendar.add(Calendar.HOUR_OF_DAY, reminder.getInterval());
             }
-        }
-        else
-        { for (int i = 0; i < reminder.getFrequency(); i++) {
-            pendingIntent = PendingIntent.getBroadcast(mContext, medicine.getId() + i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            manager.cancel(pendingIntent);
 
         }
-
         }
 
-    }
+
 }

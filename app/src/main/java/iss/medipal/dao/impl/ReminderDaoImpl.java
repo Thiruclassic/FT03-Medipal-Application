@@ -32,30 +32,40 @@ public class ReminderDaoImpl extends BaseDao implements ReminderDao {
 
     @Override
     public Reminder addReminder(Reminder reminder) {
-        ContentValues values=new ContentValues();
-        values.put(DBConstants.REMINDER_FREQUENCY,reminder.getFrequency());
-        values.put(DBConstants.REMINDER_START_TIME,mDateFormat.format(reminder.getStartTime()));
-        values.put(DBConstants.REMINDER_INTERVAL,reminder.getInterval());
-        reminder.setId((int)database.insert(DBConstants.TABLE_REMINDER,null,values));
+        if(reminder!=null) {
+            if(reminder.getStartTime()!=null) {
+                ContentValues values = new ContentValues();
+                values.put(DBConstants.REMINDER_FREQUENCY, reminder.getFrequency());
+                values.put(DBConstants.REMINDER_START_TIME, mDateFormat.format(reminder.getStartTime()));
+                values.put(DBConstants.REMINDER_INTERVAL, reminder.getInterval());
+                reminder.setId((int) database.insert(DBConstants.TABLE_REMINDER, null, values));
+            }
+        }
         return reminder;
 
     }
 
     @Override
     public Reminder modifyReminder(Reminder reminder) {
-        ContentValues values=new ContentValues();
-        values.put(DBConstants.REMINDER_FREQUENCY,reminder.getFrequency());
-        values.put(DBConstants.REMINDER_START_TIME,mDateFormat.format(reminder.getStartTime()));
-        values.put(DBConstants.REMINDER_INTERVAL,reminder.getInterval());
-        int id=(int)database.update(DBConstants.TABLE_REMINDER,values, "id=?",
-                new String[]{String.valueOf(reminder.getId())});
-        reminder.setId(id);
+        if(reminder!=null) {
+            if(reminder.getStartTime()!=null) {
+                ContentValues values = new ContentValues();
+                values.put(DBConstants.REMINDER_FREQUENCY, reminder.getFrequency());
+                values.put(DBConstants.REMINDER_START_TIME, mDateFormat.format(reminder.getStartTime()));
+                values.put(DBConstants.REMINDER_INTERVAL, reminder.getInterval());
+                int id = (int) database.update(DBConstants.TABLE_REMINDER, values, "id=?",
+                        new String[]{String.valueOf(reminder.getId())});
+                reminder.setId(id);
+            }
+        }
         return reminder;
     }
 
     @Override
     public int deleteReminder(int reminderId) {
-        return 0;
+
+        int rowId = database.delete(DBConstants.TABLE_REMINDER, "ID = ?",new String[]{String.valueOf(reminderId)});
+        return rowId;
     }
 
     @Override

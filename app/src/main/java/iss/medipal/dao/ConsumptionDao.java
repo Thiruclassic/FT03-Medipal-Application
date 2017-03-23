@@ -4,6 +4,7 @@ import java.util.List;
 
 import iss.medipal.model.Consumption;
 import iss.medipal.model.HealthBio;
+import iss.medipal.model.Medicine;
 
 
 /**
@@ -12,11 +13,13 @@ import iss.medipal.model.HealthBio;
 
 public interface ConsumptionDao {
 
-    public long createConsumtion(Consumption consumption);
+    public Medicine createConsumtion(Consumption consumption);
 
     public Consumption getConsumptionForMedicine(int medicineId);
 
     public List<Consumption> getAllConsumptions();
+
+    public Medicine deleteConsumtion(Consumption consumtion);
 
     public List<Consumption> getAllConsumptionsForLastXDays(int days);
 

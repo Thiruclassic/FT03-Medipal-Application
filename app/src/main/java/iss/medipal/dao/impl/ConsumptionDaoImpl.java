@@ -3,6 +3,7 @@ package iss.medipal.dao.impl;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
@@ -12,6 +13,7 @@ import java.util.List;
 import iss.medipal.constants.Constants;
 import iss.medipal.constants.DBConstants;
 import iss.medipal.dao.ConsumptionDao;
+import iss.medipal.dao.MedicineDao;
 import iss.medipal.model.Consumption;
 import iss.medipal.model.Medicine;
 
@@ -22,9 +24,13 @@ import iss.medipal.model.Medicine;
 public class ConsumptionDaoImpl extends BaseDao implements ConsumptionDao {
 
     private SimpleDateFormat mDateFormat;
+    private MedicineDao medicineDao;
 
     public static ConsumptionDaoImpl newInstance(Context context) {
-        return new ConsumptionDaoImpl(context);
+        ConsumptionDaoImpl consumptionDao=new ConsumptionDaoImpl(context);
+        consumptionDao.medicineDao=new MedicineDaoImpl(context);
+        return consumptionDao;
+
     }
 
     public ConsumptionDaoImpl(Context context){
@@ -33,13 +39,13 @@ public class ConsumptionDaoImpl extends BaseDao implements ConsumptionDao {
     }
 
     @Override
-    public long createConsumtion(Consumption consumption){
+    public Medicine createConsumtion(Consumption consumption){
         ContentValues values=new ContentValues();
         values.put(DBConstants.CONSUMPTION_MEDID,consumption.getMedicineId());
         values.put(DBConstants.CONSUMPTION_QUANTITY,consumption.getQuantity());
         values.put(DBConstants.CONSUMPTION_CONSUMED_ON,mDateFormat.format(consumption.getConsumedOn()));
         long id=(int)database.insert(DBConstants.TABLE_CONSUMPTION,null,values);
-        return id;
+        return medicineDao.getMedicinebyId(consumption.getMedicineId());
     }
 
 
@@ -68,6 +74,20 @@ public class ConsumptionDaoImpl extends BaseDao implements ConsumptionDao {
             }
         }
         return consumptions;
+    }
+
+    @Override
+    public Medicine deleteConsumtion(Consumption consumption){
+        Medicine medicine=null;
+        try {
+            database.delete(DBConstants.TABLE_CONSUMPTION, DBConstants.CONSUMPTION_MEDID +"=? and "+
+                    DBConstants.CONSUMPTION_CONSUMED_ON+"=?", new String[]{String.valueOf(consumption.getMedicineId()),
+                    mDateFormat.format(consumption.getConsumedOn())});
+            medicine=medicineDao.getMedicinebyId(consumption.getMedicineId());
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return  medicine;
     }
 
     @Override

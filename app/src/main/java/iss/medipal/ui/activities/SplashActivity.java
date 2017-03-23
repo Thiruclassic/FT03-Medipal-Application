@@ -20,6 +20,7 @@ import iss.medipal.dao.impl.MedicineDaoImpl;
 import iss.medipal.dao.impl.ReminderDaoImpl;
 import iss.medipal.model.Category;
 import iss.medipal.model.Consumption;
+import iss.medipal.model.DoseContainer;
 import iss.medipal.model.Medicine;
 import iss.medipal.model.PersonStore;
 import iss.medipal.model.PersonalBio;
@@ -83,8 +84,9 @@ public class SplashActivity extends BaseFullScreenActivity {
             result.setMedicines(meds);
             mPersonStore.setmPersonalBio(result);
             mPersonStore.setmConsumptions(consumptions);
+            DoseContainer.getInstance(SplashActivity.this);
             try {
-                Thread.sleep(2000);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

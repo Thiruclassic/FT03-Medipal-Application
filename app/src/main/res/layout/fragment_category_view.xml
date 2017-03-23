@@ -4,28 +4,20 @@
     android:id="@+id/view_fragment_frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:clickable="true">
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/medicineList"
-        android:divider="@drawable/list_divider_dark"
-        android:dividerHeight="1dp">
+        android:layout_height="match_parent"
+        android:id="@+id/categoryList"
+        android:clickable="true"
+       >
 
 
     </ListView>
 
-    <FrameLayout
-        android:id="@+id/add_medicine_frame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
-
-    </FrameLayout>
-
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addMedicine"
+        android:id="@+id/addCategoryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right|bottom"
@@ -34,6 +26,5 @@
         android:src="@drawable/plus"
         android:tint="@android:color/white"
         />
-
 
 </FrameLayout>
