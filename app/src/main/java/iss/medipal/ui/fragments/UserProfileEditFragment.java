@@ -35,6 +35,7 @@ import iss.medipal.R;
 import iss.medipal.constants.Constants;
 import iss.medipal.model.PersonStore;
 import iss.medipal.model.PersonalBio;
+import iss.medipal.ui.activities.HealthBioActivity;
 import iss.medipal.ui.activities.MainActivity;
 import iss.medipal.ui.activities.UserProfileActivity;
 import iss.medipal.ui.adapters.BaseSpinnerAdapter;
@@ -277,8 +278,8 @@ public class UserProfileEditFragment extends BaseFragment implements UserProfile
                         mUnitEditText.getText().toString());
                 personalBio.setPostalCode(mPostalCodeEditText.getText().toString());
                 mPersonStore.addPersonBio(personalBio);
-                SharedPreferenceManager.setAppLaunchStatus(getActivity(), false);
-                ((UserProfileActivity)getActivity()).launchActivity(MainActivity.class);
+              //  SharedPreferenceManager.setAppLaunchStatus(getActivity(), false);
+                ((UserProfileActivity)getActivity()).launchActivity(HealthBioActivity.class);
             }
         }
     };

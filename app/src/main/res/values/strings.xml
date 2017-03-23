@@ -137,6 +137,7 @@
 
     <string name="category_title">Categories</string>
     <string name="health_bio_title">Health Bio</string>
+    <string name="skip">SKIP</string>
 
     <!-- Category -->
     <string name="category_name">Category Name</string>

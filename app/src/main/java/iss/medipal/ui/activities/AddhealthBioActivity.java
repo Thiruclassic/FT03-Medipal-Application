@@ -29,6 +29,10 @@ import iss.medipal.dao.impl.HealthBioDaoImpl;
 import iss.medipal.model.HealthBio;
 import iss.medipal.util.DialogUtility;
 
+/**
+ * Created by Mridul on 19-03-2017.
+ */
+
 public class AddhealthBioActivity extends AppCompatActivity {
 
 
@@ -64,8 +68,6 @@ public class AddhealthBioActivity extends AppCompatActivity {
         mStartDate.setOnClickListener(mDateClickListener);
         mStartDate.setOnFocusChangeListener(mDateFocusListener);
         mSubmitButton.setOnClickListener(mSubmitListener);
-       // getSupportActionBar().setHomeButtonEnabled(true);
-       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         imageBack = (ImageView) findViewById(R.id.toolbar_left_icon);
         title = (TextView) findViewById(R.id.toolbar_title);
         title.setText("Enter HealthBio");
