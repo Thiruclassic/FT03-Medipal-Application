@@ -40,12 +40,16 @@ public class AddMedicineTask extends AsyncTask<Medicine, Void, Reminder> {
     @Override
     protected Reminder doInBackground(Medicine... params) {
         Reminder reminder= mReminderDao.addReminder(params[0].getReminder());
-        params[0].setReminderId(reminder.getId());
-        params[0].getReminder().setId(reminder.getId());
+        if(reminder!=null) {
+            params[0].setReminderId(reminder.getId());
+            params[0].getReminder().setId(reminder.getId());
+        }
         long result = mMedDao.addMedicine(params[0]);
-        for(Medicine med: MediPalApplication.getPersonStore().getmPersonalBio().getMedicines()){
-            if(med.equals(params[0])){
-                med.setId(reminder.getId());
+        if(reminder!=null) {
+            for (Medicine med : MediPalApplication.getPersonStore().getmPersonalBio().getMedicines()) {
+                if (med.equals(params[0])) {
+                    med.setId(reminder.getId());
+                }
             }
         }
         args=new Object[]{params[0],reminder};

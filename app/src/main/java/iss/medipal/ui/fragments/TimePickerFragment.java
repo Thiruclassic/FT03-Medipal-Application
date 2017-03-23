@@ -16,7 +16,6 @@ import java.util.Calendar;
 
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
-    String dateTimeFor;
     public TimePickerFragment()
     {
 
@@ -24,7 +23,6 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
     public static TimePickerFragment newInstance(String dateTimeFor) {
 
         TimePickerFragment pickerFragment=new TimePickerFragment();
-        pickerFragment.dateTimeFor=dateTimeFor;
         return pickerFragment;
     }
 
