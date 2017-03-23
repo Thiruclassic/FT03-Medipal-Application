@@ -27,6 +27,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import iss.medipal.MediPalApplication;
 import iss.medipal.R;
 import iss.medipal.constants.Constants;
 import iss.medipal.dao.AppointmentDao;
@@ -66,7 +67,7 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
     private Appointment appointment;
     private Reminder reminder;
     private TextInputLayout textInputLayoutLocation;
-
+    private boolean isEditAppointment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,7 +106,7 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
         btnSave = (Button) fragmentView.findViewById(R.id.saveApp);
         etDescription = (EditText) fragmentView.findViewById(R.id.et_description);
         etDate.setText(dateFormatter.format(selectedDate.getTime()));
-        textInputLayoutLocation=(TextInputLayout) fragmentView.findViewById(R.id.tv_location);
+        textInputLayoutLocation = (TextInputLayout) fragmentView.findViewById(R.id.tv_location);
     }
 
     @Override
@@ -118,10 +119,10 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
             updateAppointmentDetails();
 //           updateReminderDetails();
             btnSave.setText("Modify Appointment");
-//           isEditMedicine = true;
+            isEditAppointment = true;
         } else {
             appointment = new Appointment();
-//            isEditMedicine = false;
+            isEditAppointment = false;
         }
 
         setListeners();
@@ -153,23 +154,26 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
             public void onClick(final View v) {
                 if (validateAppointmentDetails()) {
                     try {
-//                        int reminderId = addReminder();
-
-                        String appointment = addAppointment();
-
+//                      int reminderId = addReminder();
+//                        setReminder();
+                        Appointment appointment = getAppointmentDetails();
+                        if (!isEditAppointment) {
+                            MediPalApplication.getPersonStore().addAppointment(appointment);
+                        } else {
+                            MediPalApplication.getPersonStore().editAppointment(appointment);
+                        }
+//                        String appointment = addAppointment();
                         Toast.makeText(getContext(), appointment + "Appointment successfully saved", Toast.LENGTH_SHORT).show();
                         Log.d("Fragment type", String.valueOf(getParentFragment()));
-//                        ViewMedicineFragment fragment=(ViewMedicineFragment) getParentFragment();
-//                        fragment.medicineListAdapter.add(medicine);
-
+//                      ViewMedicineFragment fragment=(ViewMedicineFragment) getParentFragment();
+//                      fragment.medicineListAdapter.add(medicine);
+                        doBack();
 
                     } catch (Exception e) {
                         Log.d("error", e.toString());
                         Log.d("Error:", "error in add Appointment Page");
                     }
-                    doBack();
 //                    onBackPressed();
-
                 }
             }
         };
@@ -190,12 +194,18 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
 
             }
         };
-
         etDate.setOnClickListener(appDateListner);
         etDate.setOnFocusChangeListener(mDateFocusListener);
         etTime.setOnClickListener(appTimeListner);
         etTime.setOnFocusChangeListener(mTimeFocusListener);
         btnSave.setOnClickListener(saveListener);
+    }
+
+    public void setReminder(){
+
+        reminder.setFrequency(2);
+        reminder.setInterval(3);
+
     }
 
     public boolean validateAppointmentDetails() {
@@ -289,7 +299,7 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
     }
 
     public String addAppointment() throws Exception {
-        Appointment appointment = getAppointmentDetails();
+
         appointmentDao = AppointmentDaoImpl.newInstance(getActivity());
         appointmentDao.addAppointment(appointment);
 

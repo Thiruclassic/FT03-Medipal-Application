@@ -9,6 +9,7 @@ import iss.medipal.asyncs.AddConsumptionTask;
 import iss.medipal.asyncs.AddMedicineTask;
 import iss.medipal.asyncs.AddPersonBioTask;
 import iss.medipal.asyncs.AddReminderAlarmTask;
+import iss.medipal.asyncs.EditAppointmentTask;
 import iss.medipal.asyncs.EditMedicineTask;
 import iss.medipal.asyncs.EditPersonalBioTask;
 import iss.medipal.asyncs.GetCategoriesTask;
@@ -33,6 +34,7 @@ public class PersonStore {
     private EditMedicineTask mEditMedicineTask;
     private AddConsumptionTask mAddConsumptionTask;
     private AddAppointmentTask mAddAppointmentTask;
+    private EditAppointmentTask mEditAppointmentTask;
 
     public PersonStore(PersonalBio personBio, Context context) {
         this.mPersonalBio = personBio;
@@ -143,8 +145,8 @@ public class PersonStore {
                 break;
             }
         }
-        mAddAppointmentTask = new AddAppointmentTask(mContext);
-        mAddAppointmentTask.execute(appointment);
+        mEditAppointmentTask = new EditAppointmentTask(mContext);
+        mEditAppointmentTask.execute(appointment);
     }
 
     public void addConsumption(Consumption consumption) {

@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.AppCompatEditText;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import iss.medipal.MediPalApplication;
 import iss.medipal.R;
 import iss.medipal.constants.Constants;
 import iss.medipal.dao.AppointmentDao;
@@ -30,7 +32,7 @@ import iss.medipal.util.AppHelper;
 
 
 /**
- * Created by sreekumar
+ * Created by Sreekumar
  * on 3/6/2017.
  */
 
@@ -45,6 +47,7 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
     private AppointmentListAdapter appointmentListAdapter;
 //    private ArrayList<Appointment> appointmentViewList;
     private ArrayList<Appointment> appointmentList;
+    private AppointmentFragment.HomeInterface aAddCallback;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,16 +82,18 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
         appointmentDao = AppointmentDaoImpl.newInstance(getActivity());
         appointmentList = appointmentDao.getAllAppointments();
 
-        if (itemname == null) {
+       /* if (itemname == null) {
             itemname = new ArrayList<>();
         }
         if (!appointmentList.isEmpty()) {
             for (Appointment appointment : appointmentList) {
                 itemname.add(appointment.getLocation());
             }
-        }
+        }*/
 //        lv.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.todo_list_item, R.id.tvNote, itemname));
-        setListAdapter(appointmentList);
+//        setListAdapter(appointmentList);
+
+        setListAdapter();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -98,6 +103,7 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+//        aAddCallback = (HomeInterface)context;
     }
 
     @Override
@@ -107,15 +113,21 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
     }
 
     //todo add the adapter
-    private void setListAdapter(List<Appointment> appointments) {
-      /*  medicines = MediPalApplication.getPersonStore().getmPersonalBio().getMedicines();
-        if(appointments!=null)
+//    private void setListAdapter(List<Appointment> appointments) {
+
+    private void setListAdapter() {
+      appointmentList = MediPalApplication.getPersonStore().getmPersonalBio().getAppointments();
+      /*    if(appointments!=null)
         {
             medicineListAdapter = new MedicineListAdapter(getContext(), medicines);
             medicineList.setAdapter(medicineListAdapter);
         }*/
-        if (appointments != null) {
-            appointmentListAdapter = new AppointmentListAdapter(getContext(), appointments);
+//        if (appointments != null) {
+
+        if (appointmentList != null) {
+
+//            appointmentListAdapter = new AppointmentListAdapter(getContext(), appointments);
+            appointmentListAdapter = new AppointmentListAdapter(getContext(), appointmentList);
             lv.setAdapter(appointmentListAdapter);
         }
 
@@ -130,9 +142,9 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
 
         try {
 
-            appointmentList = appointmentDao.getAllAppointments();
-         /*   medicines = MediPalApplication.getPersonStore()
-                    .getmPersonalBio().getMedicines();*/
+//            appointmentList = appointmentDao.getAllAppointments();
+            appointmentList = MediPalApplication.getPersonStore()
+                    .getmPersonalBio().getAppointments();
             if (!AppHelper.isListEmpty(appointmentList)) {
                 if (appointmentListAdapter != null) {
                     appointmentListAdapter.setAppointments(appointmentList);
@@ -140,9 +152,9 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
                     appointmentListAdapter = new AppointmentListAdapter(getContext(), appointmentList);
                     lv.setAdapter(appointmentListAdapter);
                 }
-              /*  if(mMedAddCallback != null){
-                    mMedAddCallback.onMedAdded();
-                }*/
+               if(aAddCallback != null){
+                   aAddCallback.onAppointmentNew();
+                }
 
             }
         } catch (NullPointerException e) {
@@ -213,6 +225,10 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
         };
         lv.setOnItemClickListener(itemClickListener);
 
+    }
+
+    public interface HomeInterface {
+        void onAppointmentNew();
     }
 }
 

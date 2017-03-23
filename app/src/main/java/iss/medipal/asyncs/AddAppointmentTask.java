@@ -18,26 +18,28 @@ import iss.medipal.receivers.AlarmReceiver;
 
 /**
  * Created by Sreekumar on 3/12/2017.
+ *
+ * todo reminder
  */
 
 public class AddAppointmentTask  extends AsyncTask<Appointment, Void, Long> {
 ;
     private Context mContext;
     private AppointmentDaoImpl mAppointmentDao;
-    private ReminderDao mReminderDao;
+//    private ReminderDao mReminderDao;
 
     public AddAppointmentTask(Context context){
-        this.mContext=mContext;
+        this.mContext=context;
         this.mAppointmentDao =new AppointmentDaoImpl(context);
-        this.mReminderDao=new ReminderDaoImpl(context);
+//        this.mReminderDao=new ReminderDaoImpl(context);
 
     }
     @Override
     protected Long doInBackground(Appointment... params) {
-        int reminderId = mReminderDao.addReminder(params[0].getReminder()).getId();
+       /* int reminderId = mReminderDao.addReminder(params[0].getReminder()).getId();
         params[0].setReminderId(reminderId);
         params[0].getReminder().setId(reminderId);
-        setAppointmentReminder(params[0]);
+        setAppointmentReminder(params[0]);*/
         long result = mAppointmentDao.addAppointment(params[0]);
         return result;
     }
