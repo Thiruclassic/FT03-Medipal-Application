@@ -58,13 +58,13 @@ public class AddReminderAlarmTask extends AsyncTask {
 
                 int interval = 0;
                 for (int i = 0; i < reminder.getFrequency(); i++) {
-                    pendingIntent = PendingIntent.getBroadcast(mContext, medicine.getId() + i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    pendingIntent = PendingIntent.getBroadcast(mContext, medicine.getId()*10 + i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                     manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
                     calendar.add(Calendar.HOUR_OF_DAY, reminder.getInterval());
                 }
             } else {
                 for (int i = 0; i < reminder.getFrequency(); i++)
-                    pendingIntent = PendingIntent.getBroadcast(mContext, medicine.getId() + i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    pendingIntent = PendingIntent.getBroadcast(mContext, medicine.getId()*10 + i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                     manager.cancel(pendingIntent);
 
             }
