@@ -1,6 +1,8 @@
 package iss.medipal.ui.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -15,6 +18,7 @@ import iss.medipal.R;
 import iss.medipal.dao.HealthBioDao;
 import iss.medipal.dao.impl.HealthBioDaoImpl;
 import iss.medipal.model.HealthBio;
+import iss.medipal.util.DialogUtility;
 
 /**
  * Created by Mridul on 19-03-2017.
@@ -66,7 +70,29 @@ public class HealthBioListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 healthBioDao.deleteHealthBio(mHealthBio.get(position).getId());
-                removeHealthBio(position);
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.CustomAlertDialogStyle);
+                builder.setCancelable(false);
+                builder.setTitle("WARNING DELETE");
+                builder.setMessage("Are you sure??");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface alert, int arg1) {
+
+                        removeHealthBio(position);
+                        alert.dismiss();
+                    }
+                });
+                builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface alert, int arg1) {
+                        alert.dismiss();
+                    }
+                });
+                builder.show();
+
+
 
             }
         });
@@ -94,6 +120,7 @@ public class HealthBioListAdapter extends BaseAdapter {
     public void removeHealthBio(int position)
     {
         mHealthBio.remove(position);
+        Toast.makeText(mContext,"DELETED SUCCESFULLY",Toast.LENGTH_SHORT).show() ;
         setHealthBio(mHealthBio);
     }
 }
