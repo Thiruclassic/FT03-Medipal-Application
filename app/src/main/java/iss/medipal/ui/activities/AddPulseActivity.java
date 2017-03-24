@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -35,13 +37,22 @@ public class AddPulseActivity extends BaseActivity implements View.OnClickListen
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     private DatePickerDialog mDatePickerDialog;
 
+    private ImageView imageBack;
+    private TextView title;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_pulse);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbarPulseAdd);
-        toolbar.setTitle("Add Pulse ...");
+    /*    toolbar = (Toolbar) findViewById(R.id.toolbarPulseAdd);
+        toolbar.setTitle("Add Pulse ...");*/
+
+        imageBack = (ImageView) findViewById(R.id.toolbar_left_icon);
+        title = (TextView) findViewById(R.id.toolbar_title);
+
+        title.setText("Add Pulse(Kg)");
+        imageBack.setVisibility(View.VISIBLE);
 
         findViewsById();
         setListeners();
@@ -68,6 +79,16 @@ public class AddPulseActivity extends BaseActivity implements View.OnClickListen
         };
         etPulseMeasuredOn.setOnClickListener(appDateListner);
         etPulseMeasuredOn.setOnFocusChangeListener(mDateFocusListener);
+
+
+        ImageView.OnClickListener clickListener=new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Click",String.valueOf(v));
+                finish();
+            }
+        };
+        imageBack.setOnClickListener(clickListener);
 
     }
 

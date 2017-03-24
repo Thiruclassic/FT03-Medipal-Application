@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -34,13 +36,23 @@ public class AddBpActivity extends BaseActivity implements View.OnClickListener 
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     private DatePickerDialog mDatePickerDialog;
 
+
+    private ImageView imageBack;
+    private TextView title;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_bp);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Add Blood pressure readings ...(mmHg)");
+/*        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Add Blood pressure readings ...(mmHg)");*/
+
+        imageBack = (ImageView) findViewById(R.id.toolbar_left_icon);
+        title = (TextView) findViewById(R.id.toolbar_title);
+
+        title.setText("Add Blood pressure readings (mmHg)");
+        imageBack.setVisibility(View.VISIBLE);
 
         findViewsById();
         setListeners();
@@ -72,6 +84,15 @@ public class AddBpActivity extends BaseActivity implements View.OnClickListener 
         };
         measuredOn.setOnClickListener(appDateListner);
         measuredOn.setOnFocusChangeListener(mDateFocusListener);
+
+        ImageView.OnClickListener clickListener=new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Click",String.valueOf(v));
+                finish();
+            }
+        };
+        imageBack.setOnClickListener(clickListener);
 
     }
 
