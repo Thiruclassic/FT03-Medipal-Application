@@ -114,9 +114,6 @@ public class PersonStore {
         mPersonalBio.getMedicines().add(medicine);
         mAddMedicineTask = new AddMedicineTask(mContext);
         mAddMedicineTask.execute(medicine);
-
-
-
     }
 
     public void editMedicine(Medicine medicine){

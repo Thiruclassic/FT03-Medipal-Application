@@ -115,6 +115,8 @@
     <string name="interval_text">Interval</string>
     <string name="title_activity_add_temperature">AddTemperatureActivity</string>
     <string name="not_editable_name">Name(Not Editable)</string>
+    <string name="reminders_mandatory_text">Reminder (Mandatory for this Category)</string>
+    <string name="reminders_optional_text">Reminder (Optional for this Category)</string>
 
 
     <!--Home Screen -->

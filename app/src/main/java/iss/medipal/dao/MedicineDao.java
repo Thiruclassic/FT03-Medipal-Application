@@ -12,6 +12,7 @@ import iss.medipal.model.Medicine;
 public interface MedicineDao {
     public int addMedicine(Medicine medicine);
     public int updateMedicine(Medicine medicine);
+    public int updateMedicineDosage(Medicine medicine);
     public int deleteMedicine(int medicineId);
 
     public Medicine getMedicinebyId(int medicineId);

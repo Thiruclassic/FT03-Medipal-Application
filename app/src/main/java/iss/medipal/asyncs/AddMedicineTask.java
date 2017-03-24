@@ -44,12 +44,10 @@ public class AddMedicineTask extends AsyncTask<Medicine, Void, Reminder> {
             params[0].setReminderId(reminder.getId());
             params[0].getReminder().setId(reminder.getId());
         }
-        long result = mMedDao.addMedicine(params[0]);
-        if(reminder!=null) {
-            for (Medicine med : MediPalApplication.getPersonStore().getmPersonalBio().getMedicines()) {
-                if (med.equals(params[0])) {
-                    med.setId(params[0].getId());
-                }
+        int result = mMedDao.addMedicine(params[0]);
+        for (Medicine med : MediPalApplication.getPersonStore().getmPersonalBio().getMedicines()) {
+            if (med.equals(params[0])) {
+                med.setId(result);
             }
         }
         args=new Object[]{params[0],reminder};
@@ -58,8 +56,8 @@ public class AddMedicineTask extends AsyncTask<Medicine, Void, Reminder> {
 
     @Override
     protected void onPostExecute(Reminder result) {
-            if (mMedDao != null)
-                mMedDao.close();
+        if (mMedDao != null)
+            mMedDao.close();
         AddReminderAlarmTask mAddReminderAlarmTask=new AddReminderAlarmTask(mContext);
         mAddReminderAlarmTask.execute(args);
 
