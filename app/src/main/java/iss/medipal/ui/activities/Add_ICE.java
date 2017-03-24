@@ -6,8 +6,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import iss.medipal.R;
-import iss.medipal.constants.DBConstants;
-import iss.medipal.model.InCaseofEmergencyContact;
 import iss.medipal.ui.fragments.AddContactFragment;
 
 public class Add_ICE extends AppCompatActivity {
@@ -18,7 +16,6 @@ public class Add_ICE extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add__ice);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        //removeAllFragments(fragmentManager);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         AddContactFragment contactFragment = new AddContactFragment();
         fragmentTransaction.replace(R.id.contact_details_container,contactFragment);
@@ -26,8 +23,4 @@ public class Add_ICE extends AppCompatActivity {
 
 
     }
-
-
-
-
 }
