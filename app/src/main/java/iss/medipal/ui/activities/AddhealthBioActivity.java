@@ -159,7 +159,7 @@ public class AddhealthBioActivity extends AppCompatActivity {
         mCondition.setText(healthBio.getCondition());
         Date date = null;
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat(Constants.HEALTH_BIO_DATE_TIME_FORMAT);
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
             date = sdf.parse(healthBio.getStartDate());
         } catch (ParseException e) {
             e.printStackTrace();

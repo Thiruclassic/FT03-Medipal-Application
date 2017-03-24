@@ -140,7 +140,6 @@ public class HealthBioFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(),AddhealthBioActivity.class);
-
                 Bundle bundle=new Bundle();
                 bundle.putParcelable(DBConstants.TABLE_HEALTH_BIO,healthBios.get(position));
                 intent.putExtras(bundle);
