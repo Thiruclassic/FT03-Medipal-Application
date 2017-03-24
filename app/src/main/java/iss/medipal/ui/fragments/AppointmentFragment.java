@@ -8,42 +8,51 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.AppCompatEditText;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import iss.medipal.MediPalApplication;
 import iss.medipal.R;
+import iss.medipal.constants.Constants;
 import iss.medipal.dao.AppointmentDao;
 import iss.medipal.dao.impl.AppointmentDaoImpl;
 import iss.medipal.model.Appointment;
 import iss.medipal.ui.activities.MainActivity;
+import iss.medipal.ui.adapters.AppointmentListAdapter;
+import iss.medipal.util.AppHelper;
 
 
 /**
- * Created by sreekumar
+ * Created by Sreekumar
  * on 3/6/2017.
  */
 
-public class AppointmentFragment extends Fragment {
+public class AppointmentFragment extends Fragment implements AddAppointmentFragment.viewRefreshWhenAdded {
 
 
-    AppointmentDao appointmentDao;
-    ListView lv;
+    private AppointmentDao appointmentDao;
+    private ListView lv;
     FloatingActionButton addAppointment;
     FrameLayout innerLayout;
-    List<String> itemname;
+    private List<String> itemname;
+    private AppointmentListAdapter appointmentListAdapter;
+//    private ArrayList<Appointment> appointmentViewList;
+    private ArrayList<Appointment> appointmentList;
+    private AppointmentFragment.MainActivityInterface aAddCallback;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     public static AppointmentFragment newInstance() {
@@ -60,7 +69,6 @@ public class AppointmentFragment extends Fragment {
         lv = (ListView) fragmentView.findViewById(R.id.lvTodos);
         innerLayout = (FrameLayout) fragmentView.findViewById(R.id.add_appointment_frame);
         addAppointment = (FloatingActionButton) fragmentView.findViewById(R.id.addAppointment);
-        setListeners();
         return fragmentView;
     }
 
@@ -68,18 +76,24 @@ public class AppointmentFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
         super.onViewCreated(view, savedInstanceState);
-        appointmentDao = AppointmentDaoImpl.newInstance(getActivity());
-        List<Appointment> appointmentList = appointmentDao.getAllAppointments();
+        setListeners();
 
-        if (itemname == null) {
+        //Change this to the singleton class
+//        appointmentDao = AppointmentDaoImpl.newInstance(getActivity());
+//        appointmentList = appointmentDao.getAllAppointments();
+
+       /* if (itemname == null) {
             itemname = new ArrayList<>();
         }
         if (!appointmentList.isEmpty()) {
             for (Appointment appointment : appointmentList) {
                 itemname.add(appointment.getLocation());
             }
-        }
-        lv.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.todo_list_item, R.id.tvNote, itemname));
+        }*/
+//        lv.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.todo_list_item, R.id.tvNote, itemname));
+//        setListAdapter(appointmentList);
+
+        setListAdapter();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -89,12 +103,63 @@ public class AppointmentFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        aAddCallback = (MainActivityInterface) context;
     }
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
 
+    }
+
+    //todo add the adapter
+//    private void setListAdapter(List<Appointment> appointments) {
+
+    private void setListAdapter() {
+      appointmentList = MediPalApplication.getPersonStore().getmPersonalBio().getAppointments();
+      /*    if(appointments!=null)
+        {
+            medicineListAdapter = new MedicineListAdapter(getContext(), medicines);
+            medicineList.setAdapter(medicineListAdapter);
+        }*/
+//        if (appointments != null) {
+
+        if (appointmentList != null) {
+
+//            appointmentListAdapter = new AppointmentListAdapter(getContext(), appointments);
+            appointmentListAdapter = new AppointmentListAdapter(getContext(), appointmentList);
+            lv.setAdapter(appointmentListAdapter);
+        }
+
+    }
+
+   @Override
+    public void onAppointmentAddedUiUpdate() {
+
+        lv.setVisibility(View.VISIBLE);
+        addAppointment.setVisibility(View.VISIBLE);
+        innerLayout.setVisibility(View.GONE);
+
+        try {
+
+//            appointmentList = appointmentDao.getAllAppointments();
+            appointmentList = MediPalApplication.getPersonStore()
+                    .getmPersonalBio().getAppointments();
+            if (!AppHelper.isListEmpty(appointmentList)) {
+                if (appointmentListAdapter != null) {
+                    appointmentListAdapter.setAppointments(appointmentList);
+                } else {
+                    appointmentListAdapter = new AppointmentListAdapter(getContext(), appointmentList);
+                    lv.setAdapter(appointmentListAdapter);
+                }
+               if(aAddCallback != null){
+                   aAddCallback.onAppointmentNew();
+                }
+
+            }
+        } catch (NullPointerException e) {
+            System.out.printf(e.getMessage());
+        }
     }
 
     @Override
@@ -108,57 +173,20 @@ public class AppointmentFragment extends Fragment {
     }
 
     public void setListeners() {
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
-             /*   Intent intent = new Intent(getActivity(), TodoFragment.class);
-                String content = (String) lv.getItemAtPosition(pos);
-                intent.putExtra("Content", content);
-                startActivity(intent);*/
-
-                AddAppointmentFragment addAppointmentFragment = AddAppointmentFragment.newInstance();
-                FragmentManager manager = getActivity().getSupportFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-//                transaction.replace(R.id.add_appointment_frame,addAppointmentFragment,Constants.ADD_FRAGMENT_PAGE).commit();
-                transaction.replace(R.id.add_appointment_frame, addAppointmentFragment).commit();
-                lv.setVisibility(View.INVISIBLE);
-                innerLayout.setVisibility(View.VISIBLE);
-                addAppointment.setVisibility(View.INVISIBLE);
-            }
-        });
-
         addAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              /*  Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
                 AddAppointmentFragment addAppointmentFragment = AddAppointmentFragment.newInstance();
-                FragmentManager manager = getActivity().getSupportFragmentManager();
+//                FragmentManager manager = getActivity().getSupportFragmentManager();
+                FragmentManager manager = getChildFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
-//                transaction.replace(R.id.add_appointment_frame,addAppointmentFragment,Constants.ADD_FRAGMENT_PAGE).commit();
-                transaction.replace(R.id.add_appointment_frame, addAppointmentFragment).commit();
+                transaction.replace(R.id.add_appointment_frame, addAppointmentFragment, Constants.ADD_FRAGMENT_PAGE).commit();
                 lv.setVisibility(View.INVISIBLE);
                 innerLayout.setVisibility(View.VISIBLE);
                 addAppointment.setVisibility(View.INVISIBLE);
             }
         });
-        final View.OnClickListener addAppEvent = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                innerLayout.setVisibility(View.INVISIBLE);
-                AddAppointmentFragment addAppointmentFragment = AddAppointmentFragment.newInstance();
-
-//                FragmentManager manager=getChildFragmentManager();
-                FragmentManager manager = getActivity().getSupportFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-//                transaction.replace(R.id.add_appointment_frame,addAppointmentFragment,Constants.ADD_FRAGMENT_PAGE).commit();
-                transaction.replace(R.id.add_appointment_frame, addAppointmentFragment).commit();
-                innerLayout.setVisibility(View.VISIBLE);
-                addAppointment.setVisibility(View.INVISIBLE);
-            }
-        };
-
-        FrameLayout.OnLayoutChangeListener AppLayoutChangeListener = new View.OnLayoutChangeListener() {
+      /*  FrameLayout.OnLayoutChangeListener AppLayoutChangeListener = new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
                 MainActivity activity = (MainActivity) v.getContext();
@@ -169,26 +197,39 @@ public class AppointmentFragment extends Fragment {
                     Log.d("Fragment value", "hello");
                 }
             }
-        };
-        ListView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        };*/
 
-//                Toast.makeText(getContext(), "position" + position + "id" + id, Toast.LENGTH_SHORT).show();
-                //Pass the clicked element reference
+     /*   lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
                 AddAppointmentFragment addAppointmentFragment = AddAppointmentFragment.newInstance();
-//                FragmentManager manager = getChildFragmentManager();
                 FragmentManager manager = getActivity().getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
-//                transaction.replace(R.id.add_appointment_frame, addAppointmentFragment, Constants.ADD_FRAGMENT_PAGE).commit();
-                transaction.replace(R.id.add_appointment_frame, addAppointmentFragment);
+                transaction.replace(R.id.add_appointment_frame, addAppointmentFragment).commit();
+                lv.setVisibility(View.INVISIBLE);
+                innerLayout.setVisibility(View.VISIBLE);
+                addAppointment.setVisibility(View.INVISIBLE);
+            }
+        });*/
+
+        ListView.OnItemClickListener itemClickListener = new ListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AddAppointmentFragment addAppointmentFragment = AddAppointmentFragment.newInstance(appointmentList.get(position));
+                FragmentManager manager = getChildFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                transaction.replace(R.id.add_appointment_frame, addAppointmentFragment, Constants.ADD_FRAGMENT_PAGE).commit();
+                lv.setVisibility(View.INVISIBLE);
                 innerLayout.setVisibility(View.VISIBLE);
                 addAppointment.setVisibility(View.INVISIBLE);
             }
         };
-//      lv.setOnItemClickListener(itemClickListener);
-//        innerLayout.addOnLayoutChangeListener(AppLayoutChangeListener);
-//      addAppointment.setOnClickListener(addAppEvent);
+        lv.setOnItemClickListener(itemClickListener);
 
     }
+
+    public interface MainActivityInterface {
+        void onAppointmentNew();
+    }
 }
+

@@ -1,16 +1,18 @@
 package iss.medipal.model;
 
 import android.content.Context;
-import android.provider.ContactsContract;
-
+import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
+import iss.medipal.asyncs.AddAppointmentTask;
 
 import iss.medipal.MediPalApplication;
 import iss.medipal.asyncs.AddConsumptionTask;
 import iss.medipal.asyncs.AddUpdateContactTask;
 import iss.medipal.asyncs.AddMedicineTask;
 import iss.medipal.asyncs.AddPersonBioTask;
+import iss.medipal.asyncs.AddReminderAlarmTask;
+import iss.medipal.asyncs.EditAppointmentTask;
 import iss.medipal.asyncs.AddUpdateCategoryTask;
 import iss.medipal.asyncs.DeleteConsumptionTask;
 import iss.medipal.asyncs.DeleteContactTask;
@@ -39,6 +41,8 @@ public class PersonStore {
     private AddMedicineTask mAddMedicineTask;
     private EditMedicineTask mEditMedicineTask;
     private AddConsumptionTask mAddConsumptionTask;
+    private AddAppointmentTask mAddAppointmentTask;
+    private EditAppointmentTask mEditAppointmentTask;
     private DeleteConsumptionTask mDeleteConsumptionTask;
     private AddUpdateContactTask mAddUpdateContactTask;
     private DeleteContactTask deleteContactTask;
@@ -135,12 +139,33 @@ public class PersonStore {
         }
         mEditMedicineTask = new EditMedicineTask(mContext);
         mEditMedicineTask.execute(medicine);
-
-
+    }
+    public void addAppointment(Appointment appointment) {
+        if (AppHelper.isListEmpty(mPersonalBio.getAppointments())) {
+            mPersonalBio.setAppointments(new ArrayList<Appointment>());
+        }
+        mPersonalBio.getAppointments().add(appointment);
+        mAddAppointmentTask = new AddAppointmentTask(mContext);
+        mAddAppointmentTask.execute(appointment);
     }
 
-    public void addConsumption(Consumption consumption){
-        if(AppHelper.isListEmpty(mConsumptions)){
+    public void editAppointment(Appointment appointment) {
+        ArrayList<Appointment> appointments = mPersonalBio.getAppointments();
+        for (Appointment appointment1 : appointments) {
+            if (appointment1.equals(appointment)) {
+                appointment1.setId(appointment.getId());
+                appointment1.setLocation(appointment.getLocation());
+                appointment1.setDescription(appointment.getDescription());
+                appointment1.setAppointment(appointment.getAppointment());
+                break;
+            }
+        }
+        mEditAppointmentTask = new EditAppointmentTask(mContext);
+        mEditAppointmentTask.execute(appointment);
+    }
+
+    public void addConsumption(Consumption consumption) {
+        if (AppHelper.isListEmpty(mConsumptions)) {
             mConsumptions = new ArrayList<>();
         }
         mConsumptions.add(consumption);
