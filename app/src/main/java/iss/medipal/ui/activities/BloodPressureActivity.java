@@ -74,8 +74,9 @@ public class BloodPressureActivity extends BaseActivity implements Toolbar.OnMen
                 transaction.replace(R.id.add_blood_pressure,addBloodPressureFragment).commit();*/
                 break;
             case R.id.home:
-                Intent intentHome = new Intent(BloodPressureActivity.this, MeasurementActivity.class);
-                startActivity(intentHome);
+            /*    Intent intentHome = new Intent(BloodPressureActivity.this, MeasurementActivity.class);
+                startActivity(intentHome);*/
+                finish();
 
                 break;
         }
