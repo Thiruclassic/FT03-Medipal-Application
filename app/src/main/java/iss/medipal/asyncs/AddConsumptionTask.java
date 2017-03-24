@@ -35,7 +35,8 @@ public class AddConsumptionTask extends AsyncTask<Consumption, Void, Long> {
 
     @Override
     protected Long doInBackground(Consumption... params) {
-        Medicine medicine=mConsumptionDao.createConsumtion(params[0]);
+        mConsumptionDao.createConsumtion(params[0]);
+        Medicine medicine = mMedicineDao.getMedicinebyId(params[0].getMedicineId());
         long reminderId = medicine.getReminderId();
         updateMedicineTotalQuantity(medicine);
         return reminderId;

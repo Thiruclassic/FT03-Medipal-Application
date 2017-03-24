@@ -86,7 +86,7 @@ public class SplashActivity extends BaseFullScreenActivity {
                     med.setReminder(rem);
                 }
             }
-            ArrayList<Appointment>appointments =(ArrayList<Appointment>)mAppointmentDao.getAllAppointments();
+            ArrayList<Appointment>appointments =(ArrayList<Appointment>) mAppointmentDao.getAllAppointments();
             //todo appointments reminders sreekumar
             ArrayList<Consumption> consumptions = (ArrayList<Consumption>) mConsumptionDao.getAllConsumptions();
             result.setMedicines(meds);

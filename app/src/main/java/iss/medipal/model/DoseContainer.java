@@ -78,34 +78,36 @@ public class DoseContainer {
                     mMedAddedDate.setTime(med.getDateIssued());
                     if(med.getReminder() != null){
                         Reminder rem = med.getReminder();
-                        Date date = rem.getStartTime();
-                        while (mMedAddedDate.before(mCurrentDate) || AppHelper.sameDay(mMedAddedDate, mCurrentDate)){
-                            ArrayList<Consumption> consumptions = getCurrentDayConsumtion(mMedAddedDate);
-                            mDoseCalendar.setTime(date);
-                            for (int i = 0; i < rem.getFrequency(); i++) {
-                                MedDoseModel medDoseModel = new MedDoseModel();
-                                medDoseModel.setIdMed(med.getId());
-                                medDoseModel.setDrugName(med.getMedicine());
-                                medDoseModel.setDoseTime(
-                                        mTimeFormat.format(mDoseCalendar.getTime()));
-                                medDoseModel.setDate(mDateFormat.format(mMedAddedDate.getTime()));
-                                mMedAddedDate.set(Calendar.HOUR_OF_DAY, mDoseCalendar.get(Calendar.HOUR_OF_DAY));
-                                mMedAddedDate.set(Calendar.MINUTE, mDoseCalendar.get(Calendar.MINUTE));
-                                Calendar consumtionCal = Calendar.getInstance();
-                                if(!AppHelper.isListEmpty(consumptions)) {
-                                    for (Consumption consumption : consumptions) {
-                                        if (consumption.getMedicineId() == med.getId()) {
-                                            consumtionCal.setTime(consumption.getConsumedOn());
-                                            if (AppHelper.sameTime(mMedAddedDate, consumtionCal)) {
-                                                medDoseModel.setStatus(Constants.TOOKIT_STATUS);
+                        if(rem != null) {
+                            Date date = rem.getStartTime();
+                            while (mMedAddedDate.before(mCurrentDate) || AppHelper.sameDay(mMedAddedDate, mCurrentDate)) {
+                                ArrayList<Consumption> consumptions = getCurrentDayConsumtion(mMedAddedDate);
+                                mDoseCalendar.setTime(date);
+                                for (int i = 0; i < rem.getFrequency(); i++) {
+                                    MedDoseModel medDoseModel = new MedDoseModel();
+                                    medDoseModel.setIdMed(med.getId());
+                                    medDoseModel.setDrugName(med.getMedicine());
+                                    medDoseModel.setDoseTime(
+                                            mTimeFormat.format(mDoseCalendar.getTime()));
+                                    medDoseModel.setDate(mDateFormat.format(mMedAddedDate.getTime()));
+                                    mMedAddedDate.set(Calendar.HOUR_OF_DAY, mDoseCalendar.get(Calendar.HOUR_OF_DAY));
+                                    mMedAddedDate.set(Calendar.MINUTE, mDoseCalendar.get(Calendar.MINUTE));
+                                    Calendar consumtionCal = Calendar.getInstance();
+                                    if (!AppHelper.isListEmpty(consumptions)) {
+                                        for (Consumption consumption : consumptions) {
+                                            if (consumption.getMedicineId() == med.getId()) {
+                                                consumtionCal.setTime(consumption.getConsumedOn());
+                                                if (AppHelper.sameTime(mMedAddedDate, consumtionCal)) {
+                                                    medDoseModel.setStatus(Constants.TOOKIT_STATUS);
+                                                }
                                             }
                                         }
                                     }
+                                    mDoseCalendar.add(Calendar.HOUR, rem.getInterval());
+                                    mDayDoseRecords.add(medDoseModel);
                                 }
-                                mDoseCalendar.add(Calendar.HOUR, rem.getInterval());
-                                mDayDoseRecords.add(medDoseModel);
+                                mMedAddedDate.add(Calendar.DAY_OF_YEAR, 1);
                             }
-                            mMedAddedDate.add(Calendar.DAY_OF_YEAR, 1);
                         }
                     }
                 }
