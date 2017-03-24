@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import java.nio.ReadOnlyBufferException;
 import java.util.ArrayList;
+import java.util.List;
 
 import iss.medipal.MediPalApplication;
 import iss.medipal.R;
@@ -31,9 +32,9 @@ import iss.medipal.util.DialogUtility;
  */
 public class MedicineListAdapter extends BaseAdapter {
     private Context mContext;
-    private ArrayList<Medicine> mMedicines;
+    private List<Medicine> mMedicines;
 
-    public MedicineListAdapter(Context context , ArrayList<Medicine> medicines) {
+    public MedicineListAdapter(Context context , List<Medicine> medicines) {
         this.mContext = context;
         this.mMedicines = medicines;
     }
@@ -70,7 +71,7 @@ public class MedicineListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void setMedicines(ArrayList<Medicine> medicines){
+    public void setMedicines(List<Medicine> medicines){
         this.mMedicines = medicines;
         notifyDataSetChanged();
     }

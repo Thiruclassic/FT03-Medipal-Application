@@ -1,7 +1,9 @@
 package iss.medipal.model;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import iss.medipal.dao.ICEDao;
 
 /**
  * Created by Thirumal on 2/20/2017.
@@ -16,9 +18,18 @@ public class PersonalBio {
     String postalCode;
     int height;
     String bloodType;
-    ArrayList<Appointment> appointments;
-    ArrayList<HealthBio> healthBios;
-    ArrayList<Medicine> medicines;
+    List<Appointment> appointments;
+    List<HealthBio> healthBios;
+    List<Medicine> medicines;
+    List<InCaseofEmergencyContact> contacts;
+
+    public List<InCaseofEmergencyContact> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(List<InCaseofEmergencyContact> contacts) {
+        this.contacts = contacts;
+    }
 
     public int getId() {
         return id;
@@ -84,27 +95,27 @@ public class PersonalBio {
         this.bloodType = bloodType;
     }
 
-    public ArrayList<Appointment> getAppointments() {
+    public List<Appointment> getAppointments() {
         return appointments;
     }
 
-    public void setAppointments(ArrayList<Appointment> appointments) {
+    public void setAppointments(List<Appointment> appointments) {
         this.appointments = appointments;
     }
 
-    public ArrayList<HealthBio> getHealthBios() {
+    public List<HealthBio> getHealthBios() {
         return healthBios;
     }
 
-    public void setHealthBios(ArrayList<HealthBio> healthBios) {
+    public void setHealthBios(List<HealthBio> healthBios) {
         this.healthBios = healthBios;
     }
 
-    public ArrayList<Medicine> getMedicines() {
+    public List<Medicine> getMedicines() {
         return medicines;
     }
 
-    public void setMedicines(ArrayList<Medicine> medicines) {
+    public void setMedicines(List<Medicine> medicines) {
         this.medicines = medicines;
     }
 }

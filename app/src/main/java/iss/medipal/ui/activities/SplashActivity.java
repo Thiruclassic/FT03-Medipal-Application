@@ -21,6 +21,7 @@ import iss.medipal.dao.impl.ReminderDaoImpl;
 import iss.medipal.model.Category;
 import iss.medipal.model.Consumption;
 import iss.medipal.model.DoseContainer;
+import iss.medipal.model.InCaseofEmergencyContact;
 import iss.medipal.model.Medicine;
 import iss.medipal.model.PersonStore;
 import iss.medipal.model.PersonalBio;

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import iss.medipal.MediPalApplication;
 import iss.medipal.R;
@@ -54,13 +55,13 @@ public class OnedayDoseFragment extends BaseFragment implements DoseListAdapter.
     private DoseListAdapter mAdapter;
     private int mSelectedPosition = -1;
 
-    public static OnedayDoseFragment newInstance(MedDayModel med, ArrayList<Medicine> meds, Calendar cal,
+    public static OnedayDoseFragment newInstance(MedDayModel med, List<Medicine> meds, Calendar cal,
                                                  Boolean isFront,
                                                  Boolean isLast) {
         OnedayDoseFragment fragment = new OnedayDoseFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARGS_MED, med);
-        args.putParcelableArrayList(ARGS_MEDS, meds);
+        args.putParcelableArrayList(ARGS_MEDS, (ArrayList<Medicine>)meds);
         args.putSerializable(ARGS_CAL, cal);
         args.putBoolean(ARGS_IS_FIRST, isFront);
         args.putBoolean(ARGS_IS_LAST, isLast);

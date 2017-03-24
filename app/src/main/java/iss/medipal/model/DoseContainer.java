@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import iss.medipal.MediPalApplication;
 import iss.medipal.constants.Constants;
@@ -28,10 +29,10 @@ public class DoseContainer {
     private Calendar mCurrentDate;
     private Calendar mMedAddedDate;
     private Calendar mDoseCalendar;
-    private ArrayList<Medicine> mMeds;
-    private ArrayList<MedDayModel> mMedDayModel;
-    private ArrayList<Consumption> mConsumption;
-    private ArrayList<ConsumptionDayModel> mConsumtionDayModel;
+    private List<Medicine> mMeds;
+    private List<MedDayModel> mMedDayModel;
+    private List<Consumption> mConsumption;
+    private List<ConsumptionDayModel> mConsumtionDayModel;
 
     public static DoseContainer getInstance(Activity activity) {
         if (instance == null) {

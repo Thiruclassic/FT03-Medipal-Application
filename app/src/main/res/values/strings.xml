@@ -146,4 +146,7 @@
     <string name="category_description">Description</string>
     <string name="category_save_pop_up_text">successfully saved</string>
 
+    <string name="medication_positive_text">I took it</string>
+    <string name="medication_negative_text">I Missed it</string>
+
 </resources>
