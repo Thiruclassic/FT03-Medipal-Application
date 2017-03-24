@@ -4,8 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -30,9 +30,10 @@ public class FamilyAdapter extends BaseAdapter {
 
     static class ViewHolder{
         TextView tvName;
-
+        ImageView contactIcon;
         public ViewHolder(View view){
             tvName = (TextView)view.findViewById(R.id.tv_name);
+            contactIcon = (ImageView)view.findViewById(R.id.contact_Icon);
         }
     }
 
@@ -65,6 +66,7 @@ public class FamilyAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.row_layout, parent, false);
             viewHolder = new ViewHolder(convertView);
             viewHolder.tvName = (TextView) convertView.findViewById(R.id.tv_name);
+            viewHolder.contactIcon = (ImageView) convertView.findViewById(R.id.contact_Icon);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (FamilyAdapter.ViewHolder) convertView.getTag();
@@ -72,6 +74,7 @@ public class FamilyAdapter extends BaseAdapter {
 
         final InCaseofEmergencyContact contacts = familyMembers.get(position);
         viewHolder.tvName.setText(contacts.getContactName());
+        viewHolder.contactIcon.setImageResource(R.drawable.family_icon);
         return convertView;
     }
 }
