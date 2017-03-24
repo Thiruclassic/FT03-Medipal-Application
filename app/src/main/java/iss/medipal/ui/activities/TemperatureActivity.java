@@ -63,8 +63,9 @@ public class TemperatureActivity extends BaseActivity implements Toolbar.OnMenuI
                 startActivity(intent);
                 break;
             case R.id.home:
-                Intent intentHome = new Intent(TemperatureActivity.this, MeasurementActivity.class);
-                startActivity(intentHome);
+             /*   Intent intentHome = new Intent(TemperatureActivity.this, MeasurementActivity.class);
+                startActivity(intentHome);*/
+                finish();
 
                 break;
         }

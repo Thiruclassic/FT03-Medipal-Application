@@ -216,7 +216,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         builder.append("Name"+" Varchar(100) NOT NULL,");
         builder.append("ContactNo"+" Varchar(20) NOT NULL,");
         builder.append("ContactType"+" INTEGER NOT NULL,");
-        builder.append("Description"+" INTEGER");
+        builder.append("Description"+" Varchar(255),");
+        builder.append("Sequence"+" INTEGER NOT NULL");
         builder.append(")");
 
         return builder.toString();
@@ -283,9 +284,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         return  categoryDataList;
     }
-
-
-
 
 
 }

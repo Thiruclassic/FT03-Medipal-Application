@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import iss.medipal.MediPalApplication;
 import iss.medipal.R;
@@ -48,7 +49,7 @@ public class HomeFragment extends BaseFragment implements
     private ImageButton mLeftArrow;
     private ImageButton mRightArrow;
 
-    private ArrayList<Medicine> mMedicines;
+    private List<Medicine> mMedicines;
     private DoseContainer mDoseContainer;
     private Calendar mToday;
     private Calendar mCurrentDay;
@@ -180,7 +181,7 @@ public class HomeFragment extends BaseFragment implements
     /**
      * populate Ui
      */
-    public void populateUi(ArrayList<MedDayModel> tempMeds){
+    public void populateUi(List<MedDayModel> tempMeds){
         mViewPager.setAdapter(new DoseViewPagerAdapter(getChildFragmentManager(), tempMeds, mMedicines, mCurrentDay));
         mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         mCircleIndicator.setViewPager(mViewPager);

@@ -64,9 +64,9 @@ public class PulseActivity extends BaseActivity implements Toolbar.OnMenuItemCli
                 startActivity(intent);
                 break;
             case R.id.home:
-                Intent intentHome = new Intent(PulseActivity.this, MeasurementActivity.class);
-                startActivity(intentHome);
-
+               /* Intent intentHome = new Intent(PulseActivity.this, MeasurementActivity.class);
+                startActivity(intentHome);*/
+                finish();
                 break;
         }
         return true;

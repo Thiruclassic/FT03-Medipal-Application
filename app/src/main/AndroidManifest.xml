@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="iss.medipal">
 
+    <uses-permission android:name="android.permission.CALL_PHONE"></uses-permission>
+
     <application
         android:name=".MediPalApplication"
         android:allowBackup="true"
@@ -31,6 +33,11 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+        <receiver android:name=".receivers.NotificationActionReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
         <activity android:name=".ui.activities.WeightActivity" />
         <activity android:name=".ui.activities.AddWeightActivity" />
@@ -45,6 +52,12 @@
         <activity android:name=".ui.activities.AddhealthBioActivity" />
         <activity android:name=".ui.activities.ViewCategoryActivity"></activity>
         <activity android:name=".ui.activities.AddCategoryActivity"></activity>
+
+        <activity
+            android:name=".ui.activities.IceActivity"
+            android:label="Emergency Contacts"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".ui.activities.Add_ICE"></activity>
 
     </application>
 

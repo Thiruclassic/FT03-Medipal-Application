@@ -9,18 +9,22 @@ import java.util.ArrayList;
 
 import iss.medipal.MediPalApplication;
 import iss.medipal.R;
+import iss.medipal.dao.AppointmentDao;
 import iss.medipal.dao.ConsumptionDao;
 import iss.medipal.dao.MedicineDao;
 import iss.medipal.dao.PersonBioDao;
 import iss.medipal.dao.ReminderDao;
+import iss.medipal.dao.impl.AppointmentDaoImpl;
 import iss.medipal.dao.impl.CategoryDaoImpl;
 import iss.medipal.dao.impl.ConsumptionDaoImpl;
 import iss.medipal.dao.impl.PersonBioDaoImpl;
 import iss.medipal.dao.impl.MedicineDaoImpl;
 import iss.medipal.dao.impl.ReminderDaoImpl;
+import iss.medipal.model.Appointment;
 import iss.medipal.model.Category;
 import iss.medipal.model.Consumption;
 import iss.medipal.model.DoseContainer;
+import iss.medipal.model.InCaseofEmergencyContact;
 import iss.medipal.model.Medicine;
 import iss.medipal.model.PersonStore;
 import iss.medipal.model.PersonalBio;
@@ -61,12 +65,14 @@ public class SplashActivity extends BaseFullScreenActivity {
         private ReminderDao mRemiderDao;
         private ConsumptionDao mConsumptionDao;
         private PersonStore mPersonStore;
+        private AppointmentDao mAppointmentDao;
 
         public GetPersonTask(Context context) {
             this.mBioDao = new PersonBioDaoImpl(context);
             this.mMedicationDao = new MedicineDaoImpl(context);
             this.mRemiderDao = new ReminderDaoImpl(context);
             this.mConsumptionDao = new ConsumptionDaoImpl(context);
+            this.mAppointmentDao = new AppointmentDaoImpl(context);
         }
 
         @Override
@@ -80,8 +86,11 @@ public class SplashActivity extends BaseFullScreenActivity {
                     med.setReminder(rem);
                 }
             }
+            ArrayList<Appointment>appointments =(ArrayList<Appointment>)mAppointmentDao.getAllAppointments();
+            //todo appointments reminders sreekumar
             ArrayList<Consumption> consumptions = (ArrayList<Consumption>) mConsumptionDao.getAllConsumptions();
             result.setMedicines(meds);
+            result.setAppointments(appointments);
             mPersonStore.setmPersonalBio(result);
             mPersonStore.setmConsumptions(consumptions);
             DoseContainer.getInstance(SplashActivity.this);

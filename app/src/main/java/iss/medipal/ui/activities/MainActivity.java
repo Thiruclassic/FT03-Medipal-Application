@@ -10,6 +10,7 @@ import iss.medipal.R;
 import iss.medipal.ui.adapters.MainPagerAdapter;
 import iss.medipal.ui.customViews.CommonTabLayout;
 import iss.medipal.ui.entities.TabEntity;
+import iss.medipal.ui.fragments.AppointmentFragment;
 import iss.medipal.ui.fragments.HomeFragment;
 import iss.medipal.ui.fragments.ViewMedicineFragment;
 import iss.medipal.ui.interfaces.CustomTabEntity;
@@ -18,7 +19,7 @@ import iss.medipal.ui.interfaces.OnTabSelectListener;
 import iss.medipal.util.AppHelper;
 
 public class MainActivity extends BaseActivity implements HomeFragment.MedInterface,
-        ViewMedicineFragment.HomeInterface {
+        ViewMedicineFragment.HomeInterface,AppointmentFragment.MainActivityInterface {
 
     private String[] mTabItems;
 
@@ -33,6 +34,7 @@ public class MainActivity extends BaseActivity implements HomeFragment.MedInterf
             R.mipmap.home_white, R.mipmap.pills_white,
             R.mipmap.calendar_white, R.mipmap.bell_white, R.mipmap.more_white};
    private HomeInterface mHomeInterface;
+    private AppointmentFragment.MainActivityInterface mainActivityInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,11 @@ public class MainActivity extends BaseActivity implements HomeFragment.MedInterf
     @Override
     public void onMedAdded() {
         mHomeInterface.onMedAdded();
+    }
+
+    @Override
+    public void onAppointmentNew() {
+        mainActivityInterface.onAppointmentNew();
     }
 
     private void initialise(){

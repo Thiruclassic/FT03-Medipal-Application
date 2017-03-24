@@ -71,6 +71,7 @@
     <string name="app_time">Time</string>
     <string name="description">Description</string>
     <string name="StatusReport">Status Report</string>
+    <string name="not_editable_Location">Location(Not Editable)</string>
 
     <!--Measurements -->
     <string name="blood_pres">Blood Pressure</string>
@@ -145,5 +146,8 @@
     <string name="category_remind">Remind</string>
     <string name="category_description">Description</string>
     <string name="category_save_pop_up_text">successfully saved</string>
+
+    <string name="medication_positive_text">I took it</string>
+    <string name="medication_negative_text">I Missed it</string>
 
 </resources>

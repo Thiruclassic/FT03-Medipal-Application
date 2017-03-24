@@ -71,9 +71,9 @@ public class WeightActivity extends BaseActivity implements Toolbar.OnMenuItemCl
                 transaction.replace(R.id.add_blood_pressure,addBloodPressureFragment).commit();*/
                 break;
             case R.id.home:
-                Intent intentHome = new Intent(WeightActivity.this, MeasurementActivity.class);
-                startActivity(intentHome);
-
+               /* Intent intentHome = new Intent(WeightActivity.this, MeasurementActivity.class);
+                startActivity(intentHome);*/
+                finish();
                 break;
         }
         return true;

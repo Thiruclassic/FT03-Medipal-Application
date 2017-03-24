@@ -11,8 +11,10 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import iss.medipal.MediPalApplication;
 import iss.medipal.R;
 import iss.medipal.ui.activities.HealthBioActivity;
+import iss.medipal.ui.activities.IceActivity;
 import iss.medipal.ui.activities.MainActivity;
 import iss.medipal.ui.activities.MeasurementActivity;
 import iss.medipal.ui.activities.UserProfileActivity;
@@ -46,6 +48,7 @@ public class MoreFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setListView(view);
+        MediPalApplication.getPersonStore().setContacts();
     }
 
     private void setListView(View view){
@@ -68,6 +71,11 @@ public class MoreFragment extends BaseFragment {
                     case 2:
                         ((MainActivity)getActivity()).launchActivityWithoutFinishing(MeasurementActivity.class);
                         break;
+
+                    case 3:
+                        ((MainActivity)getActivity()).launchActivityWithoutFinishing(IceActivity.class);
+                        break;
+
                     case 4:
                         ((MainActivity)getActivity()).launchActivityWithoutFinishing(ViewCategoryActivity.class);
                         break;

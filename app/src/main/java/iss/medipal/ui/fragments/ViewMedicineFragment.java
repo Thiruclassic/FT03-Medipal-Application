@@ -43,7 +43,7 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
     private ListView medicineList;
     private FrameLayout innerLayout;
     private MedicineListAdapter medicineListAdapter;
-    private ArrayList<Medicine> medicines;
+    private List<Medicine> medicines;
     private List<String> medicineNames;
     private MedicineDao medicineDao;
     private HomeInterface mMedAddCallback;

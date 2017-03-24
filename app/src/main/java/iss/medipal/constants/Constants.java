@@ -36,6 +36,13 @@ public class Constants {
     public static final int REFILL_BROADCAST_ID=100000;
     public static final int MISSEDIT_STATUS = 0;
 
+    public static final int FAMILY_CONTACT = 1;
+    public static final int FRIEND_CONTACT = 2;
+    public static final int DOCTOR_CONTACT = 3;
+    public static final String FAMILY = "FAMILY";
+    public static final String FRIEND = "FRIEND";
+    public static final String DOCTOR = "DOCTOR";
+
 
 
 }

@@ -2,20 +2,25 @@ package iss.medipal.model;
 
 import android.content.Context;
 import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
+import iss.medipal.asyncs.AddAppointmentTask;
 
+import iss.medipal.MediPalApplication;
 import iss.medipal.asyncs.AddConsumptionTask;
+import iss.medipal.asyncs.AddUpdateContactTask;
 import iss.medipal.asyncs.AddMedicineTask;
 import iss.medipal.asyncs.AddPersonBioTask;
 import iss.medipal.asyncs.AddReminderAlarmTask;
+import iss.medipal.asyncs.EditAppointmentTask;
 import iss.medipal.asyncs.AddUpdateCategoryTask;
 import iss.medipal.asyncs.DeleteConsumptionTask;
+import iss.medipal.asyncs.DeleteContactTask;
 import iss.medipal.asyncs.DeleteMedicineTask;
 import iss.medipal.asyncs.EditMedicineTask;
 import iss.medipal.asyncs.EditPersonalBioTask;
 import iss.medipal.asyncs.GetCategoriesTask;
+import iss.medipal.asyncs.GetContactsTask;
 import iss.medipal.dao.impl.PersonBioDaoImpl;
 import iss.medipal.util.AppHelper;
 
@@ -36,7 +41,11 @@ public class PersonStore {
     private AddMedicineTask mAddMedicineTask;
     private EditMedicineTask mEditMedicineTask;
     private AddConsumptionTask mAddConsumptionTask;
+    private AddAppointmentTask mAddAppointmentTask;
+    private EditAppointmentTask mEditAppointmentTask;
     private DeleteConsumptionTask mDeleteConsumptionTask;
+    private AddUpdateContactTask mAddUpdateContactTask;
+    private DeleteContactTask deleteContactTask;
 
 
 
@@ -111,7 +120,7 @@ public class PersonStore {
     }
 
     public void editMedicine(Medicine medicine){
-        ArrayList<Medicine> meds = mPersonalBio.getMedicines();
+        List<Medicine> meds = mPersonalBio.getMedicines();
         for(Medicine med: meds){
             if(med.equals(medicine)){
                 med.setMedicine(medicine.getMedicine());
@@ -130,12 +139,33 @@ public class PersonStore {
         }
         mEditMedicineTask = new EditMedicineTask(mContext);
         mEditMedicineTask.execute(medicine);
-
-
+    }
+    public void addAppointment(Appointment appointment) {
+        if (AppHelper.isListEmpty(mPersonalBio.getAppointments())) {
+            mPersonalBio.setAppointments(new ArrayList<Appointment>());
+        }
+        mPersonalBio.getAppointments().add(appointment);
+        mAddAppointmentTask = new AddAppointmentTask(mContext);
+        mAddAppointmentTask.execute(appointment);
     }
 
-    public void addConsumption(Consumption consumption){
-        if(AppHelper.isListEmpty(mConsumptions)){
+    public void editAppointment(Appointment appointment) {
+        List<Appointment> appointments = mPersonalBio.getAppointments();
+        for (Appointment appointment1 : appointments) {
+            if (appointment1.equals(appointment)) {
+                appointment1.setId(appointment.getId());
+                appointment1.setLocation(appointment.getLocation());
+                appointment1.setDescription(appointment.getDescription());
+                appointment1.setAppointment(appointment.getAppointment());
+                break;
+            }
+        }
+        mEditAppointmentTask = new EditAppointmentTask(mContext);
+        mEditAppointmentTask.execute(appointment);
+    }
+
+    public void addConsumption(Consumption consumption) {
+        if (AppHelper.isListEmpty(mConsumptions)) {
             mConsumptions = new ArrayList<>();
         }
         mConsumptions.add(consumption);
@@ -187,5 +217,39 @@ public class PersonStore {
         medicines.remove(medicine);
         DeleteMedicineTask deleteMedicineTask=new DeleteMedicineTask(mContext);
         deleteMedicineTask.execute(medicine);
+    }
+    public void addUpdateContact(InCaseofEmergencyContact contact,boolean isEdit){
+        if(AppHelper.isListEmpty(mPersonalBio.getContacts())){
+            mPersonalBio.setContacts(new ArrayList<InCaseofEmergencyContact>());
+        }
+        if(!isEdit) {
+            mPersonalBio.getContacts().add(contact);
+
+        }
+        else
+        {
+            List<InCaseofEmergencyContact> contacts = MediPalApplication.getPersonStore().getmPersonalBio().getContacts();
+            for (int i = contacts.size() - 1; i >= 0; i--) {
+                if (contact.equals(contacts.get(i))) {
+                    contacts.set(i, contact);
+                    break;
+                }
+            }
+        }
+        mAddUpdateContactTask = new AddUpdateContactTask(mContext,Boolean.FALSE);
+        mAddUpdateContactTask.execute(contact);
+    }
+
+
+    public void setContacts()
+    {
+        new GetContactsTask(mContext).execute();
+    }
+
+    public void deleteContact(InCaseofEmergencyContact contact)
+    {
+        mPersonalBio.getContacts().remove(contact);
+        deleteContactTask = new DeleteContactTask(mContext);
+        deleteContactTask.execute(contact);
     }
 }

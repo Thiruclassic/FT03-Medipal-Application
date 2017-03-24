@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import iss.medipal.model.Medicine;
 import iss.medipal.model.homeMedicineModels.MedDayModel;
@@ -19,12 +20,12 @@ public class DoseViewPagerAdapter extends FragmentStatePagerAdapter {
 
     private static final String ARGS_MEDS = "ARGS_MEDS";
 
-    ArrayList<MedDayModel> mMedDoses;
-    ArrayList<Medicine> mMeds;
+    List<MedDayModel> mMedDoses;
+    List<Medicine> mMeds;
     Calendar cal;
 
-    public DoseViewPagerAdapter(FragmentManager fm, ArrayList<MedDayModel> medsDoses,
-                                ArrayList<Medicine> meds, Calendar currentCal) {
+    public DoseViewPagerAdapter(FragmentManager fm, List<MedDayModel> medsDoses,
+                                List<Medicine> meds, Calendar currentCal) {
         super(fm);
         mMedDoses = medsDoses;
         mMeds = meds;

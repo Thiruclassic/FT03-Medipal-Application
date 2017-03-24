@@ -80,4 +80,13 @@ public class DBConstants {
     public static final String CONSUMPTION_MEDID="MedicineId";
     public static final String CONSUMPTION_QUANTITY="Quantity";
     public static final String CONSUMPTION_CONSUMED_ON="ConsumedOn";
+
+
+    //ICE Table
+    public static final String CONTACT_NAME="Name";
+    public static final String CONTACT_NUMBER="ContactNo";
+    public static final String CONTACT_TYPE="ContactType";
+    public static final String CONTACT_DESCRIPTION="Description";
+    public static final String CONTACT_SEQUENCE="Sequence";
+
 }
