@@ -150,7 +150,7 @@ public class PersonStore {
     }
 
     public void editAppointment(Appointment appointment) {
-        ArrayList<Appointment> appointments = mPersonalBio.getAppointments();
+        List<Appointment> appointments = mPersonalBio.getAppointments();
         for (Appointment appointment1 : appointments) {
             if (appointment1.equals(appointment)) {
                 appointment1.setId(appointment.getId());

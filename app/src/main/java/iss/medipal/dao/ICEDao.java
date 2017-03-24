@@ -1,5 +1,7 @@
 package iss.medipal.dao;
 
+import java.util.List;
+
 import iss.medipal.model.InCaseofEmergencyContact;
 import iss.medipal.model.PersonalBio;
 
@@ -9,7 +11,13 @@ import iss.medipal.model.PersonalBio;
 
 public interface ICEDao {
 
-    public int createContact(InCaseofEmergencyContact contact);
+    public int addContact(InCaseofEmergencyContact contact);
+    public int updateContact(InCaseofEmergencyContact contact);
+    public int deleteContact(int contactId);
+    public List<InCaseofEmergencyContact> getContactsbyType(int type);
+    public List<InCaseofEmergencyContact> getContactsbyPriority();
+    public List<InCaseofEmergencyContact> getAllContacts();
     public void close();
+
 
 }
