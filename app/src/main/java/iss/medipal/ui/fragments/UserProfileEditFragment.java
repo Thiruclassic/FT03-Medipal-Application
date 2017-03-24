@@ -139,9 +139,9 @@ public class UserProfileEditFragment extends BaseFragment implements UserProfile
             personalBio.setDob(mDobEditText.getText().toString());
             personalBio.setHeight(Integer.valueOf(mHeightEditText.getText().toString()));
             personalBio.setBloodType((String) mBloodSpinner.getSelectedItem());
-            personalBio.setAddress(mBuildingEditText.getText().toString() + "," +
-                    mLocationEditText.getText().toString() + "," +
-                    mStreetEditText.getText().toString() + "," +
+            personalBio.setAddress(mBuildingEditText.getText().toString() + "~" +
+                    mLocationEditText.getText().toString() + "~" +
+                    mStreetEditText.getText().toString() + "~" +
                     mLevelEditText.getText().toString() + "-" +
                     mUnitEditText.getText().toString());
             personalBio.setPostalCode(mPostalCodeEditText.getText().toString());
@@ -182,6 +182,7 @@ public class UserProfileEditFragment extends BaseFragment implements UserProfile
                 mDobEditText.setText(mTimeFormatter.format(newDate.getTime()));
             }
         },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        dialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         return dialog;
     }
 
@@ -215,7 +216,7 @@ public class UserProfileEditFragment extends BaseFragment implements UserProfile
         mIdEditText.setText(personalBio.getIdNo());
         mDobEditText.setText(personalBio.getDob());
         mHeightEditText.setText(String.valueOf(personalBio.getHeight()));
-        String[] address = personalBio.getAddress().split(",");
+        String[] address = personalBio.getAddress().split("~");
         mBuildingEditText.setText(address[0]);
         mLocationEditText.setText(address[1]);
         mStreetEditText.setText(address[2]);
@@ -271,9 +272,9 @@ public class UserProfileEditFragment extends BaseFragment implements UserProfile
                 personalBio.setDob(mDobEditText.getText().toString());
                 personalBio.setHeight(Integer.valueOf(mHeightEditText.getText().toString()));
                 personalBio.setBloodType((String) mBloodSpinner.getSelectedItem());
-                personalBio.setAddress(mBuildingEditText.getText().toString() + "," +
-                        mLocationEditText.getText().toString() + "," +
-                        mStreetEditText.getText().toString() + "," +
+                personalBio.setAddress(mBuildingEditText.getText().toString() + "~" +
+                        mLocationEditText.getText().toString() + "~" +
+                        mStreetEditText.getText().toString() + "~" +
                         mLevelEditText.getText().toString() + "-" +
                         mUnitEditText.getText().toString());
                 personalBio.setPostalCode(mPostalCodeEditText.getText().toString());
