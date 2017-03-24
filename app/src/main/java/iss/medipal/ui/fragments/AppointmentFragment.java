@@ -46,7 +46,7 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
     private List<String> itemname;
     private AppointmentListAdapter appointmentListAdapter;
 //    private ArrayList<Appointment> appointmentViewList;
-    private ArrayList<Appointment> appointmentList;
+    private List<Appointment> appointmentList;
     private AppointmentFragment.MainActivityInterface aAddCallback;
 
     @Override
