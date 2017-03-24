@@ -39,13 +39,13 @@ public class ConsumptionDaoImpl extends BaseDao implements ConsumptionDao {
     }
 
     @Override
-    public Medicine createConsumtion(Consumption consumption){
+    public long createConsumtion(Consumption consumption){
         ContentValues values=new ContentValues();
         values.put(DBConstants.CONSUMPTION_MEDID,consumption.getMedicineId());
         values.put(DBConstants.CONSUMPTION_QUANTITY,consumption.getQuantity());
         values.put(DBConstants.CONSUMPTION_CONSUMED_ON,mDateFormat.format(consumption.getConsumedOn()));
         long id=(int)database.insert(DBConstants.TABLE_CONSUMPTION,null,values);
-        return medicineDao.getMedicinebyId(consumption.getMedicineId());
+        return id;
     }
 
 
@@ -77,17 +77,14 @@ public class ConsumptionDaoImpl extends BaseDao implements ConsumptionDao {
     }
 
     @Override
-    public Medicine deleteConsumtion(Consumption consumption){
-        Medicine medicine=null;
+    public void deleteConsumtion(Consumption consumption){
         try {
             database.delete(DBConstants.TABLE_CONSUMPTION, DBConstants.CONSUMPTION_MEDID +"=? and "+
                     DBConstants.CONSUMPTION_CONSUMED_ON+"=?", new String[]{String.valueOf(consumption.getMedicineId()),
                     mDateFormat.format(consumption.getConsumedOn())});
-            medicine=medicineDao.getMedicinebyId(consumption.getMedicineId());
         } catch (SQLException e){
             e.printStackTrace();
         }
-        return  medicine;
     }
 
     @Override
