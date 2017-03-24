@@ -1,5 +1,6 @@
 package iss.medipal.ui.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -26,6 +27,7 @@ import iss.medipal.model.HealthBio;
 import iss.medipal.ui.activities.AddhealthBioActivity;
 import iss.medipal.ui.activities.HealthBioActivity;
 import iss.medipal.ui.adapters.HealthBioListAdapter;
+import iss.medipal.util.AppHelper;
 import iss.medipal.util.SharedPreferenceManager;
 
 /**
@@ -35,12 +37,13 @@ import iss.medipal.util.SharedPreferenceManager;
 public class HealthBioFragment extends Fragment implements View.OnClickListener{
 
     private FloatingActionButton addHealthBio;
+    private TextView mEmptyText;
 
     private HealthBioListAdapter healthBioListAdapter;
     private List<HealthBio> healthBios;
-    HealthBioDao healthBioDao;
-    ListView lv;
-    List<String> itemname;
+    private ListView lv;
+    private List<String> itemname;
+    private onBioChangeListener mCallback;
 
 
     public HealthBioFragment() {
@@ -60,12 +63,6 @@ public class HealthBioFragment extends Fragment implements View.OnClickListener{
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        setList();
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -81,34 +78,46 @@ public class HealthBioFragment extends Fragment implements View.OnClickListener{
 
         super.onViewCreated(view, savedInstanceState);
         lv = (ListView) view.findViewById(R.id.healthbioList);
-        addHealthBio=(FloatingActionButton) view.findViewById(R.id.addHealthBio);
+        addHealthBio= (FloatingActionButton) view.findViewById(R.id.addHealthBio);
+        mEmptyText = (TextView) view.findViewById(R.id.tv_empty_bios);
         addHealthBio.setOnClickListener(this);
-        healthBioDao = HealthBioDaoImpl.newInstance(getActivity());
         setList();
         setListeners();
+    }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallback = ((HealthBioActivity)context);
     }
 
     private void setList(){
         healthBios = MediPalApplication.getPersonStore().getmPersonalBio().getHealthBios();
-        if(healthBios==null) {
-            healthBioDao = HealthBioDaoImpl.newInstance(getActivity());
-            List<HealthBio> healthBioList = healthBioDao.getAllHealthBio();
-            healthBios=healthBioList;
+        if(!AppHelper.isListEmpty(healthBios)) {
+            if (healthBioListAdapter == null) {
+                healthBioListAdapter = new HealthBioListAdapter(getContext(), healthBios, this);
+                lv.setAdapter(healthBioListAdapter);
+            } else {
+                healthBioListAdapter.setHealthBio(healthBios);
+                lv.setAdapter(healthBioListAdapter);
+            }
+            if (healthBioListAdapter != null)
+                callCallback();
         }
+    }
 
-        if(healthBioListAdapter==null)
-        {
-            healthBioListAdapter = new HealthBioListAdapter(getContext(), healthBios);
-            lv.setAdapter(healthBioListAdapter);
+    public void callCallback(){
+        if (mCallback != null) {
+            mCallback.onBioChangeListener(healthBios.size());
         }
-        else
-        {
-            healthBioListAdapter.setHealthBio(healthBios);
-            lv.setAdapter(healthBioListAdapter);
-        }
+    }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        setList();
+        if(healthBioListAdapter != null)
+            mEmptyText.setVisibility(healthBioListAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -140,5 +149,9 @@ public class HealthBioFragment extends Fragment implements View.OnClickListener{
         };
 
         lv.setOnItemClickListener(itemClickListener);
+    }
+
+    public interface onBioChangeListener{
+        void onBioChangeListener(int count);
     }
 }

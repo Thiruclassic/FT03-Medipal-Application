@@ -8,10 +8,12 @@ import iss.medipal.asyncs.AddAppointmentTask;
 
 import iss.medipal.MediPalApplication;
 import iss.medipal.asyncs.AddConsumptionTask;
+import iss.medipal.asyncs.AddHealthBioTask;
 import iss.medipal.asyncs.AddUpdateContactTask;
 import iss.medipal.asyncs.AddMedicineTask;
 import iss.medipal.asyncs.AddPersonBioTask;
 import iss.medipal.asyncs.AddReminderAlarmTask;
+import iss.medipal.asyncs.DeleteHealthBioTask;
 import iss.medipal.asyncs.EditAppointmentTask;
 import iss.medipal.asyncs.AddUpdateCategoryTask;
 import iss.medipal.asyncs.DeleteConsumptionTask;
@@ -46,6 +48,8 @@ public class PersonStore {
     private DeleteConsumptionTask mDeleteConsumptionTask;
     private AddUpdateContactTask mAddUpdateContactTask;
     private DeleteContactTask deleteContactTask;
+    private AddHealthBioTask mAddHealthBioTask;
+    private DeleteHealthBioTask mDeleteHealthBioTask;
 
 
 
@@ -248,5 +252,22 @@ public class PersonStore {
         mPersonalBio.getContacts().remove(contact);
         deleteContactTask = new DeleteContactTask(mContext);
         deleteContactTask.execute(contact);
+    }
+
+    public void addHealthBio(HealthBio healthBio){
+        if(AppHelper.isListEmpty(mPersonalBio.getHealthBios())){
+            mPersonalBio.setHealthBios(new ArrayList<HealthBio>());
+        }
+        mPersonalBio.getHealthBios().add(healthBio);
+        mAddHealthBioTask = new AddHealthBioTask(mContext);
+        mAddHealthBioTask.execute(healthBio);
+    }
+
+    public void deleteHealthBio(HealthBio healthBio)
+    {
+        List<HealthBio> medicines=mPersonalBio.getHealthBios();
+        medicines.remove(healthBio);
+        mDeleteHealthBioTask=new DeleteHealthBioTask(mContext);
+        mDeleteHealthBioTask.execute(healthBio);
     }
 }
