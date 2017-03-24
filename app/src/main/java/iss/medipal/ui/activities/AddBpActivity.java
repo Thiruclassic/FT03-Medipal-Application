@@ -7,11 +7,14 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -23,6 +26,7 @@ import iss.medipal.dao.MeasurementDao;
 import iss.medipal.dao.impl.MeasurementDaoImpl;
 import iss.medipal.model.BloodPressure;
 import iss.medipal.model.Measurement;
+import iss.medipal.util.DialogUtility;
 
 public class AddBpActivity extends BaseActivity implements View.OnClickListener {
 
@@ -34,13 +38,23 @@ public class AddBpActivity extends BaseActivity implements View.OnClickListener 
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     private DatePickerDialog mDatePickerDialog;
 
+
+    private ImageView imageBack;
+    private TextView title;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_bp);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Add Blood pressure readings ...(mmHg)");
+/*        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Add Blood pressure readings ...(mmHg)");*/
+
+        imageBack = (ImageView) findViewById(R.id.toolbar_left_icon);
+        title = (TextView) findViewById(R.id.toolbar_title);
+
+        title.setText("Add Blood pressure readings (mmHg)");
+        imageBack.setVisibility(View.VISIBLE);
 
         findViewsById();
         setListeners();
@@ -73,6 +87,15 @@ public class AddBpActivity extends BaseActivity implements View.OnClickListener 
         measuredOn.setOnClickListener(appDateListner);
         measuredOn.setOnFocusChangeListener(mDateFocusListener);
 
+        ImageView.OnClickListener clickListener=new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Click",String.valueOf(v));
+                finish();
+            }
+        };
+        imageBack.setOnClickListener(clickListener);
+
     }
 
     private View.OnFocusChangeListener mDateFocusListener = new View.OnFocusChangeListener() {
@@ -103,23 +126,50 @@ public class AddBpActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.saveBp:
+                if (validateBloodPressureDetails()) {
+                    try {
 
-                try {
+                        String measurement = addMeasurement();
+                        Snackbar.make(v, "Saved reading .... !", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    } catch (Exception ex) {
+                        Log.d("error", ex.toString());
+                        Log.d("Error:", "error in add Appointment Page");
 
-                    String measurement = addMeasurement();
-                    Snackbar.make(v, "Saved reading .... !", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                } catch (Exception ex) {
-                    Log.d("error", ex.toString());
-                    Log.d("Error:", "error in add Appointment Page");
-
+                    }
+                    Intent intent = new Intent(AddBpActivity.this, BloodPressureActivity.class);
+                    startActivity(intent);
+                    break;
                 }
-                Intent intent = new Intent(AddBpActivity.this, BloodPressureActivity.class);
-                startActivity(intent);
-                break;
         }
     }
 
+    public Boolean validateBloodPressureDetails(){
+
+
+       if (TextUtils.isEmpty(etSystolic.getText())) {
+            DialogUtility.newMessageDialog(this, getString(R.string.warning),
+                    "Enter Systolic in mmHg").show();
+            return false;
+        } else if (TextUtils.isEmpty(etDiastolic.getText())) {
+            DialogUtility.newMessageDialog(this, getString(R.string.warning),
+                    "Enter Diastolic in  mmhg").show();
+            return false;
+        } else if (TextUtils.isEmpty(measuredOn.getText())) {
+            DialogUtility.newMessageDialog(this, getString(R.string.warning),
+                    "Enter Measured on time").show();
+            return false;
+        } else if(!(TextUtils.isEmpty(etSystolic.getText())&&(!TextUtils.isEmpty(etDiastolic.getText())))){
+           Integer systolic = Integer.parseInt(String.valueOf(etSystolic.getText()));
+           Integer diastolic = Integer.parseInt(String.valueOf(etDiastolic.getText()));
+           if(systolic>191 || diastolic >101) {
+               DialogUtility.newMessageDialog(this, getString(R.string.warning),
+                       "Check the value of systolic and diastolic entered !!").show();
+               return false;
+           }
+        }
+        return true;
+    }
     public String addMeasurement() throws Exception {
         BloodPressure measurement = getMeasurementDetails();
         measurementDao = MeasurementDaoImpl.newInstance(AddBpActivity.this);

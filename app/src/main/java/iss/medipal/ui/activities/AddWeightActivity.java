@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -22,6 +25,7 @@ import iss.medipal.dao.MeasurementDao;
 import iss.medipal.dao.impl.MeasurementDaoImpl;
 import iss.medipal.model.BloodPressure;
 import iss.medipal.model.Weight;
+import iss.medipal.util.DialogUtility;
 
 /**
  * Created by Sreekumar on 19/3/2017
@@ -35,14 +39,23 @@ public class AddWeightActivity extends BaseActivity implements View.OnClickListe
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     private DatePickerDialog mDatePickerDialog;
 
+    private ImageView imageBack;
+    private TextView title;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_weight);
 
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Add Weight ...(Kg)");
+      /*  toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Add Weight ...(Kg)");*/
+        imageBack = (ImageView) findViewById(R.id.toolbar_left_icon);
+        title = (TextView) findViewById(R.id.toolbar_title);
+
+        title.setText("Add Weight(Kg)");
+        imageBack.setVisibility(View.VISIBLE);
 
         findViewsById();
         setListeners();
@@ -69,6 +82,15 @@ public class AddWeightActivity extends BaseActivity implements View.OnClickListe
         };
         etWeightMeasuredOn.setOnClickListener(appDateListner);
         etWeightMeasuredOn.setOnFocusChangeListener(mDateFocusListener);
+
+        ImageView.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Click", String.valueOf(v));
+                finish();
+            }
+        };
+        imageBack.setOnClickListener(clickListener);
 
     }
 
@@ -99,23 +121,45 @@ public class AddWeightActivity extends BaseActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.saveWeight:
+                if (validateWeightDetails()) {
+                    try {
 
-                try {
+                        String measurement = addMeasurement();
+                        Snackbar.make(v, "Saved reading .... !", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    } catch (Exception ex) {
+                        Log.d("error", ex.toString());
+                        Log.d("Error:", "error in add Appointment Page");
 
-                    String measurement = addMeasurement();
-                    Snackbar.make(v, "Saved reading .... !", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                } catch (Exception ex) {
-                    Log.d("error", ex.toString());
-                    Log.d("Error:", "error in add Appointment Page");
-
+                    }
+                    Intent intent = new Intent(AddWeightActivity.this, WeightActivity.class);
+                    startActivity(intent);
+                    break;
                 }
-                Intent intent = new Intent(AddWeightActivity.this, WeightActivity.class);
-                startActivity(intent);
-                break;
         }
     }
 
+    public Boolean validateWeightDetails() {
+
+        if (TextUtils.isEmpty(etWeight.getText())) {
+            DialogUtility.newMessageDialog(this, getString(R.string.warning),
+                    "Enter Weight in Kg").show();
+            return false;
+        } else if (TextUtils.isEmpty(etWeightMeasuredOn.getText())) {
+            DialogUtility.newMessageDialog(this, getString(R.string.warning),
+                    "Enter Measured on time").show();
+            return false;
+        } else if (!TextUtils.isEmpty(etWeight.getText())) {
+            Integer weight = Integer.parseInt(String.valueOf(etWeight.getText()));
+            if (weight > 200) {
+                DialogUtility.newMessageDialog(this, getString(R.string.warning),
+                        "Check the value entered ").show();
+                return false;
+            }
+
+        }
+        return true;
+    }
 
     public String addMeasurement() throws Exception {
         Weight weight = getMeasurementDetails();

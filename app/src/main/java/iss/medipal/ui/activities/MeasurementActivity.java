@@ -40,8 +40,9 @@ public class MeasurementActivity extends BaseActivity implements View.OnClickLis
 
         switch (id) {
          case R.id.homeMes:
-                Intent intentHome = new Intent(MeasurementActivity.this, MainActivity.class);
-                startActivity(intentHome);
+             /*   Intent intentHome = new Intent(MeasurementActivity.this, MainActivity.class);
+                startActivity(intentHome);*/
+                finish();
 
                 break;
         }
