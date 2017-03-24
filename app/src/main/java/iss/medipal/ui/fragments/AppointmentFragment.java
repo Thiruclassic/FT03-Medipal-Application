@@ -116,7 +116,7 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
 //    private void setListAdapter(List<Appointment> appointments) {
 
     private void setListAdapter() {
-      appointmentList = MediPalApplication.getPersonStore().getmPersonalBio().getAppointments();
+      appointmentList = (ArrayList<Appointment>) MediPalApplication.getPersonStore().getmPersonalBio().getAppointments();
       /*    if(appointments!=null)
         {
             medicineListAdapter = new MedicineListAdapter(getContext(), medicines);
@@ -143,7 +143,7 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
         try {
 
 //            appointmentList = appointmentDao.getAllAppointments();
-            appointmentList = MediPalApplication.getPersonStore()
+            appointmentList = (ArrayList<Appointment>) MediPalApplication.getPersonStore()
                     .getmPersonalBio().getAppointments();
             if (!AppHelper.isListEmpty(appointmentList)) {
                 if (appointmentListAdapter != null) {
