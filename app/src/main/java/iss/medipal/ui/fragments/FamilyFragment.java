@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.telephony.SmsManager;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -171,11 +173,19 @@ public class FamilyFragment extends Fragment {
                 {
                     case R.id.call_contact:
                         Toast.makeText(getContext(), "calling " + familyContacts.get(pos).getContactName(),   Toast.LENGTH_SHORT).show();
-                        String number = "tel:" + familyContacts.get(pos).getContactNo();
+                        String call_number = "tel:" + familyContacts.get(pos).getContactNo();
 
-                        Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(number));
+                        Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(call_number));
                         startActivity(callIntent);
                         return true;
+                    case R.id.sms_contact:
+                        Toast.makeText(getContext(), "texting " + familyContacts.get(pos).getContactName(), Toast.LENGTH_SHORT).show();
+                        String text_number = Long.toString(familyContacts.get(pos).getContactNo());
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", text_number, null)));
+                        //SmsManager smsManager = SmsManager.getDefault();
+                        //smsManager.sendTextMessage(text_number,null,text_body,null,null);
+                        return true;
+
                     case R.id.edit_contact:
                         Intent intent = new Intent(getActivity(), Add_ICE.class);
                         Bundle bundle=new Bundle();
