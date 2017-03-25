@@ -13,15 +13,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import iss.medipal.MediPalApplication;
 import iss.medipal.R;
 import iss.medipal.ui.fragments.CategoryFragment;
 import iss.medipal.ui.fragments.PriorityFragment;
 
 public class IceActivity extends BaseActivity {
 
-    private int requestCall;
+    private ImageView mLeftToolbarImageView;
+    private TextView mToolbarTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,15 @@ public class IceActivity extends BaseActivity {
         setContentView(R.layout.activity_ice);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mToolbarTitle = (TextView) findViewById((R.id.ice_toolbar_title));
+        mToolbarTitle.setText("Emergency Contacts");
+        mLeftToolbarImageView = (ImageView) findViewById(R.id.ice_toolbar_left_icon);
+        mLeftToolbarImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         showCategories();
         if(ContextCompat.checkSelfPermission(this,Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED)
         {
@@ -41,8 +52,6 @@ public class IceActivity extends BaseActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(IceActivity.this, Add_ICE.class);
                 startActivity(intent);
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                  //      .setAction("Action", null).show();
             }
         });
     }
@@ -64,10 +73,7 @@ public class IceActivity extends BaseActivity {
 
     public void showCategories()
     {
-        //AppHelper.addFragment(this, new CategoryFragment());
-        //getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.contacts_container)).commit();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        //removeAllFragments(fragmentManager);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         CategoryFragment category = new CategoryFragment();
         fragmentTransaction.replace(R.id.contacts_container,category);
@@ -76,12 +82,9 @@ public class IceActivity extends BaseActivity {
 
     public void showPrioritySequence()
     {
-        //getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.contacts_container)).commit();
         FragmentManager fragmentManager = getSupportFragmentManager();
-        //removeAllFragments(fragmentManager);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         PriorityFragment priority = new PriorityFragment();
-        //getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.contacts_container)).commit();
         fragmentTransaction.replace(R.id.contacts_container,priority);
         fragmentTransaction.commit();
     }

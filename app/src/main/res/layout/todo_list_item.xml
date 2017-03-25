@@ -4,25 +4,80 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:padding="4dp">
+  <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/imageDocIcon"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:tint="@color/colorIcons"
-        android:src="@drawable/playlist_play" />
+        <ImageView
+            android:id="@+id/img_row1"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="7dp"
+            android:contentDescription="thumbnail"
+            android:src="@drawable/calendar_clock"/>
 
-    <TextView
-        android:id="@+id/tvNote"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="4dp"
-        android:layout_toEndOf="@+id/imageDocIcon"
-        android:layout_toRightOf="@+id/imageDocIcon"
-        android:singleLine="true"
-        android:text="Dummy Text"
-        android:textSize="18sp" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/tv_location"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_margin="7dp"
+                android:contentDescription="thumbnail"
+                android:src="@drawable/map_marker"/>
+            <TextView
+                android:id="@+id/tvNote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="7dp"
+                android:text="@string/appointments"
+                android:textColor="#616161"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/tv_dateTimeIcon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="7dp"
+                    android:contentDescription="thumbnail"
+                    android:src="@drawable/clock"/>
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="7dp"
+                android:text="@string/blood_mes"
+                android:textSize="15sp"
+                android:textStyle="italic"/>
+                </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
+            <ImageView
+                android:id="@+id/img_row_delete"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="7dp"
+                android:contentDescription="delete_mes"
+                android:src="@drawable/ic_delete_black"
+              />
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>

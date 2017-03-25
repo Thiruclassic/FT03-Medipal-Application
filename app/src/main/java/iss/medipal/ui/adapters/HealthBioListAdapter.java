@@ -2,6 +2,7 @@ package iss.medipal.ui.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,10 +15,12 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import iss.medipal.MediPalApplication;
 import iss.medipal.R;
 import iss.medipal.dao.HealthBioDao;
 import iss.medipal.dao.impl.HealthBioDaoImpl;
 import iss.medipal.model.HealthBio;
+import iss.medipal.ui.fragments.HealthBioFragment;
 import iss.medipal.util.DialogUtility;
 
 /**
@@ -27,11 +30,12 @@ import iss.medipal.util.DialogUtility;
 public class HealthBioListAdapter extends BaseAdapter {
     private Context mContext;
     private List<HealthBio> mHealthBio;
-    HealthBioDao healthBioDao;
+    private Fragment fragment;
 
-    public HealthBioListAdapter(Context mContext, List<HealthBio> mHealthBio) {
+    public HealthBioListAdapter(Context mContext, List<HealthBio> mHealthBio, Fragment fragment) {
         this.mContext = mContext;
         this.mHealthBio = mHealthBio;
+        this.fragment = fragment;
     }
 
 
@@ -53,7 +57,6 @@ public class HealthBioListAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         Log.d("position",String.valueOf(position));
-        healthBioDao = HealthBioDaoImpl.newInstance(mContext);
         HealthBioListAdapter.ViewHolder viewHolder;
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).
@@ -69,7 +72,6 @@ public class HealthBioListAdapter extends BaseAdapter {
         viewHolder.deleteHealthBio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                healthBioDao.deleteHealthBio(mHealthBio.get(position).getId());
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.CustomAlertDialogStyle);
                 builder.setCancelable(false);
                 builder.setTitle("WARNING DELETE");
@@ -78,7 +80,7 @@ public class HealthBioListAdapter extends BaseAdapter {
 
                     @Override
                     public void onClick(DialogInterface alert, int arg1) {
-
+                        MediPalApplication.getPersonStore().deleteHealthBio(mHealthBio.get(position));
                         removeHealthBio(position);
                         alert.dismiss();
                     }
@@ -119,8 +121,8 @@ public class HealthBioListAdapter extends BaseAdapter {
     }
     public void removeHealthBio(int position)
     {
-        mHealthBio.remove(position);
         Toast.makeText(mContext,"DELETED SUCCESFULLY",Toast.LENGTH_SHORT).show() ;
         setHealthBio(mHealthBio);
+        ((HealthBioFragment)fragment).callCallback();
     }
 }

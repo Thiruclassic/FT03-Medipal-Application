@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +26,7 @@ import iss.medipal.dao.MeasurementDao;
 import iss.medipal.dao.impl.MeasurementDaoImpl;
 import iss.medipal.model.Pulse;
 import iss.medipal.model.Temperature;
+import iss.medipal.util.DialogUtility;
 
 /**
  * Created by Sreekumar on 3/20/2017
@@ -42,7 +44,7 @@ public class AddTemperatureActivity extends BaseActivity implements View.OnClick
     private ImageView imageBack;
     private TextView title;
 
-   @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_temperature);
@@ -56,7 +58,7 @@ public class AddTemperatureActivity extends BaseActivity implements View.OnClick
         imageBack = (ImageView) findViewById(R.id.toolbar_left_icon);
         title = (TextView) findViewById(R.id.toolbar_title);
 
-        title.setText("Add Weight(Kg)");
+        title.setText("Add Temperature Readings");
         imageBack.setVisibility(View.VISIBLE);
 
         findViewsById();
@@ -85,10 +87,10 @@ public class AddTemperatureActivity extends BaseActivity implements View.OnClick
         etTempMeasuredOn.setOnClickListener(appDateListner);
         etTempMeasuredOn.setOnFocusChangeListener(mDateFocusListener);
 
-        ImageView.OnClickListener clickListener=new View.OnClickListener() {
+        ImageView.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Click",String.valueOf(v));
+                Log.d("Click", String.valueOf(v));
                 finish();
             }
         };
@@ -123,21 +125,45 @@ public class AddTemperatureActivity extends BaseActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.saveTemperature:
+                if (validateTemperatureDetails()) {
+                    try {
 
-                try {
+                        String measurement = addMeasurement();
+                        Snackbar.make(v, "Saved reading .... !", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    } catch (Exception ex) {
+                        Log.d("error", ex.toString());
+                        Log.d("Error:", "error in add Appointment Page");
 
-                    String measurement = addMeasurement();
-                    Snackbar.make(v, "Saved reading .... !", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                } catch (Exception ex) {
-                    Log.d("error", ex.toString());
-                    Log.d("Error:", "error in add Appointment Page");
-
+                    }
+                    Intent intent = new Intent(AddTemperatureActivity.this, TemperatureActivity.class);
+                    startActivity(intent);
+                    finish();
+                    break;
                 }
-                Intent intent = new Intent(AddTemperatureActivity.this, TemperatureActivity.class);
-                startActivity(intent);
-                break;
         }
+    }
+
+    public Boolean validateTemperatureDetails() {
+
+        if (TextUtils.isEmpty(etTemperature.getText())) {
+            DialogUtility.newMessageDialog(this, getString(R.string.warning),
+                    "Enter Temperature in 'C").show();
+            return false;
+        } else if (TextUtils.isEmpty(etTempMeasuredOn.getText())) {
+            DialogUtility.newMessageDialog(this, getString(R.string.warning),
+                    "Enter Measured on time").show();
+            return false;
+        } else if (!TextUtils.isEmpty(etTemperature.getText())) {
+            Integer temp = Integer.parseInt(String.valueOf(etTemperature.getText()));
+            if (temp > 200) {
+                DialogUtility.newMessageDialog(this, getString(R.string.warning),
+                        "Check the temperature value entered !!").show();
+                return false;
+            }
+
+        }
+        return true;
     }
 
     public String addMeasurement() throws Exception {

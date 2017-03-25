@@ -80,6 +80,14 @@ public class HealthBio implements Parcelable, Comparable<HealthBio> {
             return 1;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return condition.equalsIgnoreCase(((HealthBio)obj).getCondition()) &&
+                startDate.equalsIgnoreCase(((HealthBio)obj).getStartDate()) &&
+                conditionType.equalsIgnoreCase(((HealthBio)obj).getConditionType());
+
+    }
+
     public static final Creator<HealthBio> CREATOR = new Creator<HealthBio>() {
         @Override
         public HealthBio createFromParcel(Parcel in) {

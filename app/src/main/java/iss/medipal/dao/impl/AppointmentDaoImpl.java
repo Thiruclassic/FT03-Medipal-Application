@@ -33,6 +33,20 @@ public class AppointmentDaoImpl extends BaseDao implements AppointmentDao {
     }
 
     @Override
+    public Boolean deleteAppointment(int appointmentId){
+        Boolean status = false;
+        try {
+            status = database.delete(DBConstants.TABLE_APPOINTMENT, "ID" + "=" + " '" + appointmentId + "'", null) > 0;
+
+        } catch (Exception ex) {
+
+            Log.d("Error", ex.getMessage());
+
+        }
+        return status;
+
+    }
+    @Override
     public int addAppointment(Appointment appointment) {
 
         ContentValues values = new ContentValues();
@@ -48,12 +62,7 @@ public class AppointmentDaoImpl extends BaseDao implements AppointmentDao {
         return 0;
     }
 
-    @Override
-    public int deleteAppointment(int appointmentId) {
-        return 0;
-    }
-
-    @Override
+   @Override
     public Appointment getAppointmentById(int appointmentId) {
         return null;
     }
@@ -67,7 +76,6 @@ public class AppointmentDaoImpl extends BaseDao implements AppointmentDao {
         while (cursor.moveToNext()) {
             appointmentList.add(cursor.getString(1));
         }
-
         return appointmentList;
     }
 
@@ -93,7 +101,7 @@ public class AppointmentDaoImpl extends BaseDao implements AppointmentDao {
             try {
 
                 Appointment appointment = new Appointment();
-                appointment.setId(cursor.getColumnIndex(DBConstants.APP_ID));
+                appointment.setId(cursor.getInt(cursor.getColumnIndex(DBConstants.APP_ID)));
                 appointment.setAppointment(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.APP_DATETIME))));
                 appointment.setDescription(cursor.getString(cursor.getColumnIndex(DBConstants.APP_DESCRIPTION)));
                 appointment.setLocation(cursor.getString(cursor.getColumnIndex(DBConstants.APP_LOCATION)));

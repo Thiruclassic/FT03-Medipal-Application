@@ -51,7 +51,7 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
     private static final String APP_STRING = "APP_STRING";
     private EditText etDate, etTime, etLocation, etDescription;
     private Button btnSave;
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
     private SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm", Locale.getDefault());
     private SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("dd/MM/yyyy hh:mm", Locale.getDefault());
     //    Calendar currentCal = Calendar.getInstance();

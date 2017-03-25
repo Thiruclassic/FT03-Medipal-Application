@@ -26,6 +26,7 @@
         tl:tl_indicator_color="@color/white"
         tl:tl_textSelectColor="@color/colorPrimary"
         tl:tl_textUnselectColor="@color/white"
+        tl:tl_textsize="10sp"
         tl:tl_indicator_style="BLOCK"
         tl:tl_indicator_corner_radius="0dp"
         tl:tl_indicator_margin_top="0dp"

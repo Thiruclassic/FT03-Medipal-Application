@@ -6,9 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import iss.medipal.R;
 import iss.medipal.model.Measurement;
@@ -18,17 +21,24 @@ public class MeasurementActivity extends BaseActivity implements View.OnClickLis
     private Toolbar toolbar;
     private Button bloodButton, tempButton, pulseButton, weightButton;
 
-
+    private ImageView imageBack;
+    private TextView title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_measurement);
 
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+       /* toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Measurements");
         toolbar.inflateMenu(R.menu.menu_main_mes);
-        toolbar.setOnMenuItemClickListener(this);
+        toolbar.setOnMenuItemClickListener(this);*/
+
+        imageBack = (ImageView) findViewById(R.id.toolbar_left_icon);
+        title = (TextView) findViewById(R.id.toolbar_title);
+
+        title.setText("Measurements");
+        imageBack.setVisibility(View.VISIBLE);
 
         findViewsById();
         setListeners();
@@ -64,6 +74,15 @@ public class MeasurementActivity extends BaseActivity implements View.OnClickLis
         tempButton.setOnClickListener(this);
         pulseButton.setOnClickListener(this);
         weightButton.setOnClickListener(this);
+
+        ImageView.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Click", String.valueOf(v));
+                finish();
+            }
+        };
+        imageBack.setOnClickListener(clickListener);
 
     }
 

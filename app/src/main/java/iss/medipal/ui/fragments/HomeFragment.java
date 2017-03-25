@@ -1,6 +1,8 @@
 package iss.medipal.ui.fragments;
 
 import android.content.Context;
+import android.graphics.Camera;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;

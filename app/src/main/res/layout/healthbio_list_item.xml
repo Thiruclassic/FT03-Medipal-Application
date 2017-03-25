@@ -30,7 +30,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_delete_black"
+        android:src="@drawable/delete_forever"
         android:layout_alignTop="@+id/tvNote"
         android:layout_alignRight="@+id/tvNote"
         android:layout_alignEnd="@+id/tvNote"

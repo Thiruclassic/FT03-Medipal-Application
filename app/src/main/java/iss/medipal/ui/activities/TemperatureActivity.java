@@ -7,7 +7,11 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,22 +25,42 @@ import iss.medipal.model.Temperature;
 import iss.medipal.model.Weight;
 import iss.medipal.ui.adapters.RecyclerAdapter;
 
-public class TemperatureActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener  {
+public class TemperatureActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener,View.OnClickListener  {
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private MeasurementDao measurementDao;
+    private ImageView imageBack;
+    private TextView title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_temperature);
+        setContentView(R.layout.activity_temperature);/*
+        imageBack = (ImageView) findViewById(R.id.toolbar_left_icon);
+        title = (TextView) findViewById(R.id.toolbar_title);
 
-
+        title.setText("Temperature");*/
         toolbar = (Toolbar) findViewById(R.id.toolbarTemp);
         toolbar.setTitle("Temperature");
         toolbar.inflateMenu(R.menu.menu_main);
         toolbar.setOnMenuItemClickListener(this);
 
         setUpRecyclerView();
+//        setListeners();
+    }
+
+    private void setListeners() {
+        ImageView.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Click", String.valueOf(v));
+                finish();
+            }
+        };
+        imageBack.setOnClickListener(clickListener);
+    }
+    @Override
+    public void onClick(View v) {
+
     }
     private void setUpRecyclerView() {
 
@@ -61,12 +85,10 @@ public class TemperatureActivity extends BaseActivity implements Toolbar.OnMenuI
             case R.id.add_blood:
                 Intent intent = new Intent(TemperatureActivity.this, AddTemperatureActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.home:
-             /*   Intent intentHome = new Intent(TemperatureActivity.this, MeasurementActivity.class);
-                startActivity(intentHome);*/
-                finish();
-
+                  finish();
                 break;
         }
         return true;

@@ -4,9 +4,10 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.MeasurementActivity">
 
-    <include
+   <!-- <include
         android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
+        layout="@layout/toolbar" />-->
+    <include layout="@layout/toolbar_generic"/>
 
     <GridLayout
         android:layout_width="match_parent"

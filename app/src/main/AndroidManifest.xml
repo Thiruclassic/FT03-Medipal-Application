@@ -39,6 +39,7 @@
             </intent-filter>
         </receiver>
 
+        <activity android:name=".ui.activities.TutorialActivity" />
         <activity android:name=".ui.activities.WeightActivity" />
         <activity android:name=".ui.activities.AddWeightActivity" />
         <activity android:name=".ui.activities.TemperatureActivity" />

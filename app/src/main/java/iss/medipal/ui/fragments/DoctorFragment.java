@@ -148,6 +148,11 @@ public class DoctorFragment extends Fragment {
                         Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(number));
                         startActivity(callIntent);
                         return true;
+                    case R.id.sms_contact:
+                        Toast.makeText(getContext(), "texting " + doctorContacts.get(position).getContactName(), Toast.LENGTH_SHORT).show();
+                        String text_number = Long.toString(doctorContacts.get(position).getContactNo());
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", text_number, null)));
+                        return true;
                     case R.id.edit_contact:
                         Intent intent = new Intent(getActivity(), Add_ICE.class);
                         Bundle bundle=new Bundle();

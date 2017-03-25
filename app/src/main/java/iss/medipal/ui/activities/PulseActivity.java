@@ -6,7 +6,11 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,16 +23,23 @@ import iss.medipal.model.Pulse;
 import iss.medipal.model.Weight;
 import iss.medipal.ui.adapters.RecyclerAdapter;
 
-public class PulseActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
+public class PulseActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener,View.OnClickListener {
 
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private MeasurementDao measurementDao;
+    private ImageView imageBack;
+    private TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pulse);
+
+    /*    imageBack = (ImageView) findViewById(R.id.toolbar_left_icon);
+        title = (TextView) findViewById(R.id.toolbar_title);
+
+        title.setText("Pulse");*/
 
         toolbar = (Toolbar) findViewById(R.id.toolbarPulse);
         toolbar.setTitle("Pulse");
@@ -36,6 +47,22 @@ public class PulseActivity extends BaseActivity implements Toolbar.OnMenuItemCli
         toolbar.setOnMenuItemClickListener(this);
 
         setUpRecyclerView();
+//        setListeners();
+    }
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    private void setListeners() {
+        ImageView.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Click", String.valueOf(v));
+                finish();
+            }
+        };
+        imageBack.setOnClickListener(clickListener);
     }
 
     private void setUpRecyclerView() {
@@ -62,6 +89,7 @@ public class PulseActivity extends BaseActivity implements Toolbar.OnMenuItemCli
             case R.id.add_blood:
                 Intent intent = new Intent(PulseActivity.this, AddPulseActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.home:
                /* Intent intentHome = new Intent(PulseActivity.this, MeasurementActivity.class);

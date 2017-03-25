@@ -115,14 +115,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                     Integer diastolic = bloodPressure.getDiastolic();
 
                     this.title1.setText("S :" + systolic + " mmHg" + " D: " + diastolic + " mmHg");
-                    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
                     Date dateTime = bloodPressure.getMeasuredOn();
-                    Calendar calendarhere = Calendar.getInstance();
-                    calendarhere.set(Calendar.YEAR, dateTime.getYear());
-                    calendarhere.set(Calendar.MONTH, dateTime.getMonth());
-                    calendarhere.set(Calendar.DATE, dateTime.getDate());
 
-                    this.title2.setText(dateFormatter.format(calendarhere.getTime()));
+                    this.title2.setText(dateFormatter.format(dateTime));
                     this.imgThumb.setImageResource(bloodPressure.getImageType());
                     if((systolic<=90) && (diastolic <=60)){
                         //Low blood pressure
@@ -150,14 +146,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                     //Need to implement BMI calculator
                     Weight weight = (Weight) current;
                     this.title1.setText(" " + weight.getWeight() + "Kg");
-                    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
                     Date dateTime = weight.getMeasuredOn();
-                    Calendar calendarhere = Calendar.getInstance();
-                    calendarhere.set(Calendar.YEAR, dateTime.getYear());
-                    calendarhere.set(Calendar.MONTH, dateTime.getMonth());
-                    calendarhere.set(Calendar.DATE, dateTime.getDate());
 
-                    this.title2.setText(dateFormatter.format(calendarhere.getTime()));
+                    this.title2.setText(dateFormatter.format(dateTime));
                     this.imgThumb.setImageResource(weight.getImageType());
 
 
@@ -167,14 +159,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                     Temperature temp = (Temperature) current;
                     Integer temperature = temp.getTemperature();
                     this.title1.setText(" " +temperature + " `C");
-                    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
                     Date dateTime = temp.getMeasuredOn();
-                    Calendar calendarhere = Calendar.getInstance();
-                    calendarhere.set(Calendar.YEAR, dateTime.getYear());
-                    calendarhere.set(Calendar.MONTH, dateTime.getMonth());
-                    calendarhere.set(Calendar.DATE, dateTime.getDate());
 
-                    this.title2.setText(dateFormatter.format(calendarhere.getTime()));
+
+                    this.title2.setText(dateFormatter.format(dateTime));
                     this.imgThumb.setImageResource(temp.getImageType());
 
                     if(temperature<37){
@@ -199,14 +188,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                     Pulse pulse = (Pulse) current;
                     Integer pulseRate = pulse.getPulse();
                     this.title1.setText(" " +pulseRate+ " bpm");
-                    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
                     Date dateTime = pulse.getMeasuredOn();
-                    Calendar calendarhere = Calendar.getInstance();
-                    calendarhere.set(Calendar.YEAR, dateTime.getYear());
-                    calendarhere.set(Calendar.MONTH, dateTime.getMonth());
-                    calendarhere.set(Calendar.DATE, dateTime.getDate());
 
-                    this.title2.setText(dateFormatter.format(calendarhere.getTime()));
+                    this.title2.setText(dateFormatter.format(dateTime));
                     this.imgThumb.setImageResource(pulse.getImageType());
 
                     if(pulseRate<=60){

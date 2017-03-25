@@ -148,9 +148,13 @@ public class FriendFragment extends Fragment {
                     case R.id.call_contact:
                         Toast.makeText(getContext(), "calling " + friendContacts.get(position).getContactName(),   Toast.LENGTH_SHORT).show();
                         String number = "tel:" + friendContacts.get(position).getContactNo();
-
                         Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(number));
                         startActivity(callIntent);
+                        return true;
+                    case R.id.sms_contact:
+                        Toast.makeText(getContext(), "texting " + friendContacts.get(position).getContactName(), Toast.LENGTH_SHORT).show();
+                        String text_number = Long.toString(friendContacts.get(position).getContactNo());
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", text_number, null)));
                         return true;
                     case R.id.edit_contact:
                         Intent intent = new Intent(getActivity(), Add_ICE.class);

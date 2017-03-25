@@ -22,6 +22,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import iss.medipal.MediPalApplication;
 import iss.medipal.R;
 import iss.medipal.constants.Constants;
 import iss.medipal.constants.DBConstants;
@@ -125,7 +126,6 @@ public class AddhealthBioActivity extends AppCompatActivity {
         return true;
     }
 
-    HealthBioDaoImpl healthBioDao=new HealthBioDaoImpl(this);
 
     private View.OnClickListener mSubmitListener = new View.OnClickListener() {
         @Override
@@ -143,18 +143,9 @@ public class AddhealthBioActivity extends AppCompatActivity {
             healthBio.setStartDate(mStartDate.getText().toString());
             int Rb_id=mConditionType_Rg.getCheckedRadioButtonId();
             mConditionType_Rb= (RadioButton)findViewById(Rb_id);
-
             healthBio.setConditionType(mConditionType_Rb.getTag().toString());
-
-            int rowId = healthBioDao.createHealthBio(healthBio);
-
-            if(rowId == -1 )
-                Toast.makeText(this,getString(R.string.unsuccesful),Toast.LENGTH_SHORT).show() ;
-            else {
-                Toast.makeText(this, getString(R.string.succesful), Toast.LENGTH_SHORT).show();
-                finish();
-            }
-
+            MediPalApplication.getPersonStore().addHealthBio(healthBio);
+            finish();
         }
     }
 
@@ -168,7 +159,7 @@ public class AddhealthBioActivity extends AppCompatActivity {
         mCondition.setText(healthBio.getCondition());
         Date date = null;
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat(Constants.HEALTH_BIO_DATE_TIME_FORMAT);
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
             date = sdf.parse(healthBio.getStartDate());
         } catch (ParseException e) {
             e.printStackTrace();
