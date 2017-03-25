@@ -236,7 +236,7 @@ public class PersonStore {
                 }
             }
         }
-        mAddUpdateContactTask = new AddUpdateContactTask(mContext,Boolean.FALSE);
+        mAddUpdateContactTask = new AddUpdateContactTask(mContext,isEdit);
         mAddUpdateContactTask.execute(contact);
     }
 

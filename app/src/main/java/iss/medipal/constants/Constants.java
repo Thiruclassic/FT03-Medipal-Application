@@ -39,6 +39,12 @@ public class Constants {
     public static final int FAMILY_CONTACT = 1;
     public static final int FRIEND_CONTACT = 2;
     public static final int DOCTOR_CONTACT = 3;
+    public static final int HIGH_PRIORITY = 1;
+    public static final int MED_PRIORITY = 2;
+    public static final int LOW_PRIORITY = 3;
+    public static final String HIGH = "HIGH";
+    public static final String MED = "MED";
+    public static final String LOW = "LOW";
     public static final String FAMILY = "FAMILY";
     public static final String FRIEND = "FRIEND";
     public static final String DOCTOR = "DOCTOR";

@@ -33,9 +33,11 @@ public class PriorityAdapter extends BaseAdapter {
     static class ViewHolder{
         TextView tvName;
         ImageView contactIcon;
+        ImageView priorityIcon;
         public ViewHolder(View view){
             tvName = (TextView)view.findViewById(R.id.tv_name);
             contactIcon = (ImageView)view.findViewById((R.id.contact_Icon));
+            priorityIcon = (ImageView)view.findViewById(R.id.priority_Icon);
         }
     }
 
@@ -69,6 +71,7 @@ public class PriorityAdapter extends BaseAdapter {
             viewHolder = new ViewHolder(convertView);
             viewHolder.tvName = (TextView) convertView.findViewById(R.id.tv_name);
             viewHolder.contactIcon = (ImageView) convertView.findViewById(R.id.contact_Icon);
+            viewHolder.priorityIcon = (ImageView) convertView.findViewById(R.id.priority_Icon);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (PriorityAdapter.ViewHolder) convertView.getTag();
@@ -88,6 +91,21 @@ public class PriorityAdapter extends BaseAdapter {
                 break;
             default:
                 viewHolder.contactIcon.setImageResource(R.drawable.contacts_icon);
+                break;
+        }
+        switch (contacts.getSequence())
+        {
+            case Constants.HIGH_PRIORITY:
+                viewHolder.priorityIcon.setImageResource(R.drawable.high_priority);
+                break;
+            case Constants.MED_PRIORITY:
+                viewHolder.priorityIcon.setImageResource(R.drawable.med_priority);
+                break;
+            case Constants.LOW_PRIORITY:
+                viewHolder.priorityIcon.setImageResource(R.drawable.low_priority);
+                break;
+            default:
+                viewHolder.priorityIcon.setImageResource(R.drawable.high_priority);
                 break;
         }
         viewHolder.tvName.setText(contacts.getContactName());
