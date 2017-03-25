@@ -138,6 +138,7 @@ public class AddTemperatureActivity extends BaseActivity implements View.OnClick
                     }
                     Intent intent = new Intent(AddTemperatureActivity.this, TemperatureActivity.class);
                     startActivity(intent);
+                    finish();
                     break;
                 }
         }
