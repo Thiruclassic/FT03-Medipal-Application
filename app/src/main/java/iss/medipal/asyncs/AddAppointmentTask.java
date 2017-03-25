@@ -14,33 +14,29 @@ import iss.medipal.dao.impl.AppointmentDaoImpl;
 import iss.medipal.dao.impl.ReminderDaoImpl;
 import iss.medipal.model.Appointment;
 import iss.medipal.model.Medicine;
+import iss.medipal.model.Reminder;
 import iss.medipal.receivers.AlarmReceiver;
 
 /**
  * Created by Sreekumar on 3/12/2017.
- *
- * todo reminder
  */
 
 public class AddAppointmentTask  extends AsyncTask<Appointment, Void, Long> {
-;
+
     private Context mContext;
     private AppointmentDaoImpl mAppointmentDao;
-//    private ReminderDao mReminderDao;
+    private Object[] args;
 
     public AddAppointmentTask(Context context){
         this.mContext=context;
         this.mAppointmentDao =new AppointmentDaoImpl(context);
-//        this.mReminderDao=new ReminderDaoImpl(context);
 
     }
     @Override
     protected Long doInBackground(Appointment... params) {
-       /* int reminderId = mReminderDao.addReminder(params[0].getReminder()).getId();
-        params[0].setReminderId(reminderId);
-        params[0].getReminder().setId(reminderId);
-        setAppointmentReminder(params[0]);*/
+        Reminder reminder =new Reminder(2,2,params[0].getAppointment());
         long result = mAppointmentDao.addAppointment(params[0]);
+        args=new Object[]{params[0],reminder};
         return result;
     }
 
@@ -49,6 +45,8 @@ public class AddAppointmentTask  extends AsyncTask<Appointment, Void, Long> {
         if (result != -1)
             if (mAppointmentDao != null)
                 mAppointmentDao.close();
+        AddReminderAlarmTask mAddReminderAlarmTask=new AddReminderAlarmTask(mContext);
+        mAddReminderAlarmTask.execute(args);
     }
 
     public void setAppointmentReminder(Appointment appointmentReminder)

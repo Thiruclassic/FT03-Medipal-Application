@@ -52,7 +52,7 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
     private EditText etDate, etTime, etLocation, etDescription;
     private Button btnSave;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
-    private SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm", Locale.getDefault());
+    private SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a", Locale.getDefault());
     private SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("dd/MM/yyyy hh:mm", Locale.getDefault());
     //    Calendar currentCal = Calendar.getInstance();
     Calendar dateCalendar;
@@ -252,7 +252,14 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
         TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                etTime.setText(hourOfDay + ":" + minute);
+
+                String AM_PM ;
+                if(hourOfDay < 12) {
+                    AM_PM = "AM";
+                } else {
+                    AM_PM = "PM";
+                }
+                etTime.setText(hourOfDay + ":" + minute+ " " + AM_PM);
             }
 
         }, hour, minute, false);

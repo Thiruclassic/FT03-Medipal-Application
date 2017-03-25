@@ -19,6 +19,12 @@ public class Reminder implements Parcelable{
     public Reminder(){
 
     }
+    public Reminder(int frequency,int interval,Date startTime){
+        this.frequency=frequency;
+        this.Interval=interval;
+        this.startTime=startTime;
+
+    }
 
     protected Reminder(Parcel in) {
         id = in.readInt();
