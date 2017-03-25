@@ -185,7 +185,7 @@ public class HomeFragment extends BaseFragment implements
      */
     public void populateUi(List<MedDayModel> tempMeds){
         mViewPager.setAdapter(new DoseViewPagerAdapter(getChildFragmentManager(), tempMeds, mMedicines, mCurrentDay));
-        mViewPager.setPageTransformer(true, new CubeInTransformer());
+        mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         mCircleIndicator.setViewPager(mViewPager);
     }
 
@@ -252,80 +252,6 @@ public class HomeFragment extends BaseFragment implements
 
     public interface MedInterface {
         void gotoAddMed();
-    }
-
-    public class CubeInTransformer implements ViewPager.PageTransformer {
-
-        private Matrix OFFSET_MATRIX = new Matrix();
-        private Camera OFFSET_CAMERA = new Camera();
-        private float[] OFFSET_TEMP_FLOAT = new float[2];
-
-        protected void onTransform(View view, float position) {
-            final float rotation = (position < 0 ? 30f : -30f) * Math.abs(position);
-
-            view.setTranslationX(getOffsetXForRotation(rotation, view.getWidth(), view.getHeight()));
-            view.setPivotX(view.getWidth() * 0.5f);
-            view.setPivotY(0);
-            view.setRotationY(rotation);
-        }
-
-        protected final float getOffsetXForRotation(float degrees, int width, int height) {
-            OFFSET_MATRIX.reset();
-            OFFSET_CAMERA.save();
-            OFFSET_CAMERA.rotateY(Math.abs(degrees));
-            OFFSET_CAMERA.getMatrix(OFFSET_MATRIX);
-            OFFSET_CAMERA.restore();
-
-            OFFSET_MATRIX.preTranslate(-width * 0.5f, -height * 0.5f);
-            OFFSET_MATRIX.postTranslate(width * 0.5f, height * 0.5f);
-            OFFSET_TEMP_FLOAT[0] = width;
-            OFFSET_TEMP_FLOAT[1] = height;
-            OFFSET_MATRIX.mapPoints(OFFSET_TEMP_FLOAT);
-            return (width - OFFSET_TEMP_FLOAT[0]) * (degrees > 0.0f ? 1.0f : -1.0f);
-        }
-
-
-
-        @Override
-        public void transformPage(View view, float position) {
-            onPreTransform(view, position);
-            onTransform(view, position);
-            onPostTransform(view, position);
-        }
-
-        protected boolean hideOffscreenPages() {
-            return true;
-        }
-
-        /**
-         * Called each {@link #transformPage(android.view.View, float)} before {{@link #onTransform(android.view.View, float)} is called.
-         *
-         * @param view
-         * @param position
-         */
-        protected void onPreTransform(View view, float position) {
-            final float width = view.getWidth();
-
-            view.setRotationX(0);
-            view.setRotationY(0);
-            view.setRotation(0);
-            view.setScaleX(1);
-            view.setScaleY(1);
-            view.setPivotX(0);
-            view.setPivotY(0);
-            view.setTranslationY(0);
-            view.setTranslationX(0f);
-
-            if (hideOffscreenPages()) {
-                view.setAlpha(position <= -1f || position >= 1f ? 0f : 1f);
-            } else {
-                view.setAlpha(1f);
-            }
-        }
-
-        protected void onPostTransform(View view, float position) {
-        }
-
     }
 
     public class ZoomOutPageTransformer implements ViewPager.PageTransformer {
