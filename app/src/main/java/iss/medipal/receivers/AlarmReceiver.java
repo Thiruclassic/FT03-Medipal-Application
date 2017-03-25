@@ -11,6 +11,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.RemoteInput;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -24,7 +25,6 @@ import iss.medipal.constants.DBConstants;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
-    int currentInterval;
     @Override
     public void onReceive(Context context, Intent intent) {
 
@@ -45,17 +45,16 @@ public class AlarmReceiver extends BroadcastReceiver {
 
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             int notifyId = intent.getIntExtra(DBConstants.REMINDER_ID, 0);
-            String medicineName = intent.getStringExtra(DBConstants.MEDICINE_NAME);
-            int dosage = intent.getIntExtra(DBConstants.MEDICINE_DOSAGE, 0);
-            String message = "Need to take "  + dosage + " pills";
-            currentInterval++;
+
+            String message =  getMedicineNotificationMessage(context, intent);
+
 
 
         Intent myintent=new Intent(context,NotificationActionReceiver.class);
         PendingIntent pendingIntent=PendingIntent.getBroadcast(context, (int)AlarmManager.INTERVAL_DAY, myintent, PendingIntent.FLAG_UPDATE_CURRENT);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context).setSmallIcon(android.support.v7.appcompat.R.drawable.notification_icon_background).
                     setContentTitle(DBConstants.TABLE_REMINDER)
-                    .setContentText(message + " of " + medicineName).addAction(R.drawable.ic_tick,context.getString(R.string.medication_positive_text),pendingIntent)
+                    .setContentText(message).addAction(R.drawable.ic_tick,context.getString(R.string.medication_positive_text),pendingIntent)
                     .addAction(R.drawable.ic_clear_black,context.getString(R.string.medication_negative_text),pendingIntent);
 
             builder.setAutoCancel(Boolean.TRUE);
@@ -80,8 +79,8 @@ public class AlarmReceiver extends BroadcastReceiver {
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 String medicineName = intent.getStringExtra(DBConstants.MEDICINE_NAME);
 
-                String message = "Need to Refill " + medicineName;
-                currentInterval++;
+                String message = context.getString(R.string.need_to) + Constants.SPACE+context.getString(R.string.take) + medicineName;
+
 
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context).setSmallIcon(android.support.v7.appcompat.R.drawable.notification_icon_background).
                         setContentTitle(DBConstants.TABLE_REMINDER)
@@ -98,5 +97,38 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void setListeners()
     {
 
+    }
+
+    public String getMedicineNotificationMessage(Context context,Intent intent)
+    {
+        String medicineName = intent.getStringExtra(DBConstants.MEDICINE_NAME);
+        int dosage = intent.getIntExtra(DBConstants.MEDICINE_DOSAGE, 0);
+
+        StringBuilder builder=new StringBuilder(context.getString(R.string.need_to));
+        builder.append(intent.getStringExtra(DBConstants.REMINDER_START_TIME));
+        Log.d("Triggered",intent.getStringExtra(DBConstants.REMINDER_START_TIME));
+        builder.append(Constants.SPACE);
+        builder.append(context.getString(R.string.take));
+        builder.append(Constants.SPACE);
+        builder.append(dosage);
+        builder.append(Constants.SPACE);
+        if(dosage>1) {
+            builder.append(context.getString(R.string.pills));
+        }
+        else
+        {
+            builder.append(context.getString(R.string.pill));
+        }
+        builder.append(Constants.SPACE);
+        builder.append(context.getString(R.string.of));
+        builder.append(Constants.SPACE);
+        builder.append(medicineName);
+       /* builder.append("\n");
+        builder.append(context.getString(R.string.dosage_time));
+        builder.append(Constants.SPACE);
+        builder.append(intent.getStringExtra(DBConstants.REMINDER_START_TIME));
+*/
+
+        return builder.toString();
     }
 }

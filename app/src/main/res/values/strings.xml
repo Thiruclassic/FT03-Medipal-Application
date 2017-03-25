@@ -172,5 +172,13 @@
 
     <string name="medication_positive_text">I took it</string>
     <string name="medication_negative_text">I Missed it</string>
+    <string name="need_to">Need to </string>
+    <string name="take">take</string>
+    <string name="refill">refill</string>
+    <string name="pills">Pills</string>
+    <string name="pill">Pill</string>
+    <string name="of">of</string>
+    <string name="colon">:</string>
+    <string name="dosage_time">Dosage Time</string>
 
 </resources>

@@ -3,16 +3,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.activities.SplashActivity"
-    android:background="@color/white">
+    android:background="@color/colorPrimary">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_name"
         android:textSize="@dimen/splash_text_size"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textAllCaps="true"
-        android:layout_centerInParent="true"/>
+        android:layout_above="@+id/rotateloading"
+        android:layout_marginBottom="20dp"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"/>
+
+    <iss.medipal.ui.customViews.RotateLoading
+        android:id="@+id/rotateloading"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerInParent="true"
+        app:loading_speed="11"
+        app:loading_width="5dp"/>
 
 </RelativeLayout>
