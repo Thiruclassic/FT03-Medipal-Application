@@ -47,13 +47,10 @@ public class AddBpActivity extends BaseActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_bp);
 
-/*        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Add Blood pressure readings ...(mmHg)");*/
-
         imageBack = (ImageView) findViewById(R.id.toolbar_left_icon);
         title = (TextView) findViewById(R.id.toolbar_title);
 
-        title.setText("Add Blood pressure readings (mmHg)");
+        title.setText("Add Blood pressure readings");
         imageBack.setVisibility(View.VISIBLE);
 
         findViewsById();
@@ -87,10 +84,10 @@ public class AddBpActivity extends BaseActivity implements View.OnClickListener 
         measuredOn.setOnClickListener(appDateListner);
         measuredOn.setOnFocusChangeListener(mDateFocusListener);
 
-        ImageView.OnClickListener clickListener=new View.OnClickListener() {
+        ImageView.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Click",String.valueOf(v));
+                Log.d("Click", String.valueOf(v));
                 finish();
             }
         };
@@ -117,7 +114,6 @@ public class AddBpActivity extends BaseActivity implements View.OnClickListener 
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
-//        datePickerDialog.show();
         return datePickerDialog;
     }
 
@@ -145,10 +141,10 @@ public class AddBpActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
-    public Boolean validateBloodPressureDetails(){
+    public Boolean validateBloodPressureDetails() {
 
 
-       if (TextUtils.isEmpty(etSystolic.getText())) {
+        if (TextUtils.isEmpty(etSystolic.getText())) {
             DialogUtility.newMessageDialog(this, getString(R.string.warning),
                     "Enter Systolic in mmHg").show();
             return false;
@@ -160,17 +156,18 @@ public class AddBpActivity extends BaseActivity implements View.OnClickListener 
             DialogUtility.newMessageDialog(this, getString(R.string.warning),
                     "Enter Measured on time").show();
             return false;
-        } else if(!(TextUtils.isEmpty(etSystolic.getText())&&(!TextUtils.isEmpty(etDiastolic.getText())))){
-           Integer systolic = Integer.parseInt(String.valueOf(etSystolic.getText()));
-           Integer diastolic = Integer.parseInt(String.valueOf(etDiastolic.getText()));
-           if(systolic>191 || diastolic >101) {
-               DialogUtility.newMessageDialog(this, getString(R.string.warning),
-                       "Check the value of systolic and diastolic entered !!").show();
-               return false;
-           }
+        } else if (!(TextUtils.isEmpty(etSystolic.getText()) && (!TextUtils.isEmpty(etDiastolic.getText())))) {
+            Integer systolic = Integer.parseInt(String.valueOf(etSystolic.getText()));
+            Integer diastolic = Integer.parseInt(String.valueOf(etDiastolic.getText()));
+            if (systolic > 191 || diastolic > 101) {
+                DialogUtility.newMessageDialog(this, getString(R.string.warning),
+                        "Check the value of systolic and diastolic entered !!").show();
+                return false;
+            }
         }
         return true;
     }
+
     public String addMeasurement() throws Exception {
         BloodPressure measurement = getMeasurementDetails();
         measurementDao = MeasurementDaoImpl.newInstance(AddBpActivity.this);
@@ -193,9 +190,6 @@ public class AddBpActivity extends BaseActivity implements View.OnClickListener 
         dateTime.set(Calendar.YEAR, date.get(Calendar.YEAR));
         try {
             measurement = new BloodPressure(systolic.intValue(), diastolic.intValue(), dateTime.getTime());
-         /*   measurement.setMeasuredOn(dateTime.getTime());
-            measurement.setDiastolic(diastolic);
-            measurement.setSystolic(systolic);*/
 
         } catch (Exception ex) {
 
