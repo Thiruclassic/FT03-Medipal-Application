@@ -54,7 +54,7 @@ public class AddWeightActivity extends BaseActivity implements View.OnClickListe
         imageBack = (ImageView) findViewById(R.id.toolbar_left_icon);
         title = (TextView) findViewById(R.id.toolbar_title);
 
-        title.setText("Add Weight(Kg)");
+        title.setText("Add Weight readings");
         imageBack.setVisibility(View.VISIBLE);
 
         findViewsById();

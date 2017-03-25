@@ -76,7 +76,8 @@
                 android:layout_height="30dp"
                 android:layout_margin="7dp"
                 android:contentDescription="delete_mes"
-                android:src="@drawable/delete_forever"/>
+                android:src="@drawable/ic_delete_black"
+              />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

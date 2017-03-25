@@ -34,7 +34,7 @@ tools:context="iss.medipal.ui.activities.AddWeightActivity">
             android:id="@+id/etWeight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/weight"
+            android:hint="@string/weightText"
             android:inputType="number" />
     </android.support.design.widget.TextInputLayout>
 
