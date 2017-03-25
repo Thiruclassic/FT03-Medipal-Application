@@ -134,6 +134,7 @@ public class AddPulseActivity extends BaseActivity implements View.OnClickListen
                     }
                     Intent intent = new Intent(AddPulseActivity.this, PulseActivity.class);
                     startActivity(intent);
+                    finish();
                     break;
                 }
         }

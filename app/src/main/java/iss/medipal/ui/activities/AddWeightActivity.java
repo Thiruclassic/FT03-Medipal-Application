@@ -134,6 +134,7 @@ public class AddWeightActivity extends BaseActivity implements View.OnClickListe
                     }
                     Intent intent = new Intent(AddWeightActivity.this, WeightActivity.class);
                     startActivity(intent);
+                    finish();
                     break;
                 }
         }

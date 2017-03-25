@@ -139,6 +139,7 @@ public class AddBpActivity extends BaseActivity implements View.OnClickListener 
                     }
                     Intent intent = new Intent(AddBpActivity.this, BloodPressureActivity.class);
                     startActivity(intent);
+                    finish();
                     break;
                 }
         }
