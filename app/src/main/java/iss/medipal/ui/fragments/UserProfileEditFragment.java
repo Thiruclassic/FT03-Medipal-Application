@@ -279,8 +279,10 @@ public class UserProfileEditFragment extends BaseFragment implements UserProfile
                         mUnitEditText.getText().toString());
                 personalBio.setPostalCode(mPostalCodeEditText.getText().toString());
                 mPersonStore.addPersonBio(personalBio);
-              //  SharedPreferenceManager.setAppLaunchStatus(getActivity(), false);
-                ((UserProfileActivity)getActivity()).launchActivity(HealthBioActivity.class);
+                SharedPreferenceManager.setAppLaunchStatus(getActivity(), false);
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(Constants.ACTIVITY_HEALTH_EXTRAS, true);
+                ((UserProfileActivity)getActivity()).launchActivityWithExtras(HealthBioActivity.class, bundle);
             }
         }
     };

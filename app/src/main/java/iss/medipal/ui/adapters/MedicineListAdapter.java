@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.media.Image;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -25,6 +26,7 @@ import iss.medipal.constants.Constants;
 import iss.medipal.model.Medicine;
 import iss.medipal.model.PersonStore;
 import iss.medipal.ui.fragments.AddMedicineFragment;
+import iss.medipal.ui.fragments.ViewMedicineFragment;
 import iss.medipal.util.DialogUtility;
 
 /**
@@ -33,10 +35,12 @@ import iss.medipal.util.DialogUtility;
 public class MedicineListAdapter extends BaseAdapter {
     private Context mContext;
     private List<Medicine> mMedicines;
+    private Fragment mFragment;
 
-    public MedicineListAdapter(Context context , List<Medicine> medicines) {
+    public MedicineListAdapter(Context context , List<Medicine> medicines, Fragment fragment) {
         this.mContext = context;
         this.mMedicines = medicines;
+        this.mFragment = fragment;
     }
 
     @Override
@@ -83,6 +87,7 @@ public class MedicineListAdapter extends BaseAdapter {
                 Medicine medicine=mMedicines.remove(position);
                 notifyDataSetChanged();
                 MediPalApplication.getPersonStore().deleteMedicine(medicine);
+                ((ViewMedicineFragment)mFragment).doCallback();
             }
         };
         View.OnClickListener clickListener=new View.OnClickListener() {

@@ -30,6 +30,7 @@
                 app:hintTextAppearance="@style/HintTextStyle">
 
                 <EditText
+                    style="@style/InputLayoutEditTextStyleDark"
                     android:id="@+id/et_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -47,6 +48,7 @@
                 app:hintTextAppearance="@style/HintTextStyle">
 
                 <EditText
+                    style="@style/InputLayoutEditTextStyleDark"
                     android:id="@+id/et_appdate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -64,6 +66,7 @@
                 app:hintTextAppearance="@style/HintTextStyle">
 
               <android.support.v7.widget.AppCompatEditText
+                  style="@style/InputLayoutEditTextStyleDark"
                     android:id="@+id/et_appTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -81,6 +84,7 @@
                 app:hintTextAppearance="@style/HintTextStyle">
 
                 <android.support.v7.widget.AppCompatEditText
+                    style="@style/InputLayoutEditTextStyleDark"
                     android:id="@+id/et_description"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"

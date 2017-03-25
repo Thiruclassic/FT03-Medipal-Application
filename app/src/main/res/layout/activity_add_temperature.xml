@@ -31,10 +31,11 @@
             android:orientation="horizontal">
 
             <EditText
+                style="@style/InputLayoutEditTextStyleDark"
                 android:id="@+id/etTemperature"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/temperature"
+                android:hint="@string/temperatureText"
                 android:inputType="number" />
         </android.support.design.widget.TextInputLayout>
 
@@ -44,6 +45,7 @@
             android:layout_height="wrap_content">
 
             <EditText
+                style="@style/InputLayoutEditTextStyleDark"
                 android:id="@+id/etTemperatureMeasuredOn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

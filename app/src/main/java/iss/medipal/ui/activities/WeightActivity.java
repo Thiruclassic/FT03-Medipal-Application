@@ -6,7 +6,11 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +26,14 @@ import iss.medipal.ui.adapters.RecyclerAdapter;
  * Created by Sreekumar on 19/3/2017
  */
 
-public class WeightActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
+public class WeightActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener,View.OnClickListener {
 
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private MeasurementDao measurementDao;
 
+    private ImageView imageBack;
+    private TextView title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,10 +41,31 @@ public class WeightActivity extends BaseActivity implements Toolbar.OnMenuItemCl
 
         toolbar = (Toolbar) findViewById(R.id.toolbarWeight);
         toolbar.setTitle("Weight");
+
+  /*      imageBack = (ImageView) findViewById(R.id.toolbar_left_icon);
+        title = (TextView) findViewById(R.id.toolbar_title);
+
+        toolbar.setTitle("Weight");*/
         toolbar.inflateMenu(R.menu.menu_main);
         toolbar.setOnMenuItemClickListener(this);
 
         setUpRecyclerView();
+//        setListeners();
+    }
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    private void setListeners() {
+        ImageView.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Click", String.valueOf(v));
+                finish();
+            }
+        };
+        imageBack.setOnClickListener(clickListener);
     }
 
     private void setUpRecyclerView() {
@@ -65,14 +92,9 @@ public class WeightActivity extends BaseActivity implements Toolbar.OnMenuItemCl
             case R.id.add_blood:
                 Intent intent = new Intent(WeightActivity.this, AddWeightActivity.class);
                 startActivity(intent);
-              /*  AddBloodPressureFragment addBloodPressureFragment = AddBloodPressureFragment.newInstance("bp","bp1");
-                FragmentManager manager = getSupportFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.replace(R.id.add_blood_pressure,addBloodPressureFragment).commit();*/
+                finish();
                 break;
             case R.id.home:
-               /* Intent intentHome = new Intent(WeightActivity.this, MeasurementActivity.class);
-                startActivity(intentHome);*/
                 finish();
                 break;
         }
@@ -100,10 +122,6 @@ public class WeightActivity extends BaseActivity implements Toolbar.OnMenuItemCl
 
                 Measurement weight = new Weight(weightList.get(i).getId(), images[3], weightList.get(i).getWeight(),
                         weightList.get(i).getMeasuredOn());
-       /*   bloodPressure.setSystolic(measurementList.get(i).getSystolic());
-            bloodPressure.setDiastolic(measurementList.get(i).getDiastolic());
-            bloodPressure.setMeasuredOn(measurementList.get(i).getMeasuredOn());
-            bloodPressure.setImageType(images[0]);*/
                 data.add(weight);
             }
         }

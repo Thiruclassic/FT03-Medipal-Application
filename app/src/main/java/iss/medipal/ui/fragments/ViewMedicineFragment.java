@@ -8,27 +8,20 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import iss.medipal.MediPalApplication;
 import iss.medipal.R;
 import iss.medipal.constants.Constants;
 import iss.medipal.dao.MedicineDao;
-import iss.medipal.dao.impl.MedicineDaoImpl;
 import iss.medipal.model.Medicine;
-import iss.medipal.ui.activities.MainActivity;
 import iss.medipal.ui.adapters.MedicineListAdapter;
 import iss.medipal.util.AppHelper;
 
@@ -115,12 +108,10 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
                 if (medicineListAdapter != null) {
                     medicineListAdapter.setMedicines(medicines);
                 } else {
-                    medicineListAdapter = new MedicineListAdapter(getContext(), medicines);
+                    medicineListAdapter = new MedicineListAdapter(getContext(), medicines, this);
                     medicineList.setAdapter(medicineListAdapter);
                 }
-                if(mMedAddCallback != null){
-                    mMedAddCallback.onMedAdded();
-                }
+                doCallback();
 
             }
         } catch (NullPointerException e){
@@ -138,10 +129,16 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
         medicines = MediPalApplication.getPersonStore().getmPersonalBio().getMedicines();
         if(medicines!=null)
         {
-            medicineListAdapter = new MedicineListAdapter(getContext(), medicines);
+            medicineListAdapter = new MedicineListAdapter(getContext(), medicines, this);
             medicineList.setAdapter(medicineListAdapter);
         }
 
+    }
+
+    public void doCallback(){
+        if(mMedAddCallback != null){
+            mMedAddCallback.onMedAddedOrDeleted();
+        }
     }
 
     public void setListeners() {
@@ -172,6 +169,6 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
     }
 
     public interface HomeInterface {
-        void onMedAdded();
+        void onMedAddedOrDeleted();
     }
 }

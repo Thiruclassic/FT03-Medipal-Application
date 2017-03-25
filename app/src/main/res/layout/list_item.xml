@@ -61,16 +61,7 @@
                 android:layout_margin="7dp"
                 android:contentDescription="delete_mes"
                 android:src="@drawable/delete_forever"
-                android:tint="@color/grey_500"/>
-
-           <!-- <ImageView
-                android:id="@+id/img_row_add"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_margin="7dp"
-                android:contentDescription="@string/add_image"
-                android:src="@drawable/ic_make_copy"
-                android:tint="@color/grey_500"/>-->
+               />
         </LinearLayout>
 
     </LinearLayout>

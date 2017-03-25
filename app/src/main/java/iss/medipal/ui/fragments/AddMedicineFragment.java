@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Switch;
@@ -80,6 +81,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
 
     private String mReminderStartTime;
     private List<String> mSpinnerItems;
+    private List<Category> mCategories;
 
 
     private CustomBackPressedListener mListener;
@@ -184,17 +186,18 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         if(mReminder == null){
             mReminder  = new Reminder();
         }
-                mReminder.setStartTime(calendar.getTime());
-                mAddDosageTimeButton.setText(mReminderStartTime);
-                mAddDosageTimeButton.setText(mReminderStartTime);
+        mReminder.setStartTime(calendar.getTime());
+        mAddDosageTimeButton.setText(mReminderStartTime);
 
     }
 
     private void setSpinners(){
-        List<Category> categories = MediPalApplication.getPersonStore().getCategory();
+        mCategories = MediPalApplication.getPersonStore().getCategory();
         CategorySpinnerAdapter categoryAdapter = new CategorySpinnerAdapter(getContext(),
-                R.layout.dropdown_header ,categories);
+                R.layout.dropdown_header ,mCategories);
         mCategorySpinner.setAdapter(categoryAdapter);
+        mCategorySpinner.setOnItemSelectedListener(mCategorySpinnerListener);
+        setReminderStatus(mCategories.get(0).isRemind());
         mSpinnerItems = new ArrayList<>();
         mSpinnerItems.addAll(Arrays.asList(getResources().getStringArray(R.array.dosage_quantity_items)));
         BaseSpinnerAdapter adapter = new BaseSpinnerAdapter(getActivity(), R.layout.dropdown_header, mSpinnerItems);
@@ -237,6 +240,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
             public void onClick(final View v) {
                 if(validate()) {
                     try {
+                        AppHelper.hideKeyboard(getActivity());
                         setMedicineDetails();
                         if(!isEditMedicine) {
                             MediPalApplication.getPersonStore().addMedicine(mMedicine);
@@ -273,7 +277,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus)
                 {
-                  showDatePicker();
+                    showDatePicker();
                 }
             }
         };
@@ -309,20 +313,19 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
 
     public boolean validate()
     {
-        boolean isReminderRequired=!TextUtils.isEmpty(mReminderStartTime);
         if(TextUtils.isEmpty(mMedicineNameEditText.getText())) {
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
                     "Enter Medicine name").show();
             return false;
-        } else if(isReminderNeeded()){
+        } else if(TextUtils.isEmpty(mReminderStartTime)){
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
                     "Enter Reminder Start time").show();
             return false;
-        } else if(isReminderRequired && mFrequencySpinner.getSelectedItemPosition() <= 0){
+        } else if(mFrequencySpinner.getSelectedItemPosition() <= 0){
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
                     "Enter Valid frequency").show();
             return false;
-        } else if(isReminderRequired && mIntervalSpinner.getSelectedItemPosition() <= 0){
+        } else if(mIntervalSpinner.getSelectedItemPosition() <= 0){
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
                     "Enter Valid interval").show();
             return false;
@@ -344,20 +347,17 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
 
     }
 
-    public boolean isReminderNeeded()
+    public void setReminderStatus(boolean isRemindMandatory)
     {
-        boolean checker=false;
-
-        List<Category> categories=MediPalApplication.getPersonStore().getCategory();
-        Category category=categories.get((int)mCategorySpinner.getSelectedItemId());
-        if(category.isRemind()|| mRemindSwitch.isChecked())
-        {
-            if(TextUtils.isEmpty(mReminderStartTime))
-            {
-                checker=true;
-            }
+        if(isRemindMandatory){
+            mRemindSwitch.setChecked(true);
+            mRemindSwitch.setClickable(false);
+            mRemindSwitch.setText(getString(R.string.reminders_mandatory_text));
+        } else {
+            mRemindSwitch.setChecked(false);
+            mRemindSwitch.setClickable(true);
+            mRemindSwitch.setText(getString(R.string.reminders_optional_text));
         }
-        return checker;
     }
 
     public void setMedicineDetails()
@@ -403,7 +403,6 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         mIssueDateEditText.setText(String.valueOf(dateFormat.format(mMedicine.getDateIssued())));
         mRemindSwitch.setChecked(mMedicine.isRemind());
         mMonthsToExpireEditText.setText(String.valueOf(mMedicine.getExpireFactor()));
-
     }
 
 
@@ -424,6 +423,18 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
             mIntervalSpinner.setSelection(mReminder.getInterval());
         }
     }
+
+    private AdapterView.OnItemSelectedListener mCategorySpinnerListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            setReminderStatus(mCategories.get(position).isRemind());
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
 
     public interface ViewMedInterface {
         void onMedAddedUiUpdate();

@@ -78,7 +78,6 @@ public class DoseContainer {
                     mMedAddedDate.setTime(med.getDateIssued());
                     if(med.getReminder() != null){
                         Reminder rem = med.getReminder();
-                        if(rem != null) {
                             Date date = rem.getStartTime();
                             while (mMedAddedDate.before(mCurrentDate) || AppHelper.sameDay(mMedAddedDate, mCurrentDate)) {
                                 ArrayList<Consumption> consumptions = getCurrentDayConsumtion(mMedAddedDate);
@@ -108,7 +107,6 @@ public class DoseContainer {
                                 }
                                 mMedAddedDate.add(Calendar.DAY_OF_YEAR, 1);
                             }
-                        }
                     }
                 }
                 for (MedDoseModel dr : mDayDoseRecords) {
@@ -191,9 +189,9 @@ public class DoseContainer {
 
     private void setConsumtion(){
         mConsumtionDayModel = new ArrayList<>();
-        Calendar cal = Calendar.getInstance();
         for(Consumption consumption :mConsumption) {
             int id = consumption.getMedicineId();
+            Calendar cal = Calendar.getInstance();
             cal.setTime(consumption.getConsumedOn());
 
             boolean foundDMD = false;

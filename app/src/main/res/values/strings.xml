@@ -31,6 +31,7 @@
         <item>Measurements</item>
         <item>ICE Contacts</item>
         <item>Categories</item>
+        <item>Tutorial</item>
     </string-array>
 
     <string-array name="blood_type_items">
@@ -58,6 +59,22 @@
         <item>10</item>
     </string-array>
 
+    <string-array name="tut_heading_array">
+        <item>View your daily consumptions</item>
+        <item>Add and manage your medicines</item>
+        <item>Add and manage your appointments</item>
+        <item>Manage your Reminders</item>
+        <item>More features for you</item>
+    </string-array>
+
+    <string-array name="tut_content_array">
+        <item>Mark your consumptions and visualise on a day by day basis.</item>
+        <item>Add, edit and delete your medicines and its details.</item>
+        <item>Add your upcoming health appointments that should not be missed.</item>
+        <item>Lists out all your medicine and appointment reminders</item>
+        <item>Manage your user profile, health conditions, measurements, contacts and medicine categories.</item>
+    </string-array>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -78,8 +95,11 @@
     <string name="pulse">Pulse</string>
     <string name="temperature">Temperature</string>
     <string name="weight">Weight</string>
-    <string name="blood_sys">Systolic</string>
-    <string name="blood_dia">Diastolic</string>
+    <string name="pulseText">Pulse(bpm)</string>
+    <string name="temperatureText">Temperature(\'C)</string>
+    <string name="weightText">Weight(Kg)</string>
+    <string name="blood_sys">Systolic(mmHg)</string>
+    <string name="blood_dia">Diastolic(mmHg)</string>
     <string name="blood_mes">MeasuredOn</string>
 
     <string name="strt_time_select">Start Time</string>
@@ -115,6 +135,8 @@
     <string name="interval_text">Interval</string>
     <string name="title_activity_add_temperature">AddTemperatureActivity</string>
     <string name="not_editable_name">Name(Not Editable)</string>
+    <string name="reminders_mandatory_text">Reminder (Mandatory for this Category)</string>
+    <string name="reminders_optional_text">Reminder (Optional for this Category)</string>
 
 
     <!--Home Screen -->
@@ -139,6 +161,7 @@
     <string name="category_title">Categories</string>
     <string name="health_bio_title">Health Bio</string>
     <string name="skip">SKIP</string>
+    <string name="done">DONE</string>
 
     <!-- Category -->
     <string name="category_name">Category Name</string>
@@ -149,5 +172,13 @@
 
     <string name="medication_positive_text">I took it</string>
     <string name="medication_negative_text">I Missed it</string>
+    <string name="need_to">Need to </string>
+    <string name="take">take</string>
+    <string name="refill">refill</string>
+    <string name="pills">Pills</string>
+    <string name="pill">Pill</string>
+    <string name="of">of</string>
+    <string name="colon">:</string>
+    <string name="dosage_time">Dosage Time</string>
 
 </resources>

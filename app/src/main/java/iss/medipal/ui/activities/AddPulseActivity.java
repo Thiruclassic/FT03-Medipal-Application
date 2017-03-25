@@ -53,7 +53,7 @@ public class AddPulseActivity extends BaseActivity implements View.OnClickListen
         imageBack = (ImageView) findViewById(R.id.toolbar_left_icon);
         title = (TextView) findViewById(R.id.toolbar_title);
 
-        title.setText("Add Pulse(Kg)");
+        title.setText("Add Pulse readings");
         imageBack.setVisibility(View.VISIBLE);
 
         findViewsById();
@@ -134,6 +134,7 @@ public class AddPulseActivity extends BaseActivity implements View.OnClickListen
                     }
                     Intent intent = new Intent(AddPulseActivity.this, PulseActivity.class);
                     startActivity(intent);
+                    finish();
                     break;
                 }
         }
