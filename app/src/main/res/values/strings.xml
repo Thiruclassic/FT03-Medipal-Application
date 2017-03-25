@@ -31,6 +31,7 @@
         <item>Measurements</item>
         <item>ICE Contacts</item>
         <item>Categories</item>
+        <item>Tutorial</item>
     </string-array>
 
     <string-array name="blood_type_items">
@@ -56,6 +57,22 @@
         <item>8</item>
         <item>9</item>
         <item>10</item>
+    </string-array>
+
+    <string-array name="tut_heading_array">
+        <item>View your daily consumptions</item>
+        <item>Add and manage your medicines</item>
+        <item>Add and manage your appointments</item>
+        <item>Manage your Reminders</item>
+        <item>More features for you</item>
+    </string-array>
+
+    <string-array name="tut_content_array">
+        <item>Mark your consumptions and visualise on a day by day basis.</item>
+        <item>Add, edit and delete your medicines and its details.</item>
+        <item>Add your upcoming health appointments that should not be missed.</item>
+        <item>Lists out all your medicine and appointment reminders</item>
+        <item>Manage your user profile, health conditions, measurements, contacts and medicine categories.</item>
     </string-array>
 
 

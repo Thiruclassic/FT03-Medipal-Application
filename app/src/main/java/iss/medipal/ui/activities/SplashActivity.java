@@ -53,7 +53,7 @@ public class SplashActivity extends BaseFullScreenActivity {
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    launchActivity(UserProfileActivity.class);
+                    launchActivity(TutorialActivity.class);
                 }
             }, SPLASH_TIME);
         } else {
