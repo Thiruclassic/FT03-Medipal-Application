@@ -35,6 +35,7 @@ public class DBConstants {
     public static final String HEALTH_CONDITION_TYPE="ConditionType";
 
     //Medicine Table
+    public static final String MEDICINE_ID="ID";
     public static final String MEDICINE_NAME="Medicine";
     public static final String MEDICINE_DESCRIPTION="Description";
     public static final String MEDICINE_DOSAGE="Dosage";

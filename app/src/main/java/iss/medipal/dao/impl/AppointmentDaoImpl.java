@@ -76,7 +76,6 @@ public class AppointmentDaoImpl extends BaseDao implements AppointmentDao {
         while (cursor.moveToNext()) {
             appointmentList.add(cursor.getString(1));
         }
-
         return appointmentList;
     }
 

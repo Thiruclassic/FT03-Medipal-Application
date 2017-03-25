@@ -52,7 +52,7 @@ public class MainActivity extends BaseActivity implements HomeFragment.MedInterf
     }
 
     @Override
-    public void onMedAdded() {
+    public void onMedAddedOrDeleted() {
         mHomeInterface.onMedAdded();
     }
 

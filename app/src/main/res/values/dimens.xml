@@ -13,4 +13,8 @@
     <dimen name="padding_medium">16dp</dimen>
     <dimen name="padding_large">20dp</dimen>
 
+    <dimen name="welcome_heading">24.0sp</dimen>
+    <dimen name="welcome_content">16.0sp</dimen>
+    <dimen name="welcome_content_min_height">96.0dip</dimen>
+
 </resources>

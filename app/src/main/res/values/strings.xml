@@ -31,6 +31,7 @@
         <item>Measurements</item>
         <item>ICE Contacts</item>
         <item>Categories</item>
+        <item>Tutorial</item>
     </string-array>
 
     <string-array name="blood_type_items">
@@ -56,6 +57,22 @@
         <item>8</item>
         <item>9</item>
         <item>10</item>
+    </string-array>
+
+    <string-array name="tut_heading_array">
+        <item>View your daily consumptions</item>
+        <item>Add and manage your medicines</item>
+        <item>Add and manage your appointments</item>
+        <item>Manage your Reminders</item>
+        <item>More features for you</item>
+    </string-array>
+
+    <string-array name="tut_content_array">
+        <item>Mark your consumptions and visualise on a day by day basis.</item>
+        <item>Add, edit and delete your medicines and its details.</item>
+        <item>Add your upcoming health appointments that should not be missed.</item>
+        <item>Lists out all your medicine and appointment reminders</item>
+        <item>Manage your user profile, health conditions, measurements, contacts and medicine categories.</item>
     </string-array>
 
 
@@ -118,6 +135,8 @@
     <string name="interval_text">Interval</string>
     <string name="title_activity_add_temperature">AddTemperatureActivity</string>
     <string name="not_editable_name">Name(Not Editable)</string>
+    <string name="reminders_mandatory_text">Reminder (Mandatory for this Category)</string>
+    <string name="reminders_optional_text">Reminder (Optional for this Category)</string>
 
 
     <!--Home Screen -->
@@ -142,6 +161,7 @@
     <string name="category_title">Categories</string>
     <string name="health_bio_title">Health Bio</string>
     <string name="skip">SKIP</string>
+    <string name="done">DONE</string>
 
     <!-- Category -->
     <string name="category_name">Category Name</string>

@@ -144,6 +144,10 @@ public class Medicine implements Parcelable, Comparable<Medicine> {
         this.reminder = reminder;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return medicine.equalsIgnoreCase(((Medicine)obj).getMedicine());
+    }
 
     @Override
     public int compareTo(@NonNull Medicine o) {

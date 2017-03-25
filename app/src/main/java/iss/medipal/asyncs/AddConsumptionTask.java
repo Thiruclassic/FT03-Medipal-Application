@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import iss.medipal.MediPalApplication;
 import iss.medipal.constants.Constants;
 import iss.medipal.constants.DBConstants;
 import iss.medipal.dao.ConsumptionDao;
@@ -35,10 +36,14 @@ public class AddConsumptionTask extends AsyncTask<Consumption, Void, Long> {
 
     @Override
     protected Long doInBackground(Consumption... params) {
-        Medicine medicine=mConsumptionDao.createConsumtion(params[0]);
-        long reminderId = medicine.getReminderId();
-        updateMedicineTotalQuantity(medicine);
-        return reminderId;
+        mConsumptionDao.createConsumtion(params[0]);
+        Medicine medicine = mMedicineDao.getMedicinebyId(params[0].getMedicineId());
+        if(medicine != null) {
+            long reminderId = medicine.getReminderId();
+            updateMedicineTotalQuantity(medicine);
+            return reminderId;
+        }
+        return (long)1;
     }
 
     @Override
@@ -48,16 +53,21 @@ public class AddConsumptionTask extends AsyncTask<Consumption, Void, Long> {
                 mConsumptionDao.close();
     }
 
-    public int updateMedicineTotalQuantity(Medicine medicine)
+    public void updateMedicineTotalQuantity(Medicine medicine)
     {
         medicine.setQuantity(medicine.getQuantity()-medicine.getDosage());
-
-        if(medicine.getQuantity()<medicine.getThreshold())
+        for(Medicine medicine1: MediPalApplication.getPersonStore().getmPersonalBio().getMedicines()){
+            if(medicine.equals(medicine1)){
+                medicine1.setQuantity(medicine.getQuantity());
+            }
+        }
+        if(medicine.getQuantity() < medicine.getThreshold())
         {
 
         }
-        return mMedicineDao.updateMedicine(medicine);
+        mMedicineDao.updateMedicineDosage(medicine);
     }
+
     public void sendRefillNotifier(Medicine medicine)
     {
         try {

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +66,15 @@ public class MedicineDaoImpl extends BaseDao implements MedicineDao{
         values.put(DBConstants.MEDICINE_DATE_ISSUED,dateFormat.format(medicine.getDateIssued()));
         values.put(DBConstants.MEDICINE_EXPIRY_FACTOR,medicine.getExpireFactor());
         int id=(int)database.update(DBConstants.TABLE_MEDICINE,values,"id=?",new String[]{String.valueOf(medicine.getId())});
+        return id;
+    }
+
+    @Override
+    public int updateMedicineDosage(Medicine medicine) {
+        ContentValues cv = new ContentValues();
+        cv.put(DBConstants.MEDICINE_QUATITY, medicine.getQuantity());
+        int id = database.update(DBConstants.TABLE_MEDICINE, cv, DBConstants.MEDICINE_ID + "= ?",
+                new String[] {String.valueOf(medicine.getId())});
         return id;
     }
 
