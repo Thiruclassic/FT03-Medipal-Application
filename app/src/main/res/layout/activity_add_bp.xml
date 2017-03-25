@@ -30,6 +30,7 @@
             android:orientation="horizontal">
 
             <EditText
+                style="@style/InputLayoutEditTextStyleDark"
                 android:id="@+id/etSystolic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -44,6 +45,7 @@
             android:orientation="horizontal">
 
             <EditText
+                style="@style/InputLayoutEditTextStyleDark"
                 android:id="@+id/etDiastolic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,6 +59,7 @@
             android:layout_height="wrap_content">
 
             <EditText
+                style="@style/InputLayoutEditTextStyleDark"
                 android:id="@+id/etMeasuredOn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -30,7 +30,7 @@ public class AppointmentListAdapter extends BaseAdapter implements ListAdapter {
     private List<Appointment> appointments;
     private AppointmentDao appointmentDao;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
-    private SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm", Locale.getDefault());
+    private SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a", Locale.getDefault());
 
     public AppointmentListAdapter(Context context, List<Appointment> appointments) {
 
