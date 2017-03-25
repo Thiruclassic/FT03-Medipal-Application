@@ -240,6 +240,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
             public void onClick(final View v) {
                 if(validate()) {
                     try {
+                        AppHelper.hideKeyboard(getActivity());
                         setMedicineDetails();
                         if(!isEditMedicine) {
                             MediPalApplication.getPersonStore().addMedicine(mMedicine);

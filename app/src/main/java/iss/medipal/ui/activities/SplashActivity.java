@@ -33,6 +33,8 @@ import iss.medipal.model.Medicine;
 import iss.medipal.model.PersonStore;
 import iss.medipal.model.PersonalBio;
 import iss.medipal.model.Reminder;
+import iss.medipal.ui.customViews.RotateLoading;
+import iss.medipal.util.AppHelper;
 import iss.medipal.util.SharedPreferenceManager;
 
 /**
@@ -43,16 +45,20 @@ public class SplashActivity extends BaseFullScreenActivity {
 
     private static final int SPLASH_TIME = 2000;
     private Handler mHandler;
+    private RotateLoading mRotatingProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        mRotatingProgress = (RotateLoading) findViewById(R.id.rotateloading);
+        mRotatingProgress.start();
         mHandler = new Handler();
         if (SharedPreferenceManager.isAppInitialLaunch(SplashActivity.this)) {
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    mRotatingProgress.stop();
                     launchActivity(TutorialActivity.class);
                 }
             }, SPLASH_TIME);
@@ -102,16 +108,25 @@ public class SplashActivity extends BaseFullScreenActivity {
             mPersonStore.setmPersonalBio(result);
             mPersonStore.setmConsumptions(consumptions);
             DoseContainer.getInstance(SplashActivity.this);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if(AppHelper.isListEmpty(meds) || meds.size() < 10) {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
             return null;
         }
 
         @Override
         protected void onPostExecute(Void result) {
+            mRotatingProgress.stop();
             launchActivity(MainActivity.class);
         }
     }
