@@ -49,17 +49,9 @@ public class AddReminderAlarmTask extends AsyncTask {
         if(reminder!=null) {
             PendingIntent pendingIntent = null;
             AlarmManager manager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
-
-
-
-
                 if (medicine.isRemind()) {
-
-
-
                     Calendar calendar=Calendar.getInstance();
                     calendar.setTime(medicine.getReminder().getStartTime());
-
 
                     for (int i = 0; i < reminder.getFrequency(); i++) {
 
@@ -89,6 +81,7 @@ public class AddReminderAlarmTask extends AsyncTask {
 
         }
 
+        /* calculating Reminder Time to set*/
         public void calculateReminderTime(Calendar calendar)
         {
             Calendar now = Calendar.getInstance();
