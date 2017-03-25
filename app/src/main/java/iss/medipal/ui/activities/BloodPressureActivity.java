@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
@@ -18,30 +19,52 @@ import iss.medipal.model.BloodPressure;
 import iss.medipal.model.Measurement;
 import iss.medipal.ui.adapters.RecyclerAdapter;
 import android.support.v7.widget.GridLayoutManager;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * Created by Sreekumar on 3/17/2017.
  */
 
-public class BloodPressureActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
+public class BloodPressureActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener,View.OnClickListener {
 
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private MeasurementDao measurementDao;
-
+    private ImageView imageBack;
+    private TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blood_pressure);
+/*        imageBack = (ImageView) findViewById(R.id.toolbar_left_icon);
+        title = (TextView) findViewById(R.id.toolbar_title);
 
+        title.setText("Blood Pressure");*/
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Blood Pressure");
         toolbar.inflateMenu(R.menu.menu_main);
         toolbar.setOnMenuItemClickListener(this);
 
         setUpRecyclerView();
+//        setListeners();
 
+    }
+    @Override
+    public void onClick(View v) {
+
+    }
+    private void setListeners() {
+        ImageView.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Click", String.valueOf(v));
+                finish();
+            }
+        };
+        imageBack.setOnClickListener(clickListener);
     }
 
     private void setUpRecyclerView() {
@@ -68,15 +91,10 @@ public class BloodPressureActivity extends BaseActivity implements Toolbar.OnMen
             case R.id.add_blood:
                 Intent intent = new Intent(BloodPressureActivity.this, AddBpActivity.class);
                 startActivity(intent);
-              /*  AddBloodPressureFragment addBloodPressureFragment = AddBloodPressureFragment.newInstance("bp","bp1");
-                FragmentManager manager = getSupportFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.replace(R.id.add_blood_pressure,addBloodPressureFragment).commit();*/
+                finish();
                 break;
             case R.id.home:
-            /*    Intent intentHome = new Intent(BloodPressureActivity.this, MeasurementActivity.class);
-                startActivity(intentHome);*/
-                finish();
+                  finish();
 
                 break;
         }
@@ -105,11 +123,7 @@ public class BloodPressureActivity extends BaseActivity implements Toolbar.OnMen
 
                 Measurement bloodPressure = new BloodPressure(measurementList.get(i).getId(), images[0], measurementList.get(i).getSystolic(),
                         measurementList.get(i).getDiastolic(), measurementList.get(i).getMeasuredOn());
-       /*     bloodPressure.setSystolic(measurementList.get(i).getSystolic());
-            bloodPressure.setDiastolic(measurementList.get(i).getDiastolic());
-            bloodPressure.setMeasuredOn(measurementList.get(i).getMeasuredOn());
-            bloodPressure.setImageType(images[0]);*/
-                data.add(bloodPressure);
+                   data.add(bloodPressure);
             }
         }
 

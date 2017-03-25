@@ -58,7 +58,7 @@ public class AddTemperatureActivity extends BaseActivity implements View.OnClick
         imageBack = (ImageView) findViewById(R.id.toolbar_left_icon);
         title = (TextView) findViewById(R.id.toolbar_title);
 
-        title.setText("Add Weight(Kg)");
+        title.setText("Add Temperature Readings");
         imageBack.setVisibility(View.VISIBLE);
 
         findViewsById();

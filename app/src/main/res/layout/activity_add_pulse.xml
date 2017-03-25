@@ -35,7 +35,7 @@
                 android:id="@+id/etPulse"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/pulse"
+                android:hint="@string/pulseText"
                 android:inputType="number" />
         </android.support.design.widget.TextInputLayout>
 
