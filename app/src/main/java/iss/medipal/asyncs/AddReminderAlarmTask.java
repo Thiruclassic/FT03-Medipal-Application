@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import java.util.Calendar;
 
 import iss.medipal.R;
+import iss.medipal.constants.Constants;
 import iss.medipal.constants.DBConstants;
 import iss.medipal.model.Appointment;
 import iss.medipal.model.Medicine;
@@ -94,7 +95,6 @@ public class AddReminderAlarmTask extends AsyncTask {
             AlarmManager manager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
             Calendar calendar = Calendar.getInstance();
 
-
             Intent intent = new Intent(mContext, ActivityAlarmReceiver.class);
             calendar.setTime(reminder.getStartTime());
             calendar.set(Calendar.SECOND, 0);
@@ -103,7 +103,7 @@ public class AddReminderAlarmTask extends AsyncTask {
             intent.putExtra(DBConstants.APP_DESCRIPTION, appointment.getDescription());
 //            calculateReminderTime(calendar);
             for (int i = 0; i < reminder.getFrequency(); i++) {
-                pendingIntent = PendingIntent.getBroadcast(mContext, appointment.getId() * 10 + i, intent,
+                pendingIntent = PendingIntent.getBroadcast(mContext, appointment.getId()* Constants.APPOINTMENT_BROADCAST_ID * 10 + i, intent,
                         PendingIntent.FLAG_UPDATE_CURRENT);
                 manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                         AlarmManager.INTERVAL_DAY, pendingIntent);
