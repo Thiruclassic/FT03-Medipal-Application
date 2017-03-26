@@ -15,6 +15,11 @@ public class BaseDao {
     private DatabaseHandler dbHelper;
     private Context mContext;
 
+    public BaseDao()
+    {
+      //Default Constructor
+    }
+
     public BaseDao(Context context){
         this.mContext = context;
         dbHelper = DatabaseHandler.getHelper(mContext);

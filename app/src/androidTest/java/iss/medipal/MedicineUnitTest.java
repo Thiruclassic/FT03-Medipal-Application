@@ -40,7 +40,7 @@ public class MedicineUnitTest extends TestCase implements MedipalUnitTest {
     {
             medicine = new Medicine();
             reminder = new Reminder();
-            medicineDao = new MedicineDaoImpl(context);
+            medicineDao = new MedicineDaoImpl(InstrumentationRegistry.getContext());
             medicineList = medicineDao.getAllMedicines();
     }
 

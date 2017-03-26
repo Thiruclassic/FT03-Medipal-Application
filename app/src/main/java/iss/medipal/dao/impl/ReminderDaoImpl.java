@@ -14,7 +14,7 @@ import iss.medipal.dao.ReminderDao;
 import iss.medipal.model.Reminder;
 
 /**
- * Created by Naveen on 3/7/17.
+ * Created by Thirumal on 3/7/17.
  */
 
 public class ReminderDaoImpl extends BaseDao implements ReminderDao {
