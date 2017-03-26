@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class AppointmentListAdapter extends BaseAdapter implements ListAdapter {
 
         this.mContext = context;
         this.appointments = appointments;
-        this.appointmentDao= AppointmentDaoImpl.newInstance(context);
+        this.appointmentDao = AppointmentDaoImpl.newInstance(context);
     }
 
     @Override
@@ -60,35 +61,28 @@ public class AppointmentListAdapter extends BaseAdapter implements ListAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).
                     inflate(R.layout.todo_list_item, parent, false);
-            viewHolder = new AppointmentListAdapter.ViewHolder(convertView,mContext);
+            viewHolder = new AppointmentListAdapter.ViewHolder(convertView, mContext);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (AppointmentListAdapter.ViewHolder) convertView.getTag();
         }
         viewHolder.mItemTextview1.setText(appointments.get(position).getLocation());
-        viewHolder.mItemTextview2.setText(dateFormatter.format(appointments.get(position).getAppointment())+" "+timeFormatter.format(appointments.get(position).getAppointment()));
+        viewHolder.mItemTextview2.setText(dateFormatter.format(appointments.get(position).getAppointment()) + " " + timeFormatter.format(appointments.get(position).getAppointment()));
 
-        ImageView deleteBtn = (ImageView)convertView.findViewById(R.id.img_row_delete);
+        ImageView deleteBtn = (ImageView) convertView.findViewById(R.id.img_row_delete);
 
-        deleteBtn.setOnClickListener(new View.OnClickListener(){
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-//                list.remove(position); //or some other task
                 Boolean message = appointmentDao.deleteAppointment(appointments.get(position).getId());
                 if (message) {
 
-                    Snackbar.make(v, "Item deleted successfully!!", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    Toast.makeText(mContext, "DELETED SUCCESSFULLY", Toast.LENGTH_SHORT).show();
                     appointments.remove(position);
-//                    notifyItemRemoved(position);
-//                    notifyItemRangeChanged(position, appointments.size());
                     notifyDataSetChanged();
 
                 } else {
-
-                    Snackbar.make(v, "Item deletion failed!!", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    Toast.makeText(mContext, "DELETION FAILED !TRY AGAIN !!", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -97,12 +91,12 @@ public class AppointmentListAdapter extends BaseAdapter implements ListAdapter {
         return convertView;
     }
 
-    public void setAppointments(List<Appointment>appointments){
-        this.appointments=appointments;
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
         notifyDataSetChanged();
     }
 
-     /**
+    /**
      * Static view holder class.
      */
     class ViewHolder {
@@ -112,10 +106,10 @@ public class AppointmentListAdapter extends BaseAdapter implements ListAdapter {
         TextView mItemTextview2;
         ImageView imgThumb;
 
-        public ViewHolder(View view,Context context) {
+        public ViewHolder(View view, Context context) {
             mItemTextview1 = (TextView) view.findViewById(R.id.tvNote);
-            mItemTextview2= (TextView) view.findViewById(R.id.tvTime);
-            imgThumb =(ImageView) view.findViewById(R.id.img_row1);
+            mItemTextview2 = (TextView) view.findViewById(R.id.tvTime);
+            imgThumb = (ImageView) view.findViewById(R.id.img_row1);
             imgThumb.setColorFilter(context.getResources().getColor(R.color.grey_700));
 
         }

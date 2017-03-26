@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -42,6 +43,7 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
     private List<String> medicineNames;
     private MedicineDao medicineDao;
     private HomeInterface mMedAddCallback;
+    private TextView tvEmpty;
 
     public ViewMedicineFragment() {
         // Required empty public constructor
@@ -89,6 +91,9 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
     @Override
     public void onResume() {
         super.onResume();
+        if(medicineListAdapter!=null) {
+            tvEmpty.setVisibility(medicineListAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
+        }
     }
 
     @Override
@@ -100,10 +105,11 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
     }
 
     @Override
-    public void onMedAddedUiUpdate() {
-        addMedicineButton.setVisibility(View.VISIBLE);
-        innerLayout.setVisibility(View.GONE);
+    public void onMedAddedUiUpdate(boolean isUpdated) {
         try {
+            addMedicineButton.setVisibility(View.VISIBLE);
+            innerLayout.setVisibility(View.GONE);
+            if(isUpdated){
             medicines = MediPalApplication.getPersonStore()
                     .getmPersonalBio().getMedicines();
             if(!AppHelper.isListEmpty(medicines)) {
@@ -114,6 +120,7 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
                     medicineList.setAdapter(medicineListAdapter);
                 }
                 doCallback();
+            }
 
             }
         } catch (NullPointerException e){
@@ -135,6 +142,8 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
         addMedicineButton=(FloatingActionButton)view.findViewById(R.id.addMedicine);
         medicineList=(ListView)view.findViewById(R.id.medicineList);
         innerLayout=(FrameLayout)view.findViewById(R.id.add_medicine_frame);
+        tvEmpty=(TextView)view.findViewById(R.id.tv_empty_medicine);
+
     }
 
     private void setList(){

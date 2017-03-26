@@ -166,6 +166,9 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
     @Override
     public void doBack() {
         if(getActivity()!=null) {
+            if (mUIUpdateListener != null) {
+                mUIUpdateListener.onMedAddedUiUpdate(true);
+            }
             FragmentManager manager = getActivity().getSupportFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.detach(this).commit();
@@ -191,7 +194,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
     @Override
     public void onTaskCompleted() {
         if (mUIUpdateListener != null) {
-            mUIUpdateListener.onMedAddedUiUpdate();
+            mUIUpdateListener.onMedAddedUiUpdate(true);
         }
     }
 
@@ -312,6 +315,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
                 mIssueDateEditText.setText(dayOfMonth+"/"+(month+1)+"/"+year);
             }
         },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         datePickerDialog.show();
     }
 
@@ -463,6 +467,6 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
     };
 
     public interface ViewMedInterface {
-        void onMedAddedUiUpdate();
+        void onMedAddedUiUpdate(boolean isUpdated);
     }
 }

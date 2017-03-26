@@ -3,12 +3,15 @@ package iss.medipal.ui.adapters;
 import android.content.Context;
 import android.media.Image;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.content.DialogInterface;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -16,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import iss.medipal.MediPalApplication;
 import iss.medipal.R;
 import iss.medipal.dao.MeasurementDao;
 import iss.medipal.dao.impl.MeasurementDaoImpl;
@@ -52,10 +56,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         MyViewHolder holder = new MyViewHolder(view);
         return holder;
     }
-
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-
         currentObj = mData.get(position);
         holder.setData(currentObj,context);
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {
@@ -64,34 +66,63 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                 /// button click event
                 if (null != currentObj) {
 
-                    Boolean message = measurementDao.deleteMeasurement(currentObj.getId());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.CustomAlertDialogStyle);
+                    builder.setCancelable(false);
+                    builder.setTitle("WARNING");
+                    builder.setMessage("Do you want to delete permanently ?");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface alert, int arg1) {
+                            Boolean message = measurementDao.deleteMeasurement(currentObj.getId());
+                            if (message) {
+
+                                mData.remove(position);
+                                notifyItemRemoved(position);
+                                notifyItemRangeChanged(position, mData.size());
+                                notifyDataSetChanged();
+                                Toast.makeText(context,"DELETED SUCCESSFULLY",Toast.LENGTH_SHORT).show() ;
+                            }else{
+
+                                Toast.makeText(context,"DELETION FAILED !TRY AGAIN !!",Toast.LENGTH_SHORT).show() ;
+                            }
+                            alert.dismiss();
+                        }
+                    });
+                    builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface alert, int arg1) {
+                            alert.dismiss();
+                        }
+                    });
+                    builder.show();
+
+
+                  /*  Boolean message = measurementDao.deleteMeasurement(currentObj.getId());
 
                     if (message) {
-
                         Snackbar.make(v, "Item deleted successfully!!", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                         mData.remove(position);
                         notifyItemRemoved(position);
                         notifyItemRangeChanged(position, mData.size());
                         notifyDataSetChanged();
-
                     } else {
-
                         Snackbar.make(v, "Item deletion failed!!", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
-                    }
+                    }*/
                 }
-
             }
         });
-
     }
-
     @Override
     public int getItemCount() {
-        return mData.size();
+        if(!mData.isEmpty())
+            return mData.size();
+        else
+            return 0;
     }
-
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView title1, title2;
@@ -148,9 +179,25 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                     this.title1.setText(" " + weight.getWeight() + "Kg");
                     SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
                     Date dateTime = weight.getMeasuredOn();
-
+                    Integer weightCheck = weight.getWeight();
                     this.title2.setText(dateFormatter.format(dateTime));
                     this.imgThumb.setImageResource(weight.getImageType());
+
+                    if(weightCheck<=30){
+
+                        imgThumb.setColorFilter(context.getResources().getColor(R.color.blue_500));
+                    }else if(weightCheck<=60 && weightCheck >30){
+
+                        imgThumb.setColorFilter(context.getResources().getColor(R.color.green_A700));
+
+                    }else if(weightCheck<=80 && weightCheck >60){
+
+                        imgThumb.setColorFilter(context.getResources().getColor(R.color.yellow_500));
+
+                    }else if(weightCheck<120 && weightCheck>80){
+
+                        imgThumb.setColorFilter(context.getResources().getColor(R.color.red_500));
+                    }
 
 
                 }

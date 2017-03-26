@@ -4,7 +4,7 @@
       tools:context=".ui.activities.BloodPressureActivity">
 
     <item android:id="@+id/linearViewHorizontal"
-          android:icon="@drawable/view_grid"
+          android:icon="@drawable/help_circle"
           android:title="Horizontal"
           android:orderInCategory="100"
           app:showAsAction="always"

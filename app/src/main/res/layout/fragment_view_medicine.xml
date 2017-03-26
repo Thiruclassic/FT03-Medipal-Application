@@ -16,6 +16,18 @@
 
     </ListView>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_empty_medicine"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="No Medicines added!"
+        />
+
     <FrameLayout
         android:id="@+id/add_medicine_frame"
         android:layout_width="match_parent"
@@ -23,6 +35,9 @@
         android:visibility="gone">
 
     </FrameLayout>
+
+
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/addMedicine"
