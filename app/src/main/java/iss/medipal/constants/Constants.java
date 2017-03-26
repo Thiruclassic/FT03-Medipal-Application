@@ -36,6 +36,7 @@ public class Constants {
 
     public static final int TOOKIT_STATUS = 1;
     public static final int REFILL_BROADCAST_ID=100000;
+    public static final int APPOINTMENT_BROADCAST_ID=10000;
     public static final int MISSEDIT_STATUS = 0;
 
     public static final int FAMILY_CONTACT = 1;
