@@ -2,7 +2,7 @@ package iss.medipal.ui.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -35,14 +34,15 @@ public class AppointmentListAdapter extends BaseAdapter implements ListAdapter {
     private AppointmentDao appointmentDao;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
     private SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+    private onAppointmentDeletedInterface appointmentDeletedInterface;
 
-    public AppointmentListAdapter(Context context, List<Appointment> appointments) {
+    public AppointmentListAdapter(Context context, List<Appointment> appointments, Fragment fragment) {
 
         this.mContext = context;
         this.appointments = appointments;
         this.appointmentDao = AppointmentDaoImpl.newInstance(context);
+        this.appointmentDeletedInterface = (onAppointmentDeletedInterface) fragment;
     }
-
     @Override
     public int getCount() {
         if (!AppHelper.isListEmpty(appointments)) {
@@ -89,17 +89,10 @@ public class AppointmentListAdapter extends BaseAdapter implements ListAdapter {
                     @Override
                     public void onClick(DialogInterface alert, int arg1) {
 
-                        Boolean message = appointmentDao.deleteAppointment(appointments.get(position).getId());
-                        if (message) {
-
-                            Toast.makeText(mContext, "DELETED SUCCESSFULLY", Toast.LENGTH_SHORT).show();
-                            appointments.remove(position);
-                            notifyDataSetChanged();
-                            alert.dismiss();
-
-                        } else {
-                            Toast.makeText(mContext, "DELETION FAILED !TRY AGAIN !!", Toast.LENGTH_SHORT).show();
-                        }
+                        appointmentDeletedInterface.onAppDeleted(appointments.get(position));
+                        Toast.makeText(mContext, "DELETED SUCCESSFULLY", Toast.LENGTH_SHORT).show();
+                        notifyDataSetChanged();
+                        alert.dismiss();
                     }
                 });
                 builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -137,5 +130,8 @@ public class AppointmentListAdapter extends BaseAdapter implements ListAdapter {
             imgThumb.setColorFilter(context.getResources().getColor(R.color.grey_700));
 
         }
+    }
+    public interface onAppointmentDeletedInterface {
+        void onAppDeleted(Appointment appointment);
     }
 }

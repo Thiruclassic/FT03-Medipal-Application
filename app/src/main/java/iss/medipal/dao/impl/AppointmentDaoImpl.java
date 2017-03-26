@@ -1,6 +1,5 @@
 package iss.medipal.dao.impl;
 
-import android.appwidget.AppWidgetProviderInfo;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -14,7 +13,6 @@ import iss.medipal.constants.Constants;
 import iss.medipal.constants.DBConstants;
 import iss.medipal.dao.AppointmentDao;
 import iss.medipal.model.Appointment;
-import iss.medipal.model.Medicine;
 
 /**
  * Created by sreekumar on 3/12/2017.
@@ -33,18 +31,14 @@ public class AppointmentDaoImpl extends BaseDao implements AppointmentDao {
     }
 
     @Override
-    public Boolean deleteAppointment(int appointmentId){
+    public Boolean deleteAppointment(Appointment appointment) {
         Boolean status = false;
         try {
-            status = database.delete(DBConstants.TABLE_APPOINTMENT, "ID" + "=" + " '" + appointmentId + "'", null) > 0;
-
+            status = database.delete(DBConstants.TABLE_APPOINTMENT, "ID" + "=" + " '" + appointment.getId() + "'", null) > 0;
         } catch (Exception ex) {
-
             Log.d("Error", ex.getMessage());
-
         }
         return status;
-
     }
     @Override
     public int addAppointment(Appointment appointment) {
@@ -62,7 +56,7 @@ public class AppointmentDaoImpl extends BaseDao implements AppointmentDao {
         return 0;
     }
 
-   @Override
+    @Override
     public Appointment getAppointmentById(int appointmentId) {
         return null;
     }
@@ -80,15 +74,20 @@ public class AppointmentDaoImpl extends BaseDao implements AppointmentDao {
     }
 
     @Override
-    public int updateAppointment(Appointment appointment){
-
-        ContentValues values = new ContentValues();
-        values.put(DBConstants.APP_LOCATION, appointment.getLocation());
-        values.put(DBConstants.APP_DATETIME, appointment.getAppointment().toString());
-        values.put(DBConstants.APP_DESCRIPTION, appointment.getDescription());
-        int id = (int) database.update(DBConstants.TABLE_APPOINTMENT,values,"id=?",new String[]{String.valueOf(appointment.getId())});
+    public int updateAppointment(Appointment appointment) {
+        int id = 0;
+        try {
+            ContentValues values = new ContentValues();
+            values.put(DBConstants.APP_LOCATION, appointment.getLocation());
+            values.put(DBConstants.APP_DATETIME, appointment.getAppointment().toString());
+            values.put(DBConstants.APP_DESCRIPTION, appointment.getDescription());
+            id = (int) database.update(DBConstants.TABLE_APPOINTMENT, values, "id=?", new String[]{String.valueOf(appointment.getId())});
+        } catch (NullPointerException exception) {
+            Log.d("Invalid data", exception.getMessage());
+        }
         return id;
     }
+
     @Override
     public ArrayList<Appointment> getAllAppointments() {
 

@@ -3,15 +3,12 @@ package iss.medipal.ui.fragments;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,7 +20,6 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -35,10 +31,7 @@ import iss.medipal.constants.Constants;
 import iss.medipal.dao.AppointmentDao;
 import iss.medipal.dao.ReminderDao;
 import iss.medipal.dao.impl.AppointmentDaoImpl;
-import iss.medipal.dao.impl.ReminderDaoImpl;
 import iss.medipal.model.Appointment;
-import iss.medipal.model.Medicine;
-import iss.medipal.model.Reminder;
 import iss.medipal.ui.activities.MainActivity;
 import iss.medipal.ui.interfaces.CustomBackPressedListener;
 import iss.medipal.util.AppHelper;
@@ -77,6 +70,7 @@ public class AddAppointmentFragment extends BaseTimeFragment implements CustomBa
         AddAppointmentFragment fragment = new AddAppointmentFragment();
         return fragment;
     }
+
     public static AddAppointmentFragment newInstance(Appointment appointment) {
         AddAppointmentFragment fragment = new AddAppointmentFragment();
         Bundle args = new Bundle();
@@ -84,6 +78,7 @@ public class AddAppointmentFragment extends BaseTimeFragment implements CustomBa
         fragment.setArguments(args);
         return fragment;
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -112,7 +107,6 @@ public class AddAppointmentFragment extends BaseTimeFragment implements CustomBa
         }
         if (appointment != null) {
             updateAppointmentDetails();
-//           updateReminderDetails();
             btnSave.setText("Modify Appointment");
             isEditAppointment = true;
         } else {
@@ -122,6 +116,7 @@ public class AddAppointmentFragment extends BaseTimeFragment implements CustomBa
 
         setListeners();
     }
+
     public void updateAppointmentDetails() {
 
         etLocation.setText(appointment.getLocation());
@@ -132,6 +127,7 @@ public class AddAppointmentFragment extends BaseTimeFragment implements CustomBa
         etTime.setText(String.valueOf(timeFormatter.format(appointment.getAppointment())));
 
     }
+
     private void setListeners() {
         View.OnClickListener saveListener = new View.OnClickListener() {
             @Override
@@ -142,6 +138,7 @@ public class AddAppointmentFragment extends BaseTimeFragment implements CustomBa
 //                        setReminder();
                         Appointment appointment = getAppointmentDetails();
                         if (!isEditAppointment) {
+//                            appointment.setId();
                             MediPalApplication.getPersonStore().addAppointment(appointment);
                         } else {
                             MediPalApplication.getPersonStore().editAppointment(appointment);
@@ -159,7 +156,7 @@ public class AddAppointmentFragment extends BaseTimeFragment implements CustomBa
             }
         };
 
-       View.OnClickListener appDateListner = new View.OnClickListener() {
+        View.OnClickListener appDateListner = new View.OnClickListener() {
 
             @Override
             public void onClick(final View v) {
@@ -204,6 +201,7 @@ public class AddAppointmentFragment extends BaseTimeFragment implements CustomBa
             }
         }
     };
+
     public boolean validateAppointmentDetails() {
         if (TextUtils.isEmpty(etLocation.getText())) {
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
@@ -243,9 +241,9 @@ public class AddAppointmentFragment extends BaseTimeFragment implements CustomBa
         String doseTime = AppHelper.convert24TimeTo12String(hourOfDay, minute);
         mAppointmentTime = AppHelper.convertTimeFormat(doseTime, Constants.TIME_FORMAT_STORAGE,
                 Constants.TIME_12_HOUR_FORMAT);
-        Calendar calendar=Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY,hourOfDay);
-        calendar.set(Calendar.MINUTE,minute);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        calendar.set(Calendar.MINUTE, minute);
         etTime.setText(mAppointmentTime);
     }
 
@@ -258,13 +256,13 @@ public class AddAppointmentFragment extends BaseTimeFragment implements CustomBa
         TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String AM_PM ;
-                if(hourOfDay < 12) {
+                String AM_PM;
+                if (hourOfDay < 12) {
                     AM_PM = "AM";
                 } else {
                     AM_PM = "PM";
                 }
-                etTime.setText(hourOfDay + ":" + minute+ " " + AM_PM);
+                etTime.setText(hourOfDay + ":" + minute + " " + AM_PM);
             }
 
         }, hour, minute, false);
@@ -276,7 +274,7 @@ public class AddAppointmentFragment extends BaseTimeFragment implements CustomBa
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                showDate(year, month+1, dayOfMonth);
+                showDate(year, month + 1, dayOfMonth);
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
@@ -284,14 +282,13 @@ public class AddAppointmentFragment extends BaseTimeFragment implements CustomBa
     }
 
     private void showDate(int year, int month, int day) {
-        try{
+        try {
 
             Date datenew = dateFormatterShow.parse(new StringBuilder().append(day).append("/")
                     .append(month).append("/").append(year).toString());
 
             etDate.setText(dateFormatter.format(datenew));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
 
         }
 
@@ -300,13 +297,14 @@ public class AddAppointmentFragment extends BaseTimeFragment implements CustomBa
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        ((MainActivity)getActivity()).setmListener(this);
-        mUIUpdateListener = ((viewRefreshWhenAdded)getParentFragment());
+        ((MainActivity) getActivity()).setmListener(this);
+        mUIUpdateListener = ((viewRefreshWhenAdded) getParentFragment());
 
     }
+
     @Override
     public void doBack() {
-        if(getActivity()!=null) {
+        if (getActivity() != null) {
             FragmentManager manager = getActivity().getSupportFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.detach(this).commit();
@@ -316,6 +314,7 @@ public class AddAppointmentFragment extends BaseTimeFragment implements CustomBa
             }
         }
     }
+
     @Override
     public void onDetach() {
         super.onDetach();
