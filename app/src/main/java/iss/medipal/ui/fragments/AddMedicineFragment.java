@@ -346,9 +346,31 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
                     "Enter Valid issue date").show();
             return false;
         }
+        else if(checkInterval())
+        {
+            DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
+                    "Interval is more than the duration of the day").show();
+            return false;
+        }
 
         return true;
 
+    }
+    public boolean checkInterval()
+    {
+        Calendar calendar=Calendar.getInstance();
+        calendar.setTime(mReminder.getStartTime());
+        int day=calendar.get(calendar.DAY_OF_MONTH);
+        for(int i=1;i<mFrequencySpinner.getSelectedItemPosition();i++)
+        {
+            int hourHand=calendar.get(Calendar.HOUR_OF_DAY);
+            calendar.add(Calendar.HOUR_OF_DAY,mIntervalSpinner.getSelectedItemPosition());
+        }
+        if(day!=calendar.get(calendar.DAY_OF_MONTH))
+        {
+            return true;
+        }
+        return false;
     }
 
     public void setReminderStatus(boolean isRemindMandatory)
