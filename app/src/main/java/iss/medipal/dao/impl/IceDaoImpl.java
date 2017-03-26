@@ -54,25 +54,23 @@ public class IceDaoImpl extends BaseDao implements ICEDao {
     }
 
     @Override
-    public List<InCaseofEmergencyContact> getContactsbyType(int type) {
+    public InCaseofEmergencyContact getContactbyId(int contactId) {
         String query = "Select * from " + DBConstants.TABLE_ICE + "where ID=?";
         String args[] = new String[1];
-        args[0] = String.valueOf(type);
-        List<InCaseofEmergencyContact> contacts= new ArrayList<>();
+        args[0] = String.valueOf(contactId);
+        InCaseofEmergencyContact contact= new InCaseofEmergencyContact();
 
         try {
             Cursor cursor = database.rawQuery(query,args);
 
             if(cursor.moveToNext())
             {
-                InCaseofEmergencyContact contact = new InCaseofEmergencyContact();
                 contact.setId(cursor.getInt(0));
                 contact.setContactName(cursor.getString(cursor.getColumnIndex(DBConstants.CONTACT_NAME)));
                 contact.setContactNo(cursor.getLong(cursor.getColumnIndex(DBConstants.CONTACT_NUMBER)));
                 contact.setDescription(cursor.getString(cursor.getColumnIndex(DBConstants.CONTACT_DESCRIPTION)));
                 contact.setContactType(cursor.getInt(cursor.getColumnIndex(DBConstants.CONTACT_TYPE)));
                 contact.setSequence(cursor.getInt(cursor.getColumnIndex(DBConstants.CONTACT_SEQUENCE)));
-                contacts.add(contact);
             }
         }
         catch (Exception e)
@@ -80,7 +78,7 @@ public class IceDaoImpl extends BaseDao implements ICEDao {
             Log.d("Error",e.getMessage());
         }
 
-        return contacts;
+        return contact;
     }
 
     @Override

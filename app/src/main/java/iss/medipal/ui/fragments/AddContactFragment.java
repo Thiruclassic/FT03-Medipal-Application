@@ -98,14 +98,26 @@ public class AddContactFragment extends Fragment {
 
     private boolean isValid(){
         if(TextUtils.isEmpty(mNameEdit.getText()) ||
-                TextUtils.isEmpty(mNumberEdit.getText()) ||
-                TextUtils.isEmpty(mDescriptionEdit.getText())){
+                TextUtils.isEmpty(mNumberEdit.getText()) ){
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
                     getString(R.string.enter_all_details_text)).show();
             return false;
         }
         return true;
     }
+
+    private boolean isValidPhoneNumber()
+    {
+        int numLen = mNumberEdit.getText().toString().length();
+        if(numLen <5 || numLen>10)
+        {
+            DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
+                    "The phone number entered is invalid!").show();
+            return false;
+        }
+        return true;
+    }
+
 
     public void finish()
     {
@@ -121,7 +133,7 @@ public class AddContactFragment extends Fragment {
         @Override
         public void onClick(View v) {
             try {
-                if(isValid())
+                if(isValid() && isValidPhoneNumber())
                 {
                     setContactDetails();
                     Log.d("Type text",String.valueOf(mTypeSelect.getText()));
