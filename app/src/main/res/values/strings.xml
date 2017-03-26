@@ -31,6 +31,7 @@
         <item>Measurements</item>
         <item>ICE Contacts</item>
         <item>Categories</item>
+        <item>Consumptions</item>
         <item>Tutorial</item>
     </string-array>
 
@@ -180,5 +181,8 @@
     <string name="of">of</string>
     <string name="colon">:</string>
     <string name="dosage_time">Dosage Time</string>
+    <string name="consumption">Consumption</string>
+    <string name="by_date_text">By Date</string>
+    <string name="by_med_text">By Meds</string>
 
 </resources>

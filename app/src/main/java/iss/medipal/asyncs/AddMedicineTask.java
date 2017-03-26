@@ -19,6 +19,7 @@ import iss.medipal.dao.impl.ReminderDaoImpl;
 import iss.medipal.model.Medicine;
 import iss.medipal.model.Reminder;
 import iss.medipal.receivers.AlarmReceiver;
+import iss.medipal.ui.interfaces.OnTaskCompleted;
 
 /**
  * Created by junaidramis on 19/3/17.
@@ -30,11 +31,13 @@ public class AddMedicineTask extends AsyncTask<Medicine, Void, Reminder> {
     private MedicineDao mMedDao;
     private ReminderDao mReminderDao;
     private Object[] args;
+    private OnTaskCompleted mListener;
 
-    public AddMedicineTask(Context context) {
+    public AddMedicineTask(Context context, OnTaskCompleted listener) {
         this.mContext = context;
         this.mMedDao = new MedicineDaoImpl(context);
         this.mReminderDao = new ReminderDaoImpl(context);
+        this.mListener = listener;
     }
 
     @Override
@@ -58,6 +61,9 @@ public class AddMedicineTask extends AsyncTask<Medicine, Void, Reminder> {
     protected void onPostExecute(Reminder result) {
         if (mMedDao != null)
             mMedDao.close();
+        if(mListener !=null) {
+            mListener.onTaskCompleted();
+        }
         AddReminderAlarmTask mAddReminderAlarmTask=new AddReminderAlarmTask(mContext);
         mAddReminderAlarmTask.execute(args);
 

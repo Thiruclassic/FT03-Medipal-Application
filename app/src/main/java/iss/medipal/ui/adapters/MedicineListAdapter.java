@@ -35,12 +35,12 @@ import iss.medipal.util.DialogUtility;
 public class MedicineListAdapter extends BaseAdapter {
     private Context mContext;
     private List<Medicine> mMedicines;
-    private Fragment mFragment;
+    private onMedicineDeletedInterface mDeleteCallBack;
 
     public MedicineListAdapter(Context context , List<Medicine> medicines, Fragment fragment) {
         this.mContext = context;
         this.mMedicines = medicines;
-        this.mFragment = fragment;
+        this.mDeleteCallBack = (onMedicineDeletedInterface)fragment;
     }
 
     @Override
@@ -84,10 +84,9 @@ public class MedicineListAdapter extends BaseAdapter {
        final DialogInterface.OnClickListener yesClick=new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Medicine medicine=mMedicines.remove(position);
+                Medicine medicine = mMedicines.remove(position);
                 notifyDataSetChanged();
-                MediPalApplication.getPersonStore().deleteMedicine(medicine);
-                ((ViewMedicineFragment)mFragment).doCallback();
+                mDeleteCallBack.onMedDeleted(medicine);
             }
         };
         View.OnClickListener clickListener=new View.OnClickListener() {
@@ -101,8 +100,6 @@ public class MedicineListAdapter extends BaseAdapter {
 
     }
 
-
-
     /**
      * Static view holder class.
      */
@@ -114,6 +111,9 @@ public class MedicineListAdapter extends BaseAdapter {
             mItemTextview = (TextView) view.findViewById(R.id.med_item_tv);
             deleteImage=(ImageView)view.findViewById(R.id.deleteMed);
         }
+    }
 
+    public interface onMedicineDeletedInterface{
+        void onMedDeleted(Medicine medicine);
     }
 }

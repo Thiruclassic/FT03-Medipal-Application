@@ -201,6 +201,7 @@ public class OnedayDoseFragment extends BaseFragment implements DoseListAdapter.
                 mCurrentCal.add(Calendar.HOUR, selectedPosition * medicine.getReminder().getInterval());
                 consumption.setConsumedOn(mCurrentCal.getTime());
                 MediPalApplication.getPersonStore().addConsumption(consumption);
+                mDoseContainer.reloadConsumtionData();
             } else {
                 DialogUtility.newMessageDialog(getContext(), getString(R.string.alert),
                         getString(R.string.select_dose)).show();
@@ -225,6 +226,7 @@ public class OnedayDoseFragment extends BaseFragment implements DoseListAdapter.
                 mCurrentCal.add(Calendar.HOUR, selectedPosition * medicine.getReminder().getInterval());
                 consumption.setConsumedOn(mCurrentCal.getTime());
                 MediPalApplication.getPersonStore().deleteConsumption(consumption);
+                mDoseContainer.reloadConsumtionData();
             } else {
                 DialogUtility.newMessageDialog(getContext(), getString(R.string.alert),
                         getString(R.string.select_dose)).show();

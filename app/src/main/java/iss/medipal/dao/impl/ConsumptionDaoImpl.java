@@ -88,6 +88,16 @@ public class ConsumptionDaoImpl extends BaseDao implements ConsumptionDao {
     }
 
     @Override
+    public void deleteConsumtionByMedId(int medId) {
+        try {
+            database.delete(DBConstants.TABLE_CONSUMPTION, DBConstants.CONSUMPTION_MEDID +"=? ",
+                    new String[]{String.valueOf(medId)});
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public List<Consumption> getAllConsumptionsForLastXDays(int days) {
         return null;
     }

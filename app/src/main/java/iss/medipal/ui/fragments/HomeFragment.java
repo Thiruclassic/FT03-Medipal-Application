@@ -154,15 +154,18 @@ public class HomeFragment extends BaseFragment implements
             mMedAbsentLayout.setVisibility(View.VISIBLE);
             mDateLayout.setVisibility(View.GONE);
             mCircleIndicator.setVisibility(View.GONE);
+            mViewPager.setAdapter(null);
+            mViewPager.setPageTransformer(false, null);
+            mCircleIndicator.setViewPager(null);
         } else {
             mDateLayout.setVisibility(View.VISIBLE);
             mCircleIndicator.setVisibility(View.VISIBLE);
             mMedAbsentLayout.setVisibility(View.GONE);
             mDoseContainer = DoseContainer.getInstance(getActivity());
-            if(isReload){
-                mDoseContainer.reloadData(isReload);
-            }
             setTodayCurrent();
+            if(isReload){
+                mDoseContainer.reloadData();
+            }
             ArrayList<MedDayModel> tempMeds = mDoseContainer.getDosesForDay(mCurrentDay);
             setDateArrowVisibility(mCurrentDay);
             populateUi(tempMeds);
@@ -176,8 +179,8 @@ public class HomeFragment extends BaseFragment implements
         mCurrentDay.set(Calendar.MINUTE, 0);
         mCurrentDay.set(Calendar.SECOND, 0);
         mCurrentDay.set(Calendar.MILLISECOND, 0);
-        Calendar dayCal = mDoseContainer.getCurrentDate();
-        updateDisplayDate(dayCal);
+        mDoseContainer.setCurrentDate(mCurrentDay);
+        updateDisplayDate(mDoseContainer.getCurrentDate());
     }
 
     /**
