@@ -20,7 +20,7 @@ import iss.medipal.constants.Constants;
 import iss.medipal.constants.DBConstants;
 
 /**
- * Created by Naveen on 2/28/17.
+ * Created by Thirumal on 2/28/17.
  */
 
 public class AlarmReceiver extends BroadcastReceiver {

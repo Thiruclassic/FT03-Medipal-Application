@@ -2,11 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_vertical"
-    android:padding="20dp"
-    >
+    android:layout_height="wrap_content"
+    android:padding="20dp">
 
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
     <ImageView
         android:id="@+id/contact_Icon"
         android:layout_width="36dp"
@@ -24,5 +26,18 @@
         android:textStyle="bold"
         android:id="@+id/tv_name"
         />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/priority_Icon"
+            android:layout_width="36dp"
+            android:layout_height="34dp"
+            android:tint="@color/colorIcons" />
+
+    </LinearLayout>
+
 
 </LinearLayout>

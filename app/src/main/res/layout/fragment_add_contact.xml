@@ -101,6 +101,7 @@
                 style="@style/SubHeadingTextViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:text="Priority" />
 
 
@@ -114,7 +115,7 @@
                     android:spinnerMode="dropdown" />
             -->
 
-            <android.support.design.widget.TextInputLayout
+            <!--<android.support.design.widget.TextInputLayout
                 android:id="@+id/text_input_contact_priority"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -122,15 +123,79 @@
                 android:padding="@dimen/padding_small"
                 android:textColorHint="?colorPrimary"
                 app:hintTextAppearance="@style/HintTextStyle"/>
-
-            <android.support.v7.widget.AppCompatEditText
+-->
+            <!--<android.support.v7.widget.AppCompatEditText
                 style="@style/InputLayoutEditTextStyleDark"
                 android:id="@+id/contact_sequence"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Contact Priority"
                 android:imeOptions="actionDone"
-                android:inputType="number"/>
+                android:inputType="number"/>-->
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal"
+                android:id="@+id/contact_priority_group">
+
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/high_priority"
+                    android:text="HIGH"
+
+                    android:checked="true"/>
+
+                <ImageView
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/high_priority_Icon"
+                    android:layout_width="36dp"
+                    android:layout_height="34dp"
+                    android:tint="@color/colorIcons"
+                    android:src="@drawable/high_priority"/>
+
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/med_priority"
+                    android:text="MED"
+                    android:layout_marginLeft="25dp"
+                    />
+
+                <ImageView
+
+                    android:id="@+id/med_priority_Icon"
+                    android:layout_marginLeft="5dp"
+                    android:layout_width="36dp"
+                    android:layout_height="34dp"
+                    android:tint="@color/colorIcons"
+                    android:src="@drawable/med_priority"
+                    />
+
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/low_priority"
+                    android:text="LOW"
+                    android:layout_marginLeft="25dp"
+                    />
+
+                <ImageView
+
+                    android:id="@+id/low_priority_Icon"
+                    android:layout_marginLeft="5dp"
+                    android:layout_width="36dp"
+                    android:layout_height="34dp"
+                    android:tint="@color/colorIcons"
+                    android:src="@drawable/low_priority"/>
+
+
+            </RadioGroup>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/text_input_contact_description"
