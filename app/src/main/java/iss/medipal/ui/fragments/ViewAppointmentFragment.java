@@ -9,8 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.Switch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +16,7 @@ import java.util.List;
 import iss.medipal.MediPalApplication;
 import iss.medipal.R;
 import iss.medipal.model.Appointment;
-import iss.medipal.model.Measurement;
-import iss.medipal.model.Medicine;
-import iss.medipal.ui.adapters.MedicineReminderListAdapter;
-import iss.medipal.ui.adapters.RecyclerAdapter;
 import iss.medipal.ui.adapters.ReminderRecyclerAdapter;
-import iss.medipal.util.AppHelper;
 
 /**
  * Created by sreekumar on 3/26/2017.
@@ -60,10 +53,6 @@ public class ViewAppointmentFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        reminderList=(ListView)view.findViewById(R.id.medicineReminderList);
-//        mSwitch=(Switch)view.findViewById(R.id.medRemindItemSwitch);
-
-        setList();
     }
 
     @Override
@@ -74,16 +63,11 @@ public class ViewAppointmentFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        setList();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-    }
-
-    private void setList() {
-
     }
 
     private void setUpRecyclerView(View fragmentView) {
