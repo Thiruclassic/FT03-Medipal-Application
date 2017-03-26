@@ -10,6 +10,7 @@ import iss.medipal.dao.impl.AppointmentDaoImpl;
 import iss.medipal.dao.impl.ReminderDaoImpl;
 import iss.medipal.model.Appointment;
 import iss.medipal.model.Medicine;
+import iss.medipal.model.Reminder;
 
 /**
  * Created by sreekumar on 3/23/2017.
@@ -21,8 +22,7 @@ public class EditAppointmentTask extends AsyncTask<Appointment, Void, Long> {
 
     private Context mContext;
     private AppointmentDao mAppointmentDao;
-
-
+    private Object[] args;
 
     public EditAppointmentTask(Context context){
 
@@ -30,10 +30,11 @@ public class EditAppointmentTask extends AsyncTask<Appointment, Void, Long> {
         this.mAppointmentDao = new AppointmentDaoImpl(context);
 
     }
-
     @Override
     protected Long doInBackground(Appointment... params) {
+        Reminder reminder = new Reminder(1, 0, params[0].getAppointment());
         long result = mAppointmentDao.updateAppointment(params[0]);
+        args = new Object[]{params[0], reminder};
         return result;
     }
 
@@ -42,6 +43,8 @@ public class EditAppointmentTask extends AsyncTask<Appointment, Void, Long> {
         if (result != -1)
             if (mAppointmentDao != null)
                 mAppointmentDao.close();
+        AddReminderAlarmTask mAddReminderAlarmTask = new AddReminderAlarmTask(mContext);
+        mAddReminderAlarmTask.execute(args);
     }
 
 }

@@ -89,7 +89,10 @@ public class Appointment implements Parcelable, Comparable<Appointment> {
         parcel.writeString(description);
         parcel.writeParcelable(reminder, 0);
     }
-
+    @Override
+    public boolean equals(Object obj) {
+        return location.equalsIgnoreCase(((Appointment)obj).getLocation());
+    }
     @Override
     public int compareTo(@NonNull Appointment app) {
         if (location.equalsIgnoreCase(app.getLocation()))
