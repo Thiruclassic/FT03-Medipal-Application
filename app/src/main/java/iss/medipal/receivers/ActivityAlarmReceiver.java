@@ -40,9 +40,6 @@ public class ActivityAlarmReceiver extends BroadcastReceiver {
         String message = "You have an appointment at  "  + location ;
         currentInterval++;
 
-
-//        Intent myintent=new Intent(context,AppNotificationActionReceiver.class);
-
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context).setSmallIcon
                 (android.support.v7.appcompat.R.drawable.notification_icon_background).
                 setContentTitle(DBConstants.TABLE_APPOINTMENT)

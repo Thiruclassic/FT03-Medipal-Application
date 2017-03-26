@@ -1,7 +1,6 @@
 package iss.medipal.ui.adapters;
 
 import android.content.Context;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +13,8 @@ import java.util.Locale;
 
 import iss.medipal.R;
 import iss.medipal.dao.AppointmentDao;
-import iss.medipal.dao.MeasurementDao;
 import iss.medipal.dao.impl.AppointmentDaoImpl;
-import iss.medipal.dao.impl.MeasurementDaoImpl;
 import iss.medipal.model.Appointment;
-import iss.medipal.model.Measurement;
 
 /**
  * Created by sreek on 3/26/2017.
