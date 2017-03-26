@@ -40,13 +40,13 @@ public class MedicineUnitTest extends TestCase implements MedipalUnitTest {
     {
             medicine = new Medicine();
             reminder = new Reminder();
-            medicineDao = new MedicineDaoImpl(InstrumentationRegistry.getContext());
+            medicineDao = new MedicineDaoImpl(context);
             medicineList = medicineDao.getAllMedicines();
     }
 
 
     @Test
-    public void testAddMedicine() throws Exception {
+    public void addMedicineTest() throws Exception {
         //  Adding Medicine Test
             int id=0;
 
@@ -66,7 +66,7 @@ public class MedicineUnitTest extends TestCase implements MedipalUnitTest {
     }
 
     @Test
-    public void testMedicineData() throws Exception {
+    public void medicineDataTest() throws Exception {
 
         Medicine medicineDbData=medicineDao.getMedicinebyId(medicine.getId());
 
@@ -81,7 +81,7 @@ public class MedicineUnitTest extends TestCase implements MedipalUnitTest {
     }
 
     @Test
-    public void testUpdateMedicine() {
+    public void updateMedicineTest() {
 
         medicine=medicineList.get(medicineList.size()-1);
         medicine.setMedicine("Amlong 5mg");
@@ -99,7 +99,7 @@ public class MedicineUnitTest extends TestCase implements MedipalUnitTest {
     }
 
     @Test
-    public void testCheckListSize()
+    public void checkListSizeTest()
     {
         List<Medicine> medicines=medicineDao.getAllMedicines();
 
@@ -107,7 +107,7 @@ public class MedicineUnitTest extends TestCase implements MedipalUnitTest {
     }
 
     @Test
-    public void testDeleteMedicine()
+    public void deleteMedicineTest()
     {
         Medicine medicinedBData=medicineList.get(medicineList.size()-1);
 

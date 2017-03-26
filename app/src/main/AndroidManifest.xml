@@ -28,22 +28,6 @@
         <activity android:name=".ui.activities.MeasurementActivity" />
         <activity android:name=".ui.activities.AddBpActivity" />
 
-        <receiver android:name=".receivers.AlarmReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
-        <receiver android:name=".receivers.ActivityAlarmReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
-        <receiver android:name=".receivers.NotificationActionReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
-
         <activity android:name=".ui.activities.TutorialActivity" />
         <activity android:name=".ui.activities.ConsumptionActivity" />
         <activity android:name=".ui.activities.WeightActivity" />
@@ -65,6 +49,24 @@
             android:label="Emergency Contacts"
             android:theme="@style/AppTheme" />
         <activity android:name=".ui.activities.Add_ICE"></activity>
+
+
+
+        <receiver android:name=".receivers.AlarmReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receivers.ActivityAlarmReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receivers.NotificationActionReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
     </application>
 
