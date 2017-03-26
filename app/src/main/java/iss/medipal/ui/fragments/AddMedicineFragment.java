@@ -44,6 +44,7 @@ import iss.medipal.ui.activities.MainActivity;
 import iss.medipal.ui.adapters.BaseSpinnerAdapter;
 import iss.medipal.ui.adapters.CategorySpinnerAdapter;
 import iss.medipal.ui.interfaces.CustomBackPressedListener;
+import iss.medipal.ui.interfaces.OnTaskCompleted;
 import iss.medipal.util.AppHelper;
 import iss.medipal.util.DialogUtility;
 
@@ -52,7 +53,7 @@ import iss.medipal.util.DialogUtility;
  * Use the {@link AddMedicineFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddMedicineFragment extends BaseTimeFragment implements CustomBackPressedListener{
+public class AddMedicineFragment extends BaseTimeFragment implements CustomBackPressedListener, OnTaskCompleted {
 
     private static final String ARGS_MED = "ARGS_MED";
 
@@ -169,9 +170,6 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.detach(this).commit();
             ((MainActivity) getActivity()).setmListener(null);
-            if (mUIUpdateListener != null) {
-                mUIUpdateListener.onMedAddedUiUpdate();
-            }
         }
     }
 
@@ -188,7 +186,13 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         }
         mReminder.setStartTime(calendar.getTime());
         mAddDosageTimeButton.setText(mReminderStartTime);
+    }
 
+    @Override
+    public void onTaskCompleted() {
+        if (mUIUpdateListener != null) {
+            mUIUpdateListener.onMedAddedUiUpdate();
+        }
     }
 
     private void setSpinners(){
@@ -243,9 +247,9 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
                         AppHelper.hideKeyboard(getActivity());
                         setMedicineDetails();
                         if(!isEditMedicine) {
-                            MediPalApplication.getPersonStore().addMedicine(mMedicine);
+                            MediPalApplication.getPersonStore().addMedicine(mMedicine, AddMedicineFragment.this);
                         } else {
-                            MediPalApplication.getPersonStore().editMedicine(mMedicine);
+                            MediPalApplication.getPersonStore().editMedicine(mMedicine, AddMedicineFragment.this);
                         }
 
                         StringBuilder builder=new StringBuilder();

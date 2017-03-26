@@ -35,7 +35,9 @@ public class AddContactFragment extends Fragment {
     private AppCompatEditText mDescriptionEdit;
     private RadioGroup mTypeGroup;
     private RadioButton mTypeSelect;
-    private AppCompatEditText mPriorityEdit;
+    private RadioGroup mPriorityGroup;
+    private RadioButton mPrioritySelect;
+    //private AppCompatEditText mPriorityEdit;
     private Button mSubmitButton;
     private InCaseofEmergencyContact mContact;
     private boolean isEdit;
@@ -65,6 +67,13 @@ public class AddContactFragment extends Fragment {
                 mTypeSelect = (RadioButton) view.findViewById(checkedId);
             }
         });
+        mPriorityGroup = (RadioGroup) view.findViewById((R.id.contact_priority_group));
+        mPriorityGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                mPrioritySelect = (RadioButton) view.findViewById(checkedId);
+            }
+        });
         setListeners();
         if(getActivity().getIntent().getExtras()!=null)
         {
@@ -81,15 +90,16 @@ public class AddContactFragment extends Fragment {
         mDescriptionEdit = (AppCompatEditText) view.findViewById(R.id.contact_description);
         mTypeGroup = (RadioGroup) view.findViewById(R.id.contact_type_group);
         mTypeSelect = (RadioButton) view.findViewById(mTypeGroup.getCheckedRadioButtonId());
-        mPriorityEdit = (AppCompatEditText) view.findViewById(R.id.contact_sequence);
+        mPriorityGroup = (RadioGroup) view.findViewById(R.id.contact_priority_group);
+        mPrioritySelect = (RadioButton) view.findViewById(mPriorityGroup.getCheckedRadioButtonId());
+        //mPriorityEdit = (AppCompatEditText) view.findViewById(R.id.contact_sequence);
         mSubmitButton = (Button) view.findViewById(R.id.submit_details_btn);
     }
 
     private boolean isValid(){
         if(TextUtils.isEmpty(mNameEdit.getText()) ||
                 TextUtils.isEmpty(mNumberEdit.getText()) ||
-                TextUtils.isEmpty(mDescriptionEdit.getText()) ||
-                TextUtils.isEmpty(mPriorityEdit.getText())){
+                TextUtils.isEmpty(mDescriptionEdit.getText())){
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
                     getString(R.string.enter_all_details_text)).show();
             return false;
@@ -127,6 +137,18 @@ public class AddContactFragment extends Fragment {
                             break;
                     }
 
+                    switch (mPrioritySelect.getText().toString()){
+                        case Constants.HIGH:
+                            mContact.setSequence(Constants.HIGH_PRIORITY);
+                            break;
+                        case Constants.MED:
+                            mContact.setSequence(Constants.MED_PRIORITY);
+                            break;
+                        case Constants.LOW:
+                            mContact.setSequence(Constants.LOW_PRIORITY);
+                            break;
+                    }
+
                     MediPalApplication.getPersonStore().addUpdateContact(mContact,isEdit);
 
                     Context context = getContext();
@@ -151,25 +173,45 @@ public class AddContactFragment extends Fragment {
         mNameEdit.setText(contact.getContactName());
         mNumberEdit.setText(String.valueOf(contact.getContactNo()));
         mDescriptionEdit.setText(contact.getDescription());
-        mPriorityEdit.setText(String.valueOf(contact.getSequence()));
+        //mPriorityEdit.setText(String.valueOf(contact.getSequence()));
 
         switch (contact.getContactType())
         {
-            case 1:
+            case Constants.FAMILY_CONTACT:
                 mTypeSelect = (RadioButton) mTypeGroup.getChildAt(0);
                 mTypeSelect.setChecked(Boolean.TRUE);
                 break;
-            case 2:
+            case Constants.FRIEND_CONTACT:
                 mTypeSelect = (RadioButton) mTypeGroup.getChildAt(1);
                 mTypeSelect.setChecked(Boolean.TRUE);
                 break;
-            case 3:
+            case Constants.DOCTOR_CONTACT:
                 mTypeSelect = (RadioButton) mTypeGroup.getChildAt(2);
                 mTypeSelect.setChecked(Boolean.TRUE);
                 break;
             default:
                 mTypeSelect = (RadioButton) mTypeGroup.getChildAt(0);
                 mTypeSelect.setChecked(Boolean.TRUE);
+                break;
+        }
+
+        switch (contact.getSequence())
+        {
+            case Constants.HIGH_PRIORITY:
+                mPrioritySelect = (RadioButton) mPriorityGroup.getChildAt(0);
+                mPrioritySelect.setChecked(Boolean.TRUE);
+                break;
+            case Constants.MED_PRIORITY:
+                mPrioritySelect = (RadioButton) mPriorityGroup.getChildAt(1);
+                mPrioritySelect.setChecked(Boolean.TRUE);
+                break;
+            case Constants.LOW_PRIORITY:
+                mPrioritySelect = (RadioButton) mPriorityGroup.getChildAt(2);
+                mPrioritySelect.setChecked(Boolean.TRUE);
+                break;
+            default:
+                mPrioritySelect = (RadioButton) mPriorityGroup.getChildAt(0);
+                mPrioritySelect.setChecked(Boolean.TRUE);
                 break;
         }
 
@@ -187,17 +229,6 @@ public class AddContactFragment extends Fragment {
         mContact.setContactName(mNameEdit.getText().toString());
         mContact.setContactNo(Long.parseLong(mNumberEdit.getText().toString()));
         mContact.setDescription(mDescriptionEdit.getText().toString());
-        mContact.setSequence(Integer.parseInt(mPriorityEdit.getText().toString()));
+        //mContact.setSequence(Integer.parseInt(mPriorityEdit.getText().toString()));
     }
-
-    /*mTypeGroup.setOnCheckedChangeListener(new OnCheckedChangeListener()
-    {
-        @Override
-        public void onCheckedChanged(RadioGroup group, int checkedId) {
-        // checkedId is the RadioButton selected
-    }
-    });
-*/
-
-
 }

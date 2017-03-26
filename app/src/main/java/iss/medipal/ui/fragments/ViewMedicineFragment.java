@@ -23,6 +23,7 @@ import iss.medipal.constants.Constants;
 import iss.medipal.dao.MedicineDao;
 import iss.medipal.model.Medicine;
 import iss.medipal.ui.adapters.MedicineListAdapter;
+import iss.medipal.ui.interfaces.OnTaskCompleted;
 import iss.medipal.util.AppHelper;
 
 /**
@@ -30,7 +31,8 @@ import iss.medipal.util.AppHelper;
  * Use the {@link ViewMedicineFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ViewMedicineFragment extends Fragment implements AddMedicineFragment.ViewMedInterface {
+public class ViewMedicineFragment extends Fragment implements AddMedicineFragment.ViewMedInterface,
+        MedicineListAdapter.onMedicineDeletedInterface, OnTaskCompleted{
 
     private FloatingActionButton addMedicineButton;
     private ListView medicineList;
@@ -119,6 +121,16 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
         }
     }
 
+    @Override
+    public void onMedDeleted(Medicine medicine) {
+        MediPalApplication.getPersonStore().deleteMedicine(medicine, this);
+    }
+
+    @Override
+    public void onTaskCompleted() {
+        doCallback();
+    }
+
     private void initialiseUI(View view){
         addMedicineButton=(FloatingActionButton)view.findViewById(R.id.addMedicine);
         medicineList=(ListView)view.findViewById(R.id.medicineList);
@@ -137,7 +149,7 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
 
     public void doCallback(){
         if(mMedAddCallback != null){
-            mMedAddCallback.onMedAddedOrDeleted();
+            mMedAddCallback.onMedAdded();
         }
     }
 
@@ -169,6 +181,6 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
     }
 
     public interface HomeInterface {
-        void onMedAddedOrDeleted();
+        void onMedAdded();
     }
 }

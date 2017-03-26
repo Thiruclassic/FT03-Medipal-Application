@@ -15,6 +15,8 @@ import iss.medipal.constants.DBConstants;
 import iss.medipal.dao.MedicineDao;
 import iss.medipal.model.Medicine;
 
+import static android.R.attr.id;
+
 /**
  * Created by Naveen on 3/2/17.
  */
@@ -32,40 +34,60 @@ public class MedicineDaoImpl extends BaseDao implements MedicineDao{
         dateFormat = new SimpleDateFormat(Constants.ISSUE_DATE_FORMAT);
     }
 
+    public MedicineDaoImpl()
+    {
+        //Default Constructor
+    }
+
 
     @Override
     public int addMedicine(Medicine medicine) {
-        ContentValues values=new ContentValues();
-        values.put(DBConstants.MEDICINE_NAME,medicine.getMedicine());
-        values.put(DBConstants.MEDICINE_DESCRIPTION,medicine.getDescription());
-        values.put(DBConstants.MEDICINE_CATID,medicine.getCatId());
-        values.put(DBConstants.MEDICINE_REMINDER_ID,medicine.getReminderId());
-        values.put(DBConstants.MEDICINE_REMIND,medicine.isRemind());
-        values.put(DBConstants.MEDICINE_QUATITY,medicine.getQuantity());
-        values.put(DBConstants.MEDICINE_DOSAGE,medicine.getDosage());
-        values.put(DBConstants.MEDICINE_THRESHOLD,medicine.getThreshold());
-        values.put(DBConstants.MEDICINE_DATE_ISSUED,dateFormat.format(medicine.getDateIssued()));
-        values.put(DBConstants.MEDICINE_EXPIRY_FACTOR,medicine.getExpireFactor());
-        int id=(int)database.insert(DBConstants.TABLE_MEDICINE,null,values);
-        Log.d("insert Medicine",String.valueOf(id));
+        int id=0;
+        try {
+            ContentValues values = new ContentValues();
+            values.put(DBConstants.MEDICINE_NAME, medicine.getMedicine());
+            values.put(DBConstants.MEDICINE_DESCRIPTION, medicine.getDescription());
+            values.put(DBConstants.MEDICINE_CATID, medicine.getCatId());
+            values.put(DBConstants.MEDICINE_REMINDER_ID, medicine.getReminderId());
+            values.put(DBConstants.MEDICINE_REMIND, medicine.isRemind());
+            values.put(DBConstants.MEDICINE_QUATITY, medicine.getQuantity());
+            values.put(DBConstants.MEDICINE_DOSAGE, medicine.getDosage());
+            values.put(DBConstants.MEDICINE_THRESHOLD, medicine.getThreshold());
+            values.put(DBConstants.MEDICINE_DATE_ISSUED, dateFormat.format(medicine.getDateIssued()));
+            values.put(DBConstants.MEDICINE_EXPIRY_FACTOR, medicine.getExpireFactor());
+            id = (int) database.insert(DBConstants.TABLE_MEDICINE, null, values);
+            Log.d("insert Medicine", String.valueOf(id));
+        }
+        catch(NullPointerException exception)
+        {
+            Log.d("Invalid data",exception.getMessage());
+        }
 
         return id;
     }
 
     @Override
     public int updateMedicine(Medicine medicine) {
-        ContentValues values=new ContentValues();
-        values.put(DBConstants.MEDICINE_NAME,medicine.getMedicine());
-        values.put(DBConstants.MEDICINE_DESCRIPTION,medicine.getDescription());
-        values.put(DBConstants.MEDICINE_CATID,medicine.getCatId());
-        values.put(DBConstants.MEDICINE_REMINDER_ID,medicine.getReminderId());
-        values.put(DBConstants.MEDICINE_REMIND,medicine.isRemind());
-        values.put(DBConstants.MEDICINE_QUATITY,medicine.getQuantity());
-        values.put(DBConstants.MEDICINE_DOSAGE,medicine.getDosage());
-        values.put(DBConstants.MEDICINE_THRESHOLD,medicine.getThreshold());
-        values.put(DBConstants.MEDICINE_DATE_ISSUED,dateFormat.format(medicine.getDateIssued()));
-        values.put(DBConstants.MEDICINE_EXPIRY_FACTOR,medicine.getExpireFactor());
-        int id=(int)database.update(DBConstants.TABLE_MEDICINE,values,"id=?",new String[]{String.valueOf(medicine.getId())});
+        int id=0;
+        try {
+            ContentValues values = new ContentValues();
+            values.put(DBConstants.MEDICINE_NAME, medicine.getMedicine());
+            values.put(DBConstants.MEDICINE_DESCRIPTION, medicine.getDescription());
+            values.put(DBConstants.MEDICINE_CATID, medicine.getCatId());
+            values.put(DBConstants.MEDICINE_REMINDER_ID, medicine.getReminderId());
+            values.put(DBConstants.MEDICINE_REMIND, medicine.isRemind());
+            values.put(DBConstants.MEDICINE_QUATITY, medicine.getQuantity());
+            values.put(DBConstants.MEDICINE_DOSAGE, medicine.getDosage());
+            values.put(DBConstants.MEDICINE_THRESHOLD, medicine.getThreshold());
+            values.put(DBConstants.MEDICINE_DATE_ISSUED, dateFormat.format(medicine.getDateIssued()));
+            values.put(DBConstants.MEDICINE_EXPIRY_FACTOR, medicine.getExpireFactor());
+            id=(int)database.update(DBConstants.TABLE_MEDICINE,values,"id=?",new String[]{String.valueOf(medicine.getId())});
+        }
+        catch (NullPointerException exception)
+        {
+            Log.d("Invalid data",exception.getMessage());
+        }
+
         return id;
     }
 

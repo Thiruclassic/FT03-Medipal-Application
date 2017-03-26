@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import iss.medipal.MediPalApplication;
 import iss.medipal.R;
 import iss.medipal.constants.Constants;
 import iss.medipal.model.Medicine;
@@ -42,7 +43,7 @@ public class DoseListAdapter extends BaseAdapter {
     public DoseListAdapter(Context context , BaseFragment fragment, ArrayList<MedDoseModel> doseRecords, ArrayList<Medicine> meds) {
         mDoseRecords = doseRecords;
         mContext = context;
-        mMeds = meds;
+        mMeds = (ArrayList<Medicine>) MediPalApplication.getPersonStore().getmPersonalBio().getMedicines();
         mFragment = (Fragment)fragment;
         mCurrentMed = getCurrentMed();
     }

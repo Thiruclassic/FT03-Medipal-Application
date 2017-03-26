@@ -3,6 +3,7 @@ package iss.medipal.model;
 import android.content.Context;
 import android.util.Log;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import iss.medipal.asyncs.AddAppointmentTask;
 
@@ -24,6 +25,7 @@ import iss.medipal.asyncs.EditPersonalBioTask;
 import iss.medipal.asyncs.GetCategoriesTask;
 import iss.medipal.asyncs.GetContactsTask;
 import iss.medipal.dao.impl.PersonBioDaoImpl;
+import iss.medipal.ui.interfaces.OnTaskCompleted;
 import iss.medipal.util.AppHelper;
 
 /**
@@ -111,16 +113,16 @@ public class PersonStore {
         mEditPersonalBioTask.execute(personalBio);
     }
 
-    public void addMedicine(Medicine medicine){
+    public void addMedicine(Medicine medicine, OnTaskCompleted listener){
         if(AppHelper.isListEmpty(mPersonalBio.getMedicines())){
             mPersonalBio.setMedicines(new ArrayList<Medicine>());
         }
         mPersonalBio.getMedicines().add(medicine);
-        mAddMedicineTask = new AddMedicineTask(mContext);
+        mAddMedicineTask = new AddMedicineTask(mContext, listener);
         mAddMedicineTask.execute(medicine);
     }
 
-    public void editMedicine(Medicine medicine){
+    public void editMedicine(Medicine medicine, OnTaskCompleted listener){
         List<Medicine> meds = mPersonalBio.getMedicines();
         for(Medicine med: meds){
             if(med.equals(medicine)){
@@ -138,9 +140,21 @@ public class PersonStore {
                 break;
             }
         }
-        mEditMedicineTask = new EditMedicineTask(mContext);
+        mEditMedicineTask = new EditMedicineTask(mContext, listener);
         mEditMedicineTask.execute(medicine);
     }
+
+    public Medicine getMedicinById(int id){
+        if(!AppHelper.isListEmpty(mPersonalBio.getMedicines())){
+            for(Medicine med: mPersonalBio.getMedicines()){
+                if(med.getId() == id){
+                    return med;
+                }
+            }
+        }
+        return null;
+    }
+
     public void addAppointment(Appointment appointment) {
         if (AppHelper.isListEmpty(mPersonalBio.getAppointments())) {
             mPersonalBio.setAppointments(new ArrayList<Appointment>());
@@ -179,12 +193,13 @@ public class PersonStore {
             return;
         }
         for(Consumption consumption1: mConsumptions) {
-            if(consumption == consumption1){
+            if(consumption.equals(consumption1)){
                 mConsumptions.remove(consumption1);
+                break;
             }
-            mDeleteConsumptionTask = new DeleteConsumptionTask(mContext);
-            mDeleteConsumptionTask.execute(consumption);
         }
+        mDeleteConsumptionTask = new DeleteConsumptionTask(mContext);
+        mDeleteConsumptionTask.execute(consumption);
     }
 
     public void addUpdateCategory(Category category,boolean isEdit)
@@ -212,13 +227,23 @@ public class PersonStore {
 
     }
 
-    public void deleteMedicine(Medicine medicine)
+    public void deleteMedicine(Medicine medicine, OnTaskCompleted callback)
     {
         List<Medicine> medicines=mPersonalBio.getMedicines();
         medicines.remove(medicine);
-        DeleteMedicineTask deleteMedicineTask=new DeleteMedicineTask(mContext);
+        if(!AppHelper.isListEmpty(mConsumptions)){
+            Iterator<Consumption> it = mConsumptions.iterator();
+            while (it.hasNext()){
+                Consumption consumption = it.next();
+                if(consumption.getMedicineId() == medicine.getId()){
+                    it.remove();
+                }
+            }
+        }
+        DeleteMedicineTask deleteMedicineTask=new DeleteMedicineTask(mContext, callback);
         deleteMedicineTask.execute(medicine);
     }
+
     public void addUpdateContact(InCaseofEmergencyContact contact,boolean isEdit){
         if(AppHelper.isListEmpty(mPersonalBio.getContacts())){
             mPersonalBio.setContacts(new ArrayList<InCaseofEmergencyContact>());
@@ -237,7 +262,7 @@ public class PersonStore {
                 }
             }
         }
-        mAddUpdateContactTask = new AddUpdateContactTask(mContext,Boolean.FALSE);
+        mAddUpdateContactTask = new AddUpdateContactTask(mContext,isEdit);
         mAddUpdateContactTask.execute(contact);
     }
 

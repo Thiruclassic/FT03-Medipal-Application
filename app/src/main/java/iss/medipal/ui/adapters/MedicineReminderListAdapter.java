@@ -83,7 +83,7 @@ public class MedicineReminderListAdapter extends BaseAdapter {
                 if(medicine.getReminderId()>0)
                 {
                     medicine.setRemind(!medicine.isRemind());
-                    MediPalApplication.getPersonStore().editMedicine(medicines.get(Integer.parseInt(String.valueOf(v.getTag()))));
+                    MediPalApplication.getPersonStore().editMedicine(medicines.get(Integer.parseInt(String.valueOf(v.getTag()))), null);
                 }
                 else
                 {

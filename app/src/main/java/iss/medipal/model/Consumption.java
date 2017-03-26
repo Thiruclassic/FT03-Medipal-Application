@@ -50,9 +50,14 @@ public class Consumption implements Comparable<Consumption>{
     }
 
     @Override
+    public boolean equals(Object obj) {
+        return (medicineId == ((Consumption)obj).medicineId && consumedOn.equals(((Consumption)obj).consumedOn));
+    }
+
+    @Override
     public int compareTo(@NonNull Consumption o) {
-        if(medicineId == o.medicineId && consumedOn.equals(o.consumedOn)){
-            return 0;
+        if(consumedOn.before(o.consumedOn)){
+            return -1;
         } else {
             return 1;
         }

@@ -335,4 +335,20 @@ public class AppHelper {
         }
     }
 
+    /**
+     * Convert DP values to pixels
+     *
+     * @param context current context
+     * @param dp      value in dp
+     * @return int value in pixels
+     */
+    public static int dpToPx(Context context, int dp) {
+        if (context == null) {
+            return dp;
+        }
+
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                dp, context.getResources().getDisplayMetrics());
+    }
+
 }
