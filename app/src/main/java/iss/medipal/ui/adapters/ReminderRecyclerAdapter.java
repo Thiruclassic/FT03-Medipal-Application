@@ -54,7 +54,10 @@ public class ReminderRecyclerAdapter extends RecyclerView.Adapter<ReminderRecycl
 
     @Override
     public int getItemCount() {
+        if(!mData.isEmpty())
         return mData.size();
+        else
+            return 0;
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
