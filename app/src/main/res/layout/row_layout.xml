@@ -13,7 +13,6 @@
         android:id="@+id/contact_Icon"
         android:layout_width="36dp"
         android:layout_height="36dp"
-        android:tint="@color/colorIcons"
         android:src="@drawable/contacts_icon" />
 
     <TextView
