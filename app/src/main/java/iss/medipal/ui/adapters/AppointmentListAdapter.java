@@ -101,7 +101,6 @@ public class AppointmentListAdapter extends BaseAdapter implements ListAdapter {
      */
     class ViewHolder {
 
-        //todo add more items to the list view
         TextView mItemTextview1;
         TextView mItemTextview2;
         ImageView imgThumb;
