@@ -9,5 +9,5 @@ import android.support.test.InstrumentationRegistry;
  */
 
 public interface MedipalUnitTest {
-    public static final Context context= InstrumentationRegistry.getContext();
+    public static final Context context= InstrumentationRegistry.getTargetContext();
 }
