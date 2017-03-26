@@ -43,7 +43,7 @@ public class ActivityAlarmReceiver extends BroadcastReceiver {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context).setSmallIcon
                 (android.support.v7.appcompat.R.drawable.notification_icon_background).
                 setContentTitle(DBConstants.TABLE_APPOINTMENT)
-                .setContentText(message + " Description :" + desc);
+                .setContentText(message);
 
         builder.setAutoCancel(Boolean.TRUE);
         Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
