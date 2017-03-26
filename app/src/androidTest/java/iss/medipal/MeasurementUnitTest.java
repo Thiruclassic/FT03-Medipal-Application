@@ -11,5 +11,5 @@ import iss.medipal.model.Measurement;
 public class MeasurementUnitTest extends TestCase implements MedipalUnitTest {
 
     Measurement measurement;
-    MeasurementDa
+
 }
