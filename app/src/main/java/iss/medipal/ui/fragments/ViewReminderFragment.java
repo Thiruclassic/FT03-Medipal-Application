@@ -33,7 +33,7 @@ public class ViewReminderFragment extends Fragment {
 
     private Switch mSwitch;
 
-    public ViewReminderFragment() {
+    public ViewReminderFragment()  {
         // Required empty public constructor
     }
 

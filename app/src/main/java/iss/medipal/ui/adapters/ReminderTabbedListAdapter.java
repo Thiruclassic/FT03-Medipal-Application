@@ -14,6 +14,7 @@ import iss.medipal.constants.Constants;
 import iss.medipal.constants.DBConstants;
 import iss.medipal.model.Medicine;
 import iss.medipal.ui.fragments.SimpleCardFragment;
+import iss.medipal.ui.fragments.ViewAppointmentFragment;
 import iss.medipal.ui.fragments.ViewReminderFragment;
 
 /**
@@ -36,8 +37,9 @@ public class ReminderTabbedListAdapter extends FragmentPagerAdapter {
         switch (position) {
             case 0:
                 return  ViewReminderFragment.newInstance();
+
             case 1:
-                return SimpleCardFragment.getInstance("Screen : Appointment Reminders");
+                return ViewAppointmentFragment.newInstance();
         }
         return null;
     }
