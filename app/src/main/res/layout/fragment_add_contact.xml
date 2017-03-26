@@ -152,8 +152,8 @@
                 <ImageView
                     android:layout_marginLeft="5dp"
                     android:id="@+id/high_priority_Icon"
-                    android:layout_width="36dp"
-                    android:layout_height="34dp"
+                    android:layout_width="30dp"
+                    android:layout_height="28dp"
                     android:src="@drawable/high_priority"/>
 
 
@@ -162,15 +162,15 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/med_priority"
                     android:text="MED"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="10dp"
                     />
 
                 <ImageView
 
                     android:id="@+id/med_priority_Icon"
                     android:layout_marginLeft="5dp"
-                    android:layout_width="36dp"
-                    android:layout_height="34dp"
+                    android:layout_width="30dp"
+                    android:layout_height="28dp"
                     android:src="@drawable/med_priority"
                     />
 
@@ -180,15 +180,15 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/low_priority"
                     android:text="LOW"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="10dp"
                     />
 
                 <ImageView
 
                     android:id="@+id/low_priority_Icon"
                     android:layout_marginLeft="5dp"
-                    android:layout_width="36dp"
-                    android:layout_height="34dp"
+                    android:layout_width="30dp"
+                    android:layout_height="28dp"
                     android:src="@drawable/low_priority"/>
 
 
