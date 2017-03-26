@@ -34,7 +34,7 @@ public class AddAppointmentTask  extends AsyncTask<Appointment, Void, Long> {
     }
     @Override
     protected Long doInBackground(Appointment... params) {
-        Reminder reminder =new Reminder(2,2,params[0].getAppointment());
+        Reminder reminder =new Reminder(1,0,params[0].getAppointment());
         long result = mAppointmentDao.addAppointment(params[0]);
         args=new Object[]{params[0],reminder};
         return result;
@@ -48,7 +48,7 @@ public class AddAppointmentTask  extends AsyncTask<Appointment, Void, Long> {
         AddReminderAlarmTask mAddReminderAlarmTask=new AddReminderAlarmTask(mContext);
         mAddReminderAlarmTask.execute(args);
     }
-
+/*
     public void setAppointmentReminder(Appointment appointmentReminder)
     {
         Intent intent = new Intent(mContext, AlarmReceiver.class);
@@ -60,6 +60,6 @@ public class AddAppointmentTask  extends AsyncTask<Appointment, Void, Long> {
         calendar.set(Calendar.SECOND, 0);
         AlarmManager manager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
         manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-    }
+    }*/
 
 }
