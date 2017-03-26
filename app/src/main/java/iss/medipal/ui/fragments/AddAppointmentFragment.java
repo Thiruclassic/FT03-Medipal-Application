@@ -52,6 +52,7 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
     private EditText etDate, etTime, etLocation, etDescription;
     private Button btnSave;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+    private SimpleDateFormat dateFormatterShow = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     private SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a", Locale.getDefault());
     private SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("dd/MM/yyyy hh:mm", Locale.getDefault());
     //    Calendar currentCal = Calendar.getInstance();
@@ -252,7 +253,6 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
         TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
                 String AM_PM ;
                 if(hourOfDay < 12) {
                     AM_PM = "AM";
@@ -263,8 +263,6 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
             }
 
         }, hour, minute, false);
-
-//        timePickerDialog.show();
         return timePickerDialog;
     }
 
@@ -273,12 +271,24 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                etDate.setText(dayOfMonth + "/" + month + "/" + year);
+                showDate(year, month+1, dayOfMonth);
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-
-//        datePickerDialog.show();
         return datePickerDialog;
+    }
+
+    private void showDate(int year, int month, int day) {
+        try{
+
+            Date datenew = dateFormatterShow.parse(new StringBuilder().append(day).append("/")
+                    .append(month).append("/").append(year).toString());
+
+            etDate.setText(dateFormatter.format(datenew));
+        }
+        catch (Exception e){
+
+        }
+
     }
 
     @Override
