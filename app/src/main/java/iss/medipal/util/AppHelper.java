@@ -236,6 +236,20 @@ public class AppHelper {
                 endDate.get(Calendar.MINUTE);
     }
 
+    // return the difference in the number of days, given 2 date objects
+    public static boolean sameDateTime(Date start, Date end) {
+        Calendar startDate = Calendar.getInstance();
+        startDate.setTime(start);
+        Calendar endDate = Calendar.getInstance();
+        endDate.setTime(end);
+        return startDate.get(Calendar.YEAR) == endDate.get(Calendar.YEAR)
+                && startDate.get(Calendar.DAY_OF_YEAR) == endDate
+                .get(Calendar.DAY_OF_YEAR) && startDate.get(Calendar.HOUR_OF_DAY) ==
+                endDate.get(Calendar.HOUR_OF_DAY) && startDate.get(Calendar.MINUTE) ==
+                endDate.get(Calendar.MINUTE);
+    }
+
+
     /**
      * This method return a string of month from int
      *

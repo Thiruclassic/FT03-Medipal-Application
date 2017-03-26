@@ -14,12 +14,17 @@ import iss.medipal.model.Medicine;
 public interface AppointmentDao {
 
     public int addAppointment(Appointment appointment);
+
     public int modifyAppointment(Appointment appointment);
+
     public int updateAppointment(Appointment appointment);
-    public Boolean deleteAppointment(int appointmentId);
+
+    public Boolean deleteAppointment(Appointment appointment);
 
     public Appointment getAppointmentById(int appointmentId);
+
     public ArrayList<Appointment> getAllAppointments();
+
     public void close();
 
 }

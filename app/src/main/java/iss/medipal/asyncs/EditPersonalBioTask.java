@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 
 import iss.medipal.dao.impl.PersonBioDaoImpl;
 import iss.medipal.model.PersonalBio;
+import iss.medipal.ui.interfaces.OnTaskCompleted;
 
 /**
  * Created by junaidramis on 17/3/17.

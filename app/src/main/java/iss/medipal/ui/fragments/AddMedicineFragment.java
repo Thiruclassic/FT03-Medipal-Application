@@ -166,6 +166,9 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
     @Override
     public void doBack() {
         if(getActivity()!=null) {
+            if (mUIUpdateListener != null) {
+                mUIUpdateListener.onMedAddedUiUpdate(true);
+            }
             FragmentManager manager = getActivity().getSupportFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.detach(this).commit();
@@ -191,7 +194,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
     @Override
     public void onTaskCompleted() {
         if (mUIUpdateListener != null) {
-            mUIUpdateListener.onMedAddedUiUpdate();
+            mUIUpdateListener.onMedAddedUiUpdate(true);
         }
     }
 
@@ -464,6 +467,6 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
     };
 
     public interface ViewMedInterface {
-        void onMedAddedUiUpdate();
+        void onMedAddedUiUpdate(boolean isUpdated);
     }
 }

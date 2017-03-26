@@ -161,7 +161,7 @@ public class DoseContainer {
     }
 
 
-    public List<ConsumptionDayModel> getmConsumtionDayModel(){
+    public List<ConsumptionDayModel> getmConsumtionDayModel() {
         return mConsumtionDayModel;
     }
 

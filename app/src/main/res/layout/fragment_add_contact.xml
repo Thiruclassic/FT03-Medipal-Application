@@ -146,7 +146,6 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/high_priority"
                     android:text="HIGH"
-
                     android:checked="true"/>
 
                 <ImageView

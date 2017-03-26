@@ -28,7 +28,6 @@ import iss.medipal.util.AppHelper;
 /**
  * Created by junaidramis on 19/3/17.
  */
-
 public class DoseListAdapter extends BaseAdapter {
 
     public static final String CHANGE_TOOK = "CHANGE_TOOK";
@@ -43,7 +42,7 @@ public class DoseListAdapter extends BaseAdapter {
     public DoseListAdapter(Context context , BaseFragment fragment, ArrayList<MedDoseModel> doseRecords, ArrayList<Medicine> meds) {
         mDoseRecords = doseRecords;
         mContext = context;
-        mMeds = (ArrayList<Medicine>) MediPalApplication.getPersonStore().getmPersonalBio().getMedicines();
+        mMeds = meds;
         mFragment = (Fragment)fragment;
         mCurrentMed = getCurrentMed();
     }

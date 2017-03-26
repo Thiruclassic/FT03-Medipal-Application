@@ -14,6 +14,7 @@ import iss.medipal.asyncs.AddUpdateContactTask;
 import iss.medipal.asyncs.AddMedicineTask;
 import iss.medipal.asyncs.AddPersonBioTask;
 import iss.medipal.asyncs.AddReminderAlarmTask;
+import iss.medipal.asyncs.DeleteAppointmentTask;
 import iss.medipal.asyncs.DeleteHealthBioTask;
 import iss.medipal.asyncs.EditAppointmentTask;
 import iss.medipal.asyncs.AddUpdateCategoryTask;
@@ -52,7 +53,7 @@ public class PersonStore {
     private DeleteContactTask deleteContactTask;
     private AddHealthBioTask mAddHealthBioTask;
     private DeleteHealthBioTask mDeleteHealthBioTask;
-
+    private DeleteAppointmentTask mDeleteAppTask;
 
 
     public PersonStore(PersonalBio personBio, Context context){
@@ -88,7 +89,7 @@ public class PersonStore {
     }
 
     //personal bio
-    public void addPersonBio(PersonalBio personalBio){
+    public void addPersonBio(PersonalBio personalBio, OnTaskCompleted mCallback){
         mPersonalBio.setName(personalBio.getName());
         mPersonalBio.setIdNo(personalBio.getIdNo());
         mPersonalBio.setDob(personalBio.getDob());
@@ -96,7 +97,7 @@ public class PersonStore {
         mPersonalBio.setBloodType(personalBio.getBloodType());
         mPersonalBio.setAddress(personalBio.getAddress());
         mPersonalBio.setPostalCode(personalBio.getPostalCode());
-        mAddPersonalBioTask = new AddPersonBioTask(mContext);
+        mAddPersonalBioTask = new AddPersonBioTask(mContext, mCallback);
         mAddPersonalBioTask.execute(personalBio);
     }
 
@@ -179,6 +180,14 @@ public class PersonStore {
         mEditAppointmentTask.execute(appointment);
     }
 
+    public void deleteAppointment(Appointment appointment){
+
+      List<Appointment> appointments=mPersonalBio.getAppointments();
+        appointments.remove(appointment);
+        mDeleteAppTask=new DeleteAppointmentTask(mContext);
+        mDeleteAppTask.execute(appointment);
+    }
+
     public void addConsumption(Consumption consumption) {
         if (AppHelper.isListEmpty(mConsumptions)) {
             mConsumptions = new ArrayList<>();
@@ -236,7 +245,7 @@ public class PersonStore {
             while (it.hasNext()){
                 Consumption consumption = it.next();
                 if(consumption.getMedicineId() == medicine.getId()){
-                    it.remove();
+                     it.remove();
                 }
             }
         }

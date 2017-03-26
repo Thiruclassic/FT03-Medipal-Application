@@ -15,6 +15,7 @@ import iss.medipal.R;
 import iss.medipal.dao.AppointmentDao;
 import iss.medipal.dao.impl.AppointmentDaoImpl;
 import iss.medipal.model.Appointment;
+import iss.medipal.util.AppHelper;
 
 /**
  * Created by sreek on 3/26/2017.
@@ -54,8 +55,8 @@ public class ReminderRecyclerAdapter extends RecyclerView.Adapter<ReminderRecycl
 
     @Override
     public int getItemCount() {
-        if(!mData.isEmpty())
-        return mData.size();
+        if(!AppHelper.isListEmpty(mData))
+            return mData.size();
         else
             return 0;
     }
