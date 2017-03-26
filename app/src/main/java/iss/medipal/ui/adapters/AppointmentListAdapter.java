@@ -1,7 +1,9 @@
 package iss.medipal.ui.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import iss.medipal.R;
 import iss.medipal.dao.AppointmentDao;
 import iss.medipal.dao.impl.AppointmentDaoImpl;
 import iss.medipal.model.Appointment;
+import iss.medipal.util.AppHelper;
 
 /**
  * Created by sreekumar on 3/21/2017.
@@ -42,9 +45,12 @@ public class AppointmentListAdapter extends BaseAdapter implements ListAdapter {
 
     @Override
     public int getCount() {
-        return appointments.size();
+        if (!AppHelper.isListEmpty(appointments)) {
+            return appointments.size();
+        } else {
+            return 0;
+        }
     }
-
     @Override
     public String getItem(int i) {
         return appointments.get(i).getLocation();
@@ -74,17 +80,36 @@ public class AppointmentListAdapter extends BaseAdapter implements ListAdapter {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Boolean message = appointmentDao.deleteAppointment(appointments.get(position).getId());
-                if (message) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.CustomAlertDialogStyle);
+                builder.setCancelable(false);
+                builder.setTitle("WARNING");
+                builder.setMessage("Do you want to delete permanently ?");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
-                    Toast.makeText(mContext, "DELETED SUCCESSFULLY", Toast.LENGTH_SHORT).show();
-                    appointments.remove(position);
-                    notifyDataSetChanged();
+                    @Override
+                    public void onClick(DialogInterface alert, int arg1) {
 
-                } else {
-                    Toast.makeText(mContext, "DELETION FAILED !TRY AGAIN !!", Toast.LENGTH_SHORT).show();
-                }
+                        Boolean message = appointmentDao.deleteAppointment(appointments.get(position).getId());
+                        if (message) {
 
+                            Toast.makeText(mContext, "DELETED SUCCESSFULLY", Toast.LENGTH_SHORT).show();
+                            appointments.remove(position);
+                            notifyDataSetChanged();
+                            alert.dismiss();
+
+                        } else {
+                            Toast.makeText(mContext, "DELETION FAILED !TRY AGAIN !!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface alert, int arg1) {
+                        alert.dismiss();
+                    }
+                });
+                builder.show();
             }
         });
 
