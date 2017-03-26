@@ -39,6 +39,7 @@ import iss.medipal.ui.activities.HealthBioActivity;
 import iss.medipal.ui.activities.MainActivity;
 import iss.medipal.ui.activities.UserProfileActivity;
 import iss.medipal.ui.adapters.BaseSpinnerAdapter;
+import iss.medipal.ui.interfaces.OnTaskCompleted;
 import iss.medipal.util.AppHelper;
 import iss.medipal.util.DialogUtility;
 import iss.medipal.util.SharedPreferenceManager;
@@ -46,7 +47,8 @@ import iss.medipal.util.SharedPreferenceManager;
 /**
  * Created by junaidramis on 8/3/17.
  */
-public class UserProfileEditFragment extends BaseFragment implements UserProfileActivity.EditClickListener{
+public class UserProfileEditFragment extends BaseFragment implements UserProfileActivity.EditClickListener,
+        OnTaskCompleted{
 
     private static final String ARGS_EDIT = "ARGS_EDIT";
 
@@ -146,6 +148,18 @@ public class UserProfileEditFragment extends BaseFragment implements UserProfile
                     mUnitEditText.getText().toString());
             personalBio.setPostalCode(mPostalCodeEditText.getText().toString());
             mPersonStore.editPersonalBio(personalBio);
+        }
+    }
+
+    @Override
+    public void onTaskCompleted() {
+        if(SharedPreferenceManager.isAppInitialLaunch(getActivity())) {
+            Bundle bundle = new Bundle();
+            SharedPreferenceManager.setAppLaunchStatus(getActivity(), false);
+            bundle.putBoolean(Constants.ACTIVITY_HEALTH_EXTRAS, true);
+            ((UserProfileActivity) getActivity()).launchActivityWithExtras(HealthBioActivity.class, bundle);
+        } else {
+
         }
     }
 
@@ -278,11 +292,7 @@ public class UserProfileEditFragment extends BaseFragment implements UserProfile
                         mLevelEditText.getText().toString() + "-" +
                         mUnitEditText.getText().toString());
                 personalBio.setPostalCode(mPostalCodeEditText.getText().toString());
-                mPersonStore.addPersonBio(personalBio);
-                SharedPreferenceManager.setAppLaunchStatus(getActivity(), false);
-                Bundle bundle = new Bundle();
-                bundle.putBoolean(Constants.ACTIVITY_HEALTH_EXTRAS, true);
-                ((UserProfileActivity)getActivity()).launchActivityWithExtras(HealthBioActivity.class, bundle);
+                mPersonStore.addPersonBio(personalBio, UserProfileEditFragment.this);
             }
         }
     };

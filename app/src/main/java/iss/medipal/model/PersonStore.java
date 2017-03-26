@@ -88,7 +88,7 @@ public class PersonStore {
     }
 
     //personal bio
-    public void addPersonBio(PersonalBio personalBio){
+    public void addPersonBio(PersonalBio personalBio, OnTaskCompleted mCallback){
         mPersonalBio.setName(personalBio.getName());
         mPersonalBio.setIdNo(personalBio.getIdNo());
         mPersonalBio.setDob(personalBio.getDob());
@@ -96,7 +96,7 @@ public class PersonStore {
         mPersonalBio.setBloodType(personalBio.getBloodType());
         mPersonalBio.setAddress(personalBio.getAddress());
         mPersonalBio.setPostalCode(personalBio.getPostalCode());
-        mAddPersonalBioTask = new AddPersonBioTask(mContext);
+        mAddPersonalBioTask = new AddPersonBioTask(mContext, mCallback);
         mAddPersonalBioTask.execute(personalBio);
     }
 
