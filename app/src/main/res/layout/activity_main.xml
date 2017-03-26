@@ -23,6 +23,7 @@
         android:layout_height="@dimen/tab_height"
         android:background="@color/colorPrimary"
         android:layout_alignParentBottom="true"
+        android:isScrollContainer="false"
         tl:tl_indicator_color="@color/white"
         tl:tl_textSelectColor="@color/colorPrimary"
         tl:tl_textUnselectColor="@color/white"

@@ -236,7 +236,7 @@ public class PersonStore {
             while (it.hasNext()){
                 Consumption consumption = it.next();
                 if(consumption.getMedicineId() == medicine.getId()){
-                    it.remove();
+                     it.remove();
                 }
             }
         }

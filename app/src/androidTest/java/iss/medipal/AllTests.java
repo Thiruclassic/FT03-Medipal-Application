@@ -15,7 +15,6 @@ public class AllTests extends TestCase {
         TestSuite suite=new TestSuite("Test for Package "+MedipalUnitTest.context.getPackageName());
         suite.addTestSuite(MedicineUnitTest.class);
         suite.addTestSuite(ICEUnitTest.class);
-
         return suite;
     }
 }
