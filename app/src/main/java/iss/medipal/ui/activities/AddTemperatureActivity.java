@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import iss.medipal.R;
@@ -38,8 +39,8 @@ public class AddTemperatureActivity extends BaseActivity implements View.OnClick
     private EditText etTemperature, etTempMeasuredOn;
     private Button saveTemperature;
     private MeasurementDao measurementDao;
-    private Toolbar toolbar;
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+    private SimpleDateFormat dateFormatterShow = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     private DatePickerDialog mDatePickerDialog;
     private ImageView imageBack;
     private TextView title;
@@ -48,12 +49,6 @@ public class AddTemperatureActivity extends BaseActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_temperature);
-
-     /*   Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarTempAdd);
-        setSupportActionBar(toolbar);
-
-        toolbar = (Toolbar) findViewById(R.id.toolbarTempAdd);
-        toolbar.setTitle("Add Temperature ...(Celsius)");*/
 
         imageBack = (ImageView) findViewById(R.id.toolbar_left_icon);
         title = (TextView) findViewById(R.id.toolbar_title);
@@ -113,14 +108,21 @@ public class AddTemperatureActivity extends BaseActivity implements View.OnClick
         DatePickerDialog datePickerDialog = new DatePickerDialog(AddTemperatureActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                etTempMeasuredOn.setText(dayOfMonth + "/" + month + "/" + year);
+                showDate(year, month + 1, dayOfMonth);
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
-//        datePickerDialog.show();
         return datePickerDialog;
     }
+    private void showDate(int year, int month, int day) {
+        try {
+            Date datenew = dateFormatterShow.parse(new StringBuilder().append(day).append("/")
+                    .append(month).append("/").append(year).toString());
+            etTempMeasuredOn.setText(dateFormatter.format(datenew));
+        } catch (Exception e) {
 
+        }
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -188,9 +190,6 @@ public class AddTemperatureActivity extends BaseActivity implements View.OnClick
         dateTime.set(Calendar.YEAR, date.get(Calendar.YEAR));
         try {
             measurement = new Temperature(temp.intValue(), dateTime.getTime());
-         /*   measurement.setMeasuredOn(dateTime.getTime());
-            measurement.setDiastolic(diastolic);
-            measurement.setSystolic(systolic);*/
 
         } catch (Exception ex) {
 
