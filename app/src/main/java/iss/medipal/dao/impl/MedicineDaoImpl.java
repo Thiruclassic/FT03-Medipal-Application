@@ -18,7 +18,7 @@ import iss.medipal.model.Medicine;
 import static android.R.attr.id;
 
 /**
- * Created by Naveen on 3/2/17.
+ * Created by Thirumal on 3/2/17.
  */
 
 public class MedicineDaoImpl extends BaseDao implements MedicineDao{
