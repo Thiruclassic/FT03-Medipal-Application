@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import iss.medipal.R;
@@ -33,9 +34,9 @@ public class AddBpActivity extends BaseActivity implements View.OnClickListener 
     private EditText etSystolic, etDiastolic, measuredOn;
     private Button saveBloodPressure;
     private TextInputLayout inputLayoutSystolic, inputLayoutDiastolic, inputLayoutMeasuredOn;
-    private Toolbar toolbar;
     private MeasurementDao measurementDao;
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+    private SimpleDateFormat dateFormatterShow = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     private DatePickerDialog mDatePickerDialog;
 
 
@@ -110,11 +111,24 @@ public class AddBpActivity extends BaseActivity implements View.OnClickListener 
         DatePickerDialog datePickerDialog = new DatePickerDialog(AddBpActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                measuredOn.setText(dayOfMonth + "/" + month + "/" + year);
+                showDate(year, month + 1, dayOfMonth);
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
         return datePickerDialog;
+    }
+
+    private void showDate(int year, int month, int day) {
+        try {
+
+            Date datenew = dateFormatterShow.parse(new StringBuilder().append(day).append("/")
+                    .append(month).append("/").append(year).toString());
+
+            measuredOn.setText(dateFormatter.format(datenew));
+        } catch (Exception e) {
+
+        }
+
     }
 
 
