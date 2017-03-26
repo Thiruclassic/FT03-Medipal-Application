@@ -14,9 +14,9 @@ public interface ICEDao {
     public int addContact(InCaseofEmergencyContact contact);
     public int updateContact(InCaseofEmergencyContact contact);
     public int deleteContact(int contactId);
-    public List<InCaseofEmergencyContact> getContactsbyType(int type);
     public List<InCaseofEmergencyContact> getContactsbyPriority();
     public List<InCaseofEmergencyContact> getAllContacts();
+    public InCaseofEmergencyContact getContactbyId(int contactId);
     public void close();
 
 

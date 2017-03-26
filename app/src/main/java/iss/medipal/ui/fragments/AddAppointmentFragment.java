@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -47,7 +48,7 @@ import iss.medipal.util.DialogUtility;
  * Created by sreekumar on 3/14/2017.
  */
 
-public class AddAppointmentFragment extends Fragment implements CustomBackPressedListener {
+public class AddAppointmentFragment extends BaseTimeFragment implements CustomBackPressedListener {
     private static final String APP_STRING = "APP_STRING";
     private EditText etDate, etTime, etLocation, etDescription;
     private Button btnSave;
@@ -55,21 +56,17 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
     private SimpleDateFormat dateFormatterShow = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
     private SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a", Locale.getDefault());
     private SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("dd/MM/yyyy hh:mm", Locale.getDefault());
-    //    Calendar currentCal = Calendar.getInstance();
-    Calendar dateCalendar;
-    DatePickerDialog datePickerDialog;
+
     Calendar selectedDate = Calendar.getInstance();
     private DatePickerDialog mDatePickerDialog;
     private TimePickerDialog mTimePickerDialog;
-    private static final SimpleDateFormat formatter = new SimpleDateFormat(
-            "yyyy-MM-dd", Locale.ENGLISH);
     private AppointmentDao appointmentDao;
     private ReminderDao reminderDao;
     private AddAppointmentFragment.viewRefreshWhenAdded mUIUpdateListener;
-    private Appointment appointment;
-    private Reminder reminder;
+    private Appointment appointment; //Parsable object
     private TextInputLayout textInputLayoutLocation;
     private boolean isEditAppointment;
+    private String mAppointmentTime;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,7 +77,6 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
         AddAppointmentFragment fragment = new AddAppointmentFragment();
         return fragment;
     }
-
     public static AddAppointmentFragment newInstance(Appointment appointment) {
         AddAppointmentFragment fragment = new AddAppointmentFragment();
         Bundle args = new Bundle();
@@ -88,14 +84,11 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
         fragment.setArguments(args);
         return fragment;
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         View fragmentView = inflater.inflate(R.layout.fragment_add_appointment, container, false);
-
         findViewsById(fragmentView);
         setListeners();
         return fragmentView;
@@ -129,7 +122,6 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
 
         setListeners();
     }
-
     public void updateAppointmentDetails() {
 
         etLocation.setText(appointment.getLocation());
@@ -140,8 +132,6 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
         etTime.setText(String.valueOf(timeFormatter.format(appointment.getAppointment())));
 
     }
-
-
     private void setListeners() {
         View.OnClickListener saveListener = new View.OnClickListener() {
             @Override
@@ -156,11 +146,8 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
                         } else {
                             MediPalApplication.getPersonStore().editAppointment(appointment);
                         }
-//                        String appointment = addAppointment();
                         Toast.makeText(getContext(), "Appointment successfully saved", Toast.LENGTH_SHORT).show();
                         Log.d("Fragment type", String.valueOf(getParentFragment()));
-//                      ViewMedicineFragment fragment=(ViewMedicineFragment) getParentFragment();
-//                      fragment.medicineListAdapter.add(medicine);
                         doBack();
 
                     } catch (Exception e) {
@@ -171,7 +158,8 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
                 }
             }
         };
-        View.OnClickListener appDateListner = new View.OnClickListener() {
+
+       View.OnClickListener appDateListner = new View.OnClickListener() {
 
             @Override
             public void onClick(final View v) {
@@ -188,20 +176,34 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
 
             }
         };
+
+        View.OnFocusChangeListener setTimeListener = new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    DialogFragment timerFragment = TimePickerFragment.newInstance(Constants.REMINDER_TAB_1);
+                    timerFragment.show(getChildFragmentManager(), Constants.ADD_REMINDER_DIALOG);
+                }
+            }
+        };
         etDate.setOnClickListener(appDateListner);
         etDate.setOnFocusChangeListener(mDateFocusListener);
+        etTime.setOnClickListener(appTimeListner);
         etTime.setOnClickListener(appTimeListner);
         etTime.setOnFocusChangeListener(mTimeFocusListener);
         btnSave.setOnClickListener(saveListener);
     }
 
-    public void setReminder(){
-
-        reminder.setFrequency(2);
-        reminder.setInterval(3);
-
-    }
-
+    private View.OnFocusChangeListener mTimeFocusListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus) {
+                mTimePickerDialog = showTimePicker();
+                mTimePickerDialog.show();
+            }
+        }
+    };
     public boolean validateAppointmentDetails() {
         if (TextUtils.isEmpty(etLocation.getText())) {
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
@@ -228,20 +230,23 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
             }
         }
     };
-    private View.OnFocusChangeListener mTimeFocusListener = new View.OnFocusChangeListener() {
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (hasFocus) {
-                mTimePickerDialog = showTimePicker();
-                mTimePickerDialog.show();
-            }
-        }
-    };
+
     public void onBackPressed() {
         AppointmentFragment appointmentFragment = AppointmentFragment.newInstance();
         FragmentManager manager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.add_appointment_frame, appointmentFragment).commit();
+    }
+
+    @Override
+    public void onTimeSelected(int hourOfDay, int minute) {
+        String doseTime = AppHelper.convert24TimeTo12String(hourOfDay, minute);
+        mAppointmentTime = AppHelper.convertTimeFormat(doseTime, Constants.TIME_FORMAT_STORAGE,
+                Constants.TIME_12_HOUR_FORMAT);
+        Calendar calendar=Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,hourOfDay);
+        calendar.set(Calendar.MINUTE,minute);
+        etTime.setText(mAppointmentTime);
     }
 
     public TimePickerDialog showTimePicker() {
@@ -274,6 +279,7 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
                 showDate(year, month+1, dayOfMonth);
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
         return datePickerDialog;
     }
 
@@ -323,15 +329,6 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
         return "Appointment Added !";
     }
 
-    public Integer addReminder() {
-        Integer reminderId = null;
-        if (reminder != null) {
-            reminderDao = ReminderDaoImpl.newInstance(getActivity());
-            reminderId = reminderDao.addReminder(reminder).getId();
-        }
-        return reminderId;
-    }
-
     public Appointment getAppointmentDetails() throws Exception {
         appointment = new Appointment();
         String description = String.valueOf(etDescription.getText());
@@ -366,49 +363,6 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
 
         return appointment;
 
-    }
-
-    /*    private View.OnFocusChangeListener mTimeFocusListener = new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus) {
-                    mDatePickerDialog = showDatePicker();
-                    mDatePickerDialog.show();
-                }
-            }
-        };*/
-    private boolean isValid() {
-        boolean isValid = true;
-        try {
-            Calendar selectedStTime = Calendar.getInstance();
-            selectedStTime.setTime(timeFormatter.parse(etTime.getText().toString()));
-            Calendar convertedStTime = Calendar.getInstance();
-            convertedStTime.set(Calendar.HOUR, selectedStTime.get(Calendar.HOUR));
-            convertedStTime.set(Calendar.MINUTE, selectedStTime.get(Calendar.MINUTE));
-            convertedStTime.set(Calendar.AM_PM, selectedStTime.get(Calendar.AM_PM));
-
-          /*  Calendar selectedEtTime = Calendar.getInstance();
-//            selectedEtTime.setTime(timeFormatter.parse(etEndTime.getText().toString()));
-            Calendar convertedEtTime = Calendar.getInstance();
-            convertedEtTime.set(Calendar.HOUR, selectedEtTime.get(Calendar.HOUR));
-            convertedEtTime.set(Calendar.MINUTE, selectedEtTime.get(Calendar.MINUTE));
-            convertedEtTime.set(Calendar.AM_PM, selectedEtTime.get(Calendar.AM_PM));*/
-/*
-            if (currentCal.getTime().compareTo(selectedDate.getTime()) > 0) {
-                Toast.makeText(getActivity().getApplicationContext(), R.string.date_validation_msg, Toast.LENGTH_SHORT).show();
-                isValid = false;
-            } else if (currentCal.compareTo(convertedStTime) > 0) {
-                Toast.makeText(getActivity().getApplicationContext(), R.string.time_validation_msg, Toast.LENGTH_SHORT).show();
-                isValid = false;
-            } else if (convertedStTime.compareTo(convertedEtTime) >= 0) {
-                Toast.makeText(getActivity().getApplicationContext(), R.string.st_time_et_time_validation_msg, Toast.LENGTH_SHORT).show();
-                isValid = false;
-            }*/
-        } catch (ParseException e) {
-            Toast.makeText(getActivity().getApplicationContext(), R.string.generic_error, Toast.LENGTH_SHORT).show();
-        }
-
-        return isValid;
     }
 
     public interface viewRefreshWhenAdded {

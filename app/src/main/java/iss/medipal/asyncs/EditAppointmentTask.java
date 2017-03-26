@@ -21,20 +21,18 @@ public class EditAppointmentTask extends AsyncTask<Appointment, Void, Long> {
 
     private Context mContext;
     private AppointmentDao mAppointmentDao;
-//    private ReminderDao mReminderDao;
+
 
 
     public EditAppointmentTask(Context context){
 
         this.mContext=context;
         this.mAppointmentDao = new AppointmentDaoImpl(context);
-//        this.mReminderDao = new ReminderDaoImpl(context);
 
     }
 
     @Override
     protected Long doInBackground(Appointment... params) {
-//        int reminderId = mReminderDao.modifyReminder(params[0].getReminder()).getId();
         long result = mAppointmentDao.updateAppointment(params[0]);
         return result;
     }

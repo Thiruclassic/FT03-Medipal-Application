@@ -62,7 +62,8 @@
             android:layout_alignParentRight="true"
             android:layout_gravity="bottom|end"
             android:layout_margin="20dp"
-            app:srcCompat="@android:drawable/ic_input_add" />
+            android:src="@drawable/plus"
+            android:tint="@android:color/white" />
     </FrameLayout>
 
 </RelativeLayout>

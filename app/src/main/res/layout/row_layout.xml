@@ -35,7 +35,7 @@
             android:id="@+id/priority_Icon"
             android:layout_width="36dp"
             android:layout_height="34dp"
-            android:tint="@color/colorIcons" />
+             />
 
     </LinearLayout>
 

@@ -98,20 +98,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                     });
                     builder.show();
 
-
-                  /*  Boolean message = measurementDao.deleteMeasurement(currentObj.getId());
-
-                    if (message) {
-                        Snackbar.make(v, "Item deleted successfully!!", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
-                        mData.remove(position);
-                        notifyItemRemoved(position);
-                        notifyItemRangeChanged(position, mData.size());
-                        notifyDataSetChanged();
-                    } else {
-                        Snackbar.make(v, "Item deletion failed!!", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
-                    }*/
                 }
             }
         });
@@ -194,7 +180,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
                         imgThumb.setColorFilter(context.getResources().getColor(R.color.yellow_500));
 
-                    }else if(weightCheck<120 && weightCheck>80){
+                    }else if(weightCheck<150 && weightCheck>80){
 
                         imgThumb.setColorFilter(context.getResources().getColor(R.color.red_500));
                     }
