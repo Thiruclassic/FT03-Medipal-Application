@@ -35,12 +35,12 @@ public class MedicineUnitTest extends TestCase implements MedipalUnitTest {
     List<Medicine> medicineList;
 
 
-    @BeforeClass
+    @Before
     public void setUp()
     {
             medicine = new Medicine();
             reminder = new Reminder();
-            medicineDao = new MedicineDaoImpl(InstrumentationRegistry.getContext());
+            medicineDao = new MedicineDaoImpl(context);
             medicineList = medicineDao.getAllMedicines();
     }
 

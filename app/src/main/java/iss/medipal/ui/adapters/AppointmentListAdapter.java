@@ -1,7 +1,9 @@
 package iss.medipal.ui.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +22,7 @@ import iss.medipal.R;
 import iss.medipal.dao.AppointmentDao;
 import iss.medipal.dao.impl.AppointmentDaoImpl;
 import iss.medipal.model.Appointment;
+import iss.medipal.util.AppHelper;
 
 /**
  * Created by sreekumar on 3/21/2017.
@@ -36,14 +40,17 @@ public class AppointmentListAdapter extends BaseAdapter implements ListAdapter {
 
         this.mContext = context;
         this.appointments = appointments;
-        this.appointmentDao= AppointmentDaoImpl.newInstance(context);
+        this.appointmentDao = AppointmentDaoImpl.newInstance(context);
     }
 
     @Override
     public int getCount() {
-        return appointments.size();
+        if (!AppHelper.isListEmpty(appointments)) {
+            return appointments.size();
+        } else {
+            return 0;
+        }
     }
-
     @Override
     public String getItem(int i) {
         return appointments.get(i).getLocation();
@@ -60,62 +67,73 @@ public class AppointmentListAdapter extends BaseAdapter implements ListAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(parent.getContext()).
                     inflate(R.layout.todo_list_item, parent, false);
-            viewHolder = new AppointmentListAdapter.ViewHolder(convertView,mContext);
+            viewHolder = new AppointmentListAdapter.ViewHolder(convertView, mContext);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (AppointmentListAdapter.ViewHolder) convertView.getTag();
         }
         viewHolder.mItemTextview1.setText(appointments.get(position).getLocation());
-        viewHolder.mItemTextview2.setText(dateFormatter.format(appointments.get(position).getAppointment())+" "+timeFormatter.format(appointments.get(position).getAppointment()));
+        viewHolder.mItemTextview2.setText(dateFormatter.format(appointments.get(position).getAppointment()) + " " + timeFormatter.format(appointments.get(position).getAppointment()));
 
-        ImageView deleteBtn = (ImageView)convertView.findViewById(R.id.img_row_delete);
+        ImageView deleteBtn = (ImageView) convertView.findViewById(R.id.img_row_delete);
 
-        deleteBtn.setOnClickListener(new View.OnClickListener(){
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.CustomAlertDialogStyle);
+                builder.setCancelable(false);
+                builder.setTitle("WARNING");
+                builder.setMessage("Do you want to delete permanently ?");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
-//                list.remove(position); //or some other task
-                Boolean message = appointmentDao.deleteAppointment(appointments.get(position).getId());
-                if (message) {
+                    @Override
+                    public void onClick(DialogInterface alert, int arg1) {
 
-                    Snackbar.make(v, "Item deleted successfully!!", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                    appointments.remove(position);
-//                    notifyItemRemoved(position);
-//                    notifyItemRangeChanged(position, appointments.size());
-                    notifyDataSetChanged();
+                        Boolean message = appointmentDao.deleteAppointment(appointments.get(position).getId());
+                        if (message) {
 
-                } else {
+                            Toast.makeText(mContext, "DELETED SUCCESSFULLY", Toast.LENGTH_SHORT).show();
+                            appointments.remove(position);
+                            notifyDataSetChanged();
+                            alert.dismiss();
 
-                    Snackbar.make(v, "Item deletion failed!!", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
+                        } else {
+                            Toast.makeText(mContext, "DELETION FAILED !TRY AGAIN !!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
 
+                    @Override
+                    public void onClick(DialogInterface alert, int arg1) {
+                        alert.dismiss();
+                    }
+                });
+                builder.show();
             }
         });
 
         return convertView;
     }
 
-    public void setAppointments(List<Appointment>appointments){
-        this.appointments=appointments;
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
         notifyDataSetChanged();
     }
 
-     /**
+    /**
      * Static view holder class.
      */
     class ViewHolder {
 
-        //todo add more items to the list view
         TextView mItemTextview1;
         TextView mItemTextview2;
         ImageView imgThumb;
 
-        public ViewHolder(View view,Context context) {
+        public ViewHolder(View view, Context context) {
             mItemTextview1 = (TextView) view.findViewById(R.id.tvNote);
-            mItemTextview2= (TextView) view.findViewById(R.id.tvTime);
-            imgThumb =(ImageView) view.findViewById(R.id.img_row1);
+            mItemTextview2 = (TextView) view.findViewById(R.id.tvTime);
+            imgThumb = (ImageView) view.findViewById(R.id.img_row1);
             imgThumb.setColorFilter(context.getResources().getColor(R.color.grey_700));
 
         }

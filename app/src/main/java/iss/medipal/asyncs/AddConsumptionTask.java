@@ -1,11 +1,15 @@
 package iss.medipal.asyncs;
 
 
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.telecom.CallScreeningService;
 import android.util.Log;
+
+import java.util.Calendar;
 
 import iss.medipal.MediPalApplication;
 import iss.medipal.constants.Constants;
@@ -63,7 +67,7 @@ public class AddConsumptionTask extends AsyncTask<Consumption, Void, Long> {
         }
         if(medicine.getQuantity() < medicine.getThreshold())
         {
-
+           sendRefillNotifier(medicine);
         }
         mMedicineDao.updateMedicineDosage(medicine);
     }
@@ -71,11 +75,15 @@ public class AddConsumptionTask extends AsyncTask<Consumption, Void, Long> {
     public void sendRefillNotifier(Medicine medicine)
     {
         try {
+            AlarmManager manager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(mContext, AlarmReceiver.class);
             intent.putExtra(DBConstants.MEDICINE_NAME, medicine.getMedicine());
             intent.putExtra(DBConstants.TABLE_REMINDER, Boolean.TRUE);
             intent.putExtra(DBConstants.REMINDER_ID, medicine.getReminderId());
             intent.putExtra(DBConstants.APP_ID, medicine.getId());
+            intent.putExtra(Constants.REMINDER_TAB_3, Boolean.TRUE);
+            intent.putExtra(DBConstants.MEDICINE_QUATITY,medicine.getQuantity());
+            intent.putExtra(DBConstants.MEDICINE_THRESHOLD,medicine.getThreshold());
             PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, Constants.REFILL_BROADCAST_ID + medicine.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
             pendingIntent.send();
         }

@@ -79,7 +79,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 String medicineName = intent.getStringExtra(DBConstants.MEDICINE_NAME);
 
-                String message = context.getString(R.string.need_to) + Constants.SPACE+context.getString(R.string.take) + medicineName;
+                String message = context.getString(R.string.need_to) + Constants.SPACE+context.getString(R.string.refill)+Constants.SPACE + medicineName;
 
 
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context).setSmallIcon(android.support.v7.appcompat.R.drawable.notification_icon_background).

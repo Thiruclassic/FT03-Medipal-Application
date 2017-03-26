@@ -1,7 +1,10 @@
 package iss.medipal.ui.activities;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +23,7 @@ import iss.medipal.model.Measurement;
 import iss.medipal.ui.adapters.RecyclerAdapter;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -84,8 +88,9 @@ public class BloodPressureActivity extends BaseActivity implements Toolbar.OnMen
 
         switch (id) {
             case R.id.linearViewHorizontal:
-                GridLayoutManager mGridLayoutManager = new GridLayoutManager(this, 2);
-                recyclerView.setLayoutManager(mGridLayoutManager);
+         /*       GridLayoutManager mGridLayoutManager = new GridLayoutManager(this, 2);
+                recyclerView.setLayoutManager(mGridLayoutManager);*/
+                showColorDialog();
                 break;
 
             case R.id.add_blood:
@@ -95,10 +100,18 @@ public class BloodPressureActivity extends BaseActivity implements Toolbar.OnMen
                 break;
             case R.id.home:
                   finish();
-
                 break;
         }
         return true;
+
+    }
+
+    public void showColorDialog(){
+
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.help_mes);
+        dialog.setTitle("Color Bands");
+        dialog.show();
 
     }
 
