@@ -1,5 +1,6 @@
 package iss.medipal.ui.activities;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -42,15 +43,11 @@ public class WeightActivity extends BaseActivity implements Toolbar.OnMenuItemCl
         toolbar = (Toolbar) findViewById(R.id.toolbarWeight);
         toolbar.setTitle("Weight");
 
-  /*      imageBack = (ImageView) findViewById(R.id.toolbar_left_icon);
-        title = (TextView) findViewById(R.id.toolbar_title);
-
-        toolbar.setTitle("Weight");*/
         toolbar.inflateMenu(R.menu.menu_main);
         toolbar.setOnMenuItemClickListener(this);
 
         setUpRecyclerView();
-//        setListeners();
+
     }
     @Override
     public void onClick(View v) {
@@ -85,8 +82,7 @@ public class WeightActivity extends BaseActivity implements Toolbar.OnMenuItemCl
 
         switch (id) {
             case R.id.linearViewHorizontal:
-                GridLayoutManager mGridLayoutManager = new GridLayoutManager(this, 2);
-                recyclerView.setLayoutManager(mGridLayoutManager);
+                showColorDialog();
                 break;
 
             case R.id.add_blood:
@@ -99,6 +95,15 @@ public class WeightActivity extends BaseActivity implements Toolbar.OnMenuItemCl
                 break;
         }
         return true;
+
+    }
+
+    public void showColorDialog(){
+
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.help_mes);
+        dialog.setTitle("Color Bands");
+        dialog.show();
 
     }
 

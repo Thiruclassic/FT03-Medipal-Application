@@ -1,5 +1,6 @@
 package iss.medipal.ui.activities;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -36,18 +37,13 @@ public class PulseActivity extends BaseActivity implements Toolbar.OnMenuItemCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pulse);
 
-    /*    imageBack = (ImageView) findViewById(R.id.toolbar_left_icon);
-        title = (TextView) findViewById(R.id.toolbar_title);
-
-        title.setText("Pulse");*/
-
         toolbar = (Toolbar) findViewById(R.id.toolbarPulse);
         toolbar.setTitle("Pulse");
         toolbar.inflateMenu(R.menu.menu_main);
         toolbar.setOnMenuItemClickListener(this);
 
         setUpRecyclerView();
-//        setListeners();
+
     }
     @Override
     public void onClick(View v) {
@@ -82,8 +78,7 @@ public class PulseActivity extends BaseActivity implements Toolbar.OnMenuItemCli
 
         switch (id) {
             case R.id.linearViewHorizontal:
-                GridLayoutManager mGridLayoutManager = new GridLayoutManager(this, 2);
-                recyclerView.setLayoutManager(mGridLayoutManager);
+                showColorDialog();
                 break;
 
             case R.id.add_blood:
@@ -92,12 +87,19 @@ public class PulseActivity extends BaseActivity implements Toolbar.OnMenuItemCli
                 finish();
                 break;
             case R.id.home:
-               /* Intent intentHome = new Intent(PulseActivity.this, MeasurementActivity.class);
-                startActivity(intentHome);*/
+
                 finish();
                 break;
         }
         return true;
+
+    }
+    public void showColorDialog(){
+
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.help_mes);
+        dialog.setTitle("Color Bands");
+        dialog.show();
 
     }
 
