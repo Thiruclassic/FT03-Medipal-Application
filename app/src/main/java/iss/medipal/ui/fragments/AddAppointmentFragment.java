@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -47,7 +48,7 @@ import iss.medipal.util.DialogUtility;
  * Created by sreekumar on 3/14/2017.
  */
 
-public class AddAppointmentFragment extends Fragment implements CustomBackPressedListener {
+public class AddAppointmentFragment extends BaseTimeFragment implements CustomBackPressedListener {
     private static final String APP_STRING = "APP_STRING";
     private EditText etDate, etTime, etLocation, etDescription;
     private Button btnSave;
@@ -65,6 +66,7 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
     private Appointment appointment; //Parsable object
     private TextInputLayout textInputLayoutLocation;
     private boolean isEditAppointment;
+    private String mAppointmentTime;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -156,7 +158,8 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
                 }
             }
         };
-        View.OnClickListener appDateListner = new View.OnClickListener() {
+
+       View.OnClickListener appDateListner = new View.OnClickListener() {
 
             @Override
             public void onClick(final View v) {
@@ -173,12 +176,34 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
 
             }
         };
+
+        View.OnFocusChangeListener setTimeListener = new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    DialogFragment timerFragment = TimePickerFragment.newInstance(Constants.REMINDER_TAB_1);
+                    timerFragment.show(getChildFragmentManager(), Constants.ADD_REMINDER_DIALOG);
+                }
+            }
+        };
         etDate.setOnClickListener(appDateListner);
         etDate.setOnFocusChangeListener(mDateFocusListener);
+        etTime.setOnClickListener(appTimeListner);
         etTime.setOnClickListener(appTimeListner);
         etTime.setOnFocusChangeListener(mTimeFocusListener);
         btnSave.setOnClickListener(saveListener);
     }
+
+    private View.OnFocusChangeListener mTimeFocusListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus) {
+                mTimePickerDialog = showTimePicker();
+                mTimePickerDialog.show();
+            }
+        }
+    };
     public boolean validateAppointmentDetails() {
         if (TextUtils.isEmpty(etLocation.getText())) {
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
@@ -205,20 +230,23 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
             }
         }
     };
-    private View.OnFocusChangeListener mTimeFocusListener = new View.OnFocusChangeListener() {
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (hasFocus) {
-                mTimePickerDialog = showTimePicker();
-                mTimePickerDialog.show();
-            }
-        }
-    };
+
     public void onBackPressed() {
         AppointmentFragment appointmentFragment = AppointmentFragment.newInstance();
         FragmentManager manager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.add_appointment_frame, appointmentFragment).commit();
+    }
+
+    @Override
+    public void onTimeSelected(int hourOfDay, int minute) {
+        String doseTime = AppHelper.convert24TimeTo12String(hourOfDay, minute);
+        mAppointmentTime = AppHelper.convertTimeFormat(doseTime, Constants.TIME_FORMAT_STORAGE,
+                Constants.TIME_12_HOUR_FORMAT);
+        Calendar calendar=Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,hourOfDay);
+        calendar.set(Calendar.MINUTE,minute);
+        etTime.setText(mAppointmentTime);
     }
 
     public TimePickerDialog showTimePicker() {
@@ -251,6 +279,7 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
                 showDate(year, month+1, dayOfMonth);
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
         return datePickerDialog;
     }
 
