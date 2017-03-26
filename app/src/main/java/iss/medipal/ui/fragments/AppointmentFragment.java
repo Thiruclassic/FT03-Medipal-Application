@@ -8,8 +8,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.AppCompatEditText;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +22,7 @@ import iss.medipal.MediPalApplication;
 import iss.medipal.R;
 import iss.medipal.constants.Constants;
 import iss.medipal.dao.AppointmentDao;
-import iss.medipal.dao.impl.AppointmentDaoImpl;
 import iss.medipal.model.Appointment;
-import iss.medipal.ui.activities.MainActivity;
 import iss.medipal.ui.adapters.AppointmentListAdapter;
 import iss.medipal.util.AppHelper;
 
@@ -36,7 +32,8 @@ import iss.medipal.util.AppHelper;
  * on 3/6/2017.
  */
 
-public class AppointmentFragment extends Fragment implements AddAppointmentFragment.viewRefreshWhenAdded {
+public class AppointmentFragment extends Fragment implements AddAppointmentFragment.viewRefreshWhenAdded,
+        AppointmentListAdapter.onAppointmentDeletedInterface {
 
 
     private AppointmentDao appointmentDao;
@@ -72,6 +69,12 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
     }
 
     @Override
+    public void onAppDeleted(Appointment appointment) {
+
+        MediPalApplication.getPersonStore().deleteAppointment(appointment);
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
         super.onViewCreated(view, savedInstanceState);
@@ -94,36 +97,36 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
         super.onViewStateRestored(savedInstanceState);
 
     }
+
     private void setListAdapter() {
-      appointmentList = (ArrayList<Appointment>) MediPalApplication.getPersonStore().getmPersonalBio().getAppointments();
+        appointmentList = (ArrayList<Appointment>) MediPalApplication.getPersonStore().getmPersonalBio().getAppointments();
 
         if (appointmentList != null) {
-            appointmentListAdapter = new AppointmentListAdapter(getContext(), appointmentList);
+            appointmentListAdapter = new AppointmentListAdapter(getContext(), appointmentList, this);
             lv.setAdapter(appointmentListAdapter);
         }
     }
-   @Override
+
+    @Override
     public void onAppointmentAddedUiUpdate() {
 
         lv.setVisibility(View.VISIBLE);
         addAppointment.setVisibility(View.VISIBLE);
         innerLayout.setVisibility(View.GONE);
-
         try {
 
-            appointmentList = (ArrayList<Appointment>) MediPalApplication.getPersonStore()
+            appointmentList = MediPalApplication.getPersonStore()
                     .getmPersonalBio().getAppointments();
             if (!AppHelper.isListEmpty(appointmentList)) {
                 if (appointmentListAdapter != null) {
                     appointmentListAdapter.setAppointments(appointmentList);
                 } else {
-                    appointmentListAdapter = new AppointmentListAdapter(getContext(), appointmentList);
+                    appointmentListAdapter = new AppointmentListAdapter(getContext(), appointmentList, this);
                     lv.setAdapter(appointmentListAdapter);
                 }
-               if(aAddCallback != null){
-                   aAddCallback.onAppointmentNew();
+                if (aAddCallback != null) {
+                    aAddCallback.onAppointmentNew();
                 }
-
             }
         } catch (NullPointerException e) {
             System.out.printf(e.getMessage());
