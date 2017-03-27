@@ -101,7 +101,7 @@ public class AddReminderAlarmTask extends AsyncTask {
             intent.putExtra(DBConstants.REMINDER_ID, appointment.getId());
             intent.putExtra(DBConstants.APP_LOCATION, appointment.getLocation());
             intent.putExtra(DBConstants.APP_DESCRIPTION, appointment.getDescription());
-//            calculateReminderTime(calendar);
+            calculateReminderTime(calendar);
             for (int i = 0; i < reminder.getFrequency(); i++) {
                 pendingIntent = PendingIntent.getBroadcast(mContext, appointment.getId()* Constants.APPOINTMENT_BROADCAST_ID * 10 + i, intent,
                         PendingIntent.FLAG_UPDATE_CURRENT);
