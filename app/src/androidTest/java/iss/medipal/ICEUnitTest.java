@@ -1,6 +1,8 @@
 package iss.medipal;
 
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
+
 import junit.framework.TestCase;
 
 import org.junit.Before;
@@ -53,7 +55,8 @@ public class ICEUnitTest extends TestCase implements MedipalUnitTest {
 
         //testing contact Retrieval
         contactList = contactDao.getAllContacts();
-        contact = contactList.get(0);
+        contact = contactList.get(contactList.size()-1);
+        //Log.d(contact.getContactName(),"name");
         InCaseofEmergencyContact contactDBData = contactDao.getContactbyId(contact.getId());
 
         //testing contact data values
@@ -77,6 +80,7 @@ public class ICEUnitTest extends TestCase implements MedipalUnitTest {
         assertNotEquals("Medicine should be deleted",-1,contactDao.deleteContact(contactDBData.getId()));
     }
 
+    @Test
     public void testListSize()
     {
         List<InCaseofEmergencyContact> contacts = contactDao.getAllContacts();
