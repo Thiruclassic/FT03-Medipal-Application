@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 
+import iss.medipal.constants.Constants;
 import iss.medipal.dao.ConsumptionDao;
 import iss.medipal.dao.MedicineDao;
 import iss.medipal.dao.ReminderDao;
@@ -66,6 +67,8 @@ public class DeleteMedicineTask extends AsyncTask <Medicine,Void,Integer>{
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, medicine.getId() * 10 + i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                 manager.cancel(pendingIntent);
             }
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, Constants.REFILL_BROADCAST_ID + medicine.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            pendingIntent.cancel();
         }
     }
 }
