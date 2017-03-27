@@ -101,7 +101,7 @@
     <string name="not_editable_Location">Location(Not Editable)</string>
 
     <!--Measurements -->
-    <string name="blood_pres">Blood Pressure</string>
+    <string name="blood_pres">Pressure</string>
     <string name="pulse">Pulse</string>
     <string name="temperature">Temperature</string>
     <string name="weight">Weight</string>
