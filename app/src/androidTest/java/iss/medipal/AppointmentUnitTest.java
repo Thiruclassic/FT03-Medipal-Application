@@ -25,8 +25,6 @@ public class AppointmentUnitTest extends TestCase implements MedipalUnitTest {
     Appointment appointment;
     AppointmentDao appointmentDao;
 
-
-
     @Before
     public void setUp() {
         appointment = populateAppointment();
@@ -36,27 +34,26 @@ public class AppointmentUnitTest extends TestCase implements MedipalUnitTest {
 
     @After
     public void tearDown(){
-
+        appointmentDao.clearTable();
         appointmentDao=null;
         appointment=null;
 
     }
     @Test
     public void testAddAppointment() throws Exception {
-
-        assertNotEquals("Appointment added",1,appointmentDao.addAppointment(appointment));
+        assertNotEquals("Appointment added",-1,appointmentDao.addAppointment(appointment));
     }
 
     @Test
     public void testUpdateAppointment(){
-
+        appointmentDao.addAppointment(appointment);
         appointment.setLocation("Kent ridge bus terminal");
         assertNotEquals(-1,appointmentDao.updateAppointment(appointment));
     }
 
     @After
     public void testDeleteAppointment() throws Exception {
-
+        appointmentDao.addAppointment(appointment);
         assertFalse(appointmentDao.deleteAppointment(appointment));
     }
 

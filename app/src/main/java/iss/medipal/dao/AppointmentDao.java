@@ -19,6 +19,8 @@ public interface AppointmentDao {
 
     public ArrayList<Appointment> getAllAppointments();
 
+    public void clearTable();
+
     public void close();
 
 }
