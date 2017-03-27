@@ -62,8 +62,8 @@ public class AddPulseActivity extends BaseActivity implements View.OnClickListen
     private void findViewsById() {
         savePulse = (Button) findViewById(R.id.savePulse);
         etPulseMeasuredOn = (EditText) findViewById(R.id.etPulseMeasuredOn);
-//        etPulseMeasuredOn.setInputType(InputType.TYPE_NULL);
         etPulse = (EditText) findViewById(R.id.etPulse);
+        etPulseMeasuredOn.setKeyListener(null);
 
 
     }
@@ -75,7 +75,7 @@ public class AddPulseActivity extends BaseActivity implements View.OnClickListen
         View.OnClickListener appDateListner = new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                showDatePicker();
+                showDatePicker().show();
 
             }
         };

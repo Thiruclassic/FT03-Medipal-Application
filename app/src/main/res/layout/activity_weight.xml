@@ -9,9 +9,10 @@
     <include
     android:id="@+id/toolbarWeight"
     layout="@layout/toolbar" />
-<!--    <include layout="@layout/toolbar_generic"/>-->
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 </LinearLayout>

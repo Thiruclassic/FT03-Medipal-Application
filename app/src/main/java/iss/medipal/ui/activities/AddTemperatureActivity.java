@@ -64,9 +64,8 @@ public class AddTemperatureActivity extends BaseActivity implements View.OnClick
     private void findViewsById() {
         saveTemperature = (Button) findViewById(R.id.saveTemperature);
         etTempMeasuredOn = (EditText) findViewById(R.id.etTemperatureMeasuredOn);
-//        etTempMeasuredOn.setInputType(InputType.TYPE_NULL);
         etTemperature = (EditText) findViewById(R.id.etTemperature);
-
+        etTempMeasuredOn.setKeyListener(null);
 
     }
 
@@ -77,7 +76,7 @@ public class AddTemperatureActivity extends BaseActivity implements View.OnClick
         View.OnClickListener appDateListner = new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                showDatePicker();
+                showDatePicker().show();
 
             }
         };

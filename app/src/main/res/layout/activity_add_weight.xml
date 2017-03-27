@@ -6,15 +6,11 @@ android:id="@+id/activity_add_weight"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context="iss.medipal.ui.activities.AddWeightActivity">
-
-<!--<android.support.v7.widget.Toolbar
-    android:id="@+id/toolbar"
-    android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
-    android:background="?attr/colorPrimary"
-    app:titleTextColor="@color/white" />-->
-    <include layout="@layout/toolbar_generic"/>
-
+<include layout="@layout/toolbar_generic"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -53,9 +49,6 @@ tools:context="iss.medipal.ui.activities.AddWeightActivity">
             android:imeOptions="actionDone"
             android:inputType="number" />
     </android.support.design.widget.TextInputLayout>
-
-</LinearLayout>
-
 <Button
     android:id="@+id/saveWeight"
     style="@style/MyBtnStyle"
@@ -68,5 +61,8 @@ tools:context="iss.medipal.ui.activities.AddWeightActivity">
     android:layout_marginRight="@dimen/margin_generic_tiny"
     android:drawableLeft="@drawable/weight_kilogram"
     android:text="Save Reading" />
+
+</LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>
