@@ -1,23 +1,19 @@
 package iss.medipal;
 
-import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
-
 import junit.framework.TestCase;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import java.util.List;
 
 import iss.medipal.constants.Constants;
 import iss.medipal.dao.ICEDao;
 import iss.medipal.dao.impl.IceDaoImpl;
 import iss.medipal.model.InCaseofEmergencyContact;
-import iss.medipal.model.Medicine;
-
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotSame;
+
 
 /**
  * Created by manish on 26/3/17.
@@ -26,25 +22,25 @@ import static org.junit.Assert.assertNotSame;
 @RunWith(AndroidJUnit4.class)
 public class ICEUnitTest extends TestCase implements MedipalUnitTest {
 
-    InCaseofEmergencyContact contact;
-    ICEDao contactDao;
-    List<InCaseofEmergencyContact> contactList;
+    private InCaseofEmergencyContact contact;
+    private ICEDao contactDao;
+    private List<InCaseofEmergencyContact> contactList;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         contact = new InCaseofEmergencyContact();
-        contactDao = new IceDaoImpl(InstrumentationRegistry.getContext());
+        contactDao = new IceDaoImpl(context);
         contactList = contactDao.getAllContacts();
     }
 
     @Test
-    public void testAddContact() throws Exception
+    public void testCRUDContact() throws Exception
     {
         //testing contact Creation
         int id = 0;
 
         //contacts with null data should not be inserted
-        assertEquals("Contact should not be added",0,contactDao.addContact(contact));
+        assertEquals("Contact should not be added",-1,contactDao.addContact(contact));
 
         contact.setContactName("John Doe");
         contact.setContactNo(98765432);
@@ -53,47 +49,37 @@ public class ICEUnitTest extends TestCase implements MedipalUnitTest {
         contact.setDescription("An important contact");
         id = contactDao.addContact(contact);
         contact.setId(id);
-        assertNotEquals("Contact should be successfully added",0,id);
-    }
+        assertNotEquals("Contact should be successfully added",-1,id);
 
-    @Test
-    public void testContactData()
-    {
         //testing contact Retrieval
+        contactList = contactDao.getAllContacts();
+        contact = contactList.get(0);
         InCaseofEmergencyContact contactDBData = contactDao.getContactbyId(contact.getId());
 
-        contact = contactList.get(0);
-        contactDBData = contactDao.getContactbyId(contact.getId());
-
-        //testing contact data with modified values
+        //testing contact data values
         assertNotEquals(0,contact.getId());
         assertEquals("Contact data not retrieved",contact.getContactName(),contactDBData.getContactName());
-    }
 
-    @Test
-    public void testUpdateContact()
-    {
         //testing contact Update
         contact = contactList.get(contactList.size()-1);
         contact.setContactName("Unicorn");
+        assertNotEquals("Contact not updated",-1,contactDao.updateContact(contact));
 
-        assertNotEquals("Contact not updated",0,contactDao.updateContact(contact));
-
-        InCaseofEmergencyContact contactDbData = contactDao.getContactbyId(contact.getContactType());
+        InCaseofEmergencyContact contactDbData = contactDao.getContactbyId(contact.getId());
         //Contact should exist
         assertNotNull("Contact object should not be null",contactDbData);
 
         //Updating contact details
         assertEquals("Contact not updated",contact.getContactName(),contactDbData.getContactName());
+
+        //testing contact Delete
+        contactDBData = contactList.get(contactList.size()-1);
+        assertNotEquals("Medicine should be deleted",-1,contactDao.deleteContact(contactDBData.getId()));
     }
 
-    @Test
-    public void testDeleteMedicine()
+    public void testListSize()
     {
-        //testing contact Delete
-        InCaseofEmergencyContact contactDBData = contactList.get(contactList.size()-1);
-
-        assertEquals("Medicine should not be deleted",0,contactDao.deleteContact(contact.getId()));
-        assertNotEquals("Medicine should be deleted",0,contactDao.deleteContact(contactDBData.getId()));
+        List<InCaseofEmergencyContact> contacts = contactDao.getAllContacts();
+        assertEquals("Contact list is not correct!",contactList,contacts);
     }
 }
