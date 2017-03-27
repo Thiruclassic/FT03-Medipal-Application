@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import iss.medipal.MediPalApplication;
 import iss.medipal.constants.Constants;
 import iss.medipal.dao.ConsumptionDao;
 import iss.medipal.dao.MedicineDao;
@@ -31,6 +32,10 @@ public class DeleteConsumptionTask extends AsyncTask<Consumption, Void, Void> {
     @Override
     protected Void doInBackground(Consumption... params) {
         mConsumptionDao.deleteConsumtion(params[0]);
+        Medicine medicine = mMedicineDao.getMedicinebyId(params[0].getMedicineId());
+        if(medicine != null) {
+            updateMedicineTotalQuantity(medicine);
+        }
         return null;
     }
 
@@ -40,8 +45,14 @@ public class DeleteConsumptionTask extends AsyncTask<Consumption, Void, Void> {
                 mConsumptionDao.close();
     }
 
-    public int updateMedicineTotalQuantity(Medicine medicine)
+    private void updateMedicineTotalQuantity(Medicine medicine)
     {
-        return mMedicineDao.updateMedicine(medicine);
+        medicine.setQuantity(medicine.getQuantity() + medicine.getDosage());
+        for(Medicine medicine1: MediPalApplication.getPersonStore().getmPersonalBio().getMedicines()){
+            if(medicine.equals(medicine1)){
+                medicine1.setQuantity(medicine.getQuantity());
+            }
+        }
+        mMedicineDao.updateMedicineDosage(medicine);
     }
 }
