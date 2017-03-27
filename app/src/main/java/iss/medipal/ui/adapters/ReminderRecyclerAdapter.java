@@ -64,7 +64,7 @@ public class ReminderRecyclerAdapter extends RecyclerView.Adapter<ReminderRecycl
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
-        private SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+        private SimpleDateFormat timeFormatter = new SimpleDateFormat("h:mm a", Locale.getDefault());
         TextView title1, title2;
 
         public MyViewHolder(View itemView) {
