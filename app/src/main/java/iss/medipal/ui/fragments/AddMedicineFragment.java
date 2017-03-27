@@ -82,6 +82,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
 
     private String mReminderStartTime;
     private List<String> mSpinnerItems;
+    private List<String> mSpinnerFrequencyItems;
     private List<Category> mCategories;
 
 
@@ -206,12 +207,16 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         mCategorySpinner.setOnItemSelectedListener(mCategorySpinnerListener);
         setReminderStatus(mCategories.get(0).isRemind());
         mSpinnerItems = new ArrayList<>();
+        mSpinnerFrequencyItems=new ArrayList<>();
         mSpinnerItems.addAll(Arrays.asList(getResources().getStringArray(R.array.dosage_quantity_items)));
+        mSpinnerFrequencyItems.addAll(Arrays.asList(getResources().getStringArray(R.array.frequency_quantity_items)));
         BaseSpinnerAdapter adapter = new BaseSpinnerAdapter(getActivity(), R.layout.dropdown_header, mSpinnerItems);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mDosageSpinner.setAdapter(adapter);
-        mFrequencySpinner.setAdapter(adapter);
         mIntervalSpinner.setAdapter(adapter);
+        adapter = new BaseSpinnerAdapter(getActivity(), R.layout.dropdown_header, mSpinnerFrequencyItems);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mFrequencySpinner.setAdapter(adapter);
     }
 
     private void initialiseViews(View view){
@@ -359,6 +364,11 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
                     "Enter Valid issue date").show();
             return false;
         }
+        else if(checkTotalPills()){
+            DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
+                    "Quantity cannot be more than 500").show();
+            return false;
+        }
         else if(checkInterval())
         {
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
@@ -370,6 +380,22 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
 
     }
 
+    public boolean checkTotalPills()
+    {
+        boolean checker=false;
+        try {
+            int quantity = Integer.parseInt(String.valueOf(mTotalQuantityEditText.getText()));
+            if(quantity>500)
+            {
+                checker=true;
+            }
+        }
+        catch (Exception e)
+        {
+            checker=true;
+        }
+        return checker;
+    }
     /*public boolean checkrefillPills()
     {
         boolean checker=true;
@@ -428,7 +454,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         int quantity = Integer.parseInt(mTotalQuantityEditText.getText().toString());
         if(mReminder!=null) {
             mReminder.setInterval(Integer.valueOf(mSpinnerItems.get(mIntervalSpinner.getSelectedItemPosition())));
-            mReminder.setFrequency(Integer.valueOf(mSpinnerItems.get(mFrequencySpinner.getSelectedItemPosition())));
+            mReminder.setFrequency(Integer.valueOf(mSpinnerFrequencyItems.get(mFrequencySpinner.getSelectedItemPosition())));
         }
         mMedicine.setMedicine(medName);
         mMedicine.setDescription(medDescription);
