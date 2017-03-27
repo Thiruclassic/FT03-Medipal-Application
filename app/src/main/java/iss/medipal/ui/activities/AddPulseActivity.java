@@ -62,7 +62,7 @@ public class AddPulseActivity extends BaseActivity implements View.OnClickListen
     private void findViewsById() {
         savePulse = (Button) findViewById(R.id.savePulse);
         etPulseMeasuredOn = (EditText) findViewById(R.id.etPulseMeasuredOn);
-        etPulseMeasuredOn.setInputType(InputType.TYPE_NULL);
+//        etPulseMeasuredOn.setInputType(InputType.TYPE_NULL);
         etPulse = (EditText) findViewById(R.id.etPulse);
 
 
