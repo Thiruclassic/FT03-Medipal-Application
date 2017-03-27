@@ -86,6 +86,7 @@
     <string name="description">Description</string>
     <string name="StatusReport">Status Report</string>
     <string name="not_editable_Location">Location(Not Editable)</string>
+    <string name="action_settings">Settings</string>
 
     <!--Measurements -->
     <string name="blood_pres">Pressure</string>

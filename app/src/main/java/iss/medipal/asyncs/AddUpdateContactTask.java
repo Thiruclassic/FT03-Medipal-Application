@@ -33,11 +33,11 @@ public class AddUpdateContactTask extends AsyncTask<InCaseofEmergencyContact, Vo
         contact=params[0];
         if(isEdit) {
             result = mIceDao.updateContact(params[0]);
-            contact.setId(result);
         }
         else
         {
             result = mIceDao.addContact(params[0]);
+            contact.setId(result);
         }
         return result;
     }

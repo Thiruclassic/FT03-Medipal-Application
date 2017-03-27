@@ -56,7 +56,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/date_select"
                     android:imeOptions="actionDone"
-                    android:inputType="number"
+                    android:inputType="date"
                     />
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
