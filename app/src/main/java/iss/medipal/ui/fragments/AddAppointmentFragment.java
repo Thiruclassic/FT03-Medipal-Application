@@ -164,8 +164,7 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
 
             @Override
             public void onClick(final View v) {
-                showDatePicker();
-
+                showDatePicker().show();
             }
         };
 
@@ -173,7 +172,7 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
 
             @Override
             public void onClick(final View v) {
-                showTimePicker();
+                showTimePicker().show();
 
             }
         };
@@ -193,6 +192,8 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
         etTime.setOnClickListener(appTimeListner);
         etTime.setOnFocusChangeListener(mTimeFocusListener);
         btnSave.setOnClickListener(saveListener);
+        etDate.setKeyListener(null);
+        etTime.setKeyListener(null);
     }
 
     private View.OnFocusChangeListener mTimeFocusListener = new View.OnFocusChangeListener() {
@@ -276,7 +277,6 @@ public class AddAppointmentFragment extends Fragment implements CustomBackPresse
 
     private void showDate(int year, int month, int day) {
         try {
-
             Date datenew = dateFormatterShow.parse(new StringBuilder().append(day).append("/")
                     .append(month).append("/").append(year).toString());
 

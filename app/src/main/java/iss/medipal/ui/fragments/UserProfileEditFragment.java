@@ -206,6 +206,7 @@ public class UserProfileEditFragment extends BaseFragment implements UserProfile
         mSubmitButton.setOnClickListener(mSubmitListener);
         mDobEditText.setOnClickListener(mTimeClickListener);
         mDobEditText.setOnFocusChangeListener(mTimeFocusListener);
+        mDobEditText.setKeyListener(null);
     }
 
     private boolean isValid(){
@@ -260,6 +261,7 @@ public class UserProfileEditFragment extends BaseFragment implements UserProfile
         if(isEnabled){
             mDobEditText.setOnClickListener(mTimeClickListener);
             mDobEditText.setOnFocusChangeListener(mTimeFocusListener);
+            mDobEditText.setKeyListener(null);
         } else {
             mDobEditText.setOnClickListener(null);
             mDobEditText.setOnFocusChangeListener(null);
