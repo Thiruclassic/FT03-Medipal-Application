@@ -44,8 +44,6 @@ public class AddCategoryActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_category);
-
-
         mCategoryCode=(AppCompatEditText)findViewById(R.id.categoryCodeText);
         mCategoryName=(AppCompatEditText)findViewById(R.id.categoryNameText);
         mCategoryDescription=(AppCompatEditText)findViewById(R.id.categoryDescriptionText);
