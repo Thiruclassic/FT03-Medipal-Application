@@ -45,7 +45,7 @@
             android:layout_height="48dp"
             android:gravity="center"
             android:layout_alignParentRight="true"
-            android:text="@string/done"
+            android:text="@string/got_it"
             android:textSize="18sp"
             android:textColor="@color/white"
             android:background="@color/transparent"

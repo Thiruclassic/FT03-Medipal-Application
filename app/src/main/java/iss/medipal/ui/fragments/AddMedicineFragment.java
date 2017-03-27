@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.ParseException;
@@ -359,14 +360,24 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
                     "Enter Valid issue date").show();
             return false;
         }
-        else if(checkTotalPills()){
+        else if(checkQuantity(mTotalQuantityEditText,500)){
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
                     "Quantity cannot be more than 500").show();
             return false;
         }
+        else if(checkQuantity(mMonthsToExpireEditText,60)){
+            DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
+                    "Months to expire cannot be more than 60 months").show();
+            return false;
+        }
+        else if(checkQuantity(mPillsBeforeRefillEditText,500)){
+            DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
+                    "Refill Pills quantity cannot be more than 500").show();
+            return false;
+        }
         else if(checkRefillPills()){
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
-                    "Quantity cannot be more than 500").show();
+                    "Refill quantity is greater than the total quantity").show();
             return false;
         }
         else if(checkInterval())
@@ -380,12 +391,13 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
 
     }
 
-    public boolean checkTotalPills()
+
+    public boolean checkQuantity(TextView view,int quantityToBeMeasured)
     {
         boolean checker=false;
         try {
-            int quantity = Integer.parseInt(String.valueOf(mTotalQuantityEditText.getText()));
-            if(quantity>500)
+            int quantity = Integer.parseInt(String.valueOf(view.getText()));
+            if(quantity>quantityToBeMeasured)
             {
                 checker=true;
             }
