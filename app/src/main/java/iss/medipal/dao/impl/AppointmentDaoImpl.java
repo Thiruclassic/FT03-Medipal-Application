@@ -94,4 +94,9 @@ public class AppointmentDaoImpl extends BaseDao implements AppointmentDao {
         return appointments;
     }
 
+    @Override
+    public void clearTable() {
+        database.delete(DBConstants.TABLE_APPOINTMENT, null, null);
+    }
+
 }
