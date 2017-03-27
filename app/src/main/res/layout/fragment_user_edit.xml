@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/id_number"
                     android:imeOptions="actionDone"
-                    android:inputType="number"/>
+                    android:inputType="text"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout

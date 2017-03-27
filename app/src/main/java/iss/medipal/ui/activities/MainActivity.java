@@ -61,6 +61,7 @@ public class MainActivity extends BaseActivity implements HomeFragment.MedInterf
         mHomeInterface.onMedAdded();
     }
 
+
     @Override
     public void onAppointmentNew() {
         mainActivityInterface.onAppointmentNew();

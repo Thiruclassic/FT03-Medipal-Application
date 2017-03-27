@@ -25,6 +25,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -289,6 +291,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
                 }
             }
         };
+
         mIssueDateEditText.setOnClickListener(issueDateListner);
         mIssueDateEditText.setOnFocusChangeListener(focusChangeListener);
 
@@ -322,7 +325,13 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
 
     public boolean validate()
     {
-        if(TextUtils.isEmpty(mMedicineNameEditText.getText())) {
+        if(checkMedicineName()&& !isEditMedicine)
+        {
+            DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
+                    "Medicine already Exists!").show();
+            return false;
+        }
+        else if(TextUtils.isEmpty(mMedicineNameEditText.getText())) {
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
                     "Enter Medicine name").show();
             return false;
@@ -368,9 +377,9 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
                     "Months to expire cannot be more than 60 months").show();
             return false;
         }
-        else if(checkQuantity(mPillsBeforeRefillEditText,500)){
+        else if(checkQuantity(mPillsBeforeRefillEditText,30)){
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
-                    "Refill Pills quantity cannot be more than 500").show();
+                    "Refill Pills quantity cannot be more than 30").show();
             return false;
         }
         else if(checkRefillPills()){
@@ -378,6 +387,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
                     "Refill quantity is greater than the total quantity").show();
             return false;
         }
+
         else if(checkInterval())
         {
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
@@ -387,6 +397,27 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
 
         return true;
 
+    }
+
+    public boolean checkMedicineName()
+    {
+        boolean checker=false;
+
+        try {
+            List<Medicine> medicines = MediPalApplication.getPersonStore().getmPersonalBio().getMedicines();
+            for (int i = 0; i < medicines.size(); i++) {
+                String medicineName = String.valueOf(mMedicineNameEditText.getText());
+                if (medicineName.equalsIgnoreCase(medicines.get(i).getMedicine())) {
+                    checker = true;
+                    break;
+                }
+            }
+        }
+        catch(Exception e)
+        {
+            checker=false;
+        }
+        return checker;
     }
 
 

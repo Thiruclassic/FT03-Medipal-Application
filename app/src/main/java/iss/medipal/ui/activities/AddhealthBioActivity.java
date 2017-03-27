@@ -70,6 +70,7 @@ public class AddhealthBioActivity extends AppCompatActivity {
         mStartDate.setOnClickListener(mDateClickListener);
         mStartDate.setOnFocusChangeListener(mDateFocusListener);
         mStartDate.setInputType(InputType.TYPE_NULL);
+        mStartDate.setKeyListener(null);
         mSubmitButton.setOnClickListener(mSubmitListener);
         imageBack = (ImageView) findViewById(R.id.toolbar_left_icon);
         title = (TextView) findViewById(R.id.toolbar_title);

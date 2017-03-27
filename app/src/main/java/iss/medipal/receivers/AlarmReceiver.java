@@ -30,7 +30,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         boolean isRefillNotifier=intent.getBooleanExtra(DBConstants.TABLE_REMINDER,false);
-
+        Log.d("ALarm ","triggered");
         if(isRefillNotifier)
         {
             notifyRefillReminder(context,intent);
@@ -70,8 +70,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         boolean isRefillReminder=intent.getBooleanExtra(Constants.REMINDER_TAB_3,false);
         if(isRefillReminder) {
 
-        int medicineId=intent.getIntExtra(DBConstants.APP_ID,0);
-            int quantity=intent.getIntExtra(DBConstants.APP_ID,0);
+            int medicineId=intent.getIntExtra(DBConstants.APP_ID,0);
+            int quantity=intent.getIntExtra(DBConstants.MEDICINE_QUATITY,0);
             int threshold=intent.getIntExtra(DBConstants.MEDICINE_THRESHOLD,0);
 
             if(quantity<threshold) {
@@ -79,7 +79,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 String medicineName = intent.getStringExtra(DBConstants.MEDICINE_NAME);
 
-                String message = context.getString(R.string.need_to) + Constants.SPACE+context.getString(R.string.refill)+Constants.SPACE + medicineName;
+                String message = context.getString(R.string.refill)+Constants.SPACE + medicineName+"."+Constants.SPACE +quantity+" pill(s) left";
 
 
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context).setSmallIcon(android.support.v7.appcompat.R.drawable.notification_icon_background).
@@ -94,10 +94,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
     }
 
-    public void setListeners()
-    {
-
-    }
 
     public String getMedicineNotificationMessage(Context context,Intent intent)
     {

@@ -139,7 +139,7 @@
             style="@style/SubHeadingTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Total Quantity" />
+            android:text="Total Quantity (max 500)" />
 
         <android.support.v7.widget.AppCompatEditText
             style="@style/InputLayoutEditTextStyleDark"
@@ -173,7 +173,7 @@
             style="@style/SubHeadingTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Months To Expire" />
+            android:text="Months To Expire (max 60 months)" />
 
         <android.support.v7.widget.AppCompatEditText
             style="@style/InputLayoutEditTextStyleDark"
@@ -198,7 +198,7 @@
             style="@style/SubHeadingTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pills before Refill" />
+            android:text="Pills before Refill (max 30)" />
 
         <android.support.v7.widget.AppCompatEditText
             style="@style/InputLayoutEditTextStyleDark"
