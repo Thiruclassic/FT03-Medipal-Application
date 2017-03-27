@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="iss.medipal">
 
-    <uses-permission android:name="android.permission.CALL_PHONE"></uses-permission>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:name=".MediPalApplication"
@@ -11,7 +11,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activities.SplashActivity"
+        <activity
+            android:name=".ui.activities.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,66 +22,72 @@
         </activity>
         <activity
             android:name=".ui.activities.MainActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.activities.UserProfileActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activities.BloodPressureActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activities.MeasurementActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activities.AddBpActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".ui.activities.TutorialActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activities.ConsumptionActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activities.WeightActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activities.AddWeightActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activities.TemperatureActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.activities.BloodPressureActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.MeasurementActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.AddBpActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.TutorialActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.ConsumptionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.WeightActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.AddWeightActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.TemperatureActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activities.AddTemperatureActivity"
             android:label="@string/title_activity_add_temperature"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.activities.PulseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.AddPulseActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"
-            />
-        <activity android:name=".ui.activities.PulseActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activities.AddPulseActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.activities.HealthBioActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.AddhealthBioActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"
-            />
-        <activity android:name=".ui.activities.HealthBioActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activities.AddhealthBioActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.activities.ViewCategoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.AddCategoryActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"
-            />
-        <activity android:name=".ui.activities.ViewCategoryActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activities.AddCategoryActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"
-            />
-
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.activities.IceActivity"
             android:label="Emergency Contacts"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activities.Add_ICE"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"
-            />
-
-
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ui.activities.Add_ICE"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
 
         <receiver android:name=".receivers.AlarmReceiver">
             <intent-filter>
@@ -98,6 +105,7 @@
             </intent-filter>
         </receiver>
 
+        <activity android:name=".ui.activities.NotificationAppActivity"></activity>
     </application>
 
 </manifest>

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.InputType;
@@ -42,13 +43,14 @@ import iss.medipal.util.DialogUtility;
  * Created by sreekumar on 3/14/2017.
  */
 
-public class AddAppointmentFragment extends BaseTimeFragment implements CustomBackPressedListener {
+public class AddAppointmentFragment extends Fragment implements CustomBackPressedListener {
     private static final String APP_STRING = "APP_STRING";
     private EditText etDate, etTime, etLocation, etDescription;
     private Button btnSave;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
     private SimpleDateFormat dateFormatterShow = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-    private SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+//    private SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+    private SimpleDateFormat timeFormatterSave = new SimpleDateFormat("HH:mm", Locale.getDefault());
     private SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("dd/MM/yyyy hh:mm", Locale.getDefault());
 
     Calendar selectedDate = Calendar.getInstance();
@@ -126,7 +128,7 @@ public class AddAppointmentFragment extends BaseTimeFragment implements CustomBa
         etLocation.setEnabled(false);
         etDescription.setText(appointment.getDescription());
         etDate.setText(String.valueOf(dateFormatter.format(appointment.getAppointment())));
-        etTime.setText(String.valueOf(timeFormatter.format(appointment.getAppointment())));
+        etTime.setText(String.valueOf(timeFormatterSave.format(appointment.getAppointment())));
 
     }
 
@@ -188,8 +190,6 @@ public class AddAppointmentFragment extends BaseTimeFragment implements CustomBa
         };
         etDate.setOnClickListener(appDateListner);
         etDate.setOnFocusChangeListener(mDateFocusListener);
-//        etDate.setInputType(InputType.TYPE_NULL);
-        etTime.setOnClickListener(appTimeListner);
         etTime.setOnClickListener(appTimeListner);
         etTime.setOnFocusChangeListener(mTimeFocusListener);
         btnSave.setOnClickListener(saveListener);
@@ -239,35 +239,25 @@ public class AddAppointmentFragment extends BaseTimeFragment implements CustomBa
         transaction.replace(R.id.add_appointment_frame, appointmentFragment).commit();
     }
 
-    @Override
-    public void onTimeSelected(int hourOfDay, int minute) {
-        String doseTime = AppHelper.convert24TimeTo12String(hourOfDay, minute);
-        mAppointmentTime = AppHelper.convertTimeFormat(doseTime, Constants.TIME_FORMAT_STORAGE,
-                Constants.TIME_12_HOUR_FORMAT);
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-        calendar.set(Calendar.MINUTE, minute);
-        etTime.setText(mAppointmentTime);
-    }
-
     public TimePickerDialog showTimePicker() {
 
         final Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
+        int AM_PM =calendar.get(Calendar.AM_PM);
 
         TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String AM_PM;
+               /* String AM_PM;
                 if (hourOfDay < 12) {
                     AM_PM = "AM";
                 } else {
                     AM_PM = "PM";
-                }
-                etTime.setText(hourOfDay + ":" + minute + " " + AM_PM);
+                }*/
+//                etTime.setText(hourOfDay + ":" + minute+ " " + AM_PM);
+                etTime.setText(hourOfDay + ":" + minute);
             }
-
         }, hour, minute, false);
         return timePickerDialog;
     }
@@ -294,9 +284,7 @@ public class AddAppointmentFragment extends BaseTimeFragment implements CustomBa
         } catch (Exception e) {
 
         }
-
     }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -338,7 +326,7 @@ public class AddAppointmentFragment extends BaseTimeFragment implements CustomBa
 //        String appDate = String.valueOf(etDate.getText());
 
         Calendar time = Calendar.getInstance();
-        time.setTime(timeFormatter.parse(String.valueOf(etTime.getText())));
+        time.setTime(timeFormatterSave.parse(String.valueOf(etTime.getText())));
 
         Calendar date = Calendar.getInstance();
         date.setTime(dateFormatter.parse(String.valueOf(etDate.getText())));

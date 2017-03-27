@@ -119,7 +119,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             super(itemView);
             title1 = (TextView) itemView.findViewById(R.id.txv_row1);
             title2 = (TextView) itemView.findViewById(R.id.txv_row2);
-            title2.setInputType(InputType.TYPE_NULL);
             imgThumb = (ImageView) itemView.findViewById(R.id.img_row1);
             imgDelete = (ImageView) itemView.findViewById(R.id.img_row_delete);
 
