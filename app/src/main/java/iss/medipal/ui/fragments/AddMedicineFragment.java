@@ -325,7 +325,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
 
     public boolean validate()
     {
-        if(checkMedicineName())
+        if(checkMedicineName()&& !isEditMedicine)
         {
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
                     "Medicine already Exists!").show();
