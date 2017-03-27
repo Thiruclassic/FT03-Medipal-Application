@@ -40,18 +40,16 @@ public class ConsumptionDaoImpl extends BaseDao implements ConsumptionDao {
 
     @Override
     public long createConsumtion(Consumption consumption){
-        ContentValues values=new ContentValues();
-        values.put(DBConstants.CONSUMPTION_MEDID,consumption.getMedicineId());
-        values.put(DBConstants.CONSUMPTION_QUANTITY,consumption.getQuantity());
-        values.put(DBConstants.CONSUMPTION_CONSUMED_ON,mDateFormat.format(consumption.getConsumedOn()));
-        long id=(int)database.insert(DBConstants.TABLE_CONSUMPTION,null,values);
-        return id;
-    }
-
-
-    @Override
-    public Consumption getConsumptionForMedicine(int medicineId) {
-        return null;
+        try {
+            ContentValues values = new ContentValues();
+            values.put(DBConstants.CONSUMPTION_MEDID, consumption.getMedicineId());
+            values.put(DBConstants.CONSUMPTION_QUANTITY, consumption.getQuantity());
+            values.put(DBConstants.CONSUMPTION_CONSUMED_ON, mDateFormat.format(consumption.getConsumedOn()));
+            long id = (int) database.insert(DBConstants.TABLE_CONSUMPTION, null, values);
+            return id;
+        } catch (NullPointerException e){
+            return -1;
+        }
     }
 
     @Override
@@ -98,13 +96,8 @@ public class ConsumptionDaoImpl extends BaseDao implements ConsumptionDao {
     }
 
     @Override
-    public List<Consumption> getAllConsumptionsForLastXDays(int days) {
-        return null;
-    }
-
-    @Override
-    public List<Consumption> getMissedConsumptions() {
-        return null;
+    public void clearTable() {
+        database.delete(DBConstants.TABLE_CONSUMPTION, null, null);
     }
 
     @Override

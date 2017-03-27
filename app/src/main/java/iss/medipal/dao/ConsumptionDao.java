@@ -14,17 +14,10 @@ import iss.medipal.model.Medicine;
 public interface ConsumptionDao {
 
     public long createConsumtion(Consumption consumption);
-
-    public Consumption getConsumptionForMedicine(int medicineId);
-
     public List<Consumption> getAllConsumptions();
-
     public void deleteConsumtion(Consumption consumtion);
     public void deleteConsumtionByMedId(int medId);
-
-    public List<Consumption> getAllConsumptionsForLastXDays(int days);
-
-    public List<Consumption> getMissedConsumptions();
+    public void clearTable();
     public void close();
 
 }
