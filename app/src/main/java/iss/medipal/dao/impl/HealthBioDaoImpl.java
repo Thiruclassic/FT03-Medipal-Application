@@ -31,6 +31,7 @@ public class HealthBioDaoImpl extends BaseDao implements HealthBioDao {
     // Insert Health Bio Data
     @Override
     public int createHealthBio(HealthBio healthBio) {
+
         ContentValues values=new ContentValues();
         values.put(DBConstants.HEALTH_CONDITION,healthBio.getCondition());
         values.put(DBConstants.HEALTH_START_DATE,healthBio.getStartDate());
@@ -59,7 +60,7 @@ public class HealthBioDaoImpl extends BaseDao implements HealthBioDao {
 
         List<HealthBio> healthbio_list = new ArrayList<>();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.HEALTH_BIO_DATE_TIME_FORMAT);
         while (cursor.moveToNext()) {
             try {
                 HealthBio healthBio = new HealthBio();
