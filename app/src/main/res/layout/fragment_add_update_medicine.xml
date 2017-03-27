@@ -8,7 +8,8 @@
     android:fillViewport="true"
     android:isScrollContainer="false"
     android:id="@+id/addMedicineFragment"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:descendantFocusability="beforeDescendants">
     <LinearLayout
         android:orientation="vertical"
         android:layout_height="match_parent"
