@@ -27,6 +27,7 @@ public class PersonBioUnitTest extends TestCase implements MedipalUnitTest   {
     {
         bio = new PersonalBio();
         mDao = new PersonBioDaoImpl(context);
+        mDao.clearTable();
     }
 
     @After
@@ -34,6 +35,25 @@ public class PersonBioUnitTest extends TestCase implements MedipalUnitTest   {
         mDao.clearTable();
         mDao.close();
     }
+
+    @Test
+    public void testAddPersonBio(){
+        bio = new PersonalBio();
+        mDao.createPersonalBio(bio);
+        assertNull(mDao.getPersonalBio());
+        bio.setName("Juan");
+        bio.setIdNo("A54739437");
+        bio.setDob("12/10/96");
+        bio.setBloodType("AB+");
+        bio.setAddress("12-34, Building, Clementi, Singapore");
+        bio.setHeight(11);
+        mDao.createPersonalBio(bio);
+        assertNull(mDao.getPersonalBio());
+        bio.setPostalCode("21332");
+        mDao.createPersonalBio(bio);
+        assertNotNull(mDao.getPersonalBio());
+    }
+
 
     @Test
     public void testUpdatePersonBio(){
@@ -52,25 +72,6 @@ public class PersonBioUnitTest extends TestCase implements MedipalUnitTest   {
         mDao.updatePersonalBio(bio);
         PersonalBio dbBio = mDao.getPersonalBio();
         assertEquals(dbBio.getName(), "Salv");
-    }
-
-    @Test
-    public void testAddPersonBio(){
-        assertNull(mDao.getPersonalBio());
-        bio = new PersonalBio();
-        mDao.createPersonalBio(bio);
-        assertNull(mDao.getPersonalBio());
-        bio.setName("Juan");
-        bio.setIdNo("A54739437");
-        bio.setDob("12/10/96");
-        bio.setBloodType("AB+");
-        bio.setAddress("12-34, Building, Clementi, Singapore");
-        bio.setHeight(11);
-        mDao.createPersonalBio(bio);
-        assertNull(mDao.getPersonalBio());
-        bio.setPostalCode("21332");
-        mDao.createPersonalBio(bio);
-        assertNotNull(mDao.getPersonalBio());
     }
 
     @Test

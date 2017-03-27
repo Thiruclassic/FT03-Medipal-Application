@@ -43,8 +43,6 @@ public class AppointmentUnitTest extends TestCase implements MedipalUnitTest {
     }
     @Test
     public void testAddAppointment() throws Exception {
-//        Appointment newApp = new Appointment();
-//        assertEquals("Appointment not added",0,appointmentDao.addAppointment(newApp));
 
         assertNotEquals("Appointment added",1,appointmentDao.addAppointment(appointment));
     }

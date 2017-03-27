@@ -32,6 +32,7 @@ public class ConsumptionUnitTest extends TestCase implements MedipalUnitTest{
     public void setUp()
     {
         mDao = new ConsumptionDaoImpl(context);
+        mDao.clearTable();
     }
 
     @After
@@ -41,7 +42,7 @@ public class ConsumptionUnitTest extends TestCase implements MedipalUnitTest{
     }
 
     @Test
-    public void createConsumtionTest(){
+    public void testCreateConsumtion(){
         assertEquals(mDao.getAllConsumptions().size(), 0);
         mDao.createConsumtion(getConsumptionObject(2, 3, null));
         assertEquals("Consumption should not be added", mDao.getAllConsumptions().size(), 0);
@@ -56,7 +57,7 @@ public class ConsumptionUnitTest extends TestCase implements MedipalUnitTest{
     }
 
     @Test
-    public void deleteConsumptionTest(){
+    public void testDeleteConsumption(){
         ArrayList<Consumption> consumptions = new ArrayList<>();
         Calendar cal = Calendar.getInstance();
         for (int i = 0; i < 5; i++){

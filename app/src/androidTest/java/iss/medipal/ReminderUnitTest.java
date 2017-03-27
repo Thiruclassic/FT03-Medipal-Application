@@ -60,7 +60,7 @@ public class ReminderUnitTest extends TestCase implements MedipalUnitTest  {
         assertNotNull("Reminder should be updated",reminderDao.modifyReminder(reminder));
 
         //Deleting the Medicine
-        assertEquals("Reminder should be deleted",1,reminderDao.deleteReminder(reminder.getId()));
+        assertNotNull("Reminder should be deleted",reminderDao.deleteReminder(reminder.getId()));
     }
 
     @Test
