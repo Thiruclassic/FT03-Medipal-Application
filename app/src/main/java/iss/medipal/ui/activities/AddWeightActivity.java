@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -62,6 +63,7 @@ public class AddWeightActivity extends BaseActivity implements View.OnClickListe
     private void findViewsById() {
         saveWeight = (Button) findViewById(R.id.saveWeight);
         etWeightMeasuredOn = (EditText) findViewById(R.id.etWeightMeasuredOn);
+        etWeightMeasuredOn.setInputType(InputType.TYPE_NULL);
         etWeight = (EditText) findViewById(R.id.etWeight);
 
 

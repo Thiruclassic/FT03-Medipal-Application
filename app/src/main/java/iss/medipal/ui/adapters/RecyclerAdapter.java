@@ -5,6 +5,7 @@ import android.media.Image;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -118,6 +119,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             super(itemView);
             title1 = (TextView) itemView.findViewById(R.id.txv_row1);
             title2 = (TextView) itemView.findViewById(R.id.txv_row2);
+            title2.setInputType(InputType.TYPE_NULL);
             imgThumb = (ImageView) itemView.findViewById(R.id.img_row1);
             imgDelete = (ImageView) itemView.findViewById(R.id.img_row_delete);
 

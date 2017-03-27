@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.AppCompatTextView;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -220,6 +221,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         mTotalQuantityEditText =(AppCompatEditText)view.findViewById(R.id.medicineQuantityText);
         mMonthsToExpireEditText =(AppCompatEditText)view.findViewById(R.id.expireFactoreText);
         mIssueDateEditText =(AppCompatEditText)view.findViewById(R.id.dateIssuedText);
+        mIssueDateEditText.setInputType(InputType.TYPE_NULL);
         mPillsBeforeRefillEditText =(AppCompatEditText)view.findViewById(R.id.pillsBeforeRefill);
         mDescriptionEditText =(AppCompatEditText)view.findViewById(R.id.medicineDescriptionText);
         mNameHint = (AppCompatTextView) view.findViewById(R.id.name_hint);

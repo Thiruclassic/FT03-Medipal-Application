@@ -56,7 +56,6 @@
                     android:hint="@string/date_select"
                     android:imeOptions="actionDone"
                     android:inputType="number"
-                    android:focusable="false"
                     />
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout

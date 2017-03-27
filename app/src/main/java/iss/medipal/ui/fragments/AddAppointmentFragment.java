@@ -9,6 +9,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -186,6 +187,7 @@ public class AddAppointmentFragment extends BaseTimeFragment implements CustomBa
         };
         etDate.setOnClickListener(appDateListner);
         etDate.setOnFocusChangeListener(mDateFocusListener);
+        etDate.setInputType(InputType.TYPE_NULL);
         etTime.setOnClickListener(appTimeListner);
         etTime.setOnClickListener(appTimeListner);
         etTime.setOnFocusChangeListener(mTimeFocusListener);
