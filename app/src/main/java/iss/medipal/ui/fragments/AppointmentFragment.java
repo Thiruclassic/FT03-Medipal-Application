@@ -76,6 +76,9 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
     public void onAppDeleted(Appointment appointment) {
 
         MediPalApplication.getPersonStore().deleteAppointment(appointment);
+        if(AppHelper.isListEmpty(MediPalApplication.getPersonStore().getmPersonalBio().getAppointments())){
+            tvEmpty.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
