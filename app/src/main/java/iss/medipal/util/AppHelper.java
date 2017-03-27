@@ -1,6 +1,7 @@
 package iss.medipal.util;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -363,6 +364,34 @@ public class AppHelper {
 
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 dp, context.getResources().getDisplayMetrics());
+    }
+
+    /**
+     * Show progress dialog
+     *
+     * @param progressDialog
+     */
+    public static void showProgress(ProgressDialog progressDialog) {
+        try {
+            dismissProgress(progressDialog);
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        } catch (Exception e) {
+
+        }
+    }
+
+    /**
+     * Dismiss provided progress dialog
+     *
+     * @param progressDialog
+     */
+    public static void dismissProgress(ProgressDialog progressDialog) {
+        try {
+            if (progressDialog != null) progressDialog.dismiss();
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
     }
 
 }

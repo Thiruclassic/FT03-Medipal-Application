@@ -79,13 +79,17 @@ public class DoseListAdapter extends BaseAdapter {
     }
 
     private Medicine getCurrentMed(){
-        for (int i = 0; i < mMeds.size(); i++) {
-            if (mDoseRecords.get(0).getId_med() == mMeds.get(i)
-                    .getId()){
-                return mMeds.get(i);
+        try {
+            for (int i = 0; i < mMeds.size(); i++) {
+                if (mDoseRecords.get(0).getId_med() == mMeds.get(i)
+                        .getId()){
+                    return mMeds.get(i);
+                }
             }
+            return mMeds.get(0);
+        } catch (NullPointerException e){
+            return new Medicine();
         }
-        return mMeds.get(0);
     }
 
     private void setViews(ViewHolder viewHolder, MedDoseModel record, int position){

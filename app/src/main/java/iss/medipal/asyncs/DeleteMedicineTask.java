@@ -27,15 +27,13 @@ public class DeleteMedicineTask extends AsyncTask <Medicine,Void,Integer>{
     private MedicineDao medicineDao;
     private ReminderDao reminderDao;
     private ConsumptionDao consumptionDao;
-    private OnTaskCompleted mCallback;
 
-    public DeleteMedicineTask(Context context, OnTaskCompleted callback)
+    public DeleteMedicineTask(Context context)
     {
         this.mContext = context;
         this.medicineDao=new MedicineDaoImpl(context);
         this.reminderDao=new ReminderDaoImpl(context);
         this.consumptionDao = new ConsumptionDaoImpl(context);
-        this.mCallback = callback;
     }
 
     @Override
@@ -57,9 +55,6 @@ public class DeleteMedicineTask extends AsyncTask <Medicine,Void,Integer>{
     @Override
     protected void onPostExecute(Integer integer) {
         super.onPostExecute(integer);
-        if(mCallback !=null) {
-            mCallback.onTaskCompleted();
-        }
     }
 
     public void deleteMedicineReminders(Medicine medicine)

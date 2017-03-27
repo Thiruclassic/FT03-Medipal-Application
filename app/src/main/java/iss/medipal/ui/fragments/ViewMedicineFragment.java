@@ -33,7 +33,7 @@ import iss.medipal.util.AppHelper;
  * Use the {@link ViewMedicineFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ViewMedicineFragment extends Fragment implements AddMedicineFragment.ViewMedInterface,
+public class ViewMedicineFragment extends BaseFragment implements AddMedicineFragment.ViewMedInterface,
         MedicineListAdapter.onMedicineDeletedInterface, OnTaskCompleted{
 
     private FloatingActionButton addMedicineButton;
@@ -134,11 +134,14 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
 
     @Override
     public void onMedDeleted(Medicine medicine) {
-        MediPalApplication.getPersonStore().deleteMedicine(medicine, this);
+        AppHelper.showProgress(mProgressDialog);
+        MediPalApplication.getPersonStore().deleteMedicine(medicine);
         mDoseContainer.reloadConsumtionData();
+        doCallback();
         if(medicineListAdapter!=null) {
             tvEmpty.setVisibility(medicineListAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
         }
+        AppHelper.dismissProgress(mProgressDialog);
     }
 
     @Override

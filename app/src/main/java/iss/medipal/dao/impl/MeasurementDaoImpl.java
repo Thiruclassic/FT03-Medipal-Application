@@ -13,7 +13,6 @@ import iss.medipal.constants.Constants;
 import iss.medipal.constants.DBConstants;
 import iss.medipal.dao.MeasurementDao;
 import iss.medipal.model.BloodPressure;
-import iss.medipal.model.Measurement;
 import iss.medipal.model.Pulse;
 import iss.medipal.model.Temperature;
 import iss.medipal.model.Weight;
@@ -33,13 +32,6 @@ public class MeasurementDaoImpl extends BaseDao implements MeasurementDao {
 
     public static MeasurementDaoImpl newInstance(Context context) {
         return new MeasurementDaoImpl(context);
-    }
-
-    @Override
-    public Measurement getMeasurement() {
-
-        return null;
-
     }
 
     @Override
@@ -86,19 +78,6 @@ public class MeasurementDaoImpl extends BaseDao implements MeasurementDao {
         return weightList;
     }
 
-    public Boolean deleteMeasurement(int measurementId) {
-        Boolean status = false;
-        try {
-            status = database.delete(DBConstants.TABLE_MEASUREMENT, "ID" + "=" + " '" + measurementId + "'", null) > 0;
-
-        } catch (Exception ex) {
-
-            Log.d("Error", ex.getMessage());
-
-        }
-        return status;
-    }
-
     public List<Temperature> getTempValues() {
 
         List<Temperature> temperatureList = new ArrayList<>();
@@ -125,7 +104,6 @@ public class MeasurementDaoImpl extends BaseDao implements MeasurementDao {
 
         List<Pulse> pulseList = new ArrayList<>();
         String query = "Select * from " + DBConstants.TABLE_MEASUREMENT + " where Pulse IS NOT NULL";
-        ;
         Cursor cursor = database.rawQuery(query, null);
         dateFormat = new SimpleDateFormat(Constants.DATE_TIME_FORMAT);
         Pulse pulse = null;
@@ -143,6 +121,20 @@ public class MeasurementDaoImpl extends BaseDao implements MeasurementDao {
         }
         return pulseList;
     }
+
+    public Boolean deleteMeasurement(int measurementId) {
+        Boolean status = false;
+        try {
+            status = database.delete(DBConstants.TABLE_MEASUREMENT, "ID" + "=" + " '" + measurementId + "'", null) > 0;
+
+        } catch (Exception ex) {
+
+            Log.d("Error", ex.getMessage());
+
+        }
+        return status;
+    }
+
 
     public int addBloodPressure(BloodPressure bloodPressure) {
 
