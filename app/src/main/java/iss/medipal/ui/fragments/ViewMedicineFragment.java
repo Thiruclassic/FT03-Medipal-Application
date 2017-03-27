@@ -111,7 +111,7 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
     }
 
     @Override
-    public void onMedAddedUiUpdate() {
+    public void onMedAddedUiUpdate(boolean isUpdated) {
         addMedicineButton.setVisibility(View.VISIBLE);
         innerLayout.setVisibility(View.GONE);
         try {
@@ -126,8 +126,6 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
                 }
                 tvEmpty.setVisibility(medicineListAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
                 doCallback();
-            }
-
             }
         } catch (NullPointerException e){
             System.out.printf(e.getMessage());
@@ -198,6 +196,7 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
         medicineList.setOnItemClickListener(itemClickListener);
         addMedicineButton.setOnClickListener(addMedicineEvent);
     }
+
 
     public interface HomeInterface {
         void onMedAdded();
