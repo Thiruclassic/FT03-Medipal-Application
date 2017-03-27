@@ -20,6 +20,8 @@
             android:focusableInTouchMode="true"
             android:layout_below="@+id/toolbar">
 
+
+
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/category_code_hint"
                 style="@style/SubHeadingTextViewStyle"
@@ -79,8 +81,6 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/category_remindSwitch"
                 />
-
-
             <Button
                 android:id="@+id/saveCategory"
                 android:layout_width="match_parent"
@@ -95,8 +95,9 @@
                 android:layout_marginTop="10dp" />
 
 
-        </LinearLayout>
 
+
+        </LinearLayout>
 
 
 
