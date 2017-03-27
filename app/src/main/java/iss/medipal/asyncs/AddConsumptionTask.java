@@ -12,6 +12,7 @@ import android.util.Log;
 import java.util.Calendar;
 
 import iss.medipal.MediPalApplication;
+import iss.medipal.R;
 import iss.medipal.constants.Constants;
 import iss.medipal.constants.DBConstants;
 import iss.medipal.dao.ConsumptionDao;
@@ -21,6 +22,7 @@ import iss.medipal.dao.impl.MedicineDaoImpl;
 import iss.medipal.model.Consumption;
 import iss.medipal.model.Medicine;
 import iss.medipal.receivers.AlarmReceiver;
+import iss.medipal.util.DialogUtility;
 
 /**
  * Created by junaidramis on 20/3/17.
@@ -67,7 +69,7 @@ public class AddConsumptionTask extends AsyncTask<Consumption, Void, Long> {
         }
         if(medicine.getQuantity() < medicine.getThreshold())
         {
-           sendRefillNotifier(medicine);
+            sendRefillNotifier(medicine);
         }
         mMedicineDao.updateMedicineDosage(medicine);
     }
@@ -84,8 +86,10 @@ public class AddConsumptionTask extends AsyncTask<Consumption, Void, Long> {
             intent.putExtra(Constants.REMINDER_TAB_3, Boolean.TRUE);
             intent.putExtra(DBConstants.MEDICINE_QUATITY,medicine.getQuantity());
             intent.putExtra(DBConstants.MEDICINE_THRESHOLD,medicine.getThreshold());
+            Calendar calendar=Calendar.getInstance();
+            calendar.add(Calendar.MINUTE,1);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, Constants.REFILL_BROADCAST_ID + medicine.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            pendingIntent.send();
+            manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
         }
         catch(Exception e)
         {

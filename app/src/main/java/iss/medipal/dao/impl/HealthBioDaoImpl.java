@@ -33,7 +33,7 @@ public class HealthBioDaoImpl extends BaseDao implements HealthBioDao {
     public int createHealthBio(HealthBio healthBio) {
         ContentValues values=new ContentValues();
         values.put(DBConstants.HEALTH_CONDITION,healthBio.getCondition());
-        values.put(DBConstants.HEALTH_START_DATE,healthBio.getStartDate().toString());
+        values.put(DBConstants.HEALTH_START_DATE,healthBio.getStartDate());
         values.put(DBConstants.HEALTH_CONDITION_TYPE,healthBio.getConditionType());
         int id=(int)database.insert(DBConstants.TABLE_HEALTH_BIO,null,values);
         return id;
@@ -75,6 +75,7 @@ public class HealthBioDaoImpl extends BaseDao implements HealthBioDao {
                 Log.d("Error", e.getMessage());
             }
         }
+        cursor.close();
         return healthbio_list;
     }
 

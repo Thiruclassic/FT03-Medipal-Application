@@ -264,6 +264,8 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
                     } catch (Exception e) {
                         Log.d("error",e.toString());
                         Log.d("Error:", "error in add Medicine Page");
+                        DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
+                                "Enter in adding Medicine. Please enter valid data").show();
                     }
                 }
             }
@@ -331,6 +333,8 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
                     "Enter Valid frequency").show();
             return false;
         } else if(mIntervalSpinner.getSelectedItemPosition() <= 0){
+            if(mFrequencySpinner.getSelectedItemPosition()==1)
+                return true;
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
                     "Enter Valid interval").show();
             return false;
@@ -342,7 +346,12 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
                     "Enter Valid quantity").show();
             return false;
-        } else if(TextUtils.isEmpty(mIssueDateEditText.getText())){
+        } else if(TextUtils.isEmpty((mPillsBeforeRefillEditText.getText()))){
+            DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
+                    "Enter No. of Pills before Refill To remind shortage").show();
+            return false;
+        }
+        else if(TextUtils.isEmpty(mIssueDateEditText.getText())){
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
                     "Enter Valid issue date").show();
             return false;
@@ -357,6 +366,25 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         return true;
 
     }
+
+    /*public boolean checkrefillPills()
+    {
+        boolean checker=true;
+
+        try
+        {
+            int refillPill=Integer.parseInt(String.valueOf(mPillsBeforeRefillEditText.getText()));
+            int totalquantity=Integer.parseInt(String.valueOf(mTotalQuantityEditText.getText()));
+            if(refillPill>totalquantity)
+            {
+
+            }
+        }
+        catch(Exception e)
+        {
+
+        }
+    }*/
     public boolean checkInterval()
     {
         Calendar calendar=Calendar.getInstance();
@@ -381,7 +409,9 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
             mRemindSwitch.setClickable(false);
             mRemindSwitch.setText(getString(R.string.reminders_mandatory_text));
         } else {
-            mRemindSwitch.setChecked(false);
+            if(mReminder==null) {
+                mRemindSwitch.setChecked(false);
+            }
             mRemindSwitch.setClickable(true);
             mRemindSwitch.setText(getString(R.string.reminders_optional_text));
         }

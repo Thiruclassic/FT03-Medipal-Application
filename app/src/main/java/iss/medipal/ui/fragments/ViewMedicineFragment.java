@@ -85,14 +85,15 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
+        if(medicineListAdapter!=null) {
+            tvEmpty.setVisibility(medicineListAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
+        }
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(medicineListAdapter!=null)
-            tvEmpty.setVisibility(medicineListAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -117,6 +118,7 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
                     medicineListAdapter = new MedicineListAdapter(getContext(), medicines, this);
                     medicineList.setAdapter(medicineListAdapter);
                 }
+                tvEmpty.setVisibility(medicineListAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
                 doCallback();
 
             }
@@ -128,6 +130,9 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
     @Override
     public void onMedDeleted(Medicine medicine) {
         MediPalApplication.getPersonStore().deleteMedicine(medicine, this);
+        if(medicineListAdapter!=null) {
+            tvEmpty.setVisibility(medicineListAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
+        }
     }
 
     @Override

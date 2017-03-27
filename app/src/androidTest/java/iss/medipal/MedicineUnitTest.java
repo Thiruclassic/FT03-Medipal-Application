@@ -9,8 +9,10 @@ import junit.framework.TestCase;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 
 import java.util.Date;
 import java.util.List;
@@ -29,11 +31,11 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class MedicineUnitTest extends TestCase implements MedipalUnitTest {
 
-    Medicine medicine;
-    Reminder reminder;
-    MedicineDao medicineDao;
-    List<Medicine> medicineList;
+    private Medicine medicine;
+    private Reminder reminder;
+    private MedicineDao medicineDao;
 
+    List<Medicine>  medicineList;
 
     @Before
     public void setUp()
@@ -41,7 +43,7 @@ public class MedicineUnitTest extends TestCase implements MedipalUnitTest {
             medicine = new Medicine();
             reminder = new Reminder();
             medicineDao = new MedicineDaoImpl(context);
-            medicineList = medicineDao.getAllMedicines();
+            medicineList= medicineDao.getAllMedicines();
     }
 
 
@@ -49,7 +51,6 @@ public class MedicineUnitTest extends TestCase implements MedipalUnitTest {
     public void testAddMedicine() throws Exception {
         //  Adding Medicine Test
             int id=0;
-
             //medicine with null data should not be inserted
             assertEquals("Medicine should not be added",0,medicineDao.addMedicine(medicine));
             medicine.setReminderId(reminder.getId());
@@ -68,33 +69,30 @@ public class MedicineUnitTest extends TestCase implements MedipalUnitTest {
     @Test
     public void testMedicineData() throws Exception {
 
-        Medicine medicineDbData=medicineDao.getMedicinebyId(medicine.getId());
+            medicine = medicineList.get(0);
+            Medicine medicineDbData = medicineDao.getMedicinebyId(medicine.getId());
+            medicineDbData = medicineDao.getMedicinebyId(medicine.getId());
 
-
-        medicine=medicineList.get(0);
-        medicineDbData = medicineDao.getMedicinebyId(medicine.getId());
-
-        //testing Medicine data with updated values
-        assertNotEquals(0,medicine.getId());
-        assertEquals("Medicine Data not retrieved",medicine.getMedicine(),medicineDbData.getMedicine());
+            //testing Medicine data with updated values
+            assertNotEquals(0, medicine.getId());
+            assertEquals("Medicine Data not retrieved", medicine.getMedicine(), medicineDbData.getMedicine());
 
     }
 
     @Test
     public void testUpdateMedicine() {
+            medicine = medicineList.get(medicineList.size() - 1);
+            medicine.setMedicine("Amlong 5mg");
 
-        medicine=medicineList.get(medicineList.size()-1);
-        medicine.setMedicine("Amlong 5mg");
 
+            assertNotEquals("Medicine Not Updated successfully", 0, medicineDao.updateMedicine(medicine));
 
-        assertNotEquals("Medicine Not Updated successfully",0,medicineDao.updateMedicine(medicine));
+            Medicine medicineDbData = medicineDao.getMedicinebyId(medicine.getId());
+            //Medicine Object should exist
+            assertNotNull("Medicine Object  should not be null", medicineDbData);
 
-        Medicine medicineDbData=medicineDao.getMedicinebyId(medicine.getId());
-        //Medicine Object should exist
-        assertNotNull("Medicine Object  should not be null",medicineDbData);
-
-        // Updating the specific details of the Medicine
-        assertEquals("Medicine Data not successfully updated",medicine.getMedicine(),medicineDbData.getMedicine());
+            // Updating the specific details of the Medicine
+            assertEquals("Medicine Data not successfully updated", medicine.getMedicine(), medicineDbData.getMedicine());
 
     }
 
@@ -102,7 +100,6 @@ public class MedicineUnitTest extends TestCase implements MedipalUnitTest {
     public void testCheckListSize()
     {
         List<Medicine> medicines=medicineDao.getAllMedicines();
-
         assertEquals("Medicine List is not correct",medicineList,medicines);
     }
 
