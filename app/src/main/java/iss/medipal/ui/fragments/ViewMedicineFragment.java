@@ -136,8 +136,8 @@ public class ViewMedicineFragment extends BaseFragment implements AddMedicineFra
     public void onMedDeleted(Medicine medicine) {
         AppHelper.showProgress(mProgressDialog);
         MediPalApplication.getPersonStore().deleteMedicine(medicine);
+        mDoseContainer.reloadConsumtionData();
         doCallback();
-//        mDoseContainer.reloadConsumtionData();
         if(medicineListAdapter!=null) {
             tvEmpty.setVisibility(medicineListAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
         }

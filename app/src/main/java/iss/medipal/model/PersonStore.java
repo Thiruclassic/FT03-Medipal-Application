@@ -239,15 +239,19 @@ public class PersonStore {
     public void deleteMedicine(Medicine medicine)
     {
         List<Medicine> medicines=mPersonalBio.getMedicines();
+        List<Consumption> deletedConsumption = new ArrayList<>();
         medicines.remove(medicine);
         if(!AppHelper.isListEmpty(mConsumptions)){
             Iterator<Consumption> it = mConsumptions.iterator();
             while (it.hasNext()){
                 Consumption consumption = it.next();
                 if(consumption.getMedicineId() == medicine.getId()){
-                     it.remove();
+                    deletedConsumption.add(consumption);
                 }
             }
+        }
+        if(!AppHelper.isListEmpty(deletedConsumption)) {
+            mConsumptions.removeAll(deletedConsumption);
         }
         DeleteMedicineTask deleteMedicineTask=new DeleteMedicineTask(mContext);
         deleteMedicineTask.execute(medicine);
