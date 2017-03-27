@@ -13,6 +13,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_empty_appointment"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="No Appointments added!"
+        />
+
     <FrameLayout
         android:id="@+id/add_appointment_frame"
         android:layout_width="fill_parent"

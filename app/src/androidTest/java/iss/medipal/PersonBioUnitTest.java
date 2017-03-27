@@ -87,6 +87,4 @@ public class PersonBioUnitTest extends TestCase implements MedipalUnitTest   {
         mDao.clearTable();
         assertNull(mDao.getPersonalBio());
     }
-
-
 }
