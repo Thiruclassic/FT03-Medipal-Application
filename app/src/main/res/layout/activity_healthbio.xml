@@ -49,7 +49,8 @@
                 android:orientation="vertical"
                 android:padding="@dimen/padding_small"
                 android:textColorHint="?colorPrimary"
-                app:hintTextAppearance="@style/HintTextStyle">
+                app:hintTextAppearance="@style/HintTextStyle"
+                >
 
                 <android.support.v7.widget.AppCompatEditText
                     style="@style/InputLayoutEditTextStyleDark"

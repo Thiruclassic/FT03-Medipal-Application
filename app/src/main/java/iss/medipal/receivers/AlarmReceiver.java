@@ -49,14 +49,9 @@ public class AlarmReceiver extends BroadcastReceiver {
 
             String message =  getMedicineNotificationMessage(context, intent);
 
-
-
-        Intent myintent=new Intent(context,NotificationActionReceiver.class);
-        PendingIntent pendingIntent=PendingIntent.getBroadcast(context, (int)AlarmManager.INTERVAL_DAY, myintent, PendingIntent.FLAG_UPDATE_CURRENT);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context).setSmallIcon(android.support.v7.appcompat.R.drawable.notification_icon_background).
                     setContentTitle(DBConstants.TABLE_REMINDER)
-                    .setContentText(message).addAction(R.drawable.ic_tick,context.getString(R.string.medication_positive_text),pendingIntent)
-                    .addAction(R.drawable.ic_clear_black,context.getString(R.string.medication_negative_text),pendingIntent);
+                    .setContentText(message);
 
             builder.setAutoCancel(Boolean.TRUE);
 
