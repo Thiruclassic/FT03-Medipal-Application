@@ -18,6 +18,7 @@ import android.widget.Toast;
 import iss.medipal.R;
 import iss.medipal.constants.Constants;
 import iss.medipal.constants.DBConstants;
+import iss.medipal.ui.activities.MainActivity;
 
 /**
  * Created by Thirumal on 2/28/17.
@@ -29,13 +30,13 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         boolean isRefillNotifier=intent.getBooleanExtra(DBConstants.TABLE_REMINDER,false);
+
         if(isRefillNotifier)
         {
             notifyRefillReminder(context,intent);
         }
-        else
-        {
-            notifyMedicineReminder(context,intent);
+        else {
+            notifyMedicineReminder(context, intent);
         }
 
     }
@@ -58,6 +59,10 @@ public class AlarmReceiver extends BroadcastReceiver {
                     .addAction(R.drawable.ic_clear_black,context.getString(R.string.medication_negative_text),pendingIntent);
 
             builder.setAutoCancel(Boolean.TRUE);
+
+          Intent applicationIntent=new Intent(context, MainActivity.class);
+          PendingIntent resultIntent=PendingIntent.getActivity(context,9999999,applicationIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+          builder.setContentIntent(resultIntent);
             Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             builder.setSound(notificationSound);
 
@@ -105,7 +110,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         int dosage = intent.getIntExtra(DBConstants.MEDICINE_DOSAGE, 0);
 
         StringBuilder builder=new StringBuilder(context.getString(R.string.need_to));
-        builder.append(intent.getStringExtra(DBConstants.REMINDER_START_TIME));
         Log.d("Triggered",intent.getStringExtra(DBConstants.REMINDER_START_TIME));
         builder.append(Constants.SPACE);
         builder.append(context.getString(R.string.take));

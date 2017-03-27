@@ -6,29 +6,29 @@
     android:layout_gravity="center">
 
     <TextView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:background="@color/blue_500"
         android:text="Normal"
         android:textColor="@color/black"
         android:textAlignment="center"/>
     <TextView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:background="@color/green_A700"
         android:text="Ideal"
         android:textColor="@color/black"
         android:textAlignment="center"/>
     <TextView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:textColor="@color/black"
         android:background="@color/yellow_500"
         android:text="High"
         android:textAlignment="center"/>
     <TextView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:textColor="@color/black"
         android:background="@color/red_500"
         android:text="Very High"

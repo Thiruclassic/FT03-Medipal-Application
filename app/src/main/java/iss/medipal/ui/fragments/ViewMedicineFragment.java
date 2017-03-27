@@ -33,7 +33,7 @@ import iss.medipal.util.AppHelper;
  * Use the {@link ViewMedicineFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ViewMedicineFragment extends Fragment implements AddMedicineFragment.ViewMedInterface,
+public class ViewMedicineFragment extends BaseFragment implements AddMedicineFragment.ViewMedInterface,
         MedicineListAdapter.onMedicineDeletedInterface, OnTaskCompleted{
 
     private FloatingActionButton addMedicineButton;
@@ -87,6 +87,9 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
+        if(medicineListAdapter!=null) {
+            tvEmpty.setVisibility(medicineListAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
+        }
 
     }
 
@@ -109,10 +112,9 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
 
     @Override
     public void onMedAddedUiUpdate(boolean isUpdated) {
+        addMedicineButton.setVisibility(View.VISIBLE);
+        innerLayout.setVisibility(View.GONE);
         try {
-            addMedicineButton.setVisibility(View.VISIBLE);
-            innerLayout.setVisibility(View.GONE);
-            if(isUpdated){
             medicines = MediPalApplication.getPersonStore()
                     .getmPersonalBio().getMedicines();
             if(!AppHelper.isListEmpty(medicines)) {
@@ -122,9 +124,8 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
                     medicineListAdapter = new MedicineListAdapter(getContext(), medicines, this);
                     medicineList.setAdapter(medicineListAdapter);
                 }
+                tvEmpty.setVisibility(medicineListAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
                 doCallback();
-            }
-
             }
         } catch (NullPointerException e){
             System.out.printf(e.getMessage());
@@ -133,8 +134,14 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
 
     @Override
     public void onMedDeleted(Medicine medicine) {
-        MediPalApplication.getPersonStore().deleteMedicine(medicine, this);
-        mDoseContainer.reloadConsumtionData();
+        AppHelper.showProgress(mProgressDialog);
+        MediPalApplication.getPersonStore().deleteMedicine(medicine);
+        doCallback();
+//        mDoseContainer.reloadConsumtionData();
+        if(medicineListAdapter!=null) {
+            tvEmpty.setVisibility(medicineListAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
+        }
+        AppHelper.dismissProgress(mProgressDialog);
     }
 
     @Override
@@ -192,6 +199,7 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
         medicineList.setOnItemClickListener(itemClickListener);
         addMedicineButton.setOnClickListener(addMedicineEvent);
     }
+
 
     public interface HomeInterface {
         void onMedAdded();

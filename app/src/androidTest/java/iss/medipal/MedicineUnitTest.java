@@ -9,8 +9,10 @@ import junit.framework.TestCase;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 
 import java.util.Date;
 import java.util.List;
@@ -29,11 +31,11 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class MedicineUnitTest extends TestCase implements MedipalUnitTest {
 
-    Medicine medicine;
-    Reminder reminder;
-    MedicineDao medicineDao;
-    List<Medicine> medicineList;
+    private Medicine medicine;
+    private Reminder reminder;
+    private MedicineDao medicineDao;
 
+    List<Medicine>  medicineList;
 
     @Before
     public void setUp()
@@ -41,15 +43,14 @@ public class MedicineUnitTest extends TestCase implements MedipalUnitTest {
             medicine = new Medicine();
             reminder = new Reminder();
             medicineDao = new MedicineDaoImpl(context);
-            medicineList = medicineDao.getAllMedicines();
+            medicineList= medicineDao.getAllMedicines();
     }
 
 
     @Test
-    public void testAddMedicine() throws Exception {
+    public void testCRUDMedicine() throws Exception {
         //  Adding Medicine Test
             int id=0;
-
             //medicine with null data should not be inserted
             assertEquals("Medicine should not be added",0,medicineDao.addMedicine(medicine));
             medicine.setReminderId(reminder.getId());
@@ -63,55 +64,45 @@ public class MedicineUnitTest extends TestCase implements MedipalUnitTest {
             id=medicineDao.addMedicine(medicine);
             medicine.setId(id);
             assertNotEquals("Medicine should be added successfully",0,id);
-    }
-
-    @Test
-    public void testMedicineData() throws Exception {
-
-        Medicine medicineDbData=medicineDao.getMedicinebyId(medicine.getId());
 
 
-        medicine=medicineList.get(0);
+        //Test Medicine Details Data
+        medicineList= medicineDao.getAllMedicines();
+        medicine = medicineList.get(0);
+        Medicine medicineDbData = medicineDao.getMedicinebyId(medicine.getId());
         medicineDbData = medicineDao.getMedicinebyId(medicine.getId());
 
         //testing Medicine data with updated values
-        assertNotEquals(0,medicine.getId());
-        assertEquals("Medicine Data not retrieved",medicine.getMedicine(),medicineDbData.getMedicine());
+        assertNotEquals(0, medicine.getId());
+        assertEquals("Medicine Data not retrieved", medicine.getMedicine(), medicineDbData.getMedicine());
 
-    }
 
-    @Test
-    public void testUpdateMedicine() {
-
-        medicine=medicineList.get(medicineList.size()-1);
+        //Update Existing Medicine Data
+        medicine = medicineList.get(medicineList.size() - 1);
         medicine.setMedicine("Amlong 5mg");
 
 
-        assertNotEquals("Medicine Not Updated successfully",0,medicineDao.updateMedicine(medicine));
+        assertNotEquals("Medicine Not Updated successfully", 0, medicineDao.updateMedicine(medicine));
 
-        Medicine medicineDbData=medicineDao.getMedicinebyId(medicine.getId());
+        medicineDbData = medicineDao.getMedicinebyId(medicine.getId());
         //Medicine Object should exist
-        assertNotNull("Medicine Object  should not be null",medicineDbData);
+        assertNotNull("Medicine Object  should not be null", medicineDbData);
 
         // Updating the specific details of the Medicine
-        assertEquals("Medicine Data not successfully updated",medicine.getMedicine(),medicineDbData.getMedicine());
+        assertEquals("Medicine Data not successfully updated", medicine.getMedicine(), medicineDbData.getMedicine());
 
+        //testing deletion of medicine
+        Medicine medicinedBData=medicineList.get(medicineList.size()-1);
+
+        assertNotEquals("Medicine should be deleted",0,medicineDao.deleteMedicine(medicinedBData.getId()));
     }
 
+
     @Test
-    public void testCheckListSize()
+    public void testListSize()
     {
         List<Medicine> medicines=medicineDao.getAllMedicines();
-
         assertEquals("Medicine List is not correct",medicineList,medicines);
     }
 
-    @Test
-    public void testDeleteMedicine()
-    {
-        Medicine medicinedBData=medicineList.get(medicineList.size()-1);
-
-        assertEquals("Medicine should not be deleted",0,medicineDao.deleteMedicine(medicine.getId()));
-        assertNotEquals("Medicine should be deleted",0,medicineDao.deleteMedicine(medicinedBData.getId()));
-    }
 }

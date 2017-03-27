@@ -236,7 +236,7 @@ public class PersonStore {
 
     }
 
-    public void deleteMedicine(Medicine medicine, OnTaskCompleted callback)
+    public void deleteMedicine(Medicine medicine)
     {
         List<Medicine> medicines=mPersonalBio.getMedicines();
         medicines.remove(medicine);
@@ -249,7 +249,7 @@ public class PersonStore {
                 }
             }
         }
-        DeleteMedicineTask deleteMedicineTask=new DeleteMedicineTask(mContext, callback);
+        DeleteMedicineTask deleteMedicineTask=new DeleteMedicineTask(mContext);
         deleteMedicineTask.execute(medicine);
     }
 

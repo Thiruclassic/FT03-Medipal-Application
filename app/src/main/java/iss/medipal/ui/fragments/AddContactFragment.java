@@ -60,14 +60,14 @@ public class AddContactFragment extends Fragment {
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initialiseViews(view);
-        mTypeGroup = (RadioGroup) view.findViewById(R.id.contact_type_group);
+        //mTypeGroup = (RadioGroup) view.findViewById(R.id.contact_type_group);
         mTypeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 mTypeSelect = (RadioButton) view.findViewById(checkedId);
             }
         });
-        mPriorityGroup = (RadioGroup) view.findViewById((R.id.contact_priority_group));
+        //mPriorityGroup = (RadioGroup) view.findViewById((R.id.contact_priority_group));
         mPriorityGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
@@ -81,6 +81,8 @@ public class AddContactFragment extends Fragment {
             setData(bundle);
             isEdit=true;
         }
+        else
+            isEdit = false;
     }
 
     private void initialiseViews(View view)
@@ -136,6 +138,11 @@ public class AddContactFragment extends Fragment {
                 if(isValid() && isValidPhoneNumber())
                 {
                     setContactDetails();
+                    /*mTypeGroup = (RadioGroup) v.findViewById(R.id.contact_type_group);
+                    mPriorityGroup = (RadioGroup) v.findViewById(R.id.contact_priority_group);
+                    mTypeSelect = (RadioButton) v.findViewById(mTypeGroup.getCheckedRadioButtonId());
+                    Log.d("Type text",String.valueOf(mTypeSelect.getText()));
+                    mPrioritySelect = (RadioButton) v.findViewById(mPriorityGroup.getCheckedRadioButtonId());*/
                     Log.d("Type text",String.valueOf(mTypeSelect.getText()));
                     switch (mTypeSelect.getText().toString()){
                         case Constants.FAMILY:
@@ -214,11 +221,11 @@ public class AddContactFragment extends Fragment {
                 mPrioritySelect.setChecked(Boolean.TRUE);
                 break;
             case Constants.MED_PRIORITY:
-                mPrioritySelect = (RadioButton) mPriorityGroup.getChildAt(1);
+                mPrioritySelect = (RadioButton) mPriorityGroup.getChildAt(2);
                 mPrioritySelect.setChecked(Boolean.TRUE);
                 break;
             case Constants.LOW_PRIORITY:
-                mPrioritySelect = (RadioButton) mPriorityGroup.getChildAt(2);
+                mPrioritySelect = (RadioButton) mPriorityGroup.getChildAt(4);
                 mPrioritySelect.setChecked(Boolean.TRUE);
                 break;
             default:
