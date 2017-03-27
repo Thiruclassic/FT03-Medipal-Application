@@ -20,6 +20,7 @@ public class AllTests extends TestCase {
         suite.addTestSuite(AppointmentUnitTest.class);
         suite.addTestSuite(MeasurementUnitTest.class);
         suite.addTestSuite(HealthBioUnitTest.class);
+        suite.addTestSuite(ICEUnitTest.class);
 
         return suite;
     }

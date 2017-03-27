@@ -15,6 +15,7 @@ public interface PersonBioDao {
     public int updatePersonalBio(PersonalBio bioData);
     public int deletePersonalBio(int id);
     public PersonalBio getPersonalBio();
+    public void clearTable();
     public void close();
 
 }

@@ -51,7 +51,8 @@ public class Consumption implements Comparable<Consumption>{
 
     @Override
     public boolean equals(Object obj) {
-        return (medicineId == ((Consumption)obj).medicineId && consumedOn.equals(((Consumption)obj).consumedOn));
+        return (medicineId == ((Consumption)obj).medicineId &&
+                AppHelper.sameDateTime(consumedOn, ((Consumption)obj).consumedOn));
     }
 
     @Override

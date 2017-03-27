@@ -1,7 +1,12 @@
 package iss.medipal.ui.activities;
 
+import android.app.Service;
+import android.content.res.Configuration;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -98,6 +103,7 @@ public class MainActivity extends BaseActivity implements HomeFragment.MedInterf
         mPager.setCurrentItem(0);
         mToolbarTitle.setText(mTabItems[0]);
     }
+
 
     private void setTabs(){
         mTabEntities = new ArrayList<>();

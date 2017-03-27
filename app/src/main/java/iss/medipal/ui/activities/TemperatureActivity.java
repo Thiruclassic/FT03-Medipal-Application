@@ -1,5 +1,6 @@
 package iss.medipal.ui.activities;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -78,8 +79,7 @@ public class TemperatureActivity extends BaseActivity implements Toolbar.OnMenuI
 
         switch (id) {
             case R.id.linearViewHorizontal:
-                GridLayoutManager mGridLayoutManager = new GridLayoutManager(this, 2);
-                recyclerView.setLayoutManager(mGridLayoutManager);
+                showColorDialog();
                 break;
 
             case R.id.add_blood:
@@ -92,6 +92,14 @@ public class TemperatureActivity extends BaseActivity implements Toolbar.OnMenuI
                 break;
         }
         return true;
+
+    }
+    public void showColorDialog(){
+
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.help_mes);
+        dialog.setTitle("Color Bands");
+        dialog.show();
 
     }
     public List<Measurement> getData() {

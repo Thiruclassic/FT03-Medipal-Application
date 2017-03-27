@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ import iss.medipal.util.AppHelper;
 public class ConsumptionDateFragment extends BaseFragment {
 
     private ExpandableListView mListView;
+    private TextView mTvEmpty;
 
     private DoseContainer mDoseContainer;
     private ConsumtionDateAdapter mAdapter;
@@ -52,10 +54,18 @@ public class ConsumptionDateFragment extends BaseFragment {
 
     private void setExpandableListView(View view){
         mListView = (ExpandableListView) view.findViewById(R.id.consumtion_list);
+        mTvEmpty = (TextView) view.findViewById(R.id.no_items_tv);
         mMedDayModels = mDoseContainer.getmConsumtionDayModel();
         if(!AppHelper.isListEmpty(mMedDayModels)){
             mAdapter = new ConsumtionDateAdapter(getActivity(), mMedDayModels);
             mListView.setAdapter(mAdapter);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(mAdapter!=null)
+            mTvEmpty.setVisibility(mAdapter.getGroupCount() == 0 ? View.VISIBLE : View.GONE);
     }
 }

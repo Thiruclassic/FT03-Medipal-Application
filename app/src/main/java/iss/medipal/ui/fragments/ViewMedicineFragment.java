@@ -22,6 +22,7 @@ import iss.medipal.MediPalApplication;
 import iss.medipal.R;
 import iss.medipal.constants.Constants;
 import iss.medipal.dao.MedicineDao;
+import iss.medipal.model.DoseContainer;
 import iss.medipal.model.Medicine;
 import iss.medipal.ui.adapters.MedicineListAdapter;
 import iss.medipal.ui.interfaces.OnTaskCompleted;
@@ -39,6 +40,7 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
     private ListView medicineList;
     private FrameLayout innerLayout;
     private MedicineListAdapter medicineListAdapter;
+    private DoseContainer mDoseContainer;
     private List<Medicine> medicines;
     private List<String> medicineNames;
     private MedicineDao medicineDao;
@@ -94,11 +96,15 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
     @Override
     public void onResume() {
         super.onResume();
+        if(medicineListAdapter!=null) {
+            tvEmpty.setVisibility(medicineListAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
+        }
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mDoseContainer = DoseContainer.getInstance(getActivity());
         initialiseUI(view);
         setListeners();
         setList();
@@ -120,6 +126,7 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
                 }
                 tvEmpty.setVisibility(medicineListAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
                 doCallback();
+            }
 
             }
         } catch (NullPointerException e){
@@ -130,6 +137,7 @@ public class ViewMedicineFragment extends Fragment implements AddMedicineFragmen
     @Override
     public void onMedDeleted(Medicine medicine) {
         MediPalApplication.getPersonStore().deleteMedicine(medicine, this);
+        mDoseContainer.reloadConsumtionData();
         if(medicineListAdapter!=null) {
             tvEmpty.setVisibility(medicineListAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
         }

@@ -23,16 +23,20 @@ public class PersonBioDaoImpl extends BaseDao implements PersonBioDao {
     // Insert Personal Bio Data
     @Override
     public int createPersonalBio(PersonalBio bio) {
-        ContentValues values=new ContentValues();
-        values.put(DBConstants.PERSON_NAME,bio.getName());
-        values.put(DBConstants.PERSON_DOB,bio.getDob().toString());
-        values.put(DBConstants.PERSON_IDNO,bio.getIdNo());
-        values.put(DBConstants.PERSON_ADDRESS,bio.getAddress());
-        values.put(DBConstants.PERSON_POSTALCODE,bio.getPostalCode());
-        values.put(DBConstants.PERSON_HEIGHT,bio.getHeight());
-        values.put(DBConstants.PERSON_BLOODTYPE,bio.getBloodType());
-        int id=(int)database.insert(DBConstants.TABLE_PERSONAL_BIO,null,values);
-        return id;
+        try {
+            ContentValues values=new ContentValues();
+            values.put(DBConstants.PERSON_NAME,bio.getName());
+            values.put(DBConstants.PERSON_DOB,bio.getDob().toString());
+            values.put(DBConstants.PERSON_IDNO,bio.getIdNo());
+            values.put(DBConstants.PERSON_ADDRESS,bio.getAddress());
+            values.put(DBConstants.PERSON_POSTALCODE,bio.getPostalCode());
+            values.put(DBConstants.PERSON_HEIGHT,bio.getHeight());
+            values.put(DBConstants.PERSON_BLOODTYPE,bio.getBloodType());
+            int id=(int)database.insert(DBConstants.TABLE_PERSONAL_BIO,null,values);
+            return id;
+        } catch (NullPointerException e){
+            return 0;
+        }
     }
 
     @Override
@@ -59,9 +63,9 @@ public class PersonBioDaoImpl extends BaseDao implements PersonBioDao {
     public PersonalBio getPersonalBio() {
         String sql = "SELECT * FROM " + DBConstants.TABLE_PERSONAL_BIO
                 + " LIMIT 1";
-        PersonalBio personBio = new PersonalBio();
         Cursor cursor = database.rawQuery(sql, null);
         if (cursor.moveToNext()) {
+            PersonalBio personBio = new PersonalBio();
             personBio.setId(cursor.getInt(0));
             personBio.setName(cursor.getString(cursor.getColumnIndex(DBConstants.PERSON_NAME)));
             personBio.setDob(cursor.getString(cursor.getColumnIndex(DBConstants.PERSON_DOB)));
@@ -70,8 +74,14 @@ public class PersonBioDaoImpl extends BaseDao implements PersonBioDao {
             personBio.setPostalCode(cursor.getString(cursor.getColumnIndex(DBConstants.PERSON_POSTALCODE)));
             personBio.setHeight(cursor.getInt(cursor.getColumnIndex(DBConstants.PERSON_HEIGHT)));
             personBio.setBloodType(cursor.getString(cursor.getColumnIndex(DBConstants.PERSON_BLOODTYPE)));
+            return personBio;
         }
-        return personBio;
+        return null;
+    }
+
+    @Override
+    public void clearTable() {
+        database.delete(DBConstants.TABLE_PERSONAL_BIO, null, null);
     }
 
 }

@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 
 import iss.medipal.dao.impl.PersonBioDaoImpl;
 import iss.medipal.model.PersonalBio;
+import iss.medipal.ui.interfaces.OnTaskCompleted;
 
 /**
  * Created by junaidramis on 10/3/17.
@@ -12,9 +13,11 @@ import iss.medipal.model.PersonalBio;
 
 public class AddPersonBioTask extends AsyncTask<PersonalBio, Void, Long> {
     private PersonBioDaoImpl mBioDao;
+    private OnTaskCompleted mCallback;
 
-    public AddPersonBioTask(Context context) {
+    public AddPersonBioTask(Context context, OnTaskCompleted callback) {
         this.mBioDao = new PersonBioDaoImpl(context);
+        this.mCallback = callback;
     }
 
     @Override
@@ -28,5 +31,8 @@ public class AddPersonBioTask extends AsyncTask<PersonalBio, Void, Long> {
         if (result != -1)
             if (mBioDao != null)
                 mBioDao.close();
+        if(mCallback != null){
+            mCallback.onTaskCompleted();
+        }
     }
 }
