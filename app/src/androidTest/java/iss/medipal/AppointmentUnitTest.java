@@ -56,7 +56,7 @@ public class AppointmentUnitTest extends TestCase implements MedipalUnitTest {
         assertNotEquals(-1,appointmentDao.updateAppointment(appointment));
     }
 
-    @Test
+    @After
     public void testDeleteAppointment() throws Exception {
 
         assertFalse(appointmentDao.deleteAppointment(appointment));
@@ -78,6 +78,5 @@ public class AppointmentUnitTest extends TestCase implements MedipalUnitTest {
         newAppointment.setLocation("NUH Kent Ridge");
         return newAppointment;
     }
-
 
 }

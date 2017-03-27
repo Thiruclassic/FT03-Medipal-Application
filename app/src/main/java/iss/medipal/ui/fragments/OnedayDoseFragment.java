@@ -188,20 +188,26 @@ public class OnedayDoseFragment extends BaseFragment implements DoseListAdapter.
     public void onTookItClicked(int selectedPosition){
         if(!AppHelper.isListEmpty(mDoseRecords)) {
             if(selectedPosition >= 0){
-                mDoseRecords.get(selectedPosition).setStatus(Constants.TOOKIT_STATUS);
-                mAdapter.notifyDataSetChanged();
-                Consumption consumption = new Consumption();
                 Medicine medicine = mAdapter.getmCurrentMed();
-                consumption.setMedicineId(mMedicine.getMedId());
-                consumption.setQuantity(medicine.getDosage());
-                mCurrentCal.setTime(medicine.getReminder().getStartTime());
-                mCurrentCal.set(Calendar.YEAR, mCal.get(Calendar.YEAR));
-                mCurrentCal.set(Calendar.MONTH, mCal.get(Calendar.MONTH));
-                mCurrentCal.set(Calendar.DAY_OF_MONTH, mCal.get(Calendar.DAY_OF_MONTH));
-                mCurrentCal.add(Calendar.HOUR, selectedPosition * medicine.getReminder().getInterval());
-                consumption.setConsumedOn(mCurrentCal.getTime());
-                MediPalApplication.getPersonStore().addConsumption(consumption);
-                mDoseContainer.reloadConsumtionData();
+                if((medicine.getQuantity() - medicine.getDosage()) >=
+                        0) {
+                    mDoseRecords.get(selectedPosition).setStatus(Constants.TOOKIT_STATUS);
+                    mAdapter.notifyDataSetChanged();
+                    Consumption consumption = new Consumption();
+                    consumption.setMedicineId(mMedicine.getMedId());
+                    consumption.setQuantity(medicine.getDosage());
+                    mCurrentCal.setTime(medicine.getReminder().getStartTime());
+                    mCurrentCal.set(Calendar.YEAR, mCal.get(Calendar.YEAR));
+                    mCurrentCal.set(Calendar.MONTH, mCal.get(Calendar.MONTH));
+                    mCurrentCal.set(Calendar.DAY_OF_MONTH, mCal.get(Calendar.DAY_OF_MONTH));
+                    mCurrentCal.add(Calendar.HOUR, selectedPosition * medicine.getReminder().getInterval());
+                    consumption.setConsumedOn(mCurrentCal.getTime());
+                    MediPalApplication.getPersonStore().addConsumption(consumption);
+                    mDoseContainer.reloadConsumtionData();
+                } else {
+                    DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
+                            "You don't have enough pills to consume").show();
+                }
             } else {
                 DialogUtility.newMessageDialog(getContext(), getString(R.string.alert),
                         getString(R.string.select_dose)).show();

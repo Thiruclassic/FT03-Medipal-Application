@@ -5,6 +5,8 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import iss.medipal.model.Appointment;
+import iss.medipal.model.Category;
+import iss.medipal.model.Consumption;
 import iss.medipal.model.HealthBio;
 
 /**
@@ -21,7 +23,10 @@ public class AllTests extends TestCase {
         suite.addTestSuite(MeasurementUnitTest.class);
         suite.addTestSuite(HealthBioUnitTest.class);
         suite.addTestSuite(ICEUnitTest.class);
-
+        suite.addTestSuite(PersonBioUnitTest.class);
+        suite.addTestSuite(ConsumptionUnitTest.class);
+        suite.addTestSuite(ReminderUnitTest.class);
+        suite.addTestSuite(CategoryUnitTest.class);
         return suite;
     }
 }

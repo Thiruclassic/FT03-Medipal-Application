@@ -325,7 +325,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
 
     public boolean validate()
     {
-        if(checkMedicineName())
+        if(checkMedicineName()&& !isEditMedicine)
         {
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
                     "Medicine already Exists!").show();
@@ -468,8 +468,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
             int hourHand=calendar.get(Calendar.HOUR_OF_DAY);
             calendar.add(Calendar.HOUR_OF_DAY,mIntervalSpinner.getSelectedItemPosition());
         }
-        if(day!=calendar.get(calendar.DAY_OF_MONTH))
-        {
+        if(day!=calendar.get(calendar.DAY_OF_MONTH)) {
             return true;
         }
         return false;

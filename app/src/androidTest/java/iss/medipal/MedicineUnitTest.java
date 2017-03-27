@@ -7,6 +7,7 @@ import android.util.Log;
 
 import junit.framework.TestCase;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -44,6 +45,11 @@ public class MedicineUnitTest extends TestCase implements MedipalUnitTest {
             reminder = new Reminder();
             medicineDao = new MedicineDaoImpl(context);
             medicineList= medicineDao.getAllMedicines();
+    }
+
+    @After
+    public void close(){
+        medicineDao.close();
     }
 
 

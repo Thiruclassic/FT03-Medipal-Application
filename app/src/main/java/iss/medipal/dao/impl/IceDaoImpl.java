@@ -55,7 +55,7 @@ public class IceDaoImpl extends BaseDao implements ICEDao {
 
     @Override
     public InCaseofEmergencyContact getContactbyId(int contactId) {
-        String query = "Select * from " + DBConstants.TABLE_ICE + "where ID=?";
+        String query = "Select * from " + DBConstants.TABLE_ICE + " where id=?";
         String args[] = new String[1];
         args[0] = String.valueOf(contactId);
         InCaseofEmergencyContact contact= new InCaseofEmergencyContact();
@@ -83,7 +83,7 @@ public class IceDaoImpl extends BaseDao implements ICEDao {
 
     @Override
     public List<InCaseofEmergencyContact> getContactsbyPriority() {
-        String query = "Select * from " + DBConstants.TABLE_ICE + "order by ContactSequence asc";
+        String query = "Select * from " + DBConstants.TABLE_ICE + " order by ContactSequence asc";
         List<InCaseofEmergencyContact> contacts= new ArrayList<>();
 
         try {
