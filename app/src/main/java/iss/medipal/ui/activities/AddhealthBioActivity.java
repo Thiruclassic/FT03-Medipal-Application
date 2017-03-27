@@ -161,11 +161,30 @@ public class AddhealthBioActivity extends AppCompatActivity {
         HealthBio healthBio=bundle.getParcelable(DBConstants.TABLE_HEALTH_BIO);
         mCondition.setText(healthBio.getCondition());
         Date date = null;
+        SimpleDateFormat sdf=null;
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat(Constants.HEALTH_BIO_DATE_TIME_FORMAT);
+             sdf = new SimpleDateFormat(Constants.HEALTH_BIO_DATE_TIME_FORMAT);
             date = sdf.parse(healthBio.getStartDate());
             mStartDate.setText(mDateFormatter.format(date));
         } catch (ParseException e) {
+            try {
+                SimpleDateFormat sd = new SimpleDateFormat(Constants.DATE_FORMAT);
+                date = sd.parse(healthBio.getStartDate());
+                mStartDate.setText(mDateFormatter.format(date));
+            }
+            catch (Exception ex)
+            {
+                try {
+                    SimpleDateFormat sd1 = new SimpleDateFormat(Constants.DATE_TIME_FORMAT);
+                    date = sd1.parse(healthBio.getStartDate());
+                    mStartDate.setText(mDateFormatter.format(date));
+                }
+                catch (Exception ex1)
+                {
+                    Log.d("Error",ex.getMessage());
+                }
+                Log.d("Error",ex.getMessage());
+            }
             e.printStackTrace();
         }
 

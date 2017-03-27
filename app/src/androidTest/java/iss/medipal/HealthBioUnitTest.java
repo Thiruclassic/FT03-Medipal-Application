@@ -45,7 +45,7 @@ public class HealthBioUnitTest extends TestCase implements MedipalUnitTest {
         //Healthbio with null data should not be inserted
         assertEquals("Healthbio should not be added",-1,healthBioDao.createHealthBio(healthBio));
 
-        SimpleDateFormat dateFormat=new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy");
+        SimpleDateFormat dateFormat=new SimpleDateFormat("dd MMM yyyy");
 
         healthBio.setCondition("FEVER");
         healthBio.setConditionType("CONDITION");

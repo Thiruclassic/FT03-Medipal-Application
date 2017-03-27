@@ -60,7 +60,7 @@ public class HealthBioDaoImpl extends BaseDao implements HealthBioDao {
 
         List<HealthBio> healthbio_list = new ArrayList<>();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.HEALTH_BIO_DATE_TIME_FORMAT);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
         while (cursor.moveToNext()) {
             try {
                 HealthBio healthBio = new HealthBio();
@@ -68,10 +68,7 @@ public class HealthBioDaoImpl extends BaseDao implements HealthBioDao {
                 healthBio.setStartDate(dateFormat.parse(cursor.getString(cursor.getColumnIndex(DBConstants.HEALTH_START_DATE))).toString());
                 healthBio.setCondition(cursor.getString(cursor.getColumnIndex(DBConstants.HEALTH_CONDITION)));
                 healthBio.setConditionType(cursor.getString(cursor.getColumnIndex(DBConstants.HEALTH_CONDITION_TYPE)));
-
                 healthbio_list.add(healthBio);
-
-
             } catch (Exception e) {
                 Log.d("Error", e.getMessage());
             }
