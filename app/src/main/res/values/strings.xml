@@ -53,21 +53,8 @@
         <item>3</item>
         <item>4</item>
         <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
     </string-array>
 
-    <string-array name="frequency_quantity_items">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-    </string-array>
 
     <string-array name="tut_heading_array">
         <item>View your daily consumptions</item>
@@ -78,7 +65,7 @@
     </string-array>
 
     <string-array name="tut_content_array">
-        <item>Mark your consumptions and visualise on a day by day basis.</item>
+        <item>Mark your consumptions and visualise on a day to day basis.</item>
         <item>Add, edit and delete your medicines and its details.</item>
         <item>Add your upcoming health appointments that should not be missed.</item>
         <item>Lists out all your medicine and appointment reminders</item>
@@ -172,6 +159,7 @@
     <string name="health_bio_title">Health Bio</string>
     <string name="skip">SKIP</string>
     <string name="done">DONE</string>
+    <string name="got_it">GOT IT!</string>
 
     <!-- Category -->
     <string name="category_name">Category Name</string>

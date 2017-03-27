@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -63,6 +64,7 @@ public class AddTemperatureActivity extends BaseActivity implements View.OnClick
     private void findViewsById() {
         saveTemperature = (Button) findViewById(R.id.saveTemperature);
         etTempMeasuredOn = (EditText) findViewById(R.id.etTemperatureMeasuredOn);
+//        etTempMeasuredOn.setInputType(InputType.TYPE_NULL);
         etTemperature = (EditText) findViewById(R.id.etTemperature);
 
 

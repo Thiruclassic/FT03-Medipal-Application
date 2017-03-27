@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.AppCompatTextView;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.ParseException;
@@ -82,7 +84,6 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
 
     private String mReminderStartTime;
     private List<String> mSpinnerItems;
-    private List<String> mSpinnerFrequencyItems;
     private List<Category> mCategories;
 
 
@@ -207,15 +208,11 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         mCategorySpinner.setOnItemSelectedListener(mCategorySpinnerListener);
         setReminderStatus(mCategories.get(0).isRemind());
         mSpinnerItems = new ArrayList<>();
-        mSpinnerFrequencyItems=new ArrayList<>();
         mSpinnerItems.addAll(Arrays.asList(getResources().getStringArray(R.array.dosage_quantity_items)));
-        mSpinnerFrequencyItems.addAll(Arrays.asList(getResources().getStringArray(R.array.frequency_quantity_items)));
         BaseSpinnerAdapter adapter = new BaseSpinnerAdapter(getActivity(), R.layout.dropdown_header, mSpinnerItems);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mDosageSpinner.setAdapter(adapter);
         mIntervalSpinner.setAdapter(adapter);
-        adapter = new BaseSpinnerAdapter(getActivity(), R.layout.dropdown_header, mSpinnerFrequencyItems);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mFrequencySpinner.setAdapter(adapter);
     }
 
@@ -224,6 +221,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         mTotalQuantityEditText =(AppCompatEditText)view.findViewById(R.id.medicineQuantityText);
         mMonthsToExpireEditText =(AppCompatEditText)view.findViewById(R.id.expireFactoreText);
         mIssueDateEditText =(AppCompatEditText)view.findViewById(R.id.dateIssuedText);
+        mIssueDateEditText.setInputType(InputType.TYPE_NULL);
         mPillsBeforeRefillEditText =(AppCompatEditText)view.findViewById(R.id.pillsBeforeRefill);
         mDescriptionEditText =(AppCompatEditText)view.findViewById(R.id.medicineDescriptionText);
         mNameHint = (AppCompatTextView) view.findViewById(R.id.name_hint);
@@ -364,9 +362,24 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
                     "Enter Valid issue date").show();
             return false;
         }
-        else if(checkTotalPills()){
+        else if(checkQuantity(mTotalQuantityEditText,500)){
             DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
                     "Quantity cannot be more than 500").show();
+            return false;
+        }
+        else if(checkQuantity(mMonthsToExpireEditText,60)){
+            DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
+                    "Months to expire cannot be more than 60 months").show();
+            return false;
+        }
+        else if(checkQuantity(mPillsBeforeRefillEditText,500)){
+            DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
+                    "Refill Pills quantity cannot be more than 500").show();
+            return false;
+        }
+        else if(checkRefillPills()){
+            DialogUtility.newMessageDialog(getActivity(), getString(R.string.warning),
+                    "Refill quantity is greater than the total quantity").show();
             return false;
         }
         else if(checkInterval())
@@ -380,12 +393,13 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
 
     }
 
-    public boolean checkTotalPills()
+
+    public boolean checkQuantity(TextView view,int quantityToBeMeasured)
     {
         boolean checker=false;
         try {
-            int quantity = Integer.parseInt(String.valueOf(mTotalQuantityEditText.getText()));
-            if(quantity>500)
+            int quantity = Integer.parseInt(String.valueOf(view.getText()));
+            if(quantity>quantityToBeMeasured)
             {
                 checker=true;
             }
@@ -396,24 +410,27 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         }
         return checker;
     }
-    /*public boolean checkrefillPills()
+    public boolean checkRefillPills()
     {
-        boolean checker=true;
+        boolean checker=false;
 
         try
         {
-            int refillPill=Integer.parseInt(String.valueOf(mPillsBeforeRefillEditText.getText()));
-            int totalquantity=Integer.parseInt(String.valueOf(mTotalQuantityEditText.getText()));
-            if(refillPill>totalquantity)
-            {
-
+            if(!isEditMedicine) {
+                int refillPill = Integer.parseInt(String.valueOf(mPillsBeforeRefillEditText.getText()));
+                int totalquantity = Integer.parseInt(String.valueOf(mTotalQuantityEditText.getText()));
+                if (refillPill > totalquantity) {
+                    checker = true;
+                }
             }
         }
         catch(Exception e)
         {
-
+              checker=true;
         }
-    }*/
+
+        return checker;
+    }
     public boolean checkInterval()
     {
         Calendar calendar=Calendar.getInstance();
@@ -454,7 +471,7 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
         int quantity = Integer.parseInt(mTotalQuantityEditText.getText().toString());
         if(mReminder!=null) {
             mReminder.setInterval(Integer.valueOf(mSpinnerItems.get(mIntervalSpinner.getSelectedItemPosition())));
-            mReminder.setFrequency(Integer.valueOf(mSpinnerFrequencyItems.get(mFrequencySpinner.getSelectedItemPosition())));
+            mReminder.setFrequency(Integer.valueOf(mSpinnerItems.get(mFrequencySpinner.getSelectedItemPosition())));
         }
         mMedicine.setMedicine(medName);
         mMedicine.setDescription(medDescription);

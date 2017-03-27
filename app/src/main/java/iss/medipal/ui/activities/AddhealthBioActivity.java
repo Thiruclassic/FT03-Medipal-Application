@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -68,6 +69,7 @@ public class AddhealthBioActivity extends AppCompatActivity {
         mDateFormatter = new SimpleDateFormat(Constants.DATE_FORMAT, Locale.getDefault());
         mStartDate.setOnClickListener(mDateClickListener);
         mStartDate.setOnFocusChangeListener(mDateFocusListener);
+        mStartDate.setInputType(InputType.TYPE_NULL);
         mSubmitButton.setOnClickListener(mSubmitListener);
         imageBack = (ImageView) findViewById(R.id.toolbar_left_icon);
         title = (TextView) findViewById(R.id.toolbar_title);

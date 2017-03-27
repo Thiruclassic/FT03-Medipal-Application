@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -61,6 +62,7 @@ public class AddPulseActivity extends BaseActivity implements View.OnClickListen
     private void findViewsById() {
         savePulse = (Button) findViewById(R.id.savePulse);
         etPulseMeasuredOn = (EditText) findViewById(R.id.etPulseMeasuredOn);
+//        etPulseMeasuredOn.setInputType(InputType.TYPE_NULL);
         etPulse = (EditText) findViewById(R.id.etPulse);
 
 

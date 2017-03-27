@@ -45,7 +45,8 @@
                 android:orientation="vertical"
                 android:padding="@dimen/padding_small"
                 android:textColorHint="?colorPrimary"
-                app:hintTextAppearance="@style/HintTextStyle">
+                app:hintTextAppearance="@style/HintTextStyle"
+                >
 
                 <EditText
                     style="@style/InputLayoutEditTextStyleDark"
@@ -54,7 +55,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/date_select"
                     android:imeOptions="actionDone"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    />
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/tv_appTime"

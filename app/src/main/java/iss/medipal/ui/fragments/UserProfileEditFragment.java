@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatSpinner;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -176,6 +177,7 @@ public class UserProfileEditFragment extends BaseFragment implements UserProfile
         mUnitEditText = (AppCompatEditText) view.findViewById(R.id.unit_edit);
         mPostalCodeEditText = (AppCompatEditText) view.findViewById(R.id.postal_edit);
         mSubmitButton = (Button) view.findViewById(R.id.submit_btn);
+        mDobEditText.setInputType(InputType.TYPE_NULL);
     }
 
     private void setSpinner(){
