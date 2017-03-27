@@ -74,10 +74,6 @@ public class AddMedicineFragment extends BaseTimeFragment implements CustomBackP
     private Switch mRemindSwitch;
     private AppCompatTextView mNameHint;
 
-    private MedicineDao medicineDao;
-    private ReminderDao reminderDao;
-    private CategoryDao categoryDao;
-
     private Medicine mMedicine;
     private Reminder mReminder;
     private boolean isEditMedicine;
