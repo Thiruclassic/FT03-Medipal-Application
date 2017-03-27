@@ -14,6 +14,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +47,7 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
     private AppointmentListAdapter appointmentListAdapter;
     private List<Appointment> appointmentList;
     private AppointmentFragment.MainActivityInterface aAddCallback;
-
+    private TextView tvEmpty;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +68,7 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
         lv = (ListView) fragmentView.findViewById(R.id.lvTodos);
         innerLayout = (FrameLayout) fragmentView.findViewById(R.id.add_appointment_frame);
         addAppointment = (FloatingActionButton) fragmentView.findViewById(R.id.addAppointment);
+        tvEmpty = (TextView) fragmentView.findViewById(R.id.tv_empty_appointment);
         return fragmentView;
     }
 
@@ -135,7 +139,11 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
 
     @Override
     public void onResume() {
+
         super.onResume();
+        if(appointmentListAdapter!=null) {
+            tvEmpty.setVisibility(appointmentListAdapter.getCount() == 0 ? View.VISIBLE : View.GONE);
+        }
     }
 
     @Override
@@ -153,6 +161,7 @@ public class AppointmentFragment extends Fragment implements AddAppointmentFragm
                 FragmentTransaction transaction = manager.beginTransaction();
                 transaction.replace(R.id.add_appointment_frame, addAppointmentFragment, Constants.ADD_FRAGMENT_PAGE).commit();
                 lv.setVisibility(View.INVISIBLE);
+                tvEmpty.setVisibility(view.GONE);
                 innerLayout.setVisibility(View.VISIBLE);
                 addAppointment.setVisibility(View.INVISIBLE);
             }
