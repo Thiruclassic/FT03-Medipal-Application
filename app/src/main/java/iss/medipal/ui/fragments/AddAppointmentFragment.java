@@ -346,7 +346,7 @@ public class AddAppointmentFragment extends BaseTimeFragment implements CustomBa
         dateTime.set(Calendar.YEAR, date.get(Calendar.YEAR));
         dateTime.set(Calendar.HOUR, time.get(Calendar.HOUR));
         dateTime.set(Calendar.MINUTE, time.get(Calendar.MINUTE));
-//        dateTime.set(Calendar.AM_PM, time.get(Calendar.AM_PM));
+        dateTime.set(Calendar.AM_PM, time.get(Calendar.AM_PM));
 
         try {
 
