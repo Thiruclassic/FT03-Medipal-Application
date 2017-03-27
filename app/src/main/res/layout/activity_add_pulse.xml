@@ -6,16 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="iss.medipal.ui.activities.AddPulseActivity">
-
-<!--
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbarPulseAdd"
+    <include layout="@layout/toolbar_generic"/>
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:titleTextColor="@color/white" />
-
---><include layout="@layout/toolbar_generic"/>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -55,8 +50,6 @@
                 android:inputType="number" />
         </android.support.design.widget.TextInputLayout>
 
-    </LinearLayout>
-
     <Button
         android:id="@+id/savePulse"
         style="@style/MyBtnStyle"
@@ -69,5 +62,8 @@
         android:layout_marginRight="@dimen/margin_generic_tiny"
         android:drawableLeft="@drawable/pulse"
         android:text="Save Reading" />
+
+    </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

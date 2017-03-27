@@ -68,6 +68,8 @@ public class AddBpActivity extends BaseActivity implements View.OnClickListener 
         etSystolic = (EditText) findViewById(R.id.etSystolic);
         etDiastolic = (EditText) findViewById(R.id.etDiastolic);
         measuredOn = (EditText) findViewById(R.id.etMeasuredOn);
+        measuredOn.setKeyListener(null);
+
 
     }
 
@@ -78,7 +80,7 @@ public class AddBpActivity extends BaseActivity implements View.OnClickListener 
         View.OnClickListener appDateListner = new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                showDatePicker();
+                showDatePicker().show();
 
             }
         };
