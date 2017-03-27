@@ -63,7 +63,7 @@ public class AddWeightActivity extends BaseActivity implements View.OnClickListe
     private void findViewsById() {
         saveWeight = (Button) findViewById(R.id.saveWeight);
         etWeightMeasuredOn = (EditText) findViewById(R.id.etWeightMeasuredOn);
-        etWeightMeasuredOn.setInputType(InputType.TYPE_NULL);
+//        etWeightMeasuredOn.setInputType(InputType.TYPE_NULL);
         etWeight = (EditText) findViewById(R.id.etWeight);
 
 
