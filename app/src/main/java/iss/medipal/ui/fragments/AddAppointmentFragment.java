@@ -98,6 +98,7 @@ public class AddAppointmentFragment extends BaseTimeFragment implements CustomBa
         etDescription = (EditText) fragmentView.findViewById(R.id.et_description);
         etDate.setText(dateFormatter.format(selectedDate.getTime()));
         textInputLayoutLocation = (TextInputLayout) fragmentView.findViewById(R.id.tv_location);
+
     }
 
     @Override
@@ -187,7 +188,7 @@ public class AddAppointmentFragment extends BaseTimeFragment implements CustomBa
         };
         etDate.setOnClickListener(appDateListner);
         etDate.setOnFocusChangeListener(mDateFocusListener);
-        etDate.setInputType(InputType.TYPE_NULL);
+//        etDate.setInputType(InputType.TYPE_NULL);
         etTime.setOnClickListener(appTimeListner);
         etTime.setOnClickListener(appTimeListner);
         etTime.setOnFocusChangeListener(mTimeFocusListener);
