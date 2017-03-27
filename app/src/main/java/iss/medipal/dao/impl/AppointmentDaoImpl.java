@@ -34,7 +34,9 @@ public class AppointmentDaoImpl extends BaseDao implements AppointmentDao {
 
         ContentValues values = new ContentValues();
         values.put(DBConstants.APP_LOCATION, appointment.getLocation());
-        values.put(DBConstants.APP_DATETIME, appointment.getAppointment().toString());
+        if(null!=appointment.getAppointment()) {
+            values.put(DBConstants.APP_DATETIME, appointment.getAppointment().toString());
+        }
         values.put(DBConstants.APP_DESCRIPTION, appointment.getDescription());
         int id = (int) database.insert(DBConstants.TABLE_APPOINTMENT, null, values);
         return id;
