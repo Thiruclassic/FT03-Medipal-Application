@@ -4,9 +4,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.MeasurementActivity">
 
-   <!-- <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />-->
     <include layout="@layout/toolbar_generic"/>
 
     <GridLayout
@@ -61,8 +58,6 @@
             android:drawableLeft="@drawable/oil_temperature"
             android:text="@string/temperature"
             android:tint="@android:color/white" />
-
-
     </GridLayout>
 
 
