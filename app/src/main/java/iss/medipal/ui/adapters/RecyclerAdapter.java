@@ -181,7 +181,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
                         imgThumb.setColorFilter(context.getResources().getColor(R.color.yellow_500));
 
-                    }else if(weightCheck<150 && weightCheck>80){
+                    }else if(weightCheck<300 && weightCheck>80){
 
                         imgThumb.setColorFilter(context.getResources().getColor(R.color.red_500));
                     }
@@ -210,7 +210,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
                         imgThumb.setColorFilter(context.getResources().getColor(R.color.green_A700));
 
                     }
-                    else if(temperature>38)
+                    else if(temperature>38 && temperature <=200)
                     {
                         //High
                         imgThumb.setColorFilter(context.getResources().getColor(R.color.red_500));
